@@ -11,6 +11,15 @@ import EditClient from "../component/employers/registrations/editClients/editCli
 // Department and section
 import Departments from "../component/employers/departments/departments";
 
+
+//Hiring Process block   ######################
+       //** job */
+import Jobs from "../component/hiring/vacancies/newjob";
+import AddJob from "../component/hiring/vacancies/addjobs/addjob";
+import EditJob from "../component/hiring/vacancies/editjobs/editjob";
+       //Recruitment  (HR and Technical Interview)
+ 
+// *********** End of block *********************
 import Carousel from "../component/advancedUi/carousel/carousel";
 import Filedetails from "../component/advancedUi/filemanager/filedetails/filedetails";
 import Filemanagerlist from "../component/advancedUi/filemanager/filemanagerlist/filemanagerlist";
@@ -125,7 +134,17 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employers/departments/departments`, element: <Departments /> , title: ''},
     // { path: `${import.meta.env.BASE_URL}employers/attachments`, element: <Attachments /> , title: ''},
     // { path: `${import.meta.env.BASE_URL}employers/badges`, element: <Badges /> , title: ''},
-
+    
+    
+    // {/*  Hiring Block   */}
+       //Job application 
+     { path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, element: <Jobs /> },   
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/add_job`, element: <AddJob /> }, 
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/edit_job/:id`, element: <EditJob /> }, 
+    
+    
+    
+    
     // {/* Component content */}
 
     { path: `${import.meta.env.BASE_URL}components/accordion`, element: <Accordion /> , title: ''},
@@ -280,8 +299,10 @@ export const SearchData = [
 { path: `${import.meta.env.BASE_URL}employers/registrations/editClients`, element: <EditClient />, title: 'Edit Client' },
     
     
-    
-    
+    //hiring Block
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, element: <Jobs /> },   
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/add_job`, element: <AddJob /> }, 
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/edit_job`, element: <EditJob /> }, 
     
     // {/* Component content */}
 

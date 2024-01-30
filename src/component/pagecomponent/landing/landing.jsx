@@ -1620,7 +1620,7 @@ const Landing = ({local_varaiable,ThemeChanger}) => {
 							</div>
 						</div>
 						<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-							<p className="text-center text-white">Copyright © <span id="year">2023</span> <Link to="#"
+							<p className="text-center text-white">Copyright © <span id="year">2024</span> <Link to="#"
 								className="text-primary"> econsult</Link>. Designed with <span className="ri ri-heart-fill text-red-500"></span> by <Link
 									className="text-primary" to="#"> Socrate Clsulting (T) Ltd </Link> All rights reserved </p>
 						</div>

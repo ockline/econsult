@@ -796,7 +796,46 @@ const fetchShifts = async () => {
     return [];
   }
 };
+// VacancyTypeData
+ export const VacancyTypeData = async () => {
+  try {
+    const vacancies = await fetchVacancyType();
+    return [
+      {
+        label: "Vacancy Name",
+        options: vacancies,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching shifts:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetch vacancies
+const fetchVacancyType = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/vacancies/show_vacancies`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch vacancies');
+    }
 
+    const result = await response.json();
+    
+    // Assuming result.vacancies is an array of shift objects
+    const formattedVacancies = result.vacancies.map(vacancy => ({
+      label: vacancy.name, // replace with the actual property name in your vacancy object
+      value: vacancy.id,   // replace with the actual property name in your vacancy object
+    }));
+
+    return formattedVacancies;
+  } catch (error) {
+    console.error('Error fetching vacancies:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
 
 export const ProfileHomeData = [
   { value: 'Only Me', label: 'Only Me' },

@@ -83,8 +83,8 @@ export const MenuItems = [
 			{
 				id: 10, icon: HiringsSvg, title: "Hiring", type: "sub", active: false, selected: false, children: [
 
-					{ id: 11, path: `${import.meta.env.BASE_URL}hirings/job`, type: "link", active: false, selected: false, title: "Job Vacancy" },
-					{ id: 12, path: `${import.meta.env.BASE_URL}hirings/competencies`, type: "link", active: false, selected: false, title: "HR Competency Interviews" },
+					{ id: 11, path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, type: "link", active: false, selected: false, title: "Job Vacancy" },
+					{ id: 12, path: `${import.meta.env.BASE_URL}hiring/competencies`, type: "link", active: false, selected: false, title: "HR Competency Interviews" },
 					{ id: 13, path: `${import.meta.env.BASE_URL}hirings/technicals`, type: "link", active: false, selected: false, title: "Technical Interviews" },
 				]
 			},
@@ -296,7 +296,7 @@ export const MenuItems = [
 	{ menutitle: "MAPS & CHARTS", Items: [
 			{ id: 78, icon: MapsSvg, title: "Maps", type: "sub", active: false, selected: false, children: [
 
-					{ id: 80, path: `${import.meta.env.BASE_URL}maps/leafletmap`, type: "link", active: false, selected: false, title: "Leaflet Maps" },
+					{ id: 80, path: `${import.meta.env.BASE_URL}maps/leafletmap`, type: "link", active: false, selected: false, title: "New Jobs" },
 					{ id: 81, path: `${import.meta.env.BASE_URL}maps/simplemap`, type: "link", active: false, selected: false, title: "Simple Maps" },
 
 				]

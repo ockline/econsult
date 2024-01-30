@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { MapContainer, TileLayer, LayersControl, Popup, LayerGroup, Circle, Rectangle, FeatureGroup, Polygon, Pane, SVGOverlay } from "react-leaflet";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
-const Leafletmap = () => {
+const Leafletmaps = () => {
 	// pane
 	const outer = [
 		[50.505, -29.09],
@@ -69,7 +69,7 @@ const Leafletmap = () => {
 
 	return (
 		<div>
-           <PageHeader currentpage="Leaflet Maps" activepage="Basic Ui" mainpage="Leaflet Maps" />
+           <PageHeader currentpage="New Jobs" activepage="Basic Ui" mainpage="New Jobs" />
 			<div className="grid grid-cols-12 gap-6">
 				<div className="col-span-12 lg:col-span-6">
 					<div className="box">
@@ -270,4 +270,4 @@ const Leafletmap = () => {
 		</div>
 	);
 };
-export default Leafletmap;
+export default Leafletmaps;
