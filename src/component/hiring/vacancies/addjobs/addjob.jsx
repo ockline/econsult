@@ -10,9 +10,10 @@ import SunEditor from 'suneditor-react';
 import axios from "axios";
 
 const AddJob = () => {
-    // const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     
+        // const history = useHistory();
         const [value, setValue] = useState('');
         const [step, setStep] = useState(1);
         const [formData, setFormData] = useState({
@@ -114,7 +115,61 @@ const AddJob = () => {
             console.error("Unexpected error:", error.message);
         };
     };
-    
+    // Save Job Description 
+    const [jobData, setJobData] = useState({
+        name: '',
+        
+    });
+            
+    const SaveDescription = async (e) => {
+        e.preventDefault();
+        // console.log('Job Data:', jobData);
+       const JobDesc = {
+           name: jobData.name,
+       }
+       
+        try {
+    const res = await axios.post(`${apiBaseUrl}/hiring/job/job_description`, JobDesc, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    });
+
+  if (res.data[0].status === 404) {
+    swal({
+        title: 'Sorry! Operation failed',
+        text: res.data[0].message,
+        icon: 'warning',
+        button: 'ok',
+    });
+} else if (res.data[0].status === 200) {
+    swal({
+        title: 'Job Description added Successfully',
+        text: res.data[0].message,
+        icon: 'success',
+        button: 'ok',
+    });
+    //   .then(() => {
+    //         // Navigate to the desired page
+    //         history.push('/hiring/vacancies/jobs');
+    //     });
+}
+} catch (error) {
+    console.log('Error occurred:', error);
+
+    if (error.response && error.response.status === 404) {
+        console.log('Handling 404 error in catch block');
+        swal({
+            title: 'Resource Not Found',
+            text: 'The requested resource was not found on the server.',
+            icon: 'error',
+            button: 'ok',
+        })
+    } else {
+        console.error("Unexpected error:", error.message);
+    }
+}
+}
     //Departments
     const [departments, setDepartments] = useState([]);
 
@@ -226,9 +281,18 @@ const AddJob = () => {
                                             <label className="ti-form-label mb-0">When The Position Becomes Vacant <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="position_vacant" className="my-auto ti-form-input" placeholder="position Vacant"  value={formData.position_vacant}
                                                 onChange={(e) => handleInputChange('position_vacant', e.target.value)} required />
-                                            {/* <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10" name="position_vacant" selected={startDate} onChange={(date) => setStartDate(date)} timeInputLabel="Time:" dateFormat="MM/dd/yyyy h:mm aa" showTimeInput /> */}
-                                              <span className="text-danger">{formData.error_list.position_vacant}</span>
-                                        </div> <div className="space-y-2">
+                                          
+                                        {/* <div className="flex rounded-sm overflow-auto">
+                                        <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
+                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
+                                                className="ri ri-calendar-line"></i></span>
+                                        </div>
+                                        <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10" name="position_vacant" selected={startDate} onChange={(date) => setStartDate(date)} timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput />
+
+                                    </div>       */}
+                                    <span className="text-danger">{formData.error_list.position_vacant}</span>
+                                        </div>
+                                        <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Date Of Application <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="date_application" className="my-auto ti-form-input"  value={formData.date_application}
                                                 onChange={(e) => handleInputChange('date_application', e.target.value)} placeholder="Date Of Application " required />
@@ -321,7 +385,7 @@ const AddJob = () => {
                                             Add
                             </button>
                             
-                            <button type="submit" onClick={handleSubmit} className="hs-dropdown-toggle  ti-btn ti-btn-success justify-center float-end" data-hs-overlay="#hs-large-modal">
+                            <button type="button"  className="hs-dropdown-toggle  ti-btn ti-btn-success justify-center float-end" data-hs-overlay="#hs-large-modal">
                                 <i className="ti ti-send"></i> Complete with Job Description to Submit
                             </button>
                             </div>
@@ -347,7 +411,7 @@ const AddJob = () => {
 										</div>
 										<div className="ti-modal-body">
 											<label htmlFor="input-label" className="ti-form-label">Job Description</label>
-											  <SunEditor  name="name" setContents={value} onChange={setValue} setOptions={{ buttonList: [
+											  <SunEditor  name="name" setContents={value} onChange={(value) => setJobData({ ...jobData, name: value })} setOptions={{ buttonList: [
                                                                                                     ["undo", "redo"],
                                                                                                     ["font", "fontSize"],
                                                                                                     ['paragraphStyle', 'blockquote'],
@@ -384,7 +448,16 @@ const AddJob = () => {
                           Close
 											</button>
 											<Link className="ti-btn ti-btn-primary" to="#">
-                          Save changes
+                                               
+                                         <button
+											type="button"
+											className="ti-btn ti-btn-primary show-example-btn"
+											aria-label="Save Changes! Example: End of contract"
+											id="ajax-btn"
+											onClick={(e) => SaveDescription(e)}
+										>
+											 Save to Complete
+										</button>
 											</Link>
 										</div>
 									</div>

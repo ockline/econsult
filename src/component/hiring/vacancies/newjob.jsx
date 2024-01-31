@@ -1,15 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import {Link}  from "react-router-dom";
-
+import axios from "axios";
 
 const Newjob = () => {
+	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+	const [vacancies, setVacancies] = useState([]);
 	
-	
-	
-
-	
-
+	useEffect(() => {
+		const vacanciesData = async () => {
+			try {
+				const res = await axios.get(`${apiBaseUrl}/hiring/job/show_jobs`);
+				console.log(res.data);  // Log the entire response
+				setVacancies(res.data.vacancy);
+			} catch (error) {
+				console.log("Error on Retrieve", error.message);
+			}
+		};
+		vacanciesData();
+	}, []
+	);
 
 	return (
 		<div>
@@ -60,19 +70,24 @@ const Newjob = () => {
 											</tr>
 										</thead>
 										<tbody className="">
-											<tr>
+											{
+												vacancies?.map((vacancy, index) => (
+													
+													
+											<tr  key={index} className="">
 												<td className="py-3 ltr:pl-4 rtl:pr-4">
 													{/* <div className="flex items-center h-5 justify-center">
 														<input id="hs-table-search-checkbox-11" type="checkbox" className="ti-form-checkbox"/>
 														<label htmlFor="hs-table-search-checkbox-11" className="sr-only">Checkbox</label>
 													</div> */}
-													1
+															
+															{ index + 1}
 												</td>
-												<td className="font-medium">John Brown</td>
-												<td>45</td>
-												<td>20-01-2024</td>
-												<td>04-02-2024</td>
-												<td>New York No</td>
+														<td className="font-medium">{ vacancy.employer}</td>
+												<td>{vacancy.job_title}</td>
+												<td>{vacancy.vacancy_type}</td>
+												<td>{vacancy.position_vacant}</td>
+												<td>{vacancy.deadline_date}</td>
 												<td className="text-end font-medium">
 													<Link className="text-white hover:text-info" to="#">
 													<button
@@ -105,7 +120,10 @@ const Newjob = () => {
 													</button>
 													</Link>
 												</td>
-											</tr>
+												</tr>		
+														)
+	)
+}
 										</tbody>
 									</table>
 								</div>

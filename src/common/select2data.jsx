@@ -836,6 +836,50 @@ const fetchVacancyType = async () => {
     return [];
   }
 };
+// JobTitleData
+export const JobTitleData = async () => {
+  try {
+    const job_titles = await fetchJobTitle();
+    return [
+      {
+        label: "JobTitle Name",
+        options: job_titles,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching job titles:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetch job_titles
+const fetchJobTitle = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/job_titles/show_job_titles`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch job titles');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.vacancies is an array of shift objects
+    const formattedJobTitle = result.job_titles.map(job_title => ({
+      label: job_title.name, // replace with the actual property name in your job_title object
+      value: job_title.id,   // replace with the actual property name in your job_title object
+    }));
+
+    return formattedJobTitle;
+  } catch (error) {
+    console.error('Error fetching job titles:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// const JobTitleData = await fetchJobTitles();
+console.log('welimba');
+console.log(JobTitleData);
+ 
 
 export const ProfileHomeData = [
   { value: 'Only Me', label: 'Only Me' },
