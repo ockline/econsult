@@ -89,36 +89,35 @@ const Newjob = () => {
 												<td>{vacancy.position_vacant}</td>
 												<td>{vacancy.deadline_date}</td>
 												<td className="text-end font-medium">
-													<Link className="text-white hover:text-info" to="#">
+													<Link className="text-white hover:text-info" to={`${import.meta.env.BASE_URL}hiring/vacancies/show_job/` + vacancy.id}>
 													<button
 													variant=""
 													className="ti-btn ti-btn-success me-1"
 													type="button"
-													onClick={(e) => handleEditClick(e, contact)}
 													><i className="ti ti-eye"></i>
 													View
 													</button>
 													</Link>&nbsp;
-													<Link className="text-white hover:text-info" to={`${import.meta.env.BASE_URL}hiring/vacancies/edit_job/1`}>
+													<Link className="text-white hover:text-info" to={`${import.meta.env.BASE_URL}hiring/vacancies/edit_job/` + vacancy.id}>
 													<button
 													variant=""
 													className="ti-btn ti-btn-primary me-1"
 													type="button"
-													onClick={(e) => handleEditClick(e, contact)}
+													
 													><i className="ti ti-edit"></i>
 																Edit
 													</button>
 													</Link>&nbsp;
-													<Link className="text-danger hover:text-primary" to="#">
+													{/* <Link className="text-danger hover:text-primary" to="#">
 													<button
 													variant=""
 													className="ti-btn ti-btn-danger me-1"
 													type="button"
-													onClick={(e) => handleDeleteClick(e, contact.id)}
+													onClick={(e) => handleDeleteClick(e, vacancy.id)}
 													>
 													Delete
 													</button>
-													</Link>
+													</Link> */}
 												</td>
 												</tr>		
 														)

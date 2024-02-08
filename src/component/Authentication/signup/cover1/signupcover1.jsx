@@ -225,10 +225,11 @@ const SignUpCover1 = (props) => {
                     <html dir='ltr' class="h-full"></html>
                     <body class="cover1 justify-center"></body>
                 </Helmet>
-                {/* <main id="content"  className="w-full max-w-lg mx-auto my-auto p-6"> */}
-                {/* <Link to={`${import.meta.env.BASE_URL}dashboards/normal/`} className="header-logo justify-center">
+                <main id="content"  className="">
+                    <Link to={`${import.meta.env.BASE_URL}Authentication/signup/cover1/`} className="header-logo justify-center">
+                        <br/><br/>
             <img src= {ALLImages('dark')} alt="logo" className="mx-auto block justify-center"/>
-        </Link> */}
+        </Link>
                 <div className="mt-5 box ">
                     <div className="grid grid-cols-12 gap-x-6">
                         <div className="col-span-12">
@@ -241,9 +242,9 @@ const SignUpCover1 = (props) => {
                                         <Link className="text-primary decoration-2 hover:underline font-medium" to={`${import.meta.env.BASE_URL}Authentication/signin/cover1`}> Sign in here</Link>
                                     </p>
                                 </div>
-                                <div className="mt-5">
+                                <div className="mt-7">
                                     <form className="row g-3 ti-validation need-validation" noValidate onSubmit={saveUser}>
-                                        <div className="grid lg:grid-cols-2 gap-6 space-y-4 lg:space-y-0">
+                                        <div className="grid lg:grid-cols-3 gap-6 space-y-4 lg:space-y-0">
                                             <div className="space-y-2">
                                                 <label className="ti-form-label mb-0">First Name <span style={{ color: "red" }}> *</span></label>
                                                 <input type="text" name="firstname" onChange={handleChange}
@@ -359,17 +360,17 @@ const SignUpCover1 = (props) => {
                                                 <label className="ti-form-label mb-0">Location of the project </label>
                                                 <Creatable classNamePrefix="react-select" name="location_project" options={regions} onChange={(selectedOption) => handleInput(["location_project"], selectedOption ? selectedOption.value : null)} value={regions.find((option) => option.value === state.location_project)} />
                                                 
-                                            </div>
-                                            <button type="submit" name="submit"
-                                                className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-success text-white hover:bg-info focus:outline-none focus:ring-0 focus:ring-info focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">Register</button>
+                                                </div>
+                                                  <button type="submit" name="submit"
+                                                className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-success text-white hover:bg-info focus:outline-none focus:ring-0 focus:ring-info focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10 float-right">Register</button>
                                         </div>
-                                    </form>
+                                        </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
+</main>
             </div>
         );
     };

@@ -842,7 +842,7 @@ export const JobTitleData = async () => {
     const job_titles = await fetchJobTitle();
     return [
       {
-        label: "JobTitle Name",
+        label: "Job Title",
         options: job_titles,
       },
       // ... other groups
@@ -876,10 +876,93 @@ const fetchJobTitle = async () => {
     return [];
   }
 };
-// const JobTitleData = await fetchJobTitles();
-console.log('welimba');
-console.log(JobTitleData);
+// ****************************************************************************************
  
+//Package || cost Center name
+export const PackageData = async () => {
+  try {
+    const packages = await fetchPackages();
+
+    return [
+      {
+        label: "Package Name",
+        options: packages,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching packeges:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetchPackages
+const fetchPackages = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/packages/show_packages`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch packages');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.departments is an array of department objects
+    const formattedPackages = result.packages.map(cost_center => ({
+      label: cost_center.name, // replace with the actual property name in your package object
+      value: cost_center.id,   // replace with the actual property name in your package object
+    }));
+
+    return formattedPackages;
+  } catch (error) {
+    console.error('Error fetching packages:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+}
+// ****************************************************************************************
+ 
+//Ranking criterial
+export const RankingCriterialData = async () => {
+  try {
+    const rankings = await fetchRankings();
+
+    return [
+      {
+        label: "Ranking Name",
+        options: rankings,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching rankings:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetchRankings
+const fetchRankings = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/ranking_criterial/show_ranking`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch rankings');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.departments is an array of department objects
+    const formattedRankings = result.rankings.map(ranking => ({
+      label: ranking.name, // replace with the actual property name in your ranking object
+      value: ranking.rate,      // replace with the actual property name in your ranking object
+    }));
+
+    return formattedRankings;
+  } catch (error) {
+    console.error('Error fetching rankings:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+}
+
 
 export const ProfileHomeData = [
   { value: 'Only Me', label: 'Only Me' },

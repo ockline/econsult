@@ -81,10 +81,11 @@ export const MenuItems = [
 				]
 			},
 			{
+				//Hiring block
 				id: 10, icon: HiringsSvg, title: "Hiring", type: "sub", active: false, selected: false, children: [
 
 					{ id: 11, path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, type: "link", active: false, selected: false, title: "Job Vacancy" },
-					{ id: 12, path: `${import.meta.env.BASE_URL}hiring/competencies`, type: "link", active: false, selected: false, title: "HR Competency Interviews" },
+					{ id: 12, path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, type: "link", active: false, selected: false, title: "HR Competency Interviews" },
 					{ id: 13, path: `${import.meta.env.BASE_URL}hirings/technicals`, type: "link", active: false, selected: false, title: "Technical Interviews" },
 				]
 			},

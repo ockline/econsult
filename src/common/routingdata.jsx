@@ -17,7 +17,16 @@ import Departments from "../component/employers/departments/departments";
 import Jobs from "../component/hiring/vacancies/newjob";
 import AddJob from "../component/hiring/vacancies/addjobs/addjob";
 import EditJob from "../component/hiring/vacancies/editjobs/editjob";
-       //Recruitment  (HR and Technical Interview)
+import ShowJob from "../component/hiring/vacancies/showjob";
+import DownloadJob from "../component/hiring/templatesamples/vacancies/jobtemplate";
+
+//Recruitment  (HR and Technical Interview)
+        //HR
+import HrInterview from "../component/hiring/recruitments/hrInterviews/interviewed";
+import AddAssessment from "../component/hiring/recruitments/hrInterviews/addAssessment/assessment";
+// import EditAssessment from "../component/hiring/recruitments/hrInterviews/editAssessment/editassessment";
+        //Technical
+// import TechInterview from "../component/hiring/recruitments/techInterviews/interviews";
  
 // *********** End of block *********************
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -141,7 +150,11 @@ export const RouteData = [
      { path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, element: <Jobs /> },   
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/add_job`, element: <AddJob /> }, 
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/edit_job/:id`, element: <EditJob /> }, 
-    
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/show_job/:id`, element: <ShowJob /> }, 
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/download_job/:id`, element: <DownloadJob /> },
+    //   HR interview
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, element: <HrInterview /> },
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/add_assessment`, element: <AddAssessment/>},
     
     
     
@@ -302,7 +315,12 @@ export const SearchData = [
     //hiring Block
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, element: <Jobs /> },   
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/add_job`, element: <AddJob /> }, 
-    { path: `${import.meta.env.BASE_URL}hiring/vacancies/edit_job`, element: <EditJob /> }, 
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/edit_job/:id`, element: <EditJob /> },
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/show_job/:id`, element: <ShowJob /> },    
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/download_job`, element: <DownloadJob /> }, 
+     {path: `${import.meta.env.BASE_URL}hiring/recruitment/hr_interviews`, element: <HrInterview/>},
+    
+    
     
     // {/* Component content */}
 

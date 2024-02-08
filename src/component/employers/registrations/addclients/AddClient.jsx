@@ -404,7 +404,7 @@ const AddClient = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">WCF Number <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="wcf" className="my-auto ti-form-input"  value={formData.wcf}
-                                                onChange={(e) => handleInputChange('wcf', e.target.value)} placeholder="Contact person" required />
+                                                onChange={(e) => handleInputChange('wcf', e.target.value)} placeholder="WCF number" required />
                                               <span className="text-danger">{formData.error_list.wcf}</span>
                                         </div>
                                         <div className="space-y-2">

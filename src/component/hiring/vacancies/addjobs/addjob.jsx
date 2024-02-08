@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 // import PageHeader from '../../../layout/layoutsection/pageHeader/pageHeader';
-import DatePicker from 'react-datepicker';
-import {DepartmentData, GroupDesignation, VacancyTypeData, EmployerData} from '/src/common/select2data';
+
+import {DepartmentData, GroupDesignation, VacancyTypeData, EmployerData, JobTitleData} from '/src/common/select2data';
 import Creatable from "react-select/creatable";
 import Select from 'react-dropdown-select';
 import { Link } from "react-router-dom";
 import 'react-form-wizard-component/dist/style.css';
 import SunEditor from 'suneditor-react';
+import DatePicker from 'react-datepicker';
 import axios from "axios";
 
 const AddJob = () => {
@@ -203,7 +204,7 @@ const AddJob = () => {
         fetchData();
     }, []);
     
-    //  Shifts
+    //  Employers
       const [employers, setEmployers] = useState([]);
 
     useEffect(() => {
@@ -217,23 +218,22 @@ const AddJob = () => {
         };
         fetchData();
     }, []);
-     //designation  || job title*********
-
-    const [designations, setDesignations] = useState([]);
-
+  
+       // Job title  *********************
+    const [job_titles, setJobTitles] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const design = await GroupDesignation();
-
-                setDesignations(design);
+                const job_title = await JobTitleData();
+                setJobTitles(job_title);
             } catch (error) {
                 console.error("Error:", error.message);
             }
         };
-
         fetchData();
     }, []);
+    
+       
     
     return (
     <div>
@@ -264,7 +264,7 @@ const AddJob = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Job Title</label>
-                                            <Creatable classNamePrefix="react-select" name="job_title_id" options={designations} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={designations.find((option) => option.value === formData.job_title_id)} />
+                                            <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} />
                                              <span className="text-danger">{formData.error_list.job_title_id}</span>
                                         </div>
                                         <div className="space-y-2">
@@ -330,9 +330,9 @@ const AddJob = () => {
                                               <span className="text-danger">{formData.error_list.work_station}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Please Give The Reasons For Replacement <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0">Please Give The Reasons For Replacement </label>
                                             <input type="text" name="replacement_reason" className="my-auto ti-form-input"  value={formData.replacement_reason}
-                                                onChange={(e) => handleInputChange('replacement_reason', e.target.value)} placeholder="Please Give the Reasons For Replacement" required />
+                                                onChange={(e) => handleInputChange('replacement_reason', e.target.value)} placeholder="Please Give the Reasons For Replacement"  />
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Age <span style={{ color: "red" }}> *</span></label>
@@ -365,7 +365,7 @@ const AddJob = () => {
                                               <span className="text-danger">{formData.error_list.others}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Additional Comments <span style={{ color: "red" }}> *</span></label>   
+                                            <label className="ti-form-label mb-0">Additional Comments </label>   
                                     <textarea className = "ti-form-input" name="additional_comment" rows="3"
                                         value={formData.additional_comment}
                                                 onChange={(e) => handleInputChange('additional_comment', e.target.value)} placeholder="Additional Comments" ></textarea>

@@ -45,34 +45,13 @@ const { id } = useParams();
       setFormData(res.data.vacancy)
     })
   }, [id])
-        // const handleInputChange = (stepName, value) => {
-        //     setFormData((prevData) => ({
-        //         ...prevData,
-        //         [stepName]: value,
-        //          error_list: { ...prevData.error_list, [stepName] : null },
-        //     }));
-    // };
-   const handleInputChange = (stepName, value) => {
-  setFormData((prevData) => {
-    if (prevData && prevData.error_list) {
-      console.log("prevData:", prevData);
-      console.log("prevData.error_list:", prevData.error_list);
-
-      return {
-        ...prevData,
-        [stepName]: value,
-        error_list: { ...prevData.error_list, [stepName]: null },
-      };
-    } else {
-      return {
-        ...prevData,
-        [stepName]: value,
-      };
-    }
-  });
-};
-
-
+        const handleInputChange = (stepName, value) => {
+            setFormData((prevData) => ({
+                ...prevData,
+                [stepName]: value,
+                 error_list: { ...prevData.error_list, [stepName] : null },
+            }));
+    };
         const handleNextStep = () => {
             setStep((prevStep) => prevStep + 1);
         };
@@ -108,17 +87,7 @@ const { id } = useParams();
         const resp = await axios.put(`${apiBaseUrl}/hiring/job/update_job/` + id, DataToSend);
 
         // Handle validation errors
-        if (resp.data.validator_err) {
-            const validationErrors = resp.data.validator_err;
-
-            // Update component state with validation errors
-            setFormData((prevData) => ({
-                ...prevData,
-                error_list: validationErrors,
-            }));
-        } else {
-            // Additional logic or state updates after a successful update
-
+       
             // Check response status and show SweetAlert
             if (resp.data.status === 500) {
                 swal({
@@ -138,7 +107,50 @@ const { id } = useParams();
                 // const history = useHistory();
                 // history.push('/employers/registrations/registrations');
                 // Additional logic or state updates after a successful update
-            }
+            
+        }
+    } catch (error) {
+        console.error("Unexpected error:", error.message);
+    }
+    };
+    //update Job Description
+    // job/update_job_description/
+     // Save Job Description 
+    const [jobData, setJobData] = useState({
+        name: '',
+        
+    });
+       const updateJobDescription = async (e) => {
+            // Handle form submission logic here
+             e.preventDefault();
+            console.log('Form submitted:', jobData);
+           const JobDescSend = {
+               name: jobData.name,
+           };
+    
+        try {
+        const resp = await axios.put(`${apiBaseUrl}/hiring/job/update_job_description/` + id, JobDescSend);
+
+        // Handle validation errors            // Check response status and show SweetAlert
+            if (resp.data.status === 500) {
+                swal({
+                    title: 'Internal Server Error',
+                    text: resp.data.message,
+                    icon: 'warning',
+                    button: 'ok',
+                });
+            } else if (resp.data.status === 200) {
+                swal({
+                    title: 'Updated Successfully',
+                    text: resp.data.message,
+                    icon: 'success',
+                    button: 'ok',
+                });
+                // Use the useHistory hook to navigate to the home page
+                // const history = useHistory();
+                // history.push('/employers/registrations/registrations');
+                // Additional logic or state updates after a successful update
+            
         }
     } catch (error) {
         console.error("Unexpected error:", error.message);
@@ -146,8 +158,7 @@ const { id } = useParams();
     };
     
     
-    
-      // Banks  *********************
+      // Job title  *********************
     const [job_titles, setJobTitles] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -211,10 +222,7 @@ const { id } = useParams();
         fetchData();
     }, []);
     
-
-
-   
-    
+ 
     
     return (
     <div>
@@ -241,77 +249,66 @@ const { id } = useParams();
                                          <div className="space-y-2">
                                             <label className="ti-form-label mb-0" name="name">Name Of Company <span style={{ color: "red" }}> *</span></label>
                                              <Creatable classNamePrefix="react-select" name="bank_id" options={employers} onChange={(selectedOption) => handleInputChange(["employer_id"], selectedOption ? selectedOption.value : null)} value={employers.find((option) => option.value === formData.employer_id)} />
-                                            <span className="text-danger">{formData.error_list.employer_id}</span>
+                                            {/* <span className="text-danger">{formData.error_list.employer_id}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Job Title</label>
                                             <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} />
-                                             <span className="text-danger">{formData.error_list.job_title_id}</span>
+                                             {/* <span className="text-danger">{formData.error_list.job_title_id}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Department Name <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="department_id" options={departments} onChange={(selectedOption) => handleInputChange(["department_id"], selectedOption ? selectedOption.value : null)} value={departments.find((option) => option.value === formData.department_id)} />
-                                              <span className="text-danger">{formData.error_list.department_id}</span>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Type Of Vacancy <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="type_vacancy_id" options={vacancies} onChange={(selectedOption) => handleInputChange(["type_vacancy_id"], selectedOption ? selectedOption.value : null)} value={vacancies.find((option) => option.value === formData.type_vacancy_id)} />
-                                              <span className="text-danger">{formData.error_list.email}</span>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">When The Position Becomes Vacant <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="position_vacant" className="my-auto ti-form-input" placeholder="position Vacant"  value={formData.position_vacant}
                                                 onChange={(e) => handleInputChange('position_vacant', e.target.value)} required />
                                           
-                                        {/* <div className="flex rounded-sm overflow-auto">
-                                        <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                className="ri ri-calendar-line"></i></span>
-                                        </div>
-                                        <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10" name="position_vacant" selected={startDate} onChange={(date) => setStartDate(date)} timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput />
-
-                                    </div>       */}
-                                    <span className="text-danger">{formData.error_list.position_vacant}</span>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Date Of Application <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="date_application" className="my-auto ti-form-input"  value={formData.date_application}
                                                 onChange={(e) => handleInputChange('date_application', e.target.value)} placeholder="Date Of Application " required />
-                                              <span className="text-danger">{formData.error_list.date_application}</span>
+                                              {/* <span className="text-danger">{formData.error_list.date_application}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Deadline date of application <span style={{ color: "red" }}> *</span></label>
                                         
                                             <input type="date" name="deadline_date" className="my-auto ti-form-input"  value={formData.deadline_date}
                                                 onChange={(e) => handleInputChange('deadline_date', e.target.value)} placeholder="Date Of Application " required />
-                                              <span className="text-danger">{formData.error_list.deadline_date}</span>
+                                              {/* <span className="text-danger">{formData.error_list.deadline_date}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Interview date HR  <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="hr_interview_date" className="my-auto ti-form-input"  value={formData.hr_interview_date}
                                                 onChange={(e) => handleInputChange('hr_interview_date', e.target.value)} placeholder="Date Of Application " required />
-                                              <span className="text-danger">{formData.error_list.hr_interview_date}</span>
+                                              {/* <span className="text-danger">{formData.error_list.hr_interview_date}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Interview date Technical  <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="tech_interview_date"  value={formData.tech_interview_date}
                                                 onChange={(e) => handleInputChange('tech_interview_date', e.target.value)} className="ti-form-input" placeholder="Interview date Technical" required />
-                                              <span className="text-danger">{formData.error_list.tech_interview_date}</span>
+                                              {/* <span className="text-danger">{formData.error_list.tech_interview_date}</span> */}
                                         </div>
                                         
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Date For Appointment  <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="apointment_date" value={formData.apointment_date} onChange={(e) => handleInputChange('apointment_date', e.target.value)} className="ti-form-input" placeholder="Date For Appointment" required />
-                                              <span className="text-danger">{formData.error_list.apointment_date}</span>
+                                              {/* <span className="text-danger">{formData.error_list.apointment_date}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Work Station  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="work_station" className="my-auto ti-form-input"  value={formData.work_station}
                                                 onChange={(e) => handleInputChange('work_station', e.target.value)} placeholder="Work Station " required />
-                                              <span className="text-danger">{formData.error_list.work_station}</span>
+                                              {/* <span className="text-danger">{formData.error_list.work_station}</span> */}
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Please Give The Reasons For Replacement <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0">Please Give The Reasons For Replacement </label>
                                             <input type="text" name="replacement_reason" className="my-auto ti-form-input"  value={formData.replacement_reason}
                                                 onChange={(e) => handleInputChange('replacement_reason', e.target.value)} placeholder="Please Give the Reasons For Replacement" required />
                                         </div>
@@ -319,38 +316,38 @@ const { id } = useParams();
                                             <label className="ti-form-label mb-0">Age <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="age" className="my-auto ti-form-input"  value={formData.age}
                                                 onChange={(e) => handleInputChange('age', e.target.value)} placeholder="age" required />
-                                              <span className="text-danger">{formData.error_list.age}</span>
+                                              {/* <span className="text-danger">{formData.error_list.age}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Academic <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="accademic" className="my-auto ti-form-input"  value={formData.accademic}
                                                 onChange={(e) => handleInputChange('accademic', e.target.value)} placeholder="Academic" required />
-                                              <span className="text-danger">{formData.error_list.accademic}</span>
+                                              {/* <span className="text-danger">{formData.error_list.accademic}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Professional<span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="professional" className="my-auto ti-form-input"  value={formData.professional}
                                                 onChange={(e) => handleInputChange('professional', e.target.value)} placeholder="Contact person" required />
-                                              <span className="text-danger">{formData.error_list.professional}</span>
+                                              {/* <span className="text-danger">{formData.error_list.professional}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Salary Range  <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="salary_range" className="my-auto ti-form-input"  value={formData.salary_range}
                                                 onChange={(e) => handleInputChange('salary_range', e.target.value)} placeholder="Salary Range " required />
-                                              <span className="text-danger">{formData.error_list.salary_range}</span>
+                                              {/* <span className="text-danger">{formData.error_list.salary_range}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Others <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="others" className="my-auto ti-form-input"  value={formData.others}
                                                 onChange={(e) => handleInputChange('others', e.target.value)} placeholder="others " required />
-                                              <span className="text-danger">{formData.error_list.others}</span>
+                                              {/* <span className="text-danger">{formData.error_list.others}</span> */}
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Additional Comments <span style={{ color: "red" }}> *</span></label>   
+                                            <label className="ti-form-label mb-0">Additional Comments </label>   
                                     <textarea className = "ti-form-input" name="additional_comment" rows="3"
                                         value={formData.additional_comment}
                                                 onChange={(e) => handleInputChange('additional_comment', e.target.value)} placeholder="Additional Comments" ></textarea>
-                                             <span className="text-danger">{formData.error_list.additional_comment}</span>
+                                             {/* <span className="text-danger">{formData.error_list.additional_comment}</span> */}
                                         </div>
                                        
                                     {/* Rest of Step 1 form fields */}
@@ -392,7 +389,10 @@ const { id } = useParams();
 										</div>
 										<div className="ti-modal-body">
 											<label htmlFor="input-label" className="ti-form-label">Job Description</label>
-											  <SunEditor  name="name" setContents={value} onChange={(value) => setJobData({ ...jobData, name: value })} setOptions={{ buttonList: [
+											  <SunEditor  name="name" setContents={value} onChange={(value) => {
+    
+    setJobData({ ...jobData, name: value });
+  }} setOptions={{ buttonList: [
                                                                                                     ["undo", "redo"],
                                                                                                     ["font", "fontSize"],
                                                                                                     ['paragraphStyle', 'blockquote'],
@@ -435,7 +435,7 @@ const { id } = useParams();
 											className="ti-btn ti-btn-primary show-example-btn"
 											aria-label="Save Changes! Example: End of contract"
 											id="ajax-btn"
-											onClick={(e) => SaveDescription(e)}
+											onClick={(e) => updateJobDescription(e)}
 										>
 											 Save to Complete
 										</button>
