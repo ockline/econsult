@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 export const RecruitmentData = [
     {
@@ -22,7 +23,6 @@ export const RecruitmentData = [
         relevant_experience_remark: '',
         major_achievement_remark: '',
         language_fluency_remark: '',
-        overall_rating: '',
         main_strength: '',
         main_weakness: '',
         birth_place: '',
@@ -64,7 +64,6 @@ export const RecruitmentData = [
         delegating_managing: '',
         managing_change: '',
         strategic_conceptual_thinking: '',
-        overall_rating: '',
         interactive_communication_remark: '',
         accountability_remark: '',
         work_excellence_remark: '',
@@ -113,7 +112,6 @@ export const DataToSubmit = RecruitmentData.map((data) => ({
                 relevant_experience_remark: RecruitmentData?.relevant_experience_remark,
                 major_achievement_remark: RecruitmentData?.major_achievement_remark,
                 language_fluency_remark: RecruitmentData?.language_fluency_remark,
-                overall_rating: RecruitmentData?.overall_rating,
                 main_strength: RecruitmentData?.main_strength,
                 main_weakness: RecruitmentData?.main_weakness,
                 birth_place: RecruitmentData?.birth_place,
@@ -178,3 +176,113 @@ export const DataToSubmit = RecruitmentData.map((data) => ({
                 military_attachment: RecruitmentData.military_attachment,
 
 }));
+
+
+
+// ****************************************************************************************
+ 
+//Interviewed Candidate Details
+
+// export const AssessedCandidate = [
+     
+// const [assessed, setAssessedCandidate] = useState([]);
+
+//   useEffect(() => {
+//     const fetchAssessedCandidate = async () => {
+//       try {
+//         const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/show_candidate`);
+//         setAssessedCandidate(res.data.assessment);
+//       } catch (error) {
+//         throw new Error('Failed to fetch employers: ' + error.message);
+//       }
+//     };
+
+//     fetchAssessedCandidate();
+//   }, []);
+
+
+// ];
+
+export const fetchAssessedCandidate = async () => {
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+  try {
+    const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/show_candidate`);
+    return res.data.assessment;
+  } catch (error) {
+    throw new Error('Failed to fetch assessed candidates: ' + error.message);
+  }
+};
+// const usermchongo = await fetchCandidates();
+// console.log('welimba');
+// console.log(usermchongo);
+
+
+
+
+
+
+
+
+
+
+
+
+// export const AssessedCandidate = async () => {
+//   try {
+//     const assessed = await fetchCandidates();
+
+//     return [
+//       {
+//         label: "Candidate Name",
+//         options: assessed,
+//       },
+//       // ... other groups
+//     ];
+//   } catch (error) {
+//     console.error('Error fetching assessed:', error.message);
+//     // Handle the error, maybe return a default value or log the error
+//     return [];
+//   }
+// };
+// Example implementation of fetchAssessedCandidate
+
+// const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+
+
+
+// Set the correct API base URL
+// const apiBaseUrl = 'http://127.0.0.1:8000/api'; // Update this with your actual API base URL
+// // console.log('API Base URL:', apiBaseUrl);
+// // Your fetchCandidates function
+// export const AssessedCandidate = async () => {
+//   try {
+//     const response = await axios.get(`${apiBaseUrl}/hiring/hr_interview/show_candidate`);
+
+//     if (response.status !== 200) {
+//       throw new Error(`Failed to fetch assessed - ${response.status} ${response.statusText}`);
+//     }
+
+//     const { data } = response;
+
+//     // Check if 'data' and 'assessment' properties exist
+//     if (!data || !data.assessment || !Array.isArray(data.assessment)) {
+//       throw new Error('Invalid API response structure');
+//     }
+
+//     const formattedCandidates = data.assessment.map(candidate => ({
+//         label: candidate.candidate_name, // Adjust this based on your candidate object structure
+//         value: candidate.id,
+//     }));
+
+//     return formattedCandidates;
+//   } catch (error) {
+//     console.error('Error fetching candidate:', error.message);
+//     return [];
+//   }
+// };
+
+
+// const usermchongo = await fetchCandidates();
+// console.log('welimba');
+// console.log(usermchongo);

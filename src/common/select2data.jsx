@@ -963,6 +963,52 @@ const fetchRankings = async () => {
   }
 }
 
+// ****************************************************************************************
+ 
+//Users || Employee name
+export const UsersData = async () => {
+  try {
+    const users = await fetchUsers();
+
+    return [
+      {
+        label: "User Name",
+        options: users,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetchUsers
+const fetchUsers = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/users/get_users`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch users');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.departments is an array of department objects
+    const formattedUsers = result.users.map(user => ({
+      label: user.firstname + ' ' + user.lastname, // replace with the actual property name in your users object
+      value: user.id,   // replace with the actual property name in your users object
+    }));
+
+    return formattedUsers;
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+}
+// const usermchongo = await fetchUsers();
+// console.log('welimba');
+// console.log(usermchongo);
 
 export const ProfileHomeData = [
   { value: 'Only Me', label: 'Only Me' },

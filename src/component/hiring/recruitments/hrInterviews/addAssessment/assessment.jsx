@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
-import { JobTitleData, PackageData, RegionData,RankingCriterialData} from '/src/common/select2data';
-import { Link } from 'react-router-dom';
+import { JobTitleData, PackageData, RegionData,RankingCriterialData, UsersData} from '/src/common/select2data';
+import { Link, useNavigate } from 'react-router-dom';
 import Creatable from "react-select/creatable";
 import Select from 'react-dropdown-select';
 import SunEditor from 'suneditor-react';
@@ -16,6 +16,12 @@ const Assessment = () => {
 	
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     // const [startDate, setStartDate] = useState(new Date());
+    
+    let navigate = useNavigate();
+    // const RouteChange = () => {
+    //     let path = `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed/`;
+    //     navigate(path);
+    // }
     
         const [step, setStep] = useState(1);
         const [formData, setFormData] = useState({
@@ -99,7 +105,9 @@ const Assessment = () => {
                 leadership_remark: '',
                 delegating_managing_remark: '',
                 managing_change_remark: '',
-                strategic_conceptual_thinking_remark: '',                
+                strategic_conceptual_thinking_remark: '', 
+                surgery_operation: '', 
+                surgery_operation_remark: '',                
                 error_list: [],
         });
 
@@ -160,6 +168,8 @@ const Assessment = () => {
                 reference_remarks: formData.reference_remarks,
                 current_packages: formData.current_packages,
                 agreed_salary: formData?.agreed_salary,
+                surgery_operation: formData?.surgery_operation,
+                surgery_operation_remark: formData?.surgery_operation_remark,
                 required_notes: formData.required_notes,
                 current_employed_entity: formData?.current_employed_entity,
                 social_insuarance_status: formData?.social_insuarance_status,
@@ -214,31 +224,36 @@ const Assessment = () => {
                         "Content-Type": "multipart/form-data"
                     }
                 });
-                 if (resp.data.validator_err) {
-                // Handle validation errors
-                const validationErrors = resp.data.validator_err;
+                if (resp.data.validator_err) {
+                    // Handle validation errors
+                    const validationErrors = resp.data.validator_err;
 
-                // Update component state with validation errors
-                setFormData((prevData) => ({
-                    ...prevData,
-                    error_list: validationErrors,
-                }));
-            }else if (resp.data.status === 500) {
-            swal({
-              title: 'Sorry! Operation failed',
-              text: resp.data.message,
-              icon: 'warning',
-              button: 'ok',
-            })
-            // Additional logic or state updates after successful update
-          } else if(resp.data.status === 200) {
-            swal({
-              title: 'Employer Registered Successfully',
-              text: resp.data.message,
-              icon: 'success',
-              button: 'ok',
-            })
-            }
+                    // Update component state with validation errors
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        error_list: validationErrors,
+                    }));
+                } else if (resp.data.status === 500) {
+                    swal({
+                        title: 'Sorry! Operation failed',
+                        text: resp.data.message,
+                        icon: 'warning',
+                        button: 'ok',
+                    })
+                    // Additional logic or state updates after successful update
+                } else if (resp.data.status === 200) {
+                    swal({
+                        title: 'HR Competency Interview Assessed successfully submitted',
+                        text: resp.data.message,
+                        icon: 'success',
+                        button: 'ok',
+                        closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
+                    }).then(() => {
+                         console.log('Redirecting...');
+                        // This code will be executed after the "ok" button is clicked and the modal is closed
+                         navigate('/hiring/recruitments/hr_interviewed/'); // Call the navigate function to redirect to the specified route
+                    });
+                }
             }
            catch (error) {
             console.error("Unexpected error:", error.message);
@@ -306,7 +321,21 @@ const Assessment = () => {
 
         fetchData();
     }, []);
-   
+    // Users names block *******************************
+     const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const users = await UsersData();
+                setUsers(users);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
 
 	return (
 		<div>
@@ -315,7 +344,7 @@ const Assessment = () => {
 			<div className= "box">
 				<div className= "box-header lg:flex lg:justify-between">
 					<h1 className= "box-title my-auto">Hr Competency Assessment Interview</h1>
-					<Link to={`${import.meta.env.BASE_URL}hiring/recruitments/add_assessment/`} className= "ti-btn ti-btn-primary m-0 py-2"><i className= "ti ti-arrow-left"></i>Back</Link>
+					<Link to={`${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`} className= "ti-btn ti-btn-primary m-0 py-2"><i className= "ti ti-arrow-left"></i>Back</Link>
 				</div>
 				 <div className="box-body">
                         <form className="ti-validation" noValidate onSubmit={handleSubmit}>
@@ -349,7 +378,8 @@ const Assessment = () => {
                                        <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
                                         name="date" selected={formData.date} onChange={(date) => handleInputChange('date', date)}
                                         timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput
-                                    />
+                                        />
+                                        <span className="text-danger">{formData.error_list.date}</span>
                                     </div>
                                 </div>
                                         <div className="space-y-2">
@@ -380,8 +410,7 @@ const Assessment = () => {
                                         </div> 
                                          <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Interviewer Name <span style={{ color: "red" }}> *</span></label>
-                                            <input type="text" name="interviewer"  value={formData.interviewer}
-                                                onChange={(e) => handleInputChange('interviewer', e.target.value)} className="ti-form-input" placeholder="Interview Name" required />
+                                            <Creatable classNamePrefix="react-select" name="interviewer" options={users} onChange={(selectedOption) => handleInputChange(["interviewer"], selectedOption ? selectedOption.value : null)} value={users.find((option) => option.value === formData.interviewer)} />
                                               <span className="text-danger">{formData.error_list.interviewer}</span>
                                         </div>
                                                                                 
@@ -442,12 +471,13 @@ const Assessment = () => {
                                             <label className="ti-form-label mb-0">Major Previous Achievement <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="major_achievement" options={rankings} onChange={(selectedOption) => handleInputChange(["major_achievement"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.major_achievement)} />
                                               <span className="text-danger">{formData.error_list.major_achievement}</span>
-                                </div>        
-                                <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Language Fluency  <span style={{ color: "red" }}> *</span></label>
-                                           <Creatable classNamePrefix="react-select" name="language_fluency_id" options={rankings} onChange={(selectedOption) => handleInputChange(["language_fluency_id"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.language_fluency_id)} />
-                                              <span className="text-danger">{formData.error_list.language_fluency_id}</span>
-                                </div>                                                       
+                                </div>  
+                                    <div className="space-y-2">
+                                            <label className="ti-form-label mb-0">Major Previous Achievement Comment</label>
+                                            <input type="text" className="my-auto ti-form-input" placeholder="Major Previous Achievement Comment" name="major_achievement_remark"  value={formData.major_achievement_remark}
+                                            onChange={(e) => handleInputChange('major_achievement_remark', e.target.value)}  />
+                                        </div>                                
+                                                               
                                        
                                     {/* Rest of Step 1 form fields */}
                                 </div>
@@ -2282,6 +2312,16 @@ const Assessment = () => {
                                         <div className=" space-y-2">                                       
                                 </div>
                                   <div className="space-y-2">
+                                            <label className="ti-form-label mb-0">Language Fluency  <span style={{ color: "red" }}> *</span></label>
+                                           <Creatable classNamePrefix="react-select" name="language_fluency_id" options={rankings} onChange={(selectedOption) => handleInputChange(["language_fluency_id"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.language_fluency_id)} />
+                                              <span className="text-danger">{formData.error_list.language_fluency_id}</span>
+                                </div> 
+                              <div className="space-y-2">
+                                            <label className="ti-form-label mb-0">Language Fluency Comment</label>
+                                            <input type="text" className="my-auto ti-form-input" placeholder="Language Fluency Comment" name="language_fluency_remark"  value={formData.language_fluency_remark}
+                                            onChange={(e) => handleInputChange('language_fluency_remark', e.target.value)}  />
+                                        </div> 
+                                  <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Main Strengths (The Cancidate strength)  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="main_strength" className="my-auto ti-form-input"  value={formData.main_strength}
                                                 onChange={(e) => handleInputChange('main_strength', e.target.value)} placeholder="Main Strength" required />
@@ -2376,15 +2416,15 @@ const Assessment = () => {
                                     </label>
 
                                     <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
-                                        <input type="radio" onChange={(e) => handleInputChange('surgery_operation', e.target.value)} value="2" name="surgery_operation" className = "ti-form-radio" id="surgery_operation" defaultChecked/>
+                                        <input type="radio" onChange={(e) => handleInputChange('surgery_operation', e.target.value)} value="2" name="surgery_operation" className = "ti-form-radio" id="surgery_operation-1" defaultChecked/>
                                         <span className = "text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">No</span>
                                     </label>
                                     </div>
                                 </div>
                                   <div className="space-y-2">
                                             <label className="ti-form-label mb-0">If yes, Please specify</label>
-                                            <input type="text" name="surgery_operation" className="my-auto ti-form-input"  value={formData.surgery_operation}
-                                                onChange={(e) => handleInputChange('surgery_operation', e.target.value)} placeholder="If yes, Please specify" />
+                                            <input type="text" name="surgery_operation_remark" className="my-auto ti-form-input"  value={formData.surgery_operation_remark}
+                                                onChange={(e) => handleInputChange('surgery_operation_remark', e.target.value)} placeholder="If yes, Please specify" />
                                             
                                 </div>
                                 
@@ -2568,24 +2608,24 @@ const Assessment = () => {
                         <br/>
                                 <div>
                                     {step > 1 && step < 4 && (
-                             <button onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
+                             <button  type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
                              <i className="ti ti-arrow-narrow-left"></i>Previous
                             </button>
                             )}
                             {step > 3 && (
-                                <button onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
+                                <button type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
                                     <i className="ti ti-arrow-narrow-left"></i>Previous
                                 </button>
                             )}
 
                             {step < 4 && (
-                                <button onClick={handleNextStep} className="ti-btn ti-btn-primary first_page justify-center">
+                                <button type="button" onClick={handleNextStep} className="ti-btn ti-btn-primary first_page justify-center">
                                     <i className="ti ti-arrow-narrow-right"></i>Next
                                 </button>
                             )}
 
                             {step === 4 && (
-                                <button type="submit" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
+                                <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
                                     <i className="ti ti-send"></i>Submit
                                 </button>
                             )}

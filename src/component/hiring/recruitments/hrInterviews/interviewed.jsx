@@ -1,44 +1,39 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Link } from 'react-router-dom';
-import { ProductList } from "../../../../common/EcommerceData";
+import { fetchAssessedCandidate } from "../../../../common/recruitmentdata";
 import Select from 'react-select';
 import { Assigned,  SortBy, StatusTask } from "/src/common/select2data";
 
 const Interviewed = () => {
-	const [allData, setAllData] = useState(ProductList)
-	function handleRemove(id) {
-		const newList = allData.filter((idx) => idx.id !== id);
-		setAllData(newList);
-	  }
+	
+	// const [allData, setAllData] = useState(AssessedCandidate)
+	// function handleRemove(id) {
+	// 	const newList = allData.filter((assessed) => assessed.id !== id);
+	// 	setAllData(newList);
+	//   }
+	 const [allData, setAllData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(''); // for Searching
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const assessedData = await fetchAssessedCandidate();
+        setAllData(assessedData);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
 
-	  const [isChecked, setIsChecked] = useState(true);
+    fetchData();
+  }, []);
 
-	  const handleCheckAll = () => {
-		const mailListElements = document.querySelectorAll('.mail-list');
-		const mailCheckboxInputs = document.querySelectorAll('.mail-checkbox input');
-	
-		if (isChecked) {
-		  mailListElements.forEach((element) => {
-			element.classList.add('selected');
-		  });
-	
-		  mailCheckboxInputs.forEach((input) => {
-			input.checked = true;
-		  });
-		} else {
-		  mailListElements.forEach((element) => {
-			element.classList.remove('selected');
-		  });
-	
-		  mailCheckboxInputs.forEach((input) => {
-			input.checked = false;
-		  });
-		}
-	
-		setIsChecked(!isChecked);
-	  };
+  function handleRemove(id) {
+    const newList = allData.filter((assessed) => assessed.id !== id);
+    setAllData(newList);
+	}
+	//*********************   Query for searching data */
+	// const [searchQuery, setSearchQuery] = useState('');
 
 	return (
 		<div>
@@ -57,7 +52,7 @@ const Interviewed = () => {
 										<div className= "absolute inset-y-0 ltr:right-0 rtl:left-0 flex items-center pointer-events-none ltr:pr-4 rtl:pl-4">
 											<i className= "ti ti-search"></i>
 										</div>
-										<input type="text" name="hs-table-search" id="hs-table-search" className= "p-2 ltr:pr-10 rtl:pl-10 ti-form-input" onChange={(ele) => { myfunction(ele.target.value) }}
+										<input type="text" name="hs-table-search" id="hs-table-search" className= "p-2 ltr:pr-10 rtl:pl-10 ti-form-input" value={searchQuery} onChange={(ele) => setSearchQuery(ele.target.value)}
 											placeholder="Search Task"/>
 									</div>
 								</div>
@@ -80,69 +75,86 @@ const Interviewed = () => {
 									</div>
 						</div>
 					</div>
-					<div className= "table-bordered whitespace-nowrap rounded-sm overflow-auto">
-						<table className= "ti-custom-table ti-custom-table-head edit-table">
-							<thead className= "bg-gray-100 dark:bg-black/20">
-								<tr className= "">
-									<th scope="col" className= "dark:text-white/70">
-										{/* <div className= "flex leading-[0] justify-center">
-											<input type="checkbox" className= "border-gray-500 ti-form-checkbox mt-0.5" onClick={handleCheckAll}
-												id="hs-default-checkbox"/>
-											<label htmlFor="hs-default-checkbox" className= "text-sm text-gray-500 dark:text-white/70"></label>
-										</div> */}
-										S/NO
-									</th>
-									<th scope="col" className= "dark:text-white/70">Cancidate No</th>
-									<th scope="col" className= "dark:text-white/70">Candidate Name</th>
-									<th scope="col" className= "dark:text-white/70">Job title</th>
-									<th scope="col" className= "dark:text-white/70">Date</th>
-									<th scope="col" className= "dark:text-white/70">Status</th>
-									<th scope="col" className= "!text-end dark:text-white/70">Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								{allData.map((idx)=>(
-								<tr className= "product-list" key={Math.random()}>
-									<td className= "">
-										{/* <div className= "flex items-center h-5 product-checkbox justify-center">
-											<input id="product-check-1" type="checkbox" className= "border-gray-500 ti-form-checkbox"/>
-											<label htmlFor="product-check-1" className= "sr-only">Checkbox</label>
-										</div> */}
-											{idx.id}
-									</td>
-									<td className= "font-semibold">{idx.PdctID}</td>
-									<td>
-										Masua Nanguku
-									</td>
-										<td>{idx.stock}</td>
-										<td>{idx.date}</td>
-										<td>
-										{idx.status === 0 ? (
-											<span className="badge bg-info text-white">Submitted</span>
-										) : idx.status === 1 ? (
-											<span className="badge bg-secondary text-white">Initiated</span>
-										) : idx.status === 2 ? (
-											<span className="badge bg-warning text-white">Pending</span>
-										) : idx.status === 3 ? (
-											<span className="badge bg-success text-white">Approved</span>
-										) : (
-											<span className="badge bg-danger text-white">Rejected</span>
-										)}
-										</td>
-									<td className= "text-end font-medium">
-										<Link aria-label="anchor" to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productdetails/`} className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success">
-											<i className= "ti ti-eye"></i>
-										</Link>
-										<Link aria-label="anchor" to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/editproduct/`} className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary">
-											<i className= "ti ti-pencil"></i>
-										</Link>
-										<Link aria-label="anchor" to="#" className="product-btn w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger" onClick={() => handleRemove(idx.id)}>
-											<i className= "ti ti-trash"></i>
-										</Link>
-									</td>
-								</tr>
-								))}
-							</tbody>
+					<div className="table-bordered whitespace-nowrap rounded-sm overflow-auto">
+											<table className="ti-custom-table ti-custom-table-head edit-table">
+												<thead className="bg-gray-100 dark:bg-black/20">
+												<tr>
+													<th scope="col" className="dark:text-white/70">
+													S/NO
+													</th>
+													<th scope="col" className="dark:text-white/70">
+													Candidate No
+													</th>
+													<th scope="col" className="dark:text-white/70">
+													Candidate Name
+													</th>
+													<th scope="col" className="dark:text-white/70">
+													Job title
+													</th>
+													<th scope="col" className="dark:text-white/70">
+													Date
+													</th>
+													<th scope="col" className="dark:text-white/70">
+													Status
+													</th>
+													<th scope="col" className="text-end dark:text-white/70">
+													Action
+													</th>
+												</tr>
+												</thead>
+												<tbody>
+													{allData
+															.filter((assessed) =>
+															assessed.job_title.toLowerCase().includes(searchQuery.toLowerCase())
+															)
+															.map((assessed, index) => (
+															<tr className="product-list" key={assessed.interview_number}>
+																<td>{index + 1}</td>
+																<td>{assessed.interview_number}</td>
+																<td className="font-semibold">{assessed.candidate_name}</td>
+																<td>{assessed.job_title}</td>
+																<td>{assessed.date}</td>
+																<td>
+																{assessed.status === 0 ? (
+																	<span className="badge bg-info text-white">Submitted</span>
+																) : assessed.status === 1 ? (
+																	<span className="badge bg-secondary text-white">Initiated</span>
+																) : assessed.status === 2 ? (
+																	<span className="badge bg-warning text-white">Pending</span>
+																) : assessed.status === 3 ? (
+																	<span className="badge bg-success text-white">Approved</span>
+																) : (
+																	<span className="badge bg-danger text-white">Rejected</span>
+																)}
+																</td>
+													<td className="text-end font-medium">
+														{/* Adjust the links according to your routes and logic */}
+														<Link
+														aria-label="anchor"
+														to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productdetails/`}
+														className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
+														>
+														<i className="ti ti-eye"></i>
+														</Link>
+														<Link
+														aria-label="anchor"
+														to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/editproduct/`}
+														className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+														>
+														<i className="ti ti-pencil"></i>
+														</Link>
+														<button
+														aria-label="anchor"
+														className="product-btn w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
+														onClick={() => handleRemove(assessed.id)}
+														>
+														<i className="ti ti-trash"></i>
+														</button>
+													</td>
+													</tr>
+												))}
+												</tbody>
+											
 						</table>
 					</div>
 					<br/>

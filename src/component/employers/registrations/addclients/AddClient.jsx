@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { BankData, BankBranchData, LocationData, RegionData, DistrictData, AllowanceData, ShiftData,WardData,CostCenterSelect} from '/src/common/select2data';
 import Creatable from "react-select/creatable";
 import Select from 'react-dropdown-select';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { MultiSelect } from "react-multi-select-component";
 import 'react-form-wizard-component/dist/style.css';
 import axios from "axios";
@@ -12,7 +12,7 @@ import axios from "axios";
 const AddClient = () => {
     // const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-  
+    const navigate = useNavigate()
         const [step, setStep] = useState(1);
         const [formData, setFormData] = useState({
             name: '',
@@ -146,6 +146,8 @@ const AddClient = () => {
               text: resp.data.message,
               icon: 'success',
               button: 'ok',
+            }).then(() => {
+                navigate('employers/registrations/registrations');
             })
             }
             }
@@ -591,24 +593,24 @@ const AddClient = () => {
                                 <br/>
                                 <div>
                                     {step > 1 && step < 3 && (
-                             <button onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
+                             <button type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
                              <i className="ti ti-arrow-narrow-left"></i>Previous
                             </button>
                             )}
                             {step > 2 && (
-                                <button onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
+                                <button type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
                                     <i className="ti ti-arrow-narrow-left"></i>Previous
                                 </button>
                             )}
 
                             {step < 3 && (
-                                <button onClick={handleNextStep} className="ti-btn ti-btn-primary first_page justify-center">
+                                <button type="button" onClick={handleNextStep} className="ti-btn ti-btn-primary first_page justify-center">
                                     <i className="ti ti-arrow-narrow-right"></i>Next
                                 </button>
                             )}
 
                             {step === 3 && (
-                                <button type="submit" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
+                                <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
                                     <i className="ti ti-send"></i>Submit
                                 </button>
                             )}

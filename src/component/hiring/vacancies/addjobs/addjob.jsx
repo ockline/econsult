@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import {DepartmentData, GroupDesignation, VacancyTypeData, EmployerData, JobTitleData} from '/src/common/select2data';
 import Creatable from "react-select/creatable";
 import Select from 'react-dropdown-select';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import 'react-form-wizard-component/dist/style.css';
 import SunEditor from 'suneditor-react';
 import DatePicker from 'react-datepicker';
@@ -14,6 +14,7 @@ const AddJob = () => {
     const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     
+    let navigate = useNavigate();
         // const history = useHistory();
         const [value, setValue] = useState('');
         const [step, setStep] = useState(1);
@@ -104,12 +105,12 @@ const AddJob = () => {
             })
             // Additional logic or state updates after successful update
           } else if(resp.data.status === 200) {
-            swal({
-              title: 'Job Vacancy Registered Successfully',
-              text: resp.data.message,
-              icon: 'success',
-              button: 'ok',
-            })
+                     swal({
+                         title: 'Job Vacancy Registered Successfully',
+                         text: resp.data.message,
+                         icon: 'success',
+                         button: 'ok',
+                     });
             }
             }
            catch (error) {
@@ -149,11 +150,10 @@ const AddJob = () => {
         text: res.data[0].message,
         icon: 'success',
         button: 'ok',
+    }).then(() => {
+        navigate('hiring/vacancies/jobs');
     });
-    //   .then(() => {
-    //         // Navigate to the desired page
-    //         history.push('/hiring/vacancies/jobs');
-    //     });
+   
 }
 } catch (error) {
     console.log('Error occurred:', error);
