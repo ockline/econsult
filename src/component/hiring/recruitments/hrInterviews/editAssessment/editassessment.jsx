@@ -1,22 +1,28 @@
-
 import React, { useState, useEffect } from "react";
 import { JobTitleData, PackageData, RegionData,RankingCriterialData, UsersData} from '/src/common/select2data';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getAssessedCandidate } from "/src/common/recruitmentdata";
 import Creatable from "react-select/creatable";
 import DatePicker from 'react-datepicker';
-// import { RecruitmentData,DataToSubmit } from "/src/common/recruitmentdata";
 import axios from "axios";
-    
+import moment from 'moment';
 
 
-const Assessment = () => {
-	
+const EditAssessment = () => {
+
+
+    const [startDate, setStartDate] = useState(new Date()); //React Date picker
+    const isValidDate = (date) => {
+    return moment(date, 'YYYY-MM-DDTHH:mm:ssZ', true).isValid();
+};
+
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
    
-    
+
+//  
        let navigate = useNavigate();
         const [step, setStep] = useState(1);
-        const [formData, setFormData] = useState({
+        const [formData, setAssessedCandidateData] = useState({
                 job_title_id: '',
                 cost_center_id: '',
                 cost_number: '',
@@ -103,8 +109,32 @@ const Assessment = () => {
                 error_list: [],
         });
 
+          const { id } = useParams();
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const data = await getAssessedCandidate(id);
+//         console.log("dataaa", data);
+//         // Handle the fetched data as needed
+//       } catch (error) {
+//         console.error('Error fetching data:', error.message);
+//         // Handle the error
+//       }
+//     };
+
+//     fetchData();
+    //   }, [id])
+    
+            useEffect(() => {
+    axios.get(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/${id}`).then((res) => {
+      setAssessedCandidateData(res.data.assessed_candidate)
+    })
+  }, [id])
+    
+    
         const handleInputChange = (stepName, value) => {
-            setFormData((prevData) => ({
+            setAssessedCandidateData((prevData) => ({
                 ...prevData,
                 [stepName]: value,
                  error_list: { ...prevData.error_list, [stepName] : null },
@@ -119,10 +149,10 @@ const Assessment = () => {
             setStep((prevStep) => prevStep - 1);
         };
 
-        const handleSubmit = async (e) => {
+        const updateAssessedCandidate = async (e) => {
             // Handle form submission logic here
              e.preventDefault();
-            console.log('Form submitted:', formData);
+            console.log('Form updated:', formData);
             const DataToSend = {
                 job_title_id: formData?.job_title_id,
                 cost_center_id: formData?.cost_center_id,
@@ -210,22 +240,11 @@ const Assessment = () => {
                 // military_attachment: formData.military_attachment,
                         
             };
-            try {
-                const resp = await axios.post(`${apiBaseUrl}/hiring/hr_interview/add_assessment`, DataToSend, {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                });
-                if (resp.data.validator_err) {
-                    // Handle validation errors
-                    const validationErrors = resp.data.validator_err;
-
-                    // Update component state with validation errors
-                    setFormData((prevData) => ({
-                        ...prevData,
-                        error_list: validationErrors,
-                    }));
-                } else if (resp.data.status === 500) {
+           
+             try {
+        const resp = await axios.put(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/` + id, DataToSend);
+                             
+                 if (resp.data.status === 500) {
                     swal({
                         title: 'Sorry! Operation failed',
                         text: resp.data.message,
@@ -330,16 +349,18 @@ const Assessment = () => {
     }, []);
 
 	return (
-		<div>
-            {/* <PageHeader currentpage="HR Interview" activepage="Pages" mainpage="HR Interview" /> */}
-            <br/><br/>
-			<div className= "box">
+        <div>
+            <br /><br />
+            <h1 style={{ fontWeight: 'bold', fontSize: '2em' }}>Edit Assessed Details</h1>
+            <br/>
+	
+            <div className= "box">
 				<div className= "box-header lg:flex lg:justify-between">
-					<h1 className= "box-title my-auto">Hr Competency Assessment Interview</h1>
+					<h1 className= "box-title my-auto">Update Hr Competency Assessment Details</h1>
 					<Link to={`${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`} className= "ti-btn ti-btn-primary m-0 py-2"><i className= "ti ti-arrow-left"></i>Back</Link>
 				</div>
 				 <div className="box-body">
-                        <form className="ti-validation" noValidate onSubmit={handleSubmit}>
+                        <form className="ti-validation" noValidate onSubmit={updateAssessedCandidate}>
                                 {step === 1 && (
                                     
                                     <div className="grid lg:grid-cols-3 gap-6">
@@ -358,7 +379,7 @@ const Assessment = () => {
                                             <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Job Title <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} />
-                                             <span className="text-danger">{formData.error_list.job_title_id}</span>
+                                             {/* <span className="text-danger">{formData.error_list.job_title_id}</span> */}
                                         </div>                                
                                 <div className="space-y-2">
                                      <label className="ti-form-label mb-0">Date<span style={{ color: "red" }}> *</span></label>
@@ -367,11 +388,21 @@ const Assessment = () => {
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-calendar-line"></i></span>
                                         </div>
-                                       <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
+                                        {/* <DatePicker
+    className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
+    name="date"
+    selected={formData.date || new Date()} // Provide a default date if necessary
+    onChange={(date) => handleInputChange('date', date)}
+    timeInputLabel="Time:"
+    dateFormat="dd/MM/yyyy h:mm aa"
+    showTimeInput
+/> */}
+
+                                       {/* <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
                                         name="date" selected={formData.date} onChange={(date) => handleInputChange('date', date)}
                                         timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput
-                                        />
-                                        <span className="text-danger">{formData.error_list.date}</span>
+                                        /> */}
+                                        {/* <span className="text-danger">{formData.error_list.date}</span> */}
                                     </div>
                                 </div>
                                         <div className="space-y-2">
@@ -388,7 +419,7 @@ const Assessment = () => {
                                             <label className="ti-form-label mb-0">	Candidate FirstName <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="firstname" className="my-auto ti-form-input" placeholder="Candidate firstname"  value={formData.firstname}
                                                 onChange={(e) => handleInputChange('firstname', e.target.value)} required />
-                                              <span className="text-danger">{formData.error_list.firstname}</span>
+                                              {/* <span className="text-danger">{formData.error_list.firstname}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Candidate MiddleName </label>
@@ -398,12 +429,12 @@ const Assessment = () => {
                                         </div> <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Candidate LastName <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="lastname" className="my-auto ti-form-input"  value={formData.lastname} onChange={(e) => handleInputChange('lastname', e.target.value)} placeholder="Candidate Lastname" required />
-                                              <span className="text-danger">{formData.error_list.lastname}</span>
+                                              {/* <span className="text-danger">{formData.error_list.lastname}</span> */}
                                         </div> 
                                          <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Interviewer Name <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="interviewer" options={users} onChange={(selectedOption) => handleInputChange(["interviewer"], selectedOption ? selectedOption.value : null)} value={users.find((option) => option.value === formData.interviewer)} />
-                                              <span className="text-danger">{formData.error_list.interviewer}</span>
+                                              {/* <span className="text-danger">{formData.error_list.interviewer}</span> */}
                                         </div>
                                                                                 
                                         <div className="space-y-2">
@@ -431,18 +462,18 @@ const Assessment = () => {
                                             <label className="ti-form-label mb-0">Place of recruitment (Source)  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="place_recruitment" className="my-auto ti-form-input"  value={formData.place_recruitment}
                                                 onChange={(e) => handleInputChange('place_recruitment', e.target.value)} placeholder="place of recruitment" required />
-                                              <span className="text-danger">{formData.error_list.place_recruitment}</span>
+                                              {/* <span className="text-danger">{formData.error_list.place_recruitment}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Total Years of Experience  <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="year_experience" className="my-auto ti-form-input"  value={formData.year_experience}
                                                 onChange={(e) => handleInputChange('year_experience', e.target.value)} placeholder="year of experience" required />
-                                              <span className="text-danger">{formData.error_list.year_experience}</span>
+                                              {/* <span className="text-danger">{formData.error_list.year_experience}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Education & Job Knowledge  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="education_knowledge" options={rankings} onChange={(selectedOption) => handleInputChange(["education_knowledge"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.education_knowledge)} />
-                                              <span className="text-danger">{formData.error_list.education_knowledge}</span>
+                                              {/* <span className="text-danger">{formData.error_list.education_knowledge}</span> */}
                                 </div>
                                 <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Education Knowledge Comment</label>
@@ -452,7 +483,7 @@ const Assessment = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">	Relevant Job Experience  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="relevant_experience" options={rankings} onChange={(selectedOption) => handleInputChange(["relevant_experience"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.relevant_experience)} />
-                                              <span className="text-danger">{formData.error_list.relevant_experience}</span>
+                                              {/* <span className="text-danger">{formData.error_list.relevant_experience}</span> */}
                                 </div>
                                  <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Relevant experience Comment</label>
@@ -462,7 +493,7 @@ const Assessment = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Major Previous Achievement <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="major_achievement" options={rankings} onChange={(selectedOption) => handleInputChange(["major_achievement"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.major_achievement)} />
-                                              <span className="text-danger">{formData.error_list.major_achievement}</span>
+                                              {/* <span className="text-danger">{formData.error_list.major_achievement}</span> */}
                                 </div>  
                                     <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Major Previous Achievement Comment</label>
@@ -2306,7 +2337,7 @@ const Assessment = () => {
                                   <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Language Fluency  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="language_fluency_id" options={rankings} onChange={(selectedOption) => handleInputChange(["language_fluency_id"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.language_fluency_id)} />
-                                              <span className="text-danger">{formData.error_list.language_fluency_id}</span>
+                                              {/* <span className="text-danger">{formData.error_list.language_fluency_id}</span> */}
                                 </div> 
                               <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Language Fluency Comment</label>
@@ -2317,25 +2348,25 @@ const Assessment = () => {
                                             <label className="ti-form-label mb-0">Main Strengths (The Cancidate strength)  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="main_strength" className="my-auto ti-form-input"  value={formData.main_strength}
                                                 onChange={(e) => handleInputChange('main_strength', e.target.value)} placeholder="Main Strength" required />
-                                              <span className="text-danger">{formData.error_list.main_strength}</span>
+                                              {/* <span className="text-danger">{formData.error_list.main_strength}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Main Weakness  (The Candidate weakness)<span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="main_weakness" className="my-auto ti-form-input"  value={formData.main_weakness}
                                                 onChange={(e) => handleInputChange('main_weakness', e.target.value)} placeholder="Main Weakness" required />
-                                              <span className="text-danger">{formData.error_list.main_weakness}</span>
+                                              {/* <span className="text-danger">{formData.error_list.main_weakness}</span> */}
                                 </div>
                                   <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Birth Place<span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="birth_place" className="my-auto ti-form-input"  value={formData.birth_place}
                                                 onChange={(e) => handleInputChange('birth_place', e.target.value)} placeholder="birth place " required />
-                                              <span className="text-danger">{formData.error_list.birth_place}</span>
+                                              {/* <span className="text-danger">{formData.error_list.birth_place}</span> */}
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Residence Place  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="residence_place" className="my-auto ti-form-input"  value={formData.residence_place}
                                                 onChange={(e) => handleInputChange('residence_place', e.target.value)} placeholder="year of experience" required />
-                                              <span className="text-danger">{formData.error_list.residence_place}</span>
+                                              {/* <span className="text-danger">{formData.error_list.residence_place}</span> */}
                                 </div>
                                    <div className="space-y-2">
                                  <label className="ti-form-label mb-0">Relative inside (Client) <span style={{ color: "red" }}> *</span></label>
@@ -2475,14 +2506,14 @@ const Assessment = () => {
                                  <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Current packages  </label>
                                             <input type="number" name="current_packages" className="my-auto ti-form-input"  value={formData.current_packages}
-                                        onChange={(e) => handleInputChange('current_packages', e.target.value)} placeholder="Current packages " Required />
+                                        onChange={(e) => handleInputChange('current_packages', e.target.value)} placeholder="Current packages " required />
                                     {/* <span className="text-danger">{formData.error_list.current_packages}</span>               */}
                                 </div>
                                        <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Agreed Salary<span style={{ color: "red" }}> *</span> </label>
                                             <input type="number" name="agreed_salary" className="my-auto ti-form-input"  value={formData.agreed_salary}
                                         onChange={(e) => handleInputChange('agreed_salary', e.target.value)} placeholder="Agreed Salary " Required />
-                                    <span className="text-danger">{formData.error_list.agreed_salary}</span>              
+                                    {/* <span className="text-danger">{formData.error_list.agreed_salary}</span>               */}
                                 </div>
                                 <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Required Notice  </label>
@@ -2592,7 +2623,7 @@ const Assessment = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Recommended Job Title  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="recommended_title" options={job_titles} onChange={(selectedOption) => handleInputChange(["recommended_title"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.recommended_title)} /> 
-                                              <span className="text-danger">{formData.error_list.recommended_title}</span>
+                                              {/* <span className="text-danger">{formData.error_list.recommended_title}</span> */}
                                 </div>                                                                          
                                     {/* Rest of Step 3 form fields */}
                                 </div>
@@ -2617,7 +2648,7 @@ const Assessment = () => {
                             )}
 
                             {step === 4 && (
-                                <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
+                                <button type="button" onClick={updateAssessedCandidate} className="ti-btn ti-btn-success  justify-center">
                                     <i className="ti ti-send"></i>Submit
                                 </button>
                             )}
@@ -2625,7 +2656,24 @@ const Assessment = () => {
                         </form>
                     </div>
 			</div>
+		
+            
+            
+            
+            
+            
+			{/* <div className="grid grid-cols-12 gap-6">
+				<div className="col-span-12">
+					<div className="box !bg-transparent border-0 shadow-none">
+						
+						<div className="box-footer text-end border-t-0 px-0">
+							<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/product/`} className="ti-btn ti-btn-primary"><i className="ri-refresh-line"></i>update Product</Link>
+							<Link to='#' className="ti-btn ti-btn-danger"><i className="ri-delete-bin-line"></i>Discard Product</Link>
+						</div>
+					</div>
+				</div>
+			</div> */}
 		</div>
 	);
 };
-export default Assessment;
+export default EditAssessment;

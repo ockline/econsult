@@ -703,7 +703,7 @@ const fetchWards = async () => {
     
     // Assuming result.wards is an array of ward objects
     const formattedWards = result.wards.map(ward => ({
-      label: ward.name, // replace with the actual property name in your ward object
+      label: ward.ward_name, // replace with the actual property name in your ward object
       value: ward.id,   // replace with the actual property name in your ward object
     }));
 

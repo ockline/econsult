@@ -123,43 +123,6 @@ const { id } = useParams();
                 vrn_doc: formData.vrn_doc,
                         
             };
-    //         try {
-    //             const resp = await axios.put(`${apiBaseUrl}/employers/update_employer/` + id, DataToSend).then((resp) => {
-    //                 // headers: {
-    //                 //     "Content-Type": "multipart/form-data"
-    //                 // }
-    //             if (resp.data.status === 500) {
-    //         swal({
-    //           title: 'Internal Server Error',
-    //           text: resp.data.message,
-    //           icon: 'warning',
-    //           button: 'ok',
-    //         })
-    //         // Additional logic or state updates after successful update
-    //       } else if(resp.data.status === 200) {
-    //         swal({
-    //           title: 'Updated Successfully',
-    //           text: resp.data.message,
-    //           icon: 'success',
-    //           button: 'ok',
-    //         })
-    //         }
-    //             });
-    //             if (resp.data.validator_err) {
-    //                 // Handle validation errors
-    //                 const validationErrors = resp.data.validator_err;
-
-    //                 // Update component state with validation errors
-    //                 setEmployerData((prevData) => ({
-    //                     ...prevData,
-    //                     error_list: validationErrors,
-    //                 }));
-    //             }
-    //         }
-    //        catch (error) {
-    //         console.error("Unexpected error:", error.message);
-    //     };
-            // };
              try {
         const resp = await axios.put(`${apiBaseUrl}/employers/update_employer/` + id, DataToSend);
 

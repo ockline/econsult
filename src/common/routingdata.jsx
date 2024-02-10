@@ -24,7 +24,7 @@ import DownloadJob from "../component/hiring/templatesamples/vacancies/jobtempla
         //HR
 import HrInterview from "../component/hiring/recruitments/hrInterviews/interviewed";
 import AddAssessment from "../component/hiring/recruitments/hrInterviews/addAssessment/assessment";
-// import EditAssessment from "../component/hiring/recruitments/hrInterviews/editAssessment/editassessment";
+import EditAssessment from "../component/hiring/recruitments/hrInterviews/editAssessment/editassessment";
         //Technical
 // import TechInterview from "../component/hiring/recruitments/techInterviews/interviews";
  
@@ -155,7 +155,7 @@ export const RouteData = [
     //   HR interview
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, element: <HrInterview /> },
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/add_assessment`, element: <AddAssessment/>},
-    
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/edit_assessment/:id`, element: <EditAssessment/>},
     
     
     // {/* Component content */}
@@ -319,7 +319,8 @@ export const SearchData = [
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/show_job/:id`, element: <ShowJob /> },    
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/download_job`, element: <DownloadJob /> }, 
      {path: `${import.meta.env.BASE_URL}hiring/recruitment/hr_interviews`, element: <HrInterview/>},
-    
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/add_assessment/`, element: <AddAssessment /> },
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/edit_assessment/:id`, element: <EditAssessment/>},
     
     
     // {/* Component content */}

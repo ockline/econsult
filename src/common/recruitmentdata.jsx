@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+
+
+
+//universal attribute;
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
 
 export const RecruitmentData = [
     {
@@ -51,7 +57,7 @@ export const RecruitmentData = [
         planning_organizing: '',
         problem_solving: '',
         analytical_ability: '',
-        attention_Details: '',
+        attention_details: '',
         initiative: '',
         multi_tasking: '',
         continuous_improvement: '',
@@ -70,7 +76,7 @@ export const RecruitmentData = [
         planning_organizing_remark: '',
         problem_solving_remark: '',
         analytical_ability_remark: '',
-        attention_Details_remark: '',
+        attention_details_remark: '',
         initiative_remark: '',
         multi_tasking_remark: '',
         continuous_improvement_remark: '',
@@ -140,7 +146,7 @@ export const DataToSubmit = RecruitmentData.map((data) => ({
                 planning_organizing: RecruitmentData?.planning_organizing,         
                 problem_solving: RecruitmentData?.problem_solving,         
                 analytical_ability: RecruitmentData?.analytical_ability,          
-                attention_Details: RecruitmentData?.attention_Details,           
+                attention_details: RecruitmentData?.attention_details,           
                 initiative: RecruitmentData?.initiative,          
                 multi_tasking: RecruitmentData?.multi_tasking,           
                 continuous_improvement: RecruitmentData?.continuous_improvement,          
@@ -160,7 +166,7 @@ export const DataToSubmit = RecruitmentData.map((data) => ({
                 planning_organizing_remark: RecruitmentData?.planning_organizing_remark,
                 problem_solving_remark: RecruitmentData?.problem_solving_remark,
                 analytical_ability_remark: RecruitmentData?.analytical_ability_remark,
-                attention_Details_remark: RecruitmentData?.attention_Details_remark,
+                attention_details_remark: RecruitmentData?.attention_details_remark,
                 initiative_remark: RecruitmentData?.initiative_remark,
                 multi_tasking_remark: RecruitmentData?.multi_tasking_remark,
                 continuous_improvement_remark: RecruitmentData?.continuous_improvement_remark,
@@ -180,31 +186,9 @@ export const DataToSubmit = RecruitmentData.map((data) => ({
 
 
 // ****************************************************************************************
- 
-//Interviewed Candidate Details
-
-// export const AssessedCandidate = [
-     
-// const [assessed, setAssessedCandidate] = useState([]);
-
-//   useEffect(() => {
-//     const fetchAssessedCandidate = async () => {
-//       try {
-//         const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/show_candidate`);
-//         setAssessedCandidate(res.data.assessment);
-//       } catch (error) {
-//         throw new Error('Failed to fetch employers: ' + error.message);
-//       }
-//     };
-
-//     fetchAssessedCandidate();
-//   }, []);
-
-
-// ];
-
+      //Interviewed Candidate Details
 export const fetchAssessedCandidate = async () => {
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+    
   try {
     const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/show_candidate`);
     return res.data.assessment;
@@ -212,77 +196,52 @@ export const fetchAssessedCandidate = async () => {
     throw new Error('Failed to fetch assessed candidates: ' + error.message);
   }
 };
-// const usermchongo = await fetchCandidates();
+// const usermchongo = await fetchAssessedCandidate();
 // console.log('welimba');
 // console.log(usermchongo);
 
+// *************************************
+//Get Specific assessed candidet by id
+// recruitmentdata.jsx
+export const getAssessedCandidate = async (id) => {
+   
+  try {
+    const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/58`);
+    return res.data.assessed_candidate;
+  } catch (error) {
+    throw new Error('Failed to fetch assessed candidates: ' + error.message);
+  }
+};
 
 
 
 
 
 
-
-
-
-
-
-// export const AssessedCandidate = async () => {
-//   try {
-//     const assessed = await fetchCandidates();
-
-//     return [
-//       {
-//         label: "Candidate Name",
-//         options: assessed,
-//       },
-//       // ... other groups
-//     ];
-//   } catch (error) {
-//     console.error('Error fetching assessed:', error.message);
-//     // Handle the error, maybe return a default value or log the error
-//     return [];
-//   }
-// };
-// Example implementation of fetchAssessedCandidate
-
-// const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-
-
-
-
-// Set the correct API base URL
-// const apiBaseUrl = 'http://127.0.0.1:8000/api'; // Update this with your actual API base URL
-// // console.log('API Base URL:', apiBaseUrl);
-// // Your fetchCandidates function
-// export const AssessedCandidate = async () => {
-//   try {
-//     const response = await axios.get(`${apiBaseUrl}/hiring/hr_interview/show_candidate`);
-
-//     if (response.status !== 200) {
-//       throw new Error(`Failed to fetch assessed - ${response.status} ${response.statusText}`);
+// export const getAssessedCandidate = async () => {
+//   const { id } = useParams();
+//   useEffect(() => {
+//     try {
+//       const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/${id}`).then((res) => {
+//         return res.data.assessment;
+//       })
+//     } catch (error) {
+//       throw new Error('Failed to fetch assessed candidates: ' + error.message);
 //     }
-
-//     const { data } = response;
-
-//     // Check if 'data' and 'assessment' properties exist
-//     if (!data || !data.assessment || !Array.isArray(data.assessment)) {
-//       throw new Error('Invalid API response structure');
-//     }
-
-//     const formattedCandidates = data.assessment.map(candidate => ({
-//         label: candidate.candidate_name, // Adjust this based on your candidate object structure
-//         value: candidate.id,
-//     }));
-
-//     return formattedCandidates;
-//   } catch (error) {
-//     console.error('Error fetching candidate:', error.message);
-//     return [];
-//   }
+//   },[id])
 // };
 
 
-// const usermchongo = await fetchCandidates();
-// console.log('welimba');
-// console.log(usermchongo);
+
+
+
+
+
+
+
+
+
+
+
+
+

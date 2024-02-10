@@ -8,13 +8,12 @@ import { Assigned,  SortBy, StatusTask } from "/src/common/select2data";
 
 const Interviewed = () => {
 	
-	// const [allData, setAllData] = useState(AssessedCandidate)
-	// function handleRemove(id) {
-	// 	const newList = allData.filter((assessed) => assessed.id !== id);
-	// 	setAllData(newList);
-	//   }
+
 	 const [allData, setAllData] = useState([]);
-    const [searchQuery, setSearchQuery] = useState(''); // for Searching
+	const [searchQuery, setSearchQuery] = useState(''); // for Searching
+	const [currentPage, setCurrentPage] = useState(1);
+	const entriesPerPage = 10;
+	
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,8 +31,19 @@ const Interviewed = () => {
     const newList = allData.filter((assessed) => assessed.id !== id);
     setAllData(newList);
 	}
-	//*********************   Query for searching data */
-	// const [searchQuery, setSearchQuery] = useState('');
+	
+	  // Filter data based on search query
+    const filteredData = allData.filter((assessed) =>
+        assessed.job_title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+	
+	//*********************Pagination */
+	 const indexOfLastEntry = currentPage * entriesPerPage;
+    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 
 	return (
 		<div>
@@ -53,7 +63,7 @@ const Interviewed = () => {
 											<i className= "ti ti-search"></i>
 										</div>
 										<input type="text" name="hs-table-search" id="hs-table-search" className= "p-2 ltr:pr-10 rtl:pl-10 ti-form-input" value={searchQuery} onChange={(ele) => setSearchQuery(ele.target.value)}
-											placeholder="Search Task"/>
+											placeholder="Search by Candidate Number"/>
 									</div>
 								</div>
 								<div className= "col-span-12 lg:col-span-8">
@@ -69,12 +79,12 @@ const Interviewed = () => {
 											<div className= "hs-dropdown-menu ti-dropdown-menu">
 												<Link className= "ti-dropdown-item" to="#">Select All</Link>
 												<Link className= "ti-dropdown-item" to="#">Mark All</Link>
-												<Link className= "ti-dropdown-item" to="#">Delete All</Link>
 											</div>
 										</div>
 									</div>
 						</div>
 					</div>
+						<br/>
 					<div className="table-bordered whitespace-nowrap rounded-sm overflow-auto">
 											<table className="ti-custom-table ti-custom-table-head edit-table">
 												<thead className="bg-gray-100 dark:bg-black/20">
@@ -90,9 +100,11 @@ const Interviewed = () => {
 													</th>
 													<th scope="col" className="dark:text-white/70">
 													Job title
+													</th><th scope="col" className="dark:text-white/70">
+													Recruiter<br/>Recommendation
 													</th>
 													<th scope="col" className="dark:text-white/70">
-													Date
+													Interview<br/>Date
 													</th>
 													<th scope="col" className="dark:text-white/70">
 													Status
@@ -103,16 +115,18 @@ const Interviewed = () => {
 												</tr>
 												</thead>
 												<tbody>
-													{allData
-															.filter((assessed) =>
-															assessed.job_title.toLowerCase().includes(searchQuery.toLowerCase())
-															)
-															.map((assessed, index) => (
-															<tr className="product-list" key={assessed.interview_number}>
-																<td>{index + 1}</td>
+													 {currentEntries.map((assessed, index) => (
+															<tr className="product-list" key={assessed.id}>
+																<td>{index + 1 + indexOfFirstEntry}</td>
 																<td>{assessed.interview_number}</td>
-																<td className="font-semibold">{assessed.candidate_name}</td>
-																<td>{assessed.job_title}</td>
+															 <td className="font-semibold">{assessed.candidate_name}</td>
+															 <td>{assessed.job_title}</td>
+															 <td>{assessed.recommendations === "Accepted" ? (<span className="badge bg-success text-white">Accepted</span>)
+																 : assessed.recommendations === "Not Accepted" ? (
+													            <span className="badge bg-danger text-white">Not Accepted</span>
+																	) : <span className="badge bg-warning text-white">Waiting List</span>
+																		}										 
+															 </td>
 																<td>{assessed.date}</td>
 																<td>
 																{assessed.status === 0 ? (
@@ -138,7 +152,7 @@ const Interviewed = () => {
 														</Link>
 														<Link
 														aria-label="anchor"
-														to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/editproduct/`}
+														to={`${import.meta.env.BASE_URL}hiring/recruitments/hr/edit_assessment/`+ assessed.id}
 														className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
 														>
 														<i className="ti ti-pencil"></i>
@@ -158,22 +172,23 @@ const Interviewed = () => {
 						</table>
 					</div>
 					<br/>
-					<nav className="pagination-style-3 flex justify-end">
-                                <ul className= "ti-pagination">
-                                  <li><Link className= "page-link" to="#">
-                                   Prev
-                                  </Link></li>
-                                  <li><Link className= "page-link active" to="#" aria-current="page">1</Link></li>
-                                  <li><Link className= "page-link" to="#">2</Link></li>
-                                  <li><Link aria-label="anchor" className= "page-link" to="#"><i className= "ri-more-line"></i></Link></li>
-                                  <li><Link className= "page-link" to="#">21</Link></li>
-                                  <li><Link className= "page-link" to="#">22</Link></li>
-                                  <li><Link className= "page-link" to="#">
-                                    Next
-                                  </Link></li>
-                                </ul>
-                              </nav>
-					
+				<nav className="pagination-style-3 flex justify-end">
+                    <ul className="ti-pagination">
+                        <li><Link className="page-link" to="#" onClick={() => paginate(currentPage - 1)}>
+                            Prev
+                        </Link></li>
+                        {[...Array(Math.ceil(filteredData.length / entriesPerPage)).keys()].map(number => (
+                            <li key={number + 1}>
+                                <Link className={`page-link ${currentPage === number + 1 ? 'active' : ''}`} to="#" onClick={() => paginate(number + 1)}>
+                                    {number + 1}
+                                </Link>
+                            </li>
+                        ))}
+                        <li><Link className="page-link" to="#" onClick={() => paginate(currentPage + 1)}>
+                            Next
+                        </Link></li>
+                    </ul>
+                </nav>
 				</div>
 			</div>
 		</div>
