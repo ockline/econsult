@@ -121,8 +121,8 @@ const Interviewed = () => {
 																<td>{assessed.interview_number}</td>
 															 <td className="font-semibold">{assessed.candidate_name}</td>
 															 <td>{assessed.job_title}</td>
-															 <td>{assessed.recommendations === "Accepted" ? (<span className="badge bg-success text-white">Accepted</span>)
-																 : assessed.recommendations === "Not Accepted" ? (
+															 <td>{assessed.recruiter_recommendations === "Accepted" ? (<span className="badge bg-success text-white">Accepted</span>)
+																 : assessed.recruiter_recommendations === "Not Accepted" ? (
 													            <span className="badge bg-danger text-white">Not Accepted</span>
 																	) : <span className="badge bg-warning text-white">Waiting List</span>
 																		}										 
@@ -145,7 +145,7 @@ const Interviewed = () => {
 														{/* Adjust the links according to your routes and logic */}
 														<Link
 														aria-label="anchor"
-														to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productdetails/`}
+														to={`${import.meta.env.BASE_URL}hiring/recruitments/hr/show_assessment/` + assessed.id}
 														className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
 														>
 														<i className="ti ti-eye"></i>

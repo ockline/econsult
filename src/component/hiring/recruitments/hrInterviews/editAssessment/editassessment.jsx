@@ -242,8 +242,8 @@ const EditAssessment = () => {
             };
            
              try {
-        const resp = await axios.put(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/` + id, DataToSend);
-                             
+        const resp = await axios.put(`${apiBaseUrl}/hiring/hr_interview/update_assessment/` + id, DataToSend);
+                //  console.log(resp.data.status);      
                  if (resp.data.status === 500) {
                     swal({
                         title: 'Sorry! Operation failed',
@@ -254,7 +254,7 @@ const EditAssessment = () => {
                     // Additional logic or state updates after successful update
                 } else if (resp.data.status === 200) {
                     swal({
-                        title: 'HR Competency Interview Assessed successfully submitted',
+                        title: 'HR Competency Interview Assessed Updated successfully',
                         text: resp.data.message,
                         icon: 'success',
                         button: 'ok',
@@ -382,22 +382,16 @@ const EditAssessment = () => {
                                              {/* <span className="text-danger">{formData.error_list.job_title_id}</span> */}
                                         </div>                                
                                 <div className="space-y-2">
-                                     <label className="ti-form-label mb-0">Date<span style={{ color: "red" }}> *</span></label>
+                                    <label className="ti-form-label mb-0">Date<span style={{ color: "red" }}> *</span></label>
+                                    
                                 <div className="flex rounded-sm overflow-auto">
                                         <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-calendar-line"></i></span>
                                         </div>
-                                        {/* <DatePicker
-    className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
-    name="date"
-    selected={formData.date || new Date()} // Provide a default date if necessary
-    onChange={(date) => handleInputChange('date', date)}
-    timeInputLabel="Time:"
-    dateFormat="dd/MM/yyyy h:mm aa"
-    showTimeInput
-/> */}
-
+                                           <input type="date" name="date" className="my-auto ti-form-input" placeholder=""  value={formData.date}
+                                                onChange={(e) => handleInputChange('date', e.target.value)} required />
+    
                                        {/* <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
                                         name="date" selected={formData.date} onChange={(date) => handleInputChange('date', date)}
                                         timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput
@@ -549,7 +543,7 @@ const EditAssessment = () => {
                                                         <div className="relative flex items-start w-full">
                                                             <div className="flex items-center h-5">
                                                                 <input id="interactive_communication" name="interactive_communication"
-                                                                    type="radio" onChange={(e) => handleInputChange('interactive_communication', e.target.value)} value="0"  className="ti-form-radio" defaultChecked />
+                                                                    type="radio" onChange={(e) => handleInputChange('interactive_communication', e.target.value)} value="0"   className="ti-form-radio" defaultChecked />
                                                             </div>
                                                             <label htmlFor="interactive_communication"
                                                                 className="ltr:ml-2 rtl:mr-2 block w-full text-sm text-gray-600 dark:text-white/70">
@@ -2365,7 +2359,7 @@ const EditAssessment = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Residence Place  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="residence_place" className="my-auto ti-form-input"  value={formData.residence_place}
-                                                onChange={(e) => handleInputChange('residence_place', e.target.value)} placeholder="year of experience" required />
+                                                onChange={(e) => handleInputChange('residence_place', e.target.value)} placeholder="Residence Palace" required />
                                               {/* <span className="text-danger">{formData.error_list.residence_place}</span> */}
                                 </div>
                                    <div className="space-y-2">
@@ -2512,7 +2506,7 @@ const EditAssessment = () => {
                                        <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Agreed Salary<span style={{ color: "red" }}> *</span> </label>
                                             <input type="number" name="agreed_salary" className="my-auto ti-form-input"  value={formData.agreed_salary}
-                                        onChange={(e) => handleInputChange('agreed_salary', e.target.value)} placeholder="Agreed Salary " Required />
+                                        onChange={(e) => handleInputChange('agreed_salary', e.target.value)} placeholder="Agreed Salary " required />
                                     {/* <span className="text-danger">{formData.error_list.agreed_salary}</span>               */}
                                 </div>
                                 <div className="space-y-2">
@@ -2648,8 +2642,8 @@ const EditAssessment = () => {
                             )}
 
                             {step === 4 && (
-                                <button type="button" onClick={updateAssessedCandidate} className="ti-btn ti-btn-success  justify-center">
-                                    <i className="ti ti-send"></i>Submit
+                                <button type="button" onClick={updateAssessedCandidate} className="ti-btn ti-btn-primary  justify-center">
+                                   <i className="ri-refresh-line"></i>update Details
                                 </button>
                             )}
                         </div>
