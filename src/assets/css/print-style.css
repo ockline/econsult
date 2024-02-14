@@ -19,4 +19,22 @@
     width: 100%;
     margin: 0;
   }
+.signature-container {
+  text-align: center;
+  position: relative;
+}
+
+.signature-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: 1px dotted #000; /* Dotted line style, adjust color as needed */
+  width: 50%; /* Adjust the width of the dotted line */
+}
+
+.signature-title {
+  margin-top: 5px; /* Adjust the space between the title and the dotted line */
+}
+
 }

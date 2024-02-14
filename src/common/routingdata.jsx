@@ -26,6 +26,7 @@ import HrInterview from "../component/hiring/recruitments/hrInterviews/interview
 import AddAssessment from "../component/hiring/recruitments/hrInterviews/addAssessment/assessment";
 import EditAssessment from "../component/hiring/recruitments/hrInterviews/editAssessment/editassessment";
 import ShowAssessment from "../component/hiring/recruitments/hrInterviews/showAssessment/showassessment";
+import DownloadAssessment from "../component/hiring/templatesamples/hrinterviews/assessmenttemplate"
 
 
         //Technical
@@ -159,7 +160,8 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, element: <HrInterview /> },
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/add_assessment`, element: <AddAssessment/>},
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/edit_assessment/:id`, element: <EditAssessment /> },
-    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/show_assessment/:id`, element: <ShowAssessment/>},
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/show_assessment/:id`, element: <ShowAssessment /> },
+    { path: `${import.meta.env.BASE_URL}hiring/hrinterview/download_assessment/:id`, element: < DownloadAssessment />},
     
     
     // {/* Component content */}
