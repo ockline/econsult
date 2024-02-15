@@ -289,21 +289,30 @@ const AddClient = () => {
     
     return (
     <div>
-        {/* <PageHeader currentpage="Employer Registration" activepage="Add" mainpage="Add new Employer" /> */}
-        <br/><br/>
-        <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12">
-                <div className="box">
-                        <div className="box-header">
-                             <div className="space-y-2">
-                            <h5 className="box-title">Add New Employer</h5>
-                                     	<Link to={`${import.meta.env.BASE_URL}employers/registrations/registrations/`}>
-								    <button type="button" className="ti-btn ti-btn-primary float-end">
-									<i className="ti ti-arrow-left w-3.5 h-3.5"></i>	 Back							
-									</button>
-							   </Link>    
-									</div>
-                    </div>
+      
+        
+           <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employer / Client Registration</h1>
+
+				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employers/registrations/registrations`}>
+						Home
+						<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+					</a>
+					</li>
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employers/registrations/addclients`}>
+						Add New Employer
+					</a>
+					</li>
+				</ol>
+				</div>
+                <div className= "box">
+				<div className= "box-header lg:flex lg:justify-between">
+					<h1 className= "box-title my-auto">Add New Employer</h1>
+					<Link to={`${import.meta.env.BASE_URL}employers/registrations/registrations`} className= "ti-btn ti-btn-primary m-0 py-2"><i className= "ti ti-arrow-left"></i>Back</Link>
+				</div>
                     <div className="box-body">
                         <form className="ti-validation" noValidate onSubmit={handleSubmit}>
                                 {step === 1 && (
@@ -322,116 +331,99 @@ const AddClient = () => {
                                         <div className=" space-y-2">                                       
                                         </div>                                         
                                          <div className="space-y-2">
-                                            <label className="ti-form-label mb-0" name="name">Employer Name <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md" name="name">Employer Name <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" className="my-auto ti-form-input" placeholder="Employer name" name="name" value={formData.name}
                                                 onChange={(e) => handleInputChange('name', e.target.value)} required />
                                             <span className="text-danger">{formData.error_list.name}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Alias</label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Alias</label>
                                             <input type="text" className="my-auto ti-form-input" placeholder="alias" name="alias"  value={formData.alias}
                                             onChange={(e) => handleInputChange('alias', e.target.value)}  />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">TIN <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">TIN <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="tin" className="ti-form-input" placeholder="Tin"  value={formData.tin}
                                                 onChange={(e) => handleInputChange('tin', e.target.value)} required />
                                               <span className="text-danger">{formData.error_list.tin}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Email Address <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Email Address <span style={{ color: "red" }}> *</span></label>
                                             <input type="email" name="email" className="my-auto ti-form-input" placeholder="yourcompany@site.com"  value={formData.email}
                                                 onChange={(e) => handleInputChange('email', e.target.value)} required />
                                               <span className="text-danger">{formData.error_list.email}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Contact Person <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Contact Person <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="contact_person" className="my-auto ti-form-input" placeholder="Contact person"  value={formData.contact_person}
                                                 onChange={(e) => handleInputChange('contact_person', e.target.value)} required />
                                               <span className="text-danger">{formData.error_list.contact_person}</span>
                                         </div> <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Contact Person Phone <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Contact Person Phone <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="contact_person_phone" className="my-auto ti-form-input"  value={formData.contact_person_phone}
                                                 onChange={(e) => handleInputChange('contact_person_phone', e.target.value)} placeholder="Contact person" required />
                                               <span className="text-danger">{formData.error_list.contact_person_phone}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Bank name <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Bank name <span style={{ color: "red" }}> *</span></label>
                                             {/* <input type="number" name="bank_id"  value={formData.bank_id}
                                             onChange={(e) => handleInputChange('bank_id', e.target.value)} className="ti-form-input" placeholder="Bank name" required /> */}
                                             <Creatable classNamePrefix="react-select" name="bank_id" options={banks} onChange={(selectedOption) => handleInputChange(["bank_id"], selectedOption ? selectedOption.value : null)} value={banks.find((option) => option.value === formData.bank_id)} />
                                               <span className="text-danger">{formData.error_list.bank_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Bank branch name <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Bank branch name <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="bank_branch_id" options={branches} onChange={(selectedOption) => handleInputChange(["bank_branch_id"], selectedOption ? selectedOption.value : null)} value={branches.find((option) => option.value === formData.bank_branch_id)} />
                                               <span className="text-danger">{formData.error_list.bank_branch_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Bank Account Number <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Bank Account Number <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="account_no"  value={formData.account_no}
                                                 onChange={(e) => handleInputChange('account_no', e.target.value)} className="ti-form-input" placeholder="Bank account" required />
                                               <span className="text-danger">{formData.error_list.account_no}</span>
                                         </div>
                                         
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Bank account name <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Bank account name <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="account_name" value={formData.account_name} onChange={(e) => handleInputChange('account_name', e.target.value)} className="ti-form-input" placeholder="Bank account name" required />
                                               <span className="text-danger">{formData.error_list.account_name}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Phone <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Phone <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="phone" className="my-auto ti-form-input"  value={formData.phone}
                                                 onChange={(e) => handleInputChange('phone', e.target.value)} placeholder="Phone" required />
                                               <span className="text-danger">{formData.error_list.phone}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Telephone <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Telephone <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="telephone" className="my-auto ti-form-input"  value={formData.telephone}
                                                 onChange={(e) => handleInputChange('telephone', e.target.value)} placeholder="Telephone" required />
                                               <span className="text-danger">{formData.error_list.telephone}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Fax number <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Fax number <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="fax" className="my-auto ti-form-input"  value={formData.fax}
                                                 onChange={(e) => handleInputChange('fax', e.target.value)} placeholder="Fax" required />
                                               <span className="text-danger">{formData.error_list.fax}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Postal Address <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Postal Address <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="postal_address" className="my-auto ti-form-input"  value={formData.postal_address}
                                                 onChange={(e) => handleInputChange('postal_address', e.target.value)} placeholder="Postal address" required />
                                               <span className="text-danger">{formData.error_list.postal_address}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">WCF Number <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">WCF Number <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="wcf" className="my-auto ti-form-input"  value={formData.wcf}
                                                 onChange={(e) => handleInputChange('wcf', e.target.value)} placeholder="WCF number" required />
                                               <span className="text-danger">{formData.error_list.wcf}</span>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">NSSF Number <span style={{ color: "red" }}> *</span></label>
-                                            <input type="number" name="nssf" className="my-auto ti-form-input"  value={formData.nssf}
-                                                onChange={(e) => handleInputChange('nssf', e.target.value)} placeholder="NSSF number" required />
-                                              <span className="text-danger">{formData.error_list.nssf}</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">OSHA <span style={{ color: "red" }}> *</span></label>
-                                            <input type="number" name="osha" className="my-auto ti-form-input"  value={formData.osha}
-                                                onChange={(e) => handleInputChange('osha', e.target.value)} placeholder="Osha " required />
-                                              <span className="text-danger">{formData.error_list.osha}</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">NHIF <span style={{ color: "red" }}> *</span></label>
-                                            <input type="number" name="nhif" className="my-auto ti-form-input"  value={formData.nhif}
-                                                onChange={(e) => handleInputChange('nhif', e.target.value)} placeholder="NHIF Number" required />
-                                              <span className="text-danger">{formData.error_list.nhif}</span>
-                                        </div>
+                                       
                                        
                                     {/* Rest of Step 1 form fields */}
                                 </div>
                                 )}
-                                <br/>
+                              
                               
                                 
                                 {step === 2 && (
@@ -447,64 +439,82 @@ const AddClient = () => {
 							</h2>                                            
                                         </div> 
                                         <div className=" space-y-2">                                       
+                                </div>
+                                 <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">NSSF Number <span style={{ color: "red" }}> *</span></label>
+                                            <input type="number" name="nssf" className="my-auto ti-form-input"  value={formData.nssf}
+                                                onChange={(e) => handleInputChange('nssf', e.target.value)} placeholder="NSSF number" required />
+                                              <span className="text-danger">{formData.error_list.nssf}</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">OSHA <span style={{ color: "red" }}> *</span></label>
+                                            <input type="number" name="osha" className="my-auto ti-form-input"  value={formData.osha}
+                                                onChange={(e) => handleInputChange('osha', e.target.value)} placeholder="Osha " required />
+                                              <span className="text-danger">{formData.error_list.osha}</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">NHIF <span style={{ color: "red" }}> *</span></label>
+                                            <input type="number" name="nhif" className="my-auto ti-form-input"  value={formData.nhif}
+                                                onChange={(e) => handleInputChange('nhif', e.target.value)} placeholder="NHIF Number" required />
+                                              <span className="text-danger">{formData.error_list.nhif}</span>
                                         </div>
                                          <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">VRN Number <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">VRN Number <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="vnr" className="my-auto ti-form-input"  value={formData.vrn}
                                                 onChange={(e) => handleInputChange('vrn', e.target.value)} placeholder="VNR number" required />
                                               <span className="text-danger">{formData.error_list.vrn}</span>
                                         </div>
                                      <div className="space-y-2">
-                                            <label className="ti-form-label mb-0" name="name">Region Name <span style={{ color: "red" }}> *</span></label>                                     
+                                            <label className="ti-form-label mb-0 font-bold text-md" name="name">Region Name <span style={{ color: "red" }}> *</span></label>                                     
                                             <Creatable classNamePrefix="react-select" name="region_id" options={regions} onChange={(selectedOption) => handleInputChange(["region_id"], selectedOption ? selectedOption.value : null)} value={regions.find((option) => option.value === formData.region_id)} />
                                               <span className="text-danger">{formData.error_list.region_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">District name <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">District name <span style={{ color: "red" }}> *</span></label>
                                             {/* <input type="text" name="district_id" className="my-auto ti-form-input" placeholder="District name" value={formData.district_id}
                                                 onChange={(e) => handleInputChange('district_id', e.target.value)} required /> */}
                                             <Creatable classNamePrefix="react-select" name="district_id" options={districts} onChange={(selectedOption) => handleInputChange(["district_id"], selectedOption ? selectedOption.value : null)} value={districts.find((option) => option.value === formData.district_id)} />
                                               <span className="text-danger">{formData.error_list.district_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Ward name</label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Ward name</label>
                                             
                                              <Creatable classNamePrefix="react-select" name="ward_id" options={wards} onChange={(selectedOption) => handleInputChange(["ward_id"], selectedOption ? selectedOption.value : null)} value={wards.find((option) => option.value === formData.ward_id)} />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Location Type  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Location Type  <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="location_type_id" options={locations} onChange={(selectedOption) => handleInputChange(["location_type_id"], selectedOption ? selectedOption.value : null)} value={locations.find((option) => option.value === formData.location_type_id)} />
                                               <span className="text-danger">{formData.error_list.location_type_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Road </label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Road </label>
                                             <input type="text" name="road" className="my-auto ti-form-input" value={formData.road}
                                             onChange={(e) => handleInputChange('road', e.target.value)} placeholder="Road" required />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Street</label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Street</label>
                                             <input type="text" name="street" className="my-auto ti-form-input" value={formData.street}
                                             onChange={(e) => handleInputChange('street', e.target.value)} placeholder="Street" required />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Plot Number </label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Plot Number </label>
                                             <input type="text" name="plot_number" className="my-auto ti-form-input" value={formData.plot_number}
                                             onChange={(e) => handleInputChange('plot_number', e.target.value)} placeholder="Ploat number" required />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Block number </label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Block number </label>
                                             <input type="number" name="block_number " className="ti-form-input" value={formData.block_number}
                                             onChange={(e) => handleInputChange('block_number', e.target.value)} placeholder="Bank name" required />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Cost centre /packages  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Cost centre /packages  <span style={{ color: "red" }}> *</span></label>
                                                <Select classNamePrefix='react-select' options={CostCenterSelect}  onChange={(selectedOption) => handleInputChange(["cost_center"], selectedOption ? selectedOption.value : null)} value={CostCenterSelect.find((option) => option.value === formData.cost_center)} placeholder='Open this select menu' />
                                               <span className="text-danger">{formData.error_list.cost_center}</span>
                                         </div>
                                         
                                       
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Allowance <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Allowance <span style={{ color: "red" }}> *</span></label>
                                             {/* <Select className="!p-0 place-holder" multi options={allowances} values={[]} onChange={(value) => console.log(value)} /> */}
                                              {/* <MultiSelect classNamePrefix='react-select' options={allowances} value={allowances.find((option) => option.value === formData.allowance_id)} onChange={(selectedOption) => handleInputChange(["allowance_id"], selectedOption ? selectedOption.value : null)} labelledBy="Select" /> */}
   
@@ -512,30 +522,16 @@ const AddClient = () => {
                                               <span className="text-danger">{formData.error_list.allowance_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Shift <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Shift <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="shift_id" options={shifts} onChange={(selectedOption) => handleInputChange(["shift_id"], selectedOption ? selectedOption.value : null)} value={shifts.find((option) => option.value === formData.shift_id)} />
                                               <span className="text-danger">{formData.error_list.shift_id}</span>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Working hours  <span style={{ color: "red" }}> *</span></label>
-                                            <input type="text" name="working_hours" className="my-auto ti-form-input" value={formData.working_hours}
-                                                onChange={(e) => handleInputChange('working_hours', e.target.value)} placeholder="Working hour" required />
-                                              <span className="text-danger">{formData.error_list.working_hours}</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Working Days <span style={{ color: "red" }}> *</span></label>
-                                            <input type="text" name="working_days" className="my-auto ti-form-input" value={formData.working_days}
-                                                onChange={(e) => handleInputChange('working_days', e.target.value)} placeholder="Working Days" required />
-                                              <span className="text-danger">{formData.error_list.working_days}</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                         
-                                        </div>
+                                       
     
                                     {/* Rest of Step 2 form fields */}
                                 </div>
                             )}
-                         <br/>
+                        
                             {step === 3 && (
                                     <div className="grid lg:grid-cols-3 gap-6 second-page none" id="new_page">
                                     <div className=" space-y-2">                                       
@@ -548,40 +544,52 @@ const AddClient = () => {
 							</h2>                                            
                                         </div> 
                                         <div className=" space-y-2">                                       
+                                        </div> <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Working hours  <span style={{ color: "red" }}> *</span></label>
+                                            <input type="text" name="working_hours" className="my-auto ti-form-input" value={formData.working_hours}
+                                                onChange={(e) => handleInputChange('working_hours', e.target.value)} placeholder="Working hour" required />
+                                              <span className="text-danger">{formData.error_list.working_hours}</span>
                                         </div>
+                                        <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Working Days <span style={{ color: "red" }}> *</span></label>
+                                            <input type="text" name="working_days" className="my-auto ti-form-input" value={formData.working_days}
+                                                onChange={(e) => handleInputChange('working_days', e.target.value)} placeholder="Working Days" required />
+                                              <span className="text-danger">{formData.error_list.working_days}</span>
+                                        </div>
+                                        
                                         <div className="space-y-3">
-                                            <label className="ti-form-label mb-0">TIN Attachment  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">TIN Attachment  <span style={{ color: "red" }}> *</span></label>
                                             <input type="file" name="tin_doc" id="small-file-input" value={formData.tin_doc}
                                                 onChange={(e) => handleInputChange('tin_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                             <span className="text-danger">{formData.error_list.tin_doc}</span>
                                             {/* value={formData.tin_doc} accept=".pdf"  onChange={(e) => handleInputChange('tin_doc', e.target.files[0])}  */}
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="ti-form-label mb-0">NSSF Attachment <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">NSSF Attachment <span style={{ color: "red" }}> *</span></label>
                                             <input type="file" name="nssf_doc" id="small-file-input" value={formData.nssf_doc}
                                             onChange={(e) => handleInputChange('nssf_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           <span className="text-danger">{formData.error_list.nssf_doc}</span>
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="ti-form-label mb-0">OSHA Attachment <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">OSHA Attachment <span style={{ color: "red" }}> *</span></label>
                                             <input type="file" name="osha_doc" id="small-file-input" value={formData.osha_doc}
                                             onChange={(e) => handleInputChange('osha_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           <span className="text-danger">{formData.error_list.osha_doc}</span>
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="ti-form-label mb-0">WCF Attachment <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">WCF Attachment <span style={{ color: "red" }}> *</span></label>
                                             <input type="file" name="wcf_doc" id="small-file-input" value={formData.wcf_doc}
                                             onChange={(e) => handleInputChange('wcf_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           <span className="text-danger">{formData.error_list.wcf_doc}</span>
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="ti-form-label mb-0">NHIF Attachment <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">NHIF Attachment <span style={{ color: "red" }}> *</span></label>
                                             <input type="file" name="nhif_doc" id="small-file-input" value={formData.nhif_doc}
                                             onChange={(e) => handleInputChange('nhif_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           <span className="text-danger">{formData.error_list.nhif_doc}</span>
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="ti-form-label mb-0">VRN Attachment <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">VRN Attachment <span style={{ color: "red" }}> *</span></label>
                                             <input type="file" name="vrn_doc" id="small-file-input" value={formData.vrn_doc}
                                             onChange={(e) => handleInputChange('vrn_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           <span className="text-danger">{formData.error_list.vrn_doc}</span>
@@ -590,7 +598,7 @@ const AddClient = () => {
                                     {/* Rest of Step 3 form fields */}
                                 </div>
                                 )}
-                                <br/>
+                              
                                 <div>
                                     {step > 1 && step < 3 && (
                              <button type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
@@ -617,8 +625,7 @@ const AddClient = () => {
                         </div>
                         </form>
                     </div>
-                </div>
-            </div>
+                
         </div>
     </div>
 );

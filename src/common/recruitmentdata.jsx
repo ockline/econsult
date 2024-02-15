@@ -196,6 +196,21 @@ export const fetchAssessedCandidate = async () => {
     throw new Error('Failed to fetch assessed candidates: ' + error.message);
   }
 };
+
+
+// ****************************************************************************************
+      //Interviewed Candidate Details
+export const fetchTechnicalCandidate = async () => {
+    
+  try {
+    const res = await axios.get(`${apiBaseUrl}/hiring/technical_interview/show_candidate`);
+    return res.data.candidate;
+  } catch (error) {
+    throw new Error('Failed to fetch technical assessed candidates: ' + error.message);
+  }
+};
+
+
 // const usermchongo = await fetchAssessedCandidate();
 // console.log('welimba');
 // console.log(usermchongo);
@@ -206,7 +221,7 @@ export const fetchAssessedCandidate = async () => {
 export const getAssessedCandidate = async (id) => {
    
   try {
-    const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/58`);
+    const res = await axios.get(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/` + id);
     return res.data.assessed_candidate;
   } catch (error) {
     throw new Error('Failed to fetch assessed candidates: ' + error.message);

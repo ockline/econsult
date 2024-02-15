@@ -1010,6 +1010,17 @@ const fetchUsers = async () => {
 // console.log('welimba');
 // console.log(usermchongo);
 
+//**************************************************** Practical Test */
+export const PracticalTest = [
+  { value: '1', label: 'Test 1' },
+  { value: '2', label: 'Test 2' },
+  { value: '3', label: 'Test 3' },
+  { value: '4', label: 'Test 4' },
+]
+
+
+
+
 export const ProfileHomeData = [
   { value: 'Only Me', label: 'Only Me' },
   { value: 'Public', label: 'Public' },

@@ -28,6 +28,16 @@ import EditAssessment from "../component/hiring/recruitments/hrInterviews/editAs
 import ShowAssessment from "../component/hiring/recruitments/hrInterviews/showAssessment/showassessment";
 import DownloadAssessment from "../component/hiring/templatesamples/hrinterviews/assessmenttemplate"
 
+//Technical 
+import TechnicalInterview from "../component/hiring/recruitments/techInterviews/interviewed";
+import AddCandidate from "../component/hiring/recruitments/techInterviews/addCandidate/addcandidate";
+import EditCandidate from "../component/hiring/recruitments/techInterviews/editCandidate/editcandidate";
+import ShowCandidate from "../component/hiring/recruitments/techInterviews/showCandidate/showcandidate";
+// import DownloadCandidate from "../component/hiring/templatesamples/hrinterviews/assessmenttemplate"
+
+
+
+
 
         //Technical
 // import TechInterview from "../component/hiring/recruitments/techInterviews/interviews";
@@ -163,6 +173,12 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr/show_assessment/:id`, element: <ShowAssessment /> },
     { path: `${import.meta.env.BASE_URL}hiring/hrinterview/download_assessment/:id`, element: < DownloadAssessment />},
     
+    //   Technical interview
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/technical_interviewed`, element: <TechnicalInterview /> },
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/technical/add_candidate`, element: <AddCandidate/>},
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/technical/edit_candidate/:id`, element: <EditCandidate /> },
+    { path: `${import.meta.env.BASE_URL}hiring/recruitments/technical/show_candidate/:id`, element: <ShowCandidate /> },
+    // { path: `${import.meta.env.BASE_URL}hiring/hrinterview/download_candidate/:id`, element: < DownloadCandidate />},
     
     // {/* Component content */}
 
