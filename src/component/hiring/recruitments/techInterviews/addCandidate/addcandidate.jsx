@@ -118,6 +118,7 @@ const AddCandidate = () => {
                         button: 'ok',
                         closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
                     })
+                    console.log(resp.data.id);
                 }
             }
            catch (error) {
@@ -204,6 +205,17 @@ const AddCandidate = () => {
     
     
     // Save Practical test  ************************************************
+    
+            const clearPracticalData = () => {
+    setPracticalData({
+        practical_test_id: '',
+        test_marks: '',
+        ranking_creterial_id: '',
+        practicl_test_remark: '',
+        error_list: {},
+    });
+}
+    
      const [practical, setPracticalData] = useState({
             
             practical_test_id: '',
@@ -223,7 +235,6 @@ const AddCandidate = () => {
     
        const SavePracticalTest = async (e, practical) => {
         e.preventDefault();
-        // console.log('Job Data:', jobData);
        const practicalData = {
            practical_test_id: practical?.practical_test_id,
            test_marks: practical?.test_marks,
@@ -255,15 +266,16 @@ const AddCandidate = () => {
         button: 'ok',
     });
 } else if (res.data.status === 200) {
-    swal({
-        title: 'Practical Test added Successfully',
-        text: res.data.message,
-        icon: 'success',
-        button: 'ok',
-    })
-    //     .then(() => {
-    //     // navigate('hiring/recruitments/technical_interviewed');
-    // });
+     swal({
+         title: 'Practical Test added Successfully',
+         text: res.data.message,
+         icon: 'success',
+         button: 'ok',
+     }).then(() => {
+        
+         clearPracticalData();
+     });
+   
    
 }
 } catch (error) {
@@ -284,45 +296,100 @@ const AddCandidate = () => {
     }
     
     
- function Style3() {
-		const swalWithBootstrapButtons = Swal.mixin({
-			customClass: {
-			  confirmButton: 'ti-btn bg-secondary text-white hover:bg-secondary focus:ring-secondary dark:focus:ring-offset-secondary',
-			  cancelButton: 'ti-btn bg-danger text-white hover:bg-danger focus:ring-danger dark:focus:ring-offset-danger'
-			},
-			buttonsStyling: false
-		  })
+//  function Style3() {
+// 		const swalWithBootstrapButtons = Swal.mixin({
+// 			customClass: {
+// 			  confirmButton: 'ti-btn bg-secondary text-white hover:bg-secondary focus:ring-secondary dark:focus:ring-offset-secondary',
+// 			  cancelButton: 'ti-btn bg-danger text-white hover:bg-danger focus:ring-danger dark:focus:ring-offset-danger'
+// 			},
+// 			buttonsStyling: false
+// 		  })
 	  
-		  swalWithBootstrapButtons.fire({
-			title: 'Are you sure?',
-			text: "You want to complete this interview?",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: 'Yes, complete it!',
-			cancelButtonText: 'No, cancel!',
-			reverseButtons: true
-		  }).then((result) => {
-			if (result.isConfirmed) {
-			  swalWithBootstrapButtons.fire(
-				'Saved!',
-				'Your Technical Interview Assessment is Assessed successfully.',
-				'success'
-			  ).then(() => {
-                    navigate('/hiring/recruitments/technical_interviewed');
-           });
-			} else if (
-			  /* Read more about handling dismissals below */
-			  result.dismiss === Swal.DismissReason.cancel
-			) {
-			  swalWithBootstrapButtons.fire(
-				'Cancelled',
-				'Your imaginary file is safe :)',
-				'error'
-			  )
-			}
-		  })
-	 }
-    
+// 		  swalWithBootstrapButtons.fire({
+// 			title: 'Are you sure?',
+// 			text: "You want to complete this interview?",
+// 			icon: 'warning',
+// 			showCancelButton: true,
+// 			confirmButtonText: 'Yes, complete it!',
+// 			cancelButtonText: 'No, cancel!',
+// 			reverseButtons: true
+// 		  }).then((result) => {
+// 			if (result.isConfirmed) {
+// 			  swalWithBootstrapButtons.fire(
+// 				'Saved!',
+// 				'Your Technical Interview Assessment is Assessed successfully.',
+// 				'success'
+// 			  ).then(() => {
+//                     navigate('/hiring/recruitments/technical_interviewed');
+//            });
+// 			} else if (
+// 			  /* Read more about handling dismissals below */
+// 			  result.dismiss === Swal.DismissReason.cancel
+// 			) {
+// 			  swalWithBootstrapButtons.fire(
+// 				'Cancelled',
+// 				'Your imaginary file is safe :)',
+// 				'error'
+// 			  )
+// 			}
+// 		  })
+// 	 }
+    function Style3() {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'ti-btn bg-secondary text-white hover:bg-secondary focus:ring-secondary dark:focus:ring-offset-secondary',
+            cancelButton: 'ti-btn bg-danger text-white hover:bg-danger focus:ring-danger dark:focus:ring-offset-danger'
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You want to complete this interview?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, complete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire(
+                'Saved!',
+                'Your Technical Interview Assessment is Assessed successfully.',
+                'success'
+            ).then(() => {
+                // Make an asynchronous request to your controller
+                fetch(`${apiBaseUrl}/hiring/technical_interview/last_candidate`, {
+                    method: 'GET', // or 'GET' depending on your API
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Add any additional headers if needed
+                    },
+                    // Add any request body if needed
+                    // body: JSON.stringify({ key: 'value' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from your controller
+                    // console.log(data);
+                     navigate('/hiring/recruitments/technical_interviewed');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your imaginary file is safe :)',
+                'error'
+            );
+        }
+    });
+}
+
 	return (
 		<div>
         

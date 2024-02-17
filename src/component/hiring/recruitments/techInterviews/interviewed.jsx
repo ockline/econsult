@@ -42,8 +42,8 @@ const Interviewed = () => {
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
     const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 	return (
 		<div>
@@ -134,10 +134,11 @@ const Interviewed = () => {
 												</tr>
 												</thead>
 												<tbody>
-													 {currentEntries.map((candidate, index) => (
+								      {
+									     currentEntries.map((candidate, index) => (
 															<tr className="product-list" key={candidate.id}>
-																<td>{index + 1 + indexOfFirstEntry}</td>
-																<td>{candidate.interview_number}</td>
+															<td>{index + 1 + indexOfFirstEntry}</td>
+															<td>{candidate.interview_number}</td>								
 															 <td className="font-semibold">{candidate.candidate_name}</td>
 															 <td>{candidate.job_title}</td>
 															 <td>{candidate.recruiter_recommendations === "Accepted" ? (<span className="badge bg-success text-white">Accepted</span>)
