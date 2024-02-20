@@ -59,16 +59,34 @@ const EditClient = () => {
 const { id } = useParams();
         useEffect(() => {
     axios.get(`${apiBaseUrl}/employers/edit_employer/${id}`).then((res) => {
-      setEmployerData(res.data.employer)
+        setEmployerData(res.data.employer)
+        console.log(res.data.employer)
     })
-  }, [id])
-        const handleInputChange = (stepName, value) => {
+        }, [id])
+    // to handle file upload  
+    const handleFileInputChange = (fieldName, files) => {
+  setEmployerData((prevData) => ({
+      ...prevData,
+    //   [fieldName]: files && files.length > 0 ? files[0] : null,
+    [fieldName]: files, // assuming you only want to handle single file inputs
+  }));
+    };
+    
+    
+    
+    const handleInputChange = (stepName, value) => {
+        if (value instanceof File) {
+            // Handle file input change
+            handleFileInputChange(stepName, [value]);
+        } else {
+            // Handle other input types
             setEmployerData((prevData) => ({
                 ...prevData,
                 [stepName]: value,
-                 error_list: { ...prevData.error_list, [stepName] : null },
+                error_list: { ...prevData.error_list, [stepName]: null },
             }));
-        };
+        }
+    };
 
         const handleNextStep = () => {
             setStep((prevStep) => prevStep + 1);
@@ -81,7 +99,7 @@ const { id } = useParams();
         const updateEmployer = async (e) => {
             // Handle form submission logic here
              e.preventDefault();
-            console.log('Form submitted:', formData);
+            // console.log('Form submitted:', formData);
             const DataToSend = {
                 name: formData.name,
                 alia: formData.alia,
@@ -124,8 +142,12 @@ const { id } = useParams();
                         
             };
              try {
-        const resp = await axios.put(`${apiBaseUrl}/employers/update_employer/` + id, DataToSend);
-
+                 const resp = await axios.put(`${apiBaseUrl}/employers/update_employer/${id}`, DataToSend);
+                //      , {
+                //     headers: {
+                //         "Content-Type": "multipart/form-data"
+                //     }
+                // });
         // Handle validation errors
         if (resp.data.validator_err) {
             const validationErrors = resp.data.validator_err;
@@ -153,10 +175,10 @@ const { id } = useParams();
                     icon: 'success',
                     button: 'ok',
                 });
-                // Use the useHistory hook to navigate to the home page
-                // const history = useHistory();
-                // history.push('/employers/registrations/registrations');
-                // Additional logic or state updates after a successful update
+                //.then(() => ({
+            // navidate('('/employers/registrations/registrations')');
+            // }));
+             
             }
         }
     } catch (error) {
@@ -280,22 +302,7 @@ const { id } = useParams();
     
     return (
     <div>
-        {/* <PageHeader currentpage="Employer Registration" activepage="Add" mainpage="Add new Employer" /> */}
-        {/* <br/><br/>
-        <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12">
-                <div className="box">
-                        <div className="box-header">
-                             <div className="space-y-2">
-                            <h5 className="box-title">Update Employer Details</h5>
-                                     	<Link to={`${import.meta.env.BASE_URL}employers/registrations/registrations/`}>
-								    <button type="button" className="ti-btn ti-btn-primary float-end">
-									<i className="ti ti-arrow-left w-3.5 h-3.5"></i>	 Back							
-									</button>
-							   </Link>    
-									</div>
-                    </div> */}
-            <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+         <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}> Edit Employer Details</h1>
 
 				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
@@ -555,39 +562,39 @@ const { id } = useParams();
                                         </div>
                                         <div className="space-y-3">
                                             <label className="ti-form-label mb-0 font-bold text-md">TIN Attachment  <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="tin_doc" id="small-file-input" value={formData.tin_doc}
-                                                onChange={(e) => handleInputChange('tin_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" name="tin_doc" id="small-file-input" 
+                                                onChange={(e) => handleFileInputChange('tin_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                             {/* <span className="text-danger">{formData.error_list.tin_doc}</span> */}
                                             {/* value={formData.tin_doc} accept=".pdf"  onChange={(e) => handleInputChange('tin_doc', e.target.files[0])}  */}
                                         </div>
                                         <div className="space-y-3">
                                             <label className="ti-form-label mb-0 font-bold text-md">NSSF Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="nssf_doc" id="small-file-input" value={formData.nssf_doc}
-                                            onChange={(e) => handleInputChange('nssf_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" name="nssf_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('nssf_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           {/* <span className="text-danger">{formData.error_list.nssf_doc}</span> */}
                                         </div>
                                         <div className="space-y-3">
                                             <label className="ti-form-label mb-0 font-bold text-md">OSHA Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="osha_doc" id="small-file-input" value={formData.osha_doc}
-                                            onChange={(e) => handleInputChange('osha_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" name="osha_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('osha_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           {/* <span className="text-danger">{formData.error_list.osha_doc}</span> */}
                                         </div>
                                         <div className="space-y-3">
                                             <label className="ti-form-label mb-0 font-bold text-md">WCF Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="wcf_doc" id="small-file-input" value={formData.wcf_doc}
-                                            onChange={(e) => handleInputChange('wcf_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" name="wcf_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('wcf_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           {/* <span className="text-danger">{formData.error_list.wcf_doc}</span> */}
                                         </div>
                                         <div className="space-y-3">
                                             <label className="ti-form-label mb-0 font-bold text-md">NHIF Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="nhif_doc" id="small-file-input" value={formData.nhif_doc}
-                                            onChange={(e) => handleInputChange('nhif_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" name="nhif_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('nhif_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           {/* <span className="text-danger">{formData.error_list.nhif_doc}</span> */}
                                         </div>
                                         <div className="space-y-3">
                                             <label className="ti-form-label mb-0 font-bold text-md">VRN Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="vrn_doc" id="small-file-input" value={formData.vrn_doc}
-                                            onChange={(e) => handleInputChange('vrn_doc', e.target.value)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" name="vrn_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('vrn_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           {/* <span className="text-danger">{formData.error_list.vrn_doc}</span> */}
                                         </div>
 

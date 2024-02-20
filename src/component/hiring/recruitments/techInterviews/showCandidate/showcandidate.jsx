@@ -54,7 +54,7 @@ const ShowCandidate = () => {
     
      const [practicalData, setPracticalData] = useState([]);
           useEffect(() => {
-    axios.get(`${apiBaseUrl}/hiring/technical_interview/practical_candidate/${id}`).then((res) => {
+    axios.get(`${apiBaseUrl}/employers/technical_interview/practical_candidate/${id}`).then((res) => {
         setPracticalData(res.data.practical_candidate)
         console.log(res.data.practical_candidate);
     })

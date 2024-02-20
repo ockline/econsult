@@ -971,7 +971,8 @@ const ShowAssessment = () => {
                                     className="hidden text-center"
                                     role="tabpanel"
                                     aria-labelledby="profile-item-4"
-                                ><div className="box">
+                            >
+                                <div className="box">
 						<div className="box-header">
 							<h5 className="box-title">Recent Files</h5>
 						</div>

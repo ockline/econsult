@@ -62,7 +62,7 @@ const AddCandidate = () => {
         const handleSubmit = async (e) => {
             // Handle form submission logic here
              e.preventDefault();
-            console.log('Form submitted:', formData);
+            // console.log('Form submitted:', formData);
             const DataToSend = {
                 job_title_id: formData?.job_title_id,
                 cost_center_id: formData?.cost_center_id,

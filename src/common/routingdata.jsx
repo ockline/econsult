@@ -7,6 +7,7 @@ import Normals from "../component/dashboards/normal/normal";
 import Registrations from "../component/employers/registrations/registrations";
 import AddClient from "../component/employers/registrations/addclients/AddClient";
 import EditClient from "../component/employers/registrations/editClients/editClient";
+import ShowClient from "../component/employers/registrations/showClients/showclient";
 
 // Department and section
 import Departments from "../component/employers/departments/departments";
@@ -152,7 +153,7 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employers/registrations/registrations`, element: <Registrations />, title: 'Employers' },
     { path: `${import.meta.env.BASE_URL}employers/registrations/addclients`, element: <AddClient />, title: 'AddClient' },
     { path: `${import.meta.env.BASE_URL}employers/registrations/editClients/:id`, element: <EditClient />, title: 'Edit Client' },
-    
+    { path: `${import.meta.env.BASE_URL}employers/registrations/show_client/:id`, element: <ShowClient />, title: 'Show Client' },
     // {/*Depertment and section  */}
     { path: `${import.meta.env.BASE_URL}employers/departments/departments`, element: <Departments /> , title: ''},
     // { path: `${import.meta.env.BASE_URL}employers/attachments`, element: <Attachments /> , title: ''},
