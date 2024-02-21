@@ -76,7 +76,7 @@ export const MenuItems = [
 			{
 				id: 6, icon: EmployersSvg, title: "Employers", type: "sub", active: false, selected: false, children: [
 					{ id: 7, path: `${import.meta.env.BASE_URL}employers/registrations/registrations`, type: "link", active: false, selected: false, title: "Registration" },
-					{ id: 8, path: `${import.meta.env.BASE_URL}employers/departments/departments`, type: "link", active: false, selected: false, title: "Departments" },
+					// { id: 8, path: `${import.meta.env.BASE_URL}employers/departments/departments`, type: "link", active: false, selected: false, title: "Departments" },
 					// { id: 9, path: `${import.meta.env.BASE_URL}employers/attachments`, type: "link", active: false, selected: false, title: "Attachments" },
 				]
 			},

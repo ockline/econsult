@@ -14,18 +14,21 @@ import axios from "axios";
 const ShowJob = () => {
       const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     
         // const history = useHistory();
         const [value, setValue] = useState('');
         const [step, setStep] = useState(1);
-        const [formData, setFormData] = useState([])
+    const [formData, setFormData] = useState([])
+    const [documentUrl, setDocumentUrl] = useState('');
        
     
     const { id } = useParams();
     
         useEffect(() => {
     axios.get(`${apiBaseUrl}/hiring/job/home_job/${id}`).then((res) => {
-      setFormData(res.data.formData)
+        setFormData(res.data.formData)
+        console.log(res.data.formData)
     })
   }, [id])
         const handleInputChange = (stepName, value) => {
@@ -35,7 +38,19 @@ const ShowJob = () => {
                  error_list: { ...prevData.error_list, [stepName] : null },
             }));
     };
-        
+    //block to preview signed  job application
+    
+  const handlePreviewClick = (description) => {
+    // Assuming the documents are stored in a specific folder on the server      
+      const absoluteUrl = `${docBaseUrl}/hiring/vacancies/${description}`;
+
+//   console.log('absoluteUrl', absoluteUrl);
+
+  // Update the state with the document URL
+  setDocumentUrl(absoluteUrl);
+     
+    };
+    //************************************************* */
            
     return (
     <div>
@@ -69,7 +84,11 @@ const ShowJob = () => {
 									<i className="ti ti-arrow-left w-3.5 h-3.5"></i>	 Back							
 									</button>
                                     </Link>
-                                    <Link to={`${import.meta.env.BASE_URL}hiring/vacancies/download_job/`+ id}><button type="button" className="ti-btn ti-btn-success float-end"><i className= "ri ri-download-2-fill ltr:mr-1 rtl:ml-1 "></i> Download </button></Link>
+                                    <Link to={`${import.meta.env.BASE_URL}hiring/vacancies/download_job/` + id}><button type="button" className="ti-btn ti-btn-success float-end"><i className="ri ri-download-2-fill ltr:mr-1 rtl:ml-1 "></i> Download </button></Link>
+                                    
+                                    
+                                     <button type="button" className="ti-btn ti-btn-secondary float-end text-black" data-hs-overlay="#hs-overlay-top" onClick={() => handlePreviewClick(formData.description)}><i className="ti ti-eye-check !text-white"></i>Preview Signed Attachment                                      {/* {document.doc_name} */}
+                                                    </button>
                                 </h5>
 									</div>
                     </div>
@@ -197,14 +216,26 @@ const ShowJob = () => {
                                                 onChange={(e) => handleInputChange('name', e.target.value)} ></textarea>
                                             
                                         </div>
-                            {/* <div className="space-y-2">
-  <label className="ti-form-label mb-0">Job Description </label>
-  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formData.name) }} />
-</div> */}
+       
                            
-                                <br/>
+                              
                          
                         </div>
+                         <div id="hs-overlay-top" className="hs-overlay hidden ti-offcanvas ti-offcanvas-top" tabIndex={-2}>   
+								<div className="ti-offcanvas-header">
+									<h3 className="ti-offcanvas-title">
+                                        Employer Document
+									</h3>
+									<button type="button" className="ti-btn flex-shrink-0 h-8 w-8 p-0 transition-none text-gray-500 hover:text-gray-700 focus:ring-gray-400 focus:ring-offset-white dark:text-white/70 dark:hover:text-white/80 dark:focus:ring-white/10 dark:focus:ring-offset-white/10" data-hs-overlay="#hs-overlay-top">
+										<span className="sr-only">Close modal</span>
+										<i className="ti ti-x"></i>
+
+									</button>
+								</div>
+								<div className="ti-offcanvas-body" style={{ width: '100%', height: '1800px' }}>
+										<iframe src={documentUrl} width="100%" height="700px" title="Document Preview"></iframe>
+								</div>
+                                                        </div>
                 </div>
             </div>
         </div>
