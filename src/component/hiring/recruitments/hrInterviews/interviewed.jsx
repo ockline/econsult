@@ -34,7 +34,8 @@ const Interviewed = () => {
 	
 	  // Filter data based on search query
     const filteredData = allData.filter((assessed) =>
-        assessed.job_title.toLowerCase().includes(searchQuery.toLowerCase())
+		assessed.job_title.toLowerCase().includes(searchQuery.toLowerCase())
+			// toLowerCase().includes(searchQuery.toLowerCase())
     );
 	
 	//*********************Pagination */

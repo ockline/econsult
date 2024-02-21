@@ -151,7 +151,7 @@ const AddJob = () => {
         icon: 'success',
         button: 'ok',
     }).then(() => {
-        navigate('hiring/vacancies/jobs');
+        navigate('/hiring/vacancies/jobs');
     });
    
 }
@@ -237,8 +237,24 @@ const AddJob = () => {
     
     return (
     <div>
-        {/* <PageHeader currentpage="New Jobs" activepage="Basic Ui" mainpage="New Jobs" /> */}
-        <br/><br/>
+         <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Register Job Application</h1>
+
+				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`}>
+						Home
+						<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+					</a>
+					</li>
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/add_job/`}>
+						Add Job Application
+						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
+					</a>
+					</li>
+				</ol>
+				</div>
         <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12">
                 <div className="box">
@@ -258,27 +274,27 @@ const AddJob = () => {
                                     
                                     <div className="grid lg:grid-cols-3 gap-6">                                        
                                          <div className="space-y-2">
-                                            <label className="ti-form-label mb-0" name="name">Name Of Company <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md" name="name">Name Of Company <span style={{ color: "red" }}> *</span></label>
                                              <Creatable classNamePrefix="react-select" name="bank_id" options={employers} onChange={(selectedOption) => handleInputChange(["employer_id"], selectedOption ? selectedOption.value : null)} value={employers.find((option) => option.value === formData.employer_id)} />
                                             <span className="text-danger">{formData.error_list.employer_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Job Title</label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Job Title</label>
                                             <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} />
                                              <span className="text-danger">{formData.error_list.job_title_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Department Name <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Department Name <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="department_id" options={departments} onChange={(selectedOption) => handleInputChange(["department_id"], selectedOption ? selectedOption.value : null)} value={departments.find((option) => option.value === formData.department_id)} />
                                               <span className="text-danger">{formData.error_list.department_id}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Type Of Vacancy <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Type Of Vacancy <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="type_vacancy_id" options={vacancies} onChange={(selectedOption) => handleInputChange(["type_vacancy_id"], selectedOption ? selectedOption.value : null)} value={vacancies.find((option) => option.value === formData.type_vacancy_id)} />
                                               <span className="text-danger">{formData.error_list.email}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">When The Position Becomes Vacant <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">When The Position Becomes Vacant <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="position_vacant" className="my-auto ti-form-input" placeholder="position Vacant"  value={formData.position_vacant}
                                                 onChange={(e) => handleInputChange('position_vacant', e.target.value)} required />
                                           
@@ -293,79 +309,79 @@ const AddJob = () => {
                                     <span className="text-danger">{formData.error_list.position_vacant}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Date Of Application <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Date Of Application <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="date_application" className="my-auto ti-form-input"  value={formData.date_application}
                                                 onChange={(e) => handleInputChange('date_application', e.target.value)} placeholder="Date Of Application " required />
                                               <span className="text-danger">{formData.error_list.date_application}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Deadline date of application <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Deadline date of application <span style={{ color: "red" }}> *</span></label>
                                         
                                             <input type="date" name="deadline_date" className="my-auto ti-form-input"  value={formData.deadline_date}
                                                 onChange={(e) => handleInputChange('deadline_date', e.target.value)} placeholder="Date Of Application " required />
                                               <span className="text-danger">{formData.error_list.deadline_date}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Interview date HR  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Interview date HR  <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="hr_interview_date" className="my-auto ti-form-input"  value={formData.hr_interview_date}
                                                 onChange={(e) => handleInputChange('hr_interview_date', e.target.value)} placeholder="Date Of Application " required />
                                               <span className="text-danger">{formData.error_list.hr_interview_date}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Interview date Technical  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Interview date Technical  <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="tech_interview_date"  value={formData.tech_interview_date}
                                                 onChange={(e) => handleInputChange('tech_interview_date', e.target.value)} className="ti-form-input" placeholder="Interview date Technical" required />
                                               <span className="text-danger">{formData.error_list.tech_interview_date}</span>
                                         </div>
                                         
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Date For Appointment  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Date For Appointment  <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="apointment_date" value={formData.apointment_date} onChange={(e) => handleInputChange('apointment_date', e.target.value)} className="ti-form-input" placeholder="Date For Appointment" required />
                                               <span className="text-danger">{formData.error_list.apointment_date}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Work Station  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Work Station  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="work_station" className="my-auto ti-form-input"  value={formData.work_station}
                                                 onChange={(e) => handleInputChange('work_station', e.target.value)} placeholder="Work Station " required />
                                               <span className="text-danger">{formData.error_list.work_station}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Please Give The Reasons For Replacement </label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Please Give The Reasons For Replacement </label>
                                             <input type="text" name="replacement_reason" className="my-auto ti-form-input"  value={formData.replacement_reason}
                                                 onChange={(e) => handleInputChange('replacement_reason', e.target.value)} placeholder="Please Give the Reasons For Replacement"  />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Age <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Age <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="age" className="my-auto ti-form-input"  value={formData.age}
                                                 onChange={(e) => handleInputChange('age', e.target.value)} placeholder="age" required />
                                               <span className="text-danger">{formData.error_list.age}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Academic <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Academic <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="accademic" className="my-auto ti-form-input"  value={formData.accademic}
                                                 onChange={(e) => handleInputChange('accademic', e.target.value)} placeholder="Academic" required />
                                               <span className="text-danger">{formData.error_list.accademic}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Professional<span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Professional<span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="professional" className="my-auto ti-form-input"  value={formData.professional}
                                                 onChange={(e) => handleInputChange('professional', e.target.value)} placeholder="Contact person" required />
                                               <span className="text-danger">{formData.error_list.professional}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Salary Range  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Salary Range  <span style={{ color: "red" }}> *</span></label>
                                             <input type="number" name="salary_range" className="my-auto ti-form-input"  value={formData.salary_range}
                                                 onChange={(e) => handleInputChange('salary_range', e.target.value)} placeholder="Salary Range " required />
                                               <span className="text-danger">{formData.error_list.salary_range}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Others <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Others <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="others" className="my-auto ti-form-input"  value={formData.others}
                                                 onChange={(e) => handleInputChange('others', e.target.value)} placeholder="others " required />
                                               <span className="text-danger">{formData.error_list.others}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Additional Comments </label>   
+                                            <label className="ti-form-label mb-0 font-bold text-md">Additional Comments </label>   
                                     <textarea className = "ti-form-input" name="additional_comment" rows="3"
                                         value={formData.additional_comment}
                                                 onChange={(e) => handleInputChange('additional_comment', e.target.value)} placeholder="Additional Comments" ></textarea>
@@ -379,10 +395,10 @@ const AddJob = () => {
                               
                           {step === 1 && (
                             <div>
-                            <button type="submit" onClick={handleSubmit} className="ti-btn ti-btn-primary justify-center float-left">
+                            <button type="submit" onClick={handleSubmit} className="ti-btn ti-btn-secondary justify-center float-left">
                                             <i className="ti ti-transfer-in"></i> 
                                             
-                                            Add
+                                            Save to Continue
                             </button>
                             
                             <button type="button"  className="hs-dropdown-toggle  ti-btn ti-btn-success justify-center float-end" data-hs-overlay="#hs-large-modal">

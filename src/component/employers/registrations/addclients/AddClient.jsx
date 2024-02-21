@@ -96,7 +96,7 @@ const AddClient = () => {
         const handleSubmit = async (e) => {
             // Handle form submission logic here
              e.preventDefault();
-            // console.log('Form submitted:', formData);
+            console.log('Form submitted:', formData);
             const DataToSend = {
                 name: formData?.name,
                 alias: formData?.alias,
@@ -170,14 +170,14 @@ const AddClient = () => {
             })
             // Additional logic or state updates after successful update
           } else if(resp.data.status === 200) {
-            swal({
-              title: 'Employer Registered Successfully',
-              text: resp.data.message,
-              icon: 'success',
-              button: 'ok',
-            }).then(() => {
-                navigate('/employers/registrations/registrations');
-            })
+                    swal({
+                        title: 'Employer Registered Successfully',
+                        text: resp.data.message,
+                        icon: 'success',
+                        button: 'ok',
+                    }).then(() => {
+                        navigate('/employers/registrations/registrations');
+                    });
             }
             }
            catch (error) {

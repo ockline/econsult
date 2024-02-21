@@ -35,15 +35,28 @@ const ShowJob = () => {
                  error_list: { ...prevData.error_list, [stepName] : null },
             }));
     };
-        const handleNextStep = () => {
-            setStep((prevStep) => prevStep + 1);
-        };
-
+        
            
     return (
     <div>
-        {/* <PageHeader currentpage="Employer Registration" activepage="Add" mainpage="Add new Employer" /> */}
-        <br/><br/>
+       <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Job Application Details</h1>
+
+				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`}>
+						Home
+						<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+					</a>
+					</li>
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/show_job/`}>
+						Show Job Application
+						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
+					</a>
+					</li>
+				</ol>
+				</div>
         <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12">
                 <div className="box">

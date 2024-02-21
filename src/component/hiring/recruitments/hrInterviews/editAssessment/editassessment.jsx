@@ -105,27 +105,15 @@ const EditAssessment = () => {
                 managing_change_remark: '',
                 strategic_conceptual_thinking_remark: '', 
                 surgery_operation: '', 
-                surgery_operation_remark: '',                
+                surgery_operation_remark: '',  
+                military_doc: null,
+                hr_signed_doc: null,                
                 error_list: [],
         });
 
           const { id } = useParams();
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const data = await getAssessedCandidate(id);
-//         console.log("dataaa", data);
-//         // Handle the fetched data as needed
-//       } catch (error) {
-//         console.error('Error fetching data:', error.message);
-//         // Handle the error
-//       }
-//     };
-
-//     fetchData();
-    //   }, [id])
-    
+// 
             useEffect(() => {
     axios.get(`${apiBaseUrl}/hiring/hr_interview/edit_assessment/${id}`).then((res) => {
       setAssessedCandidateData(res.data.assessed_candidate)
@@ -133,13 +121,27 @@ const EditAssessment = () => {
   }, [id])
     
     
-        const handleInputChange = (stepName, value) => {
-            setAssessedCandidateData((prevData) => ({
-                ...prevData,
-                [stepName]: value,
-                 error_list: { ...prevData.error_list, [stepName] : null },
-            }));
-        };
+          const handleFileInputChange = (fieldName, files) => {
+  setAssessedCandidateData((prevData) => ({
+    ...prevData,
+    [fieldName]: files, // assuming you only want to handle single file inputs
+  }));
+    };
+    
+    const handleInputChange = (stepName, value) => {
+    if (value instanceof File) {
+        // Handle file input change
+        handleFileInputChange(stepName, [value]);
+    } else {
+        // Handle other input types
+        setAssessedCandidateData((prevData) => ({
+            ...prevData,
+            [stepName]: value,
+            error_list: { ...prevData.error_list, [stepName]: null },
+        }));
+    }
+};
+
 
         const handleNextStep = () => {
             setStep((prevStep) => prevStep + 1);
@@ -155,8 +157,8 @@ const EditAssessment = () => {
             console.log('Form updated:', formData);
             const DataToSend = {
                 job_title_id: formData?.job_title_id,
-                cost_center_id: formData?.cost_center_id,
-                cost_number: formData?.cost_number,
+                cost_center_id: formData.cost_center_id,
+                cost_number: formData.cost_number,
                 date: formData?.date,
                 firstname: formData?.firstname,
                 middlename: formData.middlename,
@@ -237,12 +239,18 @@ const EditAssessment = () => {
                 delegating_managing_remark: formData?.delegating_managing_remark,
                 managing_change_remark: formData?.managing_change_remark,
                 strategic_conceptual_thinking_remark: formData?.strategic_conceptual_thinking_remark,    
-                // military_attachment: formData.military_attachment,
+                military_doc: formData.military_doc,
+                hr_signed_doc: formData.hr_signed_doc,
                         
             };
            
-             try {
-        const resp = await axios.put(`${apiBaseUrl}/hiring/hr_interview/update_assessment/` + id, DataToSend);
+            try {
+                const resp = await axios.post(`${apiBaseUrl}/hiring/hr_interview/update_assessment/` + id,
+                    DataToSend, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
                 //  console.log(resp.data.status);      
                  if (resp.data.status === 500) {
                     swal({
@@ -260,7 +268,7 @@ const EditAssessment = () => {
                         button: 'ok',
                         closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
                     }).then(() => {
-                         console.log('Redirecting...');
+                        //  console.log('Redirecting...');
                         // This code will be executed after the "ok" button is clicked and the modal is closed
                          navigate('/hiring/recruitments/hr_interviewed/'); // Call the navigate function to redirect to the specified route
                     });
@@ -350,10 +358,24 @@ const EditAssessment = () => {
 
 	return (
         <div>
-            <br /><br />
-            <h1 style={{ fontWeight: 'bold', fontSize: '2em' }}>Edit Assessed Details</h1>
-            <br/>
-	
+           	
+            <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Edit Assessed Details</h1>
+
+				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`}>
+						Home
+						<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+					</a>
+					</li>
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/recruitments/hr/edit_assessment`}>
+						Edit Assessment Detail
+					</a>
+					</li>
+				</ol>
+				</div>
             <div className= "box">
 				<div className= "box-header lg:flex lg:justify-between">
 					<h1 className= "box-title my-auto">Update Hr Competency Assessment Details</h1>
@@ -452,6 +474,7 @@ const EditAssessment = () => {
                                                 onChange={(e) => handleInputChange('military_number', e.target.value)} placeholder="military_number" required />
                                               
                                         </div>
+
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Place of recruitment (Source)  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="place_recruitment" className="my-auto ti-form-input"  value={formData.place_recruitment}
@@ -2618,7 +2641,19 @@ const EditAssessment = () => {
                                             <label className="ti-form-label mb-0">Recommended Job Title  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="recommended_title" options={job_titles} onChange={(selectedOption) => handleInputChange(["recommended_title"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.recommended_title)} /> 
                                               {/* <span className="text-danger">{formData.error_list.recommended_title}</span> */}
-                                </div>                                                                          
+                                </div>  
+                            <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Military Attachment</label>
+                                            <input type="file" name="military_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('military_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                </div>
+                                 <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Printed Signed Attachment</label>
+                                            <input type="file" name="hr_signed_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('hr_signed_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                        </div>                                
                                     {/* Rest of Step 3 form fields */}
                                 </div>
                         )}

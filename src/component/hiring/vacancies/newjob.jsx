@@ -11,7 +11,7 @@ const Newjob = () => {
 		const vacanciesData = async () => {
 			try {
 				const res = await axios.get(`${apiBaseUrl}/hiring/job/show_jobs`);
-				console.log(res.data);  // Log the entire response
+				// console.log(res.data);  // Log the entire response
 				setVacancies(res.data.vacancy);
 			} catch (error) {
 				console.log("Error on Retrieve", error.message);

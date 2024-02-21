@@ -40,7 +40,8 @@ const EditCandidate = () => {
                 capability_remark: '',
                 practical_test_id: '',
                 final_recommendation: '',
-                recommended_title: '',                 
+                recommended_title: '',  
+                technical_signed_doc: null,                
                 error_list: [],          
                 
         });
@@ -55,13 +56,28 @@ const EditCandidate = () => {
             }, [id])
     
      
-        const handleInputChange = (stepName, value) => {
-            setTechnicalData((prevData) => ({
-                ...prevData,
-                [stepName]: value,
-                 error_list: { ...prevData.error_list, [stepName] : null },
-            }));
-        };
+    const handleFileInputChange = (fieldName, files) => {
+      const file = files[0]; // Assuming single file selection, update accordingly for multiple files
+      setTechnicalData((prevData) => ({
+      
+    ...prevData,
+    [fieldName]: file, // assuming you only want to handle single file inputs
+  }));
+    };
+    
+    const handleInputChange = (stepName, value) => {
+    if (value instanceof File) {
+        // Handle file input change
+        handleFileInputChange(stepName, [value]);
+    } else {
+        // Handle other input types
+        setTechnicalData((prevData) => ({
+            ...prevData,
+            [stepName]: value,
+            error_list: { ...prevData.error_list, [stepName]: null },
+        }));
+    }
+};
 
         const handleNextStep = () => {
             setStep((prevStep) => prevStep + 1);
@@ -74,7 +90,7 @@ const EditCandidate = () => {
         const updateAssessment = async (e) => {
             // Handle form submission logic here
              e.preventDefault();
-            console.log('Form submitted:', technicalData);
+            // console.log('Form submitted:', technicalData);
             const DataToSend = {
                 job_title_id: technicalData?.job_title_id,
                 cost_center_id: technicalData?.cost_center_id,
@@ -97,10 +113,15 @@ const EditCandidate = () => {
                 practical_test_id: technicalData?.practical_test_id,
                 final_recommendation: technicalData?.final_recommendation,
                 recommended_title: technicalData?.recommended_title, 
+                technical_signed_doc: technicalData.technical_signed_doc,
                         
             };
     try {
-        const resp = await axios.put(`${apiBaseUrl}/hiring/technical_interview/update_candidate/` + id, DataToSend);
+        const resp = await axios.post(`${apiBaseUrl}/hiring/technical_interview/update_candidate/` + id, DataToSend, {
+                        headers: {
+                        "Content-Type": "multipart/form-data"
+                        }
+                    });
                 //  console.log(resp.data.status);      
                  if (resp.data.status === 500) {
                     swal({
@@ -244,7 +265,7 @@ const EditCandidate = () => {
         };
     
     const SavePracticalTest = async (e, practical) => {
-              console.log('SavePracticalTest function called');
+            //   console.log('SavePracticalTest function called');
         e.preventDefault();
        const practicalData = {
            practical_test_id: practical?.practical_test_id,
@@ -521,7 +542,7 @@ if (res.data.status === 404) {
                                               {/* <span className="text-danger">{technicalData.error_list.recommended_title}</span> */}
                                 </div>  
                                   <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Final Recommendation <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Final Recommendation <span style={{ color: "red" }}> *</span></label>
                                     <div className = "grid sm:grid-cols-2 gap-2">
                                     <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
                                         <input type="radio" name="final_recommendation" onChange={(e) => handleInputChange('final_recommendation', e.target.value)} value="1" className = "ti-form-radio" id="final_recommendation"/>
@@ -533,7 +554,13 @@ if (res.data.status === 404) {
                                         <span className = "text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">Not Accepted</span>
                                     </label>
                                     </div>                                    
-                                  </div>                               
+                                </div>  
+                                <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Technical Signed Attachment</label>
+                                            <input type="file" name="technical_signed_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('technical_signed_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                        </div>                                
                              </div>    
                             )}
                        

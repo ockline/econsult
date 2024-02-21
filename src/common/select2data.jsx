@@ -434,7 +434,7 @@ export const EmployerData = async () => {
 // Example implementation of fetchEmployers
 const fetchEmployers = async () => {
   try {
-    const response = await fetch(`${apiBaseUrl}/employers/show_employer`);
+    const response = await fetch(`${apiBaseUrl}/employers/show_all_employer`);
     if (!response.ok) {
       throw new Error('Failed to fetch employers');
     }

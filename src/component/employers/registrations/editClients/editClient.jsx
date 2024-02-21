@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { BankData, BankBranchData, LocationData, RegionData, DistrictData, AllowanceData, ShiftData,WardData,CostCenterSelect} from '/src/common/select2data';
 import Creatable from "react-select/creatable";
 import Select from 'react-dropdown-select';
-import { Link, useParams} from "react-router-dom";
+import { Link, useParams, useNavigate} from "react-router-dom";
 // import { MultiSelect } from "react-multi-select-component";
 import 'react-form-wizard-component/dist/style.css';
 import axios from "axios";
@@ -13,7 +13,7 @@ const EditClient = () => {
     // const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
       
-    // const history = useHistory();
+    let navigate = useNavigate();
         const [step, setStep] = useState(1);
         const [formData, setEmployerData] = useState({
             name: '',
@@ -174,10 +174,10 @@ const { id } = useParams();
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
-                });
-                //.then(() => ({
-            // navidate('('/employers/registrations/registrations')');
-            // }));
+                })
+                .then(() => {
+            navigate('/employers/registrations/registrations');
+            });
              
             }
         }

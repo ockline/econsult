@@ -561,7 +561,7 @@ const AddCandidate = () => {
                                               <span className="text-danger">{formData.error_list.recommended_title}</span>
                                 </div>  
                                   <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Final Recommendation <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Final Recommendation <span style={{ color: "red" }}> *</span></label>
                                     <div className = "grid sm:grid-cols-2 gap-2">
                                     <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
                                         <input type="radio" name="final_recommendation" onChange={(e) => handleInputChange('final_recommendation', e.target.value)} value="1" className = "ti-form-radio" id="final_recommendation"/>

@@ -99,17 +99,36 @@ const Assessment = () => {
                 managing_change_remark: '',
                 strategic_conceptual_thinking_remark: '', 
                 surgery_operation: '', 
-                surgery_operation_remark: '',                
+                surgery_operation_remark: '', 
+                military_doc: null,
+                // hr_attachment: null,            
                 error_list: [],
         });
 
-        const handleInputChange = (stepName, value) => {
+           
+            const handleFileInputChange = (fieldName, files) => {
+            const file = files[0]; // Assuming single file selection, update accordingly for multiple files
+
             setFormData((prevData) => ({
                 ...prevData,
-                [stepName]: value,
-                 error_list: { ...prevData.error_list, [stepName] : null },
+                [fieldName]: file,
             }));
-        };
+            };
+
+            
+                const handleInputChange = (stepName, value) => {
+                if (value instanceof File) {
+                    // Handle file input change
+                    handleFileInputChange(stepName, [value]);
+                } else {
+                    // Handle other input types
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [stepName]: value,
+                        error_list: { ...prevData.error_list, [stepName]: null },
+                    }));
+                }
+            };
 
         const handleNextStep = () => {
             setStep((prevStep) => prevStep + 1);
@@ -122,7 +141,7 @@ const Assessment = () => {
         const handleSubmit = async (e) => {
             // Handle form submission logic here
              e.preventDefault();
-            console.log('Form submitted:', formData);
+            // console.log('Form submitted:', formData);
             const DataToSend = {
                 job_title_id: formData?.job_title_id,
                 cost_center_id: formData?.cost_center_id,
@@ -207,7 +226,8 @@ const Assessment = () => {
                 delegating_managing_remark: formData?.delegating_managing_remark,
                 managing_change_remark: formData?.managing_change_remark,
                 strategic_conceptual_thinking_remark: formData?.strategic_conceptual_thinking_remark,    
-                // military_attachment: formData.military_attachment,
+                military_doc: formData.military_doc,
+                // hr_attachment: formData.hr_attachment,  
                         
             };
             try {
@@ -241,7 +261,7 @@ const Assessment = () => {
                         button: 'ok',
                         closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
                     }).then(() => {
-                         console.log('Redirecting...');
+                     
                         // This code will be executed after the "ok" button is clicked and the modal is closed
                          navigate('/hiring/recruitments/hr_interviewed/'); // Call the navigate function to redirect to the specified route
                     });
@@ -426,6 +446,12 @@ const Assessment = () => {
                                             <input type="number" name="military_number" className="my-auto ti-form-input"  value={formData.military_number}
                                                 onChange={(e) => handleInputChange('military_number', e.target.value)} placeholder="military_number" required />
                                               
+                                </div>
+                                  <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Military Attachment</label>
+                                            <input type="file" name="military_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('military_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Place of recruitment (Source)  <span style={{ color: "red" }}> *</span></label>
@@ -464,12 +490,7 @@ const Assessment = () => {
                                            <Creatable classNamePrefix="react-select" name="major_achievement" options={rankings} onChange={(selectedOption) => handleInputChange(["major_achievement"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.major_achievement)} />
                                               <span className="text-danger">{formData.error_list.major_achievement}</span>
                                 </div>  
-                                    <div className="space-y-2">
-                                            <label className="ti-form-label mb-0">Major Previous Achievement Comment</label>
-                                            <input type="text" className="my-auto ti-form-input" placeholder="Major Previous Achievement Comment" name="major_achievement_remark"  value={formData.major_achievement_remark}
-                                            onChange={(e) => handleInputChange('major_achievement_remark', e.target.value)}  />
-                                        </div>                                
-                                                               
+                                                 
                                        
                                     {/* Rest of Step 1 form fields */}
                                 </div>
@@ -2303,6 +2324,12 @@ const Assessment = () => {
                                         </div> 
                                         <div className=" space-y-2">                                       
                                 </div>
+                                 <div className="space-y-2">
+                                            <label className="ti-form-label mb-0">Major Previous Achievement Comment</label>
+                                            <input type="text" className="my-auto ti-form-input" placeholder="Major Previous Achievement Comment" name="major_achievement_remark"  value={formData.major_achievement_remark}
+                                            onChange={(e) => handleInputChange('major_achievement_remark', e.target.value)}  />
+                                        </div>                                
+                                                 
                                   <div className="space-y-2">
                                             <label className="ti-form-label mb-0">Language Fluency  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="language_fluency_id" options={rankings} onChange={(selectedOption) => handleInputChange(["language_fluency_id"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === formData.language_fluency_id)} />
