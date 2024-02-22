@@ -245,6 +245,17 @@ const Assessment = () => {
                         ...prevData,
                         error_list: validationErrors,
                     }));
+                     // Format validation errors for display in SweetAlert
+                        const formattedErrors = Object.keys(validationErrors).map((field) => (
+                            `${validationErrors[field].join(', ')}`
+                        )).join('\n');
+
+                        swal({
+                            title: 'Sorry! Operation failed',
+                            text: formattedErrors,
+                            icon: 'error',
+                            button: 'OK',
+                        });
                 } else if (resp.data.status === 500) {
                     swal({
                         title: 'Sorry! Operation failed',

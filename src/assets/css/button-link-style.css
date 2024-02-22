@@ -1,0 +1,19 @@
+
+.job-request {
+  background-color: rgb(210, 230, 178);
+}
+
+.shortlisted {
+  background-color: rgb(213, 184, 220);
+}
+
+.job-request-button {
+ background-color: rgb(213, 184, 220);
+ 
+}
+
+.shortlisted-button {
+       background-color: rgb(210, 230, 178); /*addition */
+}
+
+

@@ -17,7 +17,8 @@ const EditJob = () => {
         let navigate = useNavigate();
         const [value, setValue] = useState('');
         const [step, setStep] = useState(1);
-        const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
+            _method: 'put',
             employer_id: '',
             job_title_id: '',
             department_id: '',
@@ -56,11 +57,11 @@ const { id } = useParams();
         //     };
     
 const handleFileInputChange = (fieldName, files) => {
-  const file = files[0]; // Assuming single file selection, update accordingly for multiple files
+  //const file = files[0]; // Assuming single file selection, update accordingly for multiple files
 
   setFormData((prevData) => ({
     ...prevData,
-    [fieldName]: file,
+    [fieldName]: files,
   }));
 };
 
@@ -91,8 +92,9 @@ const handleFileInputChange = (fieldName, files) => {
             // Handle form submission logic here
            e.preventDefault();
                
-console.log('Form submitted:', formData);
-    const DataToSend = {
+// console.log('Form submitted:', formData);
+           const DataToSend = {
+                 _method: formData.put,
                 employer_id: formData?.employer_id,
                 job_title_id: formData?.job_title_id,
                 department_id: formData?.department_id,
@@ -303,7 +305,7 @@ DataToSend,  {
                                              <Creatable classNamePrefix="react-select" name="bank_id" options={employers} onChange={(selectedOption) => handleInputChange(["employer_id"], selectedOption ? selectedOption.value : null)} value={employers.find((option) => option.value === formData.employer_id)} />
                                             {/* <span className="text-danger">{formData.error_list.employer_id}</span> */}
                                         </div>
-                                          {/* <input type="hidden" name="_method" value="PUT"></input> */}
+                                          <input type="hidden" name="_method" value="PUT"></input>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Job Title</label>
                                             <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} />

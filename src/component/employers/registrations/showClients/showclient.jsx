@@ -13,19 +13,7 @@ import axios from "axios";
 const ShowClient = () => {
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
-    //  console.log('mwanzo'," ",docBaseUrl)
-    const [selected, setSelected] = useState([
-        "Laravel",
-        "Angular",
-        "Html",
-        "VueJs",
-        "React",
-        "Codeignator",
-        "Javascript",
-        "Bootstarp",
-        "Php",
-    ]); // react-tag-input-component
-
+   
     //URl image
     const [UrlImage, setUrlImage] = useState(ALLImages("png106"));
     //Disabling input feild
@@ -78,7 +66,7 @@ const ShowClient = () => {
       useEffect(() => {
     axios.get(`${apiBaseUrl}/employers/show_employer/${id}`).then((res) => {
         setEmployerData(res.data.employer)
-        console.log(res.data.employer)
+        // console.log(res.data.employer)
     })
         }, [id])
 	

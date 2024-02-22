@@ -13,6 +13,7 @@ import axios from "axios";
 const ShowCandidate = () => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     //URl image
 
 
@@ -54,13 +55,35 @@ const ShowCandidate = () => {
     
      const [practicalData, setPracticalData] = useState([]);
           useEffect(() => {
-    axios.get(`${apiBaseUrl}/employers/technical_interview/practical_candidate/${id}`).then((res) => {
+    axios.get(`${apiBaseUrl}/hiring/technical_interview/practical_candidate/${id}`).then((res) => {
         setPracticalData(res.data.practical_candidate)
-        console.log(res.data.practical_candidate);
+        // console.log(res.data.practical_candidate);
     })
             }, [id])
  
-    
+       // /**   Block for document preview  */
+     const [candidateDocument, setCandidateDocument] = useState([]);
+  const [documentUrl, setDocumentUrl] = useState('');
+
+  useEffect(() => {
+    axios.get(`${apiBaseUrl}/hiring/technical_interview/get_candidate_document/${id}`)
+      .then((res) => {
+          setCandidateDocument(res.data.candidate_document);
+        //   console.log(res.data.candidate_document);
+      })
+      .catch((error) => {
+        console.error('Error fetching candidate documents:', error);
+      });
+  }, [id]);
+
+  const handlePreviewClick = (description) => {
+    // Assuming the documents are stored in a specific folder on the server      
+      const absoluteUrl = `${docBaseUrl}/hiring/technical/${description}`;
+//   console.log('absoluteUrl', absoluteUrl);
+  // Update the state with the document URL
+  setDocumentUrl(absoluteUrl);
+     
+  };
 
     return (
         <div>
@@ -68,14 +91,23 @@ const ShowCandidate = () => {
                 <body class={ClassName}></body>
             </Helmet>
             
-            <br /><br />
-            <h1 style={{ fontWeight: 'bold', fontSize: '2em' }}>Technical Assessed Candidate Details</h1>
-            <br/>
-            {/* <div className="grid grid-cols-12 gap-6">
-				<div className="col-span-12">
-					<div className="box">
-                        <div className="box-body">
-                             */}
+            <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Technical Assessed Candidate Details</h1>
+
+				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/recruitments/technical_interviewed`}>
+						Home
+						<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+					</a>
+					</li>
+					<li className="text-sm">
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/recruitments/technical/show_candidate/${formData.id}`}>Technial	Assessed Candidate Details
+						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
+					</a>
+					</li>
+				</ol>
+				</div>
                 
 
            
@@ -553,62 +585,60 @@ const ShowCandidate = () => {
 										</div>
 									</div>
 									<div className="md:ltr:ml-auto md:rtl:mr-auto">
-										<Link to={`${import.meta.env.BASE_URL}hiring/hrinterview/download_assessment/` + formData.id} className="ti-btn  bg-success text-xs m-0 ti-btn-soft p-2 font-semibold !text-gray-500 !text-white/70"><i className="ti ti-download"></i>Download</Link>
+										<Link to={`${import.meta.env.BASE_URL}hiring/hrinterview/download_assessment/` + formData.id} className="ti-btn  bg-success text-xs m-0 ti-btn-soft p-2 font-semibold !text-gray-500 !text-white/70"><i className="ti ti-download"></i>Download Technical Attachment</Link>
 									</div>
 								</div>
 							</div>
 							<div className="overflow-auto">
 								<table className="ti-custom-table  table-bordered ti-custom-table-head">
 									<thead className="bg-gray-50 dark:bg-black/20">
-										<tr>
-											<th scope="col" className="!min-w-[13rem]">Name</th>
+                                        <tr>
+                                            <th>S/No</th>
+											<th scope="col" className="!min-w-[13rem]">Document Name</th>
 											<th scope="col">Files</th>
 											<th scope="col">Size</th>
-											<th scope="col">Type</th>
 											<th scope="col">Modified Date</th>
-											<th scope="col" className="!min-w-[13rem]">Members</th>
-											<th scope="col" className="!text-end">options</th>
+											{/* <th scope="col" className="!min-w-[10rem]">Members</th> */}
+											<th scope="col" className="!text-end">Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										{/* {allData.map((formData) => ( */}
-											<tr key={Math.random()}>
+											{Object.keys(candidateDocument).length > 0 ? (
+                                         Object.values(candidateDocument).map((document, index) => (
+                                            <tr key={document.id}>
+                                                <td>{index + 1}</td>
 												<td className="font-medium">
-													aa
+													{document.doc_name}
 												</td>
-												<td>a</td>
-												<td>b</td>
-												<td>c</td>
-												<td>d</td>
-												<td>
-													<div className="flex -space-x-2 rtl:space-x-reverse">
-														<img className="inline-block h-10 w-10 rounded-full ring-2 ring-white" src={ALLImages('jpg63')} alt="Image Description" />
-														<img className="inline-block h-10 w-10 rounded-full ring-2 ring-white" src={ALLImages('jpg58')} alt="Image Description" />
-													</div>
-												</td>
-												<td className="!text-end">
-													<div className="hs-dropdown ti-dropdown">
-														<button aria-label="button" id="hs-dropdown-custom-icon-trigger1" type="button" className="hs-dropdown-toggle p-3 ti-dropdown-toggle">
-															<svg className="ti-dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-																<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z">
-																</path>
-															</svg>
-														</button>
-														<div className="hs-dropdown-menu ti-dropdown-menu hidden" aria-labelledby="hs-dropdown-custom-icon-trigger1" >
-															<Link className="ti-dropdown-item" to="#">
-																<i className="ti ti-eye-check"></i>Preview
-															</Link>
-															<Link className="ti-dropdown-item" to="#">
-																<i className="ti ti-download"></i>Export/Download
-															</Link>
-															<Link className="ti-dropdown-item" to="#">
-																<i className="ti ti-printer"></i>Print
-															</Link>
-														</div>
-													</div>
-												</td>
-											</tr>
-										{/* ))} */}
+												<td>1</td>
+												<td>2MB</td>
+												<td>{document.doc_modified}</td>
+                                                <td>
+
+                                                    <button type="button" className="ti-btn ti-btn-success text-black" data-hs-overlay="#hs-overlay-top" onClick={() => handlePreviewClick(document.description)}><i className="ti ti-eye-check !text-white"></i>Preview 
+                                                    </button>
+				
+                                                <div id="hs-overlay-top" className="hs-overlay hidden ti-offcanvas ti-offcanvas-top" tabIndex={-2}>   
+                                                <div className="ti-offcanvas-header">
+                                                <h3 className="ti-offcanvas-title">
+                                                Candidate Document
+                                                </h3>
+                                                <button type="button" className="ti-btn flex-shrink-0 h-8 w-8 p-0 transition-none text-gray-500 hover:text-gray-700 focus:ring-gray-400 focus:ring-offset-white dark:text-white/70 dark:hover:text-white/80 dark:focus:ring-white/10 dark:focus:ring-offset-white/10" data-hs-overlay="#hs-overlay-top">
+                                                <span className="sr-only">Close modal</span>
+                                                <i className="ti ti-x"></i>
+
+                                                </button>
+                                                </div>
+                                                <div className="ti-offcanvas-body" style={{ width: '100%', height: '1800px' }}>
+                                                <iframe src={documentUrl} width="100%" height="700px" title="Document Preview"></iframe>
+                                                </div>
+                                                </div>    
+                                                </td>                                                
+                                            </tr>
+                                        ))) : (
+                                        // Handle non-array case (e.g., show an error message)
+                                        <p>No assessed documents available.</p>
+                                        )}
 									</tbody>
 								</table>
 							</div>
@@ -642,15 +672,6 @@ const ShowCandidate = () => {
                     </div>
                 </div>
             </div>
-                            
-                            
-						
-			// 		</div>
-			// 	</div>
-			// </div>
-            
-          
-        // </div>
     );
 };
 

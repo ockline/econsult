@@ -102,6 +102,19 @@ const AddCandidate = () => {
                         ...prevData,
                         error_list: validationErrors,
                     }));
+                    // Format validation errors for display in SweetAlert
+                        const formattedErrors = Object.keys(validationErrors).map((field) => (
+                            `${validationErrors[field].join(', ')}`
+                        )).join('\n\n');
+                     Swal.fire({
+                    // text: " Welcome to Your Admin Page",
+                    allowOutsideClick: false,
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: formattedErrors,
+                    footer: 'Kindly Fill all part with red to Continue '
+                    });              
+               
                 } else if (resp.data.status === 500) {
                     swal({
                         title: 'Sorry! Operation failed',

@@ -75,15 +75,9 @@ const Newjob = () => {
 													
 													
 											<tr  key={index} className="">
-												<td className="py-3 ltr:pl-4 rtl:pr-4">
-													{/* <div className="flex items-center h-5 justify-center">
-														<input id="hs-table-search-checkbox-11" type="checkbox" className="ti-form-checkbox"/>
-														<label htmlFor="hs-table-search-checkbox-11" className="sr-only">Checkbox</label>
-													</div> */}
-															
-															{ index + 1}
+												<td className="py-3 ltr:pl-4 rtl:pr-4">	{ index + 1}
 												</td>
-														<td className="font-medium">{ vacancy.employer}</td>
+												<td className="font-medium">{ vacancy.employer}</td>
 												<td>{vacancy.job_title}</td>
 												<td>{vacancy.vacancy_type}</td>
 												<td>{vacancy.position_vacant}</td>

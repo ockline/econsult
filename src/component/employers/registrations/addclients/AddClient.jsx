@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 // import DatePicker from 'react-datepicker';
 import { BankData, BankBranchData, LocationData, RegionData, DistrictData, AllowanceData, ShiftData,WardData,CostCenterSelect} from '/src/common/select2data';
 import Creatable from "react-select/creatable";
+import Swal from "sweetalert2";
 import Select from 'react-dropdown-select';
 import { Link, useNavigate } from "react-router-dom";
 // import { MultiSelect } from "react-multi-select-component";
@@ -153,6 +154,20 @@ const AddClient = () => {
                         ...prevData,
                         error_list: validationErrors,
                     }));
+                    
+                     // Format validation errors for display in SweetAlert
+                        const formattedErrors = Object.keys(validationErrors).map((field) => (
+                            `${validationErrors[field].join(', ')}`
+                        )).join('\n\n');
+                     Swal.fire({
+                    // text: " Welcome to Your Admin Page",
+                    allowOutsideClick: false,
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: formattedErrors,
+                    footer: 'Kindly Fill all part with red to Continue '
+                    });              
+               
                 }else if (resp.data.status === 404) {
             swal({
               title: 'Sorry! Operation failed',

@@ -8,7 +8,7 @@ import { Link, useParams} from "react-router-dom";
 // import NumberFormat from 'react-number-format';
 // import DOMPurify from 'dompurify';
 import 'react-form-wizard-component/dist/style.css';
-import SunEditor from 'suneditor-react';
+import "../../../../src/assets/css/button-link-style.css";
 import axios from "axios";
 
 const ShowJob = () => {
@@ -20,7 +20,7 @@ const ShowJob = () => {
         const [value, setValue] = useState('');
         const [step, setStep] = useState(1);
     const [formData, setFormData] = useState([])
-    const [documentUrl, setDocumentUrl] = useState('');
+   
        
     
     const { id } = useParams();
@@ -28,7 +28,7 @@ const ShowJob = () => {
         useEffect(() => {
     axios.get(`${apiBaseUrl}/hiring/job/home_job/${id}`).then((res) => {
         setFormData(res.data.formData)
-        console.log(res.data.formData)
+        // console.log(res.data.formData)
     })
   }, [id])
         const handleInputChange = (stepName, value) => {
@@ -38,8 +38,21 @@ const ShowJob = () => {
                  error_list: { ...prevData.error_list, [stepName] : null },
             }));
     };
-    //block to preview signed  job application
-    
+    //block to preview signed  and  job application
+       const [jobDocument, setJobDocument] = useState([]);
+    const [documentUrl, setDocumentUrl] = useState('');
+    const jobDocumentArray = Object.values(jobDocument);
+
+  useEffect(() => {
+    axios.get(`${apiBaseUrl}/hiring/job/get_job_document/${id}`)
+      .then((res) => {
+          setJobDocument(res.data.job_document);
+        //   console.log("dataaa",res.data.job_document)
+      })
+      .catch((error) => {
+        console.error('Error fetching job documents:', error);
+      });
+  }, [id]);
   const handlePreviewClick = (description) => {
     // Assuming the documents are stored in a specific folder on the server      
       const absoluteUrl = `${docBaseUrl}/hiring/vacancies/${description}`;
@@ -86,10 +99,15 @@ const ShowJob = () => {
                                     </Link>
                                     <Link to={`${import.meta.env.BASE_URL}hiring/vacancies/download_job/` + id}><button type="button" className="ti-btn ti-btn-success float-end"><i className="ri ri-download-2-fill ltr:mr-1 rtl:ml-1 "></i> Download </button></Link>
                                     
-                                    
-                                     <button type="button" className="ti-btn ti-btn-secondary float-end text-black" data-hs-overlay="#hs-overlay-top" onClick={() => handlePreviewClick(formData.description)}><i className="ti ti-eye-check !text-white"></i>Preview Signed Attachment                                      {/* {document.doc_name} */}
-                                                    </button>
-                                </h5>
+                                    {jobDocumentArray.map((document) => (
+                                        <span key={document.id} className={document.vacancy_doc === 'job_request_doc' ? 'job-request' : 'shortlisted'}>
+                                        <button type="button" className={`ti-btn ti-btn-secondary float-end text-black ${document.vacancy_doc === 'job_request_doc' ? 'job-request-button' : 'shortlisted-button'}`} data-hs-overlay="#hs-overlay-top" onClick={() => handlePreviewClick(document.description)}><i className="ti ti-eye-check !text-white"></i>{document.vacancy_doc === 'job_request_doc' ? 'Preview Job Application' : 'Preview Shortlisted'}
+                                        </button>
+                                        </span>
+                                    ))
+                                    }
+
+                                    </h5>
 									</div>
                     </div>
                    <div className="box-body">
