@@ -589,95 +589,13 @@ if (res.data.status === 404) {
                                     <i className="ti ti-send"></i>Save to Draft
                                 </button>
                                 
-                            )}{step === 2 && (  <div className="float-end">
-                                {/* <button to="#" type="button" className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-primary m-0 whitespace-nowrap" data-hs-overlay="#hs-full-screen-modal"><i className="ri ri-edit-line"></i> Add Practical Test</button> */}
-                                <button type="button" className="hs-dropdown-toggle ti-btn ti-btn-primary" data-hs-overlay="#hs-basic-modal"><i className="ri ri-edit-line"></i> Add Practical Test</button>
+                            )}{step === 2 && (<div className="float-end">
+                                <button type="button" className="hs-dropdown-toggle ti-btn ti-btn-primary" >
+                              <Link to={`${import.meta.env.BASE_URL}hiring/recruitments/technical/edit_practical/${technicalData.id}`} className= "">  <i className="ri ri-edit-line"></i> Add Practical Test</Link>
+                              </button>
                         </div>)}
                         </div>
-                        
-          <div id="hs-basic-modal" className="hs-overlay ti-modal hidden">
-								<div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out sm:!max-w-6xl">
-									<div className="ti-modal-content">
-										<div className="ti-modal-header">
-											<h3 className="ti-modal-title invoice-title"> Update Practical Test</h3>
-											<button type="button" className="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#hs-basic-modal">
-												<span className="sr-only">Close</span>
-											<i className="ti ti-x"></i>
-											</button>
-										</div>
-										<div className="ti-modal-body p-6">
-         {Array.isArray(practicalData) && practicalData.map((practical, index) => (
-        <div key={index}>
-          {/* Update the 'practical' references to use the current array item */}
-          <div className="grid lg:grid-cols-2 gap-6" >
-                                          <h3 className="font-semibold text-lg">Practical Test {index + 1}:</h3>
-                                            <br/>
-										<div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">Test Number <span style={{ color: "red" }}> *</span></label>
-                                           <Creatable classNamePrefix="react-select" name="practical_test_id" options={PracticalTest} onChange={(selectedOption) => handlePracticalInputChange(["practical_test_id"], selectedOption ? selectedOption.value : null)} value={PracticalTest.find((option) => option.value === practical.practical_practical_id)} />
-                                              {/* <span className="text-danger">{technicalData.error_list.practical_test_id}</span> */}
-                                </div> 
-									<div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">Test Marks</label>
-                                            <input type="number" className="my-auto ti-form-input" placeholder="Marks" name="test_marks"  value={practical.test_marks}
-                                                    onChange={(e) => handlePracticalInputChange('test_marks', e.target.value)} />
-                                                 {/* <span className="text-danger">{test.error_list.test_marks}</span> */}
-                                        </div> 
-										<div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">Test Ranking  <span style={{ color: "red" }}> *</span></label>
-                                           <Creatable classNamePrefix="react-select" name="ranking_creterial_id" options={rankings} onChange={(selectedOption) => handlePracticalInputChange(["ranking_creterial_id"], selectedOption ? selectedOption.value : null)} value={rankings.find((option) => option.value === practical.ranking_creterial_id)} />
-                                </div> 
-								<div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">Test Comment</label>
-                                            <input type="text" className="my-auto ti-form-input" placeholder="Relevant Technical Experience  Comment" name="practicl_test_remark"  value={practical.practicl_test_remark}
-                                            onChange={(e) => handlePracticalInputChange('practicl_test_remark', e.target.value)}  />
-                                        </div> 		
-										
-	
-						         	<div className="space-y-2">
-												<button type="button"
-													className="hs-dropdown-toggle ti-btn ti-border font-medium bg-warning text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
-													data-hs-overlay="#task-compose">
-													Close
-												</button>
-											
-                                        <button
-											type="button"
-											className="ti-btn ti-btn-primary show-example-btn"
-											aria-label="Save Changes! Example: End of contract"
-											id="ajax-btn"  
-											onClick={(e) => SavePracticalTest(e,practical)}><i className="ti ti-send"></i>save   
-                                        </button>
-                                        
-                           </div>
-                         
-                       </div>  
-  <hr className="pb-5 dark:border-t-white/10" />                       
-                                   </div>
-                              
-                   // <hr className="pb-5 dark:border-t-white/10" />
-                   
-                                     ))}
-                                   
-										<div className="ti-modal-footer-1 sm:flex !block space-y-2 text-end">
-											<button type="button"
-													className="hs-dropdown-toggle ti-btn ti-border font-medium bg-danger text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
-													data-hs-overlay="#task-compose">
-													Close
-												</button>
-										  <button
-											type="button"
-											className="ti-btn ti-btn-success show-example-btn"
-											aria-label="Save Changes! Example: End of contract"
-											id="ajax-btn-1"  
-											onClick={Style3}><i className="ri-save-line"></i>Submit to Complete   
-                                        </button>
-								</div>
-                          </div>
-                           </div>
-                       </div>
-                       
-                       </div>
+                                               
                          </form>
                         {/* Block for Practical test */}
                       
