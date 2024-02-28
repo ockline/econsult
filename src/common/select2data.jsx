@@ -1020,6 +1020,290 @@ export const PracticalTest = [
 
 
 
+//*************************************** Nationality || Country */
+export const NationalityData = async () => {
+  try {
+    const countries = await fetchCountries();
+
+    return [
+      {
+        label: "Country Name",
+        options: countries,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching Country:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetchCountrys
+const fetchCountries = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/countries/show_countries`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch countries');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.Country is an array of countries objects
+    const formattedCountries = result.countries.map(countries => ({
+      label: countries.name, // replace with the actual property name in your countries object
+      value: countries.id,   // replace with the actual property name in your countries object
+    }));
+
+    return formattedCountries;
+  } catch (error) {
+    console.error('Error fetching countries:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+
+// block for Education and Years    **********************************************************************************
+   // Education Level
+export const EducationLevelData = async () => {
+  try {
+    const education = await fetchEducation();
+
+    return [
+      {
+        label: "Education Name",
+        options: education,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching Education:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetchEducations
+const fetchEducation = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/education/show_educations`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch education');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.Country is an array of educations objects
+    const formattedEducation = result.educations.map(educations => ({
+      label: educations.name, // replace with the actual property name in your educations object
+      value: educations.id,   // replace with the actual property name in your educations object
+    }));
+
+    return formattedEducation;
+  } catch (error) {
+    console.error('Error fetching educations:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+
+// ******** Referee number
+export const ReferenceCheck = [
+  { value: '0', label: 'Please select Referee ' },
+  { value: '1', label: 'Referee 1' },
+  { value: '2', label: 'Referee 2' },
+  { value: '3', label: 'Referee 3' },
+ 
+]
+
+
+export const CollegesData = [
+
+  { value: "AbdulRahman Al-Sumit Memorial University  SUMAIT", label: 'AbdulRahman Al-Sumit Memorial University  SUMAIT' },
+  { value: "Arch Bishop James University College", label: 'Arch Bishop James University College' },
+  { value: "Archbishop Mihayo University College of Tabora (AMUCTA)", label: 'Archbishop Mihayo University College of Tabora (AMUCTA)' },
+  { value: "Archbishop Mihayo University College of Tabora (AMUCTA)", label: 'Archbishop Mihayo University College of Tabora (AMUCTA)' },
+  { value: "Ardhi Institute Morogoro", label: 'Ardhi Institute Morogoro' },
+  { value: "Ardhi Institute Tabora (ARITA)", label: 'Ardhi Institute Tabora (ARITA)' },
+  { value: "Ardhi University (ARU)", label: 'Ardhi University (ARU)' },
+  { value: "Arusha Technical College", label: 'Arusha Technical College' },
+  { value: "Bandari College", label: 'Bandari College' },
+  { value: "Butiama University of Agriculture and Allied Sciences  BUAAS", label: 'Butiama University of Agriculture and Allied Sciences  BUAAS' },
+  { value: "Catholic University of Health and Allied Sciences (CUHAS)", label: 'Catholic University of Health and Allied Sciences (CUHAS)' },
+  { value: "Centre for Foreign  Relations (CFR)", label: 'Centre for Foreign  Relations (CFR)' },
+  { value: "College of African Wildlife Management (Mweka)", label: 'College of African Wildlife Management (Mweka)' },
+  {
+    value: "College of Agriculture and Natural Resources (CANRE)", label: 'College of Agriculture and Natural Resources(CANRE)'},
+{ value: "College of Business Education (CBE)", label: 'College of Business Education (CBE)' },
+{ value: "Community Development Training Institute", label: 'Community Development Training Institute' },
+  { value: "Dar es Salaam Institute of Technology (DIT)", label: 'Dar es Salaam Institute of Technology (DIT)' },
+  { value: "Dar es Salaam Maritime Institute (DMI)", label: 'Dar es Salaam Maritime Institute (DMI)' },
+  { value: "Dar es Salaam School of Journalism", label: 'Dar es Salaam School of Journalism' },
+  { value: "Dar es Salaam University College of Education (DUCE)", label: 'Dar es Salaam University College of Education (DUCE)' },
+  { value: "East Africa University of Technology  EAUT", label: 'East Africa University of Technology  EAUT' },
+  { value: "Eastern Africa Statistical Training Centre (EASTC)", label: 'Eastern Africa Statistical Training Centre (EASTC)' },
+  { value: "Eckernforde Tanga University (ETU)", label: 'Eckernforde Tanga University (ETU)' },
+  { value: "Efforts University of Management, Science, Technology and Innovation  EUMSTI", label: 'Efforts University of Management, Science, Technology and Innovation  EUMSTI' },
+  { value: "Faraja Health Management", label: 'Faraja Health Management' },
+  { value: "Fisheries Education and Training Agency", label: 'Fisheries Education and Training Agency' },
+  { value: "Forest Training Institute (FTI)", label: 'Forest Training Institute (FTI)' },
+  { value: "Hubert Kairuki Memorial University (HKMU)", label: 'Hubert Kairuki Memorial University (HKMU)' },
+  { value: "Institute of Accountancy Arusha", label: 'Institute of Accountancy Arusha' },
+  { value: "Institute of Adult Education", label: 'Institute of Adult Education' },
+  { value: "Institute of Finance Management (IFM)", label: 'Institute of Finance Management (IFM)' },
+  { value: "Institute of Judiciary Administration", label: 'Institute of Judiciary Administration' },
+  { value: "Institute of Rural Development Planning", label: 'Institute of Rural Development Planning' },
+  { value: "Institute of Social Work (ISW)", label: 'Institute of Social Work (ISW)' },
+  { value: "Institute of Tax Administration", label: 'Institute of Tax Administration' },
+  { value: "International Medical and Technological University (IMTU)", label: 'International Medical and Technological University (IMTU)' },
+  { value: "Iringa University College (IUCo)", label: 'Iringa University College (IUCo)' },
+  { value: "Jomo Kenyatta University of Agriculture and Technology", label: 'Jomo Kenyatta University of Agriculture and Technology' },
+  { value: "Jordan University College (JUCO)", label: 'Jordan University College (JUCO)' },
+  { value: "Josiah Kibira University College (JOKUCO)", label: 'Josiah Kibira University College (JOKUCO)' },
+  { value: "Kaliua Institute of Community Development", label: 'Kaliua Institute of Community Development' },
+  { value: "Kampala International University Dar es Salaam Constituent College (KIU-DAR)", label: 'Kampala International University Dar es Salaam Constituent College (KIU-DAR)' },
+  { value: "Karume Institute of Technology", label: 'Karume Institute of Technology' },
+  { value: "Katavi University of Agriculture (KUA)", label: 'Katavi University of Agriculture (KUA)' },
+  { value: "Kilimanjaro Christian Medical College (KCMCo)", label: 'Kilimanjaro Christian Medical College (KCMCo)' },
+  { value: "Kilimanjaro Institute of Technology and Management", label: 'Kilimanjaro Institute of Technology and Management' },
+  { value: "Livestock Training Agency (LITA)", label: 'Livestock Training Agency (LITA)' },
+  { value: "Mabughai Community Development Technical Training Institute", label: 'Mabughai Community Development Technical Training Institute' },
+  { value: "Mbeya University of Science and Technology (MUST)", label: 'Mbeya University of Science and Technology (MUST)' },
+  { value: "Mineral Resources Institute(MRI)", label: 'Mineral Resources Institute(MRI)' },
+  { value: "Ministry of Agriculture Training Institute - Uyole (Mbeya)", label: 'Ministry of Agriculture Training Institute - Uyole (Mbeya)' },
+  { value: "Misungwi Community Development Technical Training Institute", label: 'Misungwi Community Development Technical Training Institute' },
+  { value: "Mkwawa University College of Education (MUCE)", label: 'Mkwawa University College of Education (MUCE)' },
+  { value: "Moshi University College of Cooperative and Business Studies (MUCCOBS)", label: 'Moshi University College of Cooperative and Business Studies (MUCCOBS)' },
+  { value: "Mount Meru University (MMU)", label: 'Mount Meru University (MMU)' },
+  { value: "Mtwara (K) Teachers College", label: 'Mtwara (K) Teachers College' },
+  { value: "Muhimbili University of Health &amp; Allied Sciences (MUHAS)", label: 'Muhimbili University of Health &amp; Allied Sciences (MUHAS)' },
+  { value: "Muslim University of Morogoro (MUM)", label: 'Muslim University of Morogoro (MUM)' },
+  { value: "Mwalimu Nyerere Memorial Academy", label: 'Mwalimu Nyerere Memorial Academy' },
+  { value: "Mwenge Catholic University  MWECAU", label: 'Mwenge Catholic University  MWECAU' },
+  { value: "Mwenge University College of Education (MWUCE)", label: 'Mwenge University College of Education (MWUCE)' },
+  { value: "Mzumbe University (MU)", label: 'Mzumbe University (MU)' },
+  { value: "National College of Tourism (NCT)", label: 'National College of Tourism (NCT)' },
+  { value: "National Institute of Transport (NIT)", label: 'National Institute of Transport (NIT)' },
+  { value: "Nelson Mandela African Institute of Science and Technology (NMAIST)", label: 'Nelson Mandela African Institute of Science and Technology (NMAIST)' },
+  { value: "New Vision Vocational Training Centre", label: 'New Vision Vocational Training Centre' },
+  { value: "Njuweni Institute of Hotel, Catering and Tourism Management", label: 'Njuweni Institute of Hotel, Catering and Tourism Management' },
+  { value: "OlmotonyiNational College of Tourism (NCT)", label: 'OlmotonyiNational College of Tourism (NCT)' },
+  { value: "Open University of Tanzania (OUT)", label: 'Open University of Tanzania (OUT)' },
+  { value: "Pasiansi Wildlife Training Institute (PWTI)", label: 'Pasiansi Wildlife Training Institute (PWTI)' },
+  { value: "Procurement and Supplies Professionals and Technicians Board (PSPTB)", label: 'Procurement and Supplies Professionals and Technicians Board (PSPTB)' },
+  { value: "Ruaha University College (RUCO)", label: 'Ruaha University College (RUCO)' },
+  { value: "School of Library Archives and Documentation Studies (SLADS)", label: 'School of Library Archives and Documentation Studies (SLADS)' },
+  { value: "Sebastian Kolowa Memorial University (SEKOMU)", label: 'Sebastian Kolowa Memorial University (SEKOMU)' },
+  { value: "Sokoine University of Agriculture (SUA)", label: 'Sokoine University of Agriculture (SUA)' },
+  { value: "St. Augustine University of Tanzania (Songea Centre)", label: 'St. Augustine University of Tanzania (Songea Centre)' },
+  { value: "St. Glory Nursing School", label: 'St. Glory Nursing School' },
+  { value: "St. Joseph University College of Management and Commerce", label: 'St. Joseph University College of Management and Commerce' },
+  { value: "St. Joseph University in Tanzania Engineering and Technology", label: 'St. Joseph University in Tanzania Engineering and Technology' },
+  { value: "St.Augustine University of Tanzania (SAUT)", label: 'St.Augustine University of Tanzania (SAUT)' },
+  { value: "St.Francis University College of Health and Allied Sciences (SFUCHAS)", label: 'St.Francis University College of Health and Allied Sciences (SFUCHAS)' },
+  { value: "St.John's University of Tanzania (SJUT)", label: 'St.John`s University of Tanzania (SJUT)' },
+  { value: "St.Joseph University College of Agricultural Sciences and Technology (SJUCAST)", label: 'St.Joseph University College of Agricultural Sciences and Technology (SJUCAST)' },
+  { value: "St.Joseph University College of Information Technology (SJUCIT)", label: 'St.Joseph University College of Information Technology (SJUCIT)' },
+  { value: "St.Joseph University College of Management and Commerce (SJUCMC)", label: 'St.Joseph University College of Management and Commerce (SJUCMC)' },
+  { value: "St.Joseph University in Tanzania (SJUT)", label: 'St.Joseph University in Tanzania (SJUT)' },
+  { value: "State University of Zanzibar (SUZA)", label: 'State University of Zanzibar (SUZA)' },
+  { value: "Stefano Moshi Memorial University College (SMMUCO)", label: 'Stefano Moshi Memorial University College (SMMUCO)' },
+  { value: "Stella Maris Mtwara University College (STeMMUCO)", label: 'Stella Maris Mtwara University College (STeMMUCO)' },
+  { value: "Tandala Teachers College", label: 'Tandala Teachers College' },
+  { value: "Tanzania Institute of Accountancy (TIA)", label: 'Tanzania Institute of Accountancy (TIA)' },
+  { value: "Tanzania Institute of Rail Technology", label: 'Tanzania Institute of Rail Technology' },
+  { value: "Tanzania International University (TIU)", label: 'Tanzania International University (TIU)' },
+  { value: "Tanzania Police Staff College", label: 'Tanzania Police Staff College' },
+  { value: "Tanzania Public Service College (TPSC)", label: 'Tanzania Public Service College (TPSC)' },
+  { value: "Tanzanite University  (TU)", label: 'Tanzanite University  TU' },
+  { value: "Teofilo Kisanji University (TEKU)", label: 'Teofilo Kisanji University (TEKU)' },
+  { value: "The College of African Wildlife Management, Mweka", label: 'The College of African Wildlife Management, Mweka' },
+  { value: "Tumaini University", label: 'Tumaini University' },
+  { value: "Tumaini University Dar es Salaam College (TURDACO)", label: 'Tumaini University Dar es Salaam College (TURDACO)' },
+  { value: "Tumaini University Makumira  (Mbeya Centre)", label: 'Tumaini University Makumira  (Mbeya Centre)' },
+  { value: "Tumaini University Makumira (TUMA)", label: 'Tumaini University Makumira (TUMA)' },
+  { value: "United African University of Tanzania (UAUT)", label: 'United African University of Tanzania (UAUT)' },
+  { value: "University College of Education Zanzibar (UCEZ)", label: 'University College of Education Zanzibar (UCEZ)' },
+  { value: "University of Arusha (Buhare Centre)", label: 'University of Arusha (Buhare Centre)' },
+  { value: "University of Arusha (Mbeya Centre)", label: 'University of Arusha (Mbeya Centre)' },
+  { value: "University of Arusha (UOA)", label: 'University of Arusha (UOA)' },
+  { value: "University of Bagamoyo (UOB)", label: 'University of Bagamoyo (UOB)' },
+  { value: "University of Dar es Salaam (UDSM)", label: 'University of Dar es Salaam (UDSM)' },
+  { value: "University of Dar es salaam Computing Centre (UCC)", label: 'University of Dar es salaam Computing Centre (UCC)' },
+  { value: "University of Dodoma (UDOM)", label: 'University of Dodoma (UDOM)' },
+  { value: "University of Iringa  UoI", label: 'University of Iringa  UoI' },
+  { value: "Vocational Education And Training Authority (VETA)", label: 'Vocational Education And Training Authority (VETA)' },
+  { value: "Water Institute", label: 'Water Institute' },
+  { value: "Zanzibar Institute of Financial Administration", label: 'Zanzibar Institute of Financial Administration' },
+  { value: "Zanzibar University (ZU)", label: 'Zanzibar University (ZU)' },
+  { value: "Other", label: 'Other out of list' },
+];
+
+
+export const yearsData = [
+
+{ value: "2034", label: '2034' },
+{ value: "2033", label: '2033' },
+{ value: "2032", label: '2032' },
+{ value: "2031", label: '2031' },
+{ value: "2030", label: '2030' },
+{ value: "2029", label: '2029' },
+{ value: "2028", label: '2028' },
+{ value: "2027", label: '2027' },
+{ value: "2026", label: '2026' },
+{ value: "2025", label: '2025' },
+{ value: "2024", label: '2024' },
+{ value: "2023", label: '2023' },
+{ value: "2022", label: '2022' },
+{ value: "2021", label: '2021' },
+{ value: "2020", label: '2020' },
+{ value: "2019", label: '2019' },
+{ value: "2018", label: '2018' },
+{ value: "2017", label: '2017' },
+{ value: "2016", label: '2016' },
+{ value: "2015", label: '2015' },
+{ value: "2014", label: '2014' },
+{ value: "2013", label: '2013' },
+{ value: "2012", label: '2012' },
+{ value: "2011", label: '2011' },
+{ value: "2010", label: '2010' },
+{ value: "2009", label: '2009' },
+{ value: "2008", label: '2008' },
+{ value: "2007", label: '2007' },
+{ value: "2006", label: '2006' },
+{ value: "2005", label: '2005' },
+{ value: "2004", label: '2004' },
+{ value: "2003", label: '2003' },
+{ value: "2002", label: '2002' },
+{ value: "2001", label: '2001' },
+{ value: "2000", label: '2000' },
+{ value: "1999", label: '1999' },
+{ value: "1998", label: '1998' },
+{ value: "1997", label: '1997' },
+{ value: "1996", label: '1996' },
+{ value: "1995", label: '1995' },
+{ value: "1994", label: '1994' },
+{ value: "1993", label: '1993' },
+{ value: "1992", label: '1992' },
+{ value: "1991", label: '1991' },
+{ value: "1990", label: '1990' },
+{ value: "1989", label: '1989' },
+{ value: "1988", label: '1988' },
+{ value: "1987", label: '1987' },
+{ value: "1986", label: '1986' },
+{ value: "1985", label: '1985' },
+{ value: "1984", label: '1984' },
+{ value: "1983", label: '1983' },
+{ value: "1982", label: '1982' },
+{ value: "1981", label: '1981' },
+{ value: "1980", label: '1980' },
+{ value: "1979", label: '1979' },
+{ value: "1978", label: '1978' },
+
+]
+
+
+
+
+
 
 export const ProfileHomeData = [
   { value: 'Only Me', label: 'Only Me' },

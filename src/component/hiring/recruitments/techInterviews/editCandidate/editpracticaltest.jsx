@@ -85,21 +85,8 @@ const EditPracticalTest = () => {
 
     // update Practical test  ************************************************
 
-    const [practicalData, setPracticalData] = useState([
-
-        // practical_test_id = '',
-        // test_marks = '',
-        // ranking_creterial_id = '',
-        // practicl_test_remark = '',
-     
-
-    ]);
-    // useEffect(() => {
-    //     axios.get(`${apiBaseUrl}/hiring/technical_interview/practical_candidate/${id}`).then((res) => {
-    //         setPracticalData(res.data.practical_candidate)
-    //         console.log(res.data.practical_candidate);
-    //     })
-    // }, [id])
+    const [practicalData, setPracticalData] = useState([]);
+  
     
     console.log('practicalData:', practicalData)
 

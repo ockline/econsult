@@ -13,7 +13,7 @@ const EmployersSvg = <i className="ri-apps-2-line side-menu__icon"></i>
 
 const HiringsSvg = <i className="ri-advertisement-line side-menu__icon"></i>
 
-     //Registration 
+     //employee Registration 
 const EmployeesSvg  = <i className="ri-creative-commons-by-line side-menu__icon"></i>
 
 const ContractMangementSvg =  <i className="ri-attachment-line side-menu__icon"></i>
@@ -91,9 +91,9 @@ export const MenuItems = [
 			},
 			
 			{
-				id: 14, icon: EmployeesSvg, title: "Registrations", type: "sub", active: false, selected: false, children: [
+				id: 14, icon: EmployeesSvg, title: "Employee Registrations", type: "sub", active: false, selected: false, children: [
 
-					{ id: 15, path: `${import.meta.env.BASE_URL}employees/personneldetails`, type: "link", active: false, selected: false, title: "Personnel Details" },
+					{ id: 15, path: `${import.meta.env.BASE_URL}employees/personal/employee_list`, type: "link", active: false, selected: false, title: "Personnel Details" },
 					{ id: 16, path: `${import.meta.env.BASE_URL}employees/requireddocuments`, type: "link", active: false, selected: false, title: "Required Documents" },
 					{ id: 17, path: `${import.meta.env.BASE_URL}employees/socialrecords`, type: "link", active: false, selected: false, title: "Social Records" },
 					{ id: 18, path: `${import.meta.env.BASE_URL}employees/inductiontrainning`, type: "link", active: false, selected: false, title: "Induction Training" },
