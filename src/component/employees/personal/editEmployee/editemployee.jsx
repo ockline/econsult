@@ -72,6 +72,7 @@ const EditEmployee = () => {
         readiness_employee: '',
         military_attach: null,
         marriage_cert: null,
+         personal_signed_doc: null,
         error_list: [],
     });
     //fetch employee data'
@@ -84,7 +85,7 @@ const EditEmployee = () => {
                 ...res.data.employee,
             };
             setFormData(updatedFormData);
-            console.log(updatedFormData);
+            // console.log(updatedFormData);
         });
     }, [id])
 
@@ -179,6 +180,7 @@ const EditEmployee = () => {
             readiness_employee: formData.readiness_employee,
             marriage_cert: formData.marriage_cert,
             military_attach: formData.military_attach,
+            personal_signed_doc: formData.personal_signed_doc,
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/employees/update_employee/${id}`, DataToSend, {
@@ -427,7 +429,7 @@ const EditEmployee = () => {
         axios.get(`${apiBaseUrl}/employees/education_history/${id}`)
             .then((res) => {
                 setEducationHistoryData(res.data.education_history); // wrap the object in an array
-                console.log("dataa", ' ', res.data.education_history);
+                // console.log("dataa", ' ', res.data.education_history);
             })
             .catch((error) => {
                 console.error('Error fetching practical data:', error);
@@ -557,7 +559,7 @@ const EditEmployee = () => {
             .then((res) => {
                
                 setEmploymentData(res.data.employment_history); // Assuming "education_history" is correct
-        console.log("dataa", ' ', res.data.employment_history);
+        // console.log("dataa", ' ', res.data.employment_history);
             })
             .catch((error) => {
                 console.error('Error fetching practical data:', error);
@@ -678,7 +680,7 @@ const EditEmployee = () => {
             .then((res) => {
                
                 setReferenceCheckData(res.data.reference_check); // Assuming "education_history" is correct
-        console.log("dataa", ' ', res.data.reference_check);
+        // console.log("dataa", ' ', res.data.reference_check);
             })
             .catch((error) => {
                 console.error('Error fetching practical data:', error);
@@ -1099,12 +1101,12 @@ const EditEmployee = () => {
                                     </ul>
                                 </div>
 
-                                {formData.driving_licence !== '4' && (
+                                
                                     <div className="space-y-2">
                                         <label className="ti-form-label mb-0 font-bold text-lg">Place of Issued</label>
                                         <input type="text" className="my-auto ti-form-input" placeholder="Place issued" name="place_issued" value={formData.place_issued} onChange={(e) => handleInputChange('place_issued', e.target.value)} />
                                     </div>
-                                )}
+                              
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Do you suffer from any chronic disease?  <span style={{ color: "red" }}> *</span></label>
                                     <div className="grid sm:grid-cols-2 gap-2">
@@ -1356,7 +1358,10 @@ const EditEmployee = () => {
                                         <span className="text-danger">{formData.error_list.readiness_employee}</span>
                                     </div>
                                 </div>
-
+                                <div className="space-y-2" id="attachment">
+                                            <label className="ti-form-label mb-0 font-bold text-lg ">Signed Attachment (max size 2MB)</label>
+                                            <input type="file" name="personal_signed_doc" id="small-file-input" onChange={(e) => handleFileInputChange('personal_signed_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                        </div>
                                 {/* Rest of Step 3 form fields */}
                             </div>
                         )}
@@ -1449,7 +1454,7 @@ const EditEmployee = () => {
 
                                                 <div className="space-y-2">
                                                     <label className="ti-form-label mb-0 font-bold text-lg">Graduation Year<span style={{ color: "red" }}> *</span>  </label>
-                                                    <Creatable classNamePrefix="react-select" name="graduation_year" options={yearsData} onChange={(selectedOption) => handleEducationInputChange(["graduation_year"], selectedOption ? selectedOption.value : null)} value={packages.find((option) => option.value === education.graduation_year)} />
+                                                    <Creatable classNamePrefix="react-select" name="graduation_year" options={yearsData} onChange={(selectedOption) => handleEducationInputChange(["graduation_year"], selectedOption ? selectedOption.value : null)} value={yearsData.find((option) => option.value === education.graduation_year)} />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="ti-form-label mb-0 font-bold text-lg">Major </label>

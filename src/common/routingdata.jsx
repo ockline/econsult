@@ -42,9 +42,8 @@ import DownloadCandidate from "../component/hiring/templatesamples/technicalinte
 import PersonalDetails from "../component/employees/personal/personalDetail/personaldetail";
 import AddEmployee from "../component/employees/personal/addEmployee/addemployee";
 import EditEmployee from "../component/employees/personal/editEmployee/editemployee";
-// import EditPractical from "../component/employees/personal/editEmployee/";
 import ShowEmployee from "../component/employees/personal/showEmployee/showemployee";
-// import DownloadEmployee from "../component/employees/templatesamples/technicalinterview/employeetemplate"
+import DownloadEmployee from "../component/employees/templateDocument/personal/personaldetail"
         //Technical
 // import TechInterview from "../component/hiring/personal/techInterviews/interviews";
  
@@ -195,9 +194,8 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/personal/employee_list`, element: <PersonalDetails /> },
     { path: `${import.meta.env.BASE_URL}employees/personal/add_employee`, element: <AddEmployee/>},
     { path: `${import.meta.env.BASE_URL}employees/personal/edit_employee/:id`, element: <EditEmployee /> },
-    // { path: `${import.meta.env.BASE_URL}employees/personal/edit_practical/:id`, element: <EditPractical /> },
     { path: `${import.meta.env.BASE_URL}employees/personal/show_employee/:id`, element: <ShowEmployee /> },
-    // { path: `${import.meta.env.BASE_URL}employees/personal/download_employee/:id`, element: < DownloadEmployee />},
+    { path: `${import.meta.env.BASE_URL}employees/personal/download_employee/:id`, element: < DownloadEmployee />},
 
 
 

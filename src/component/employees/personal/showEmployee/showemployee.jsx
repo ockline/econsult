@@ -43,7 +43,7 @@ const ShowEmployee = () => {
             .then((res) => {
                 // console.log('API Response:', res.data);  // Log the entire response
                 setEmployeeData(res.data.employee);
-                console.log('data',res.data.employee);
+                console.log('data', res.data.employee);
                 // setAssessedCandidateData(res.data.assessed_candidate);
             })
             .catch((error) => {
@@ -51,25 +51,58 @@ const ShowEmployee = () => {
             });
     }, [id]);
 
-    //block to return Practical test data
+    //block to return Education ****************************************************************
+    const [educationData, setEducationHistoryData] = useState([]);
 
-    // const [practicalData, setPracticalData] = useState([]);
-    // useEffect(() => {
-    //     axios.get(`${apiBaseUrl}/hiring/technical_interview/practical_candidate/${id}`).then((res) => {
-    //         setPracticalData(res.data.practical_candidate)
-    //         // console.log(res.data.practical_candidate);
-    //     })
-    // }, [id])
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/employees/education_history/${id}`)
+            .then((res) => {
+                setEducationHistoryData(res.data.education_history); // wrap the object in an array
+                // console.log("dataa", ' ', res.data.education_history);
+            })
+            .catch((error) => {
+                console.error('Error fetching practical data:', error);
+            });
+    }, [id]);
+
+    // block for employement *******************************************************
+    const [employmentData, setEmploymentData] = useState([])
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/employees/edit_employment_employee/${id}`)
+            .then((res) => {
+               
+                setEmploymentData(res.data.employment_history); // Assuming "education_history" is correct
+        // console.log("dataa", ' ', res.data.employment_history);
+            })
+            .catch((error) => {
+                console.error('Error fetching practical data:', error);
+            });
+    }, [id]);
+
+    
+    // block for Employmant reference check *************************************************************
+    const [referenceCheck, setReferenceCheckData] = useState([]);
+       useEffect(() => {
+        axios.get(`${apiBaseUrl}/employees/edit_reference_employee/${id}`)
+            .then((res) => {
+               
+                setReferenceCheckData(res.data.reference_check); // Assuming "education_history" is correct
+        // console.log("dataa", ' ', res.data.reference_check);
+            })
+            .catch((error) => {
+                console.error('Error fetching practical data:', error);
+            });
+    }, [id]);
 
     // /**   Block for document preview  */
-    const [candidateDocument, setCandidateDocument] = useState([]);
+    const [employeeDocument, setEmployeeDocument] = useState([]);
     const [documentUrl, setDocumentUrl] = useState('');
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/hiring/technical_interview/get_candidate_document/${id}`)
+        axios.get(`${apiBaseUrl}/employees/get_employee_document/${id}`)
             .then((res) => {
-                setCandidateDocument(res.data.candidate_document);
-                //   console.log(res.data.candidate_document);
+                setEmployeeDocument(res.data.employee_document);
+                  console.log(res.data.employee_document);
             })
             .catch((error) => {
                 console.error('Error fetching candidate documents:', error);
@@ -78,13 +111,33 @@ const ShowEmployee = () => {
 
     const handlePreviewClick = (description) => {
         // Assuming the documents are stored in a specific folder on the server      
-        const absoluteUrl = `${docBaseUrl}/hiring/technical/${description}`;
+        const absoluteUrl = `${docBaseUrl}/employees/personal/${description}`;
         //   console.log('absoluteUrl', absoluteUrl);
         // Update the state with the document URL
         setDocumentUrl(absoluteUrl);
 
     };
+    //handling spinner
+      const [showSpinner, setShowSpinner] = useState(false);
 
+  const handleLinkClick = async () => {
+    // Show the spinner
+    setShowSpinner(true);
+
+    try {
+      // Simulate an asynchronous operation (e.g., fetching the download link)
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Replace this with your actual link logic
+      window.location.href = `${import.meta.env.BASE_URL}employees/personal/download_employee/` + formData.id;
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      // Hide the spinner when the operation is complete (success or failure)
+      setShowSpinner(false);
+    }
+    };
+    
     return (
         <div>
             <Helmet>
@@ -124,8 +177,8 @@ const ShowEmployee = () => {
                                 <table className="ti-custom-table border-0">
                                     <tbody>
                                         <tr className="">
-                                            <td className="font-medium !p-2">
-                                                Job Title
+                                            <td className="font-medium !p-2 text-black">
+                                                Position Applied For
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
@@ -133,59 +186,96 @@ const ShowEmployee = () => {
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-bold !p-2 ">
-                                                Date
+                                            <td className="font-bold !p-2 text-black">
+                                                Name in English
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
-                                                {formData.date}
+                                                {formData.employee_name}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-medium !p-2">
-                                                Cost Center Name
+                                            <td className="font-medium !p-2 text-black">
+                                                Name in other Language
                                                 <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(if any)</span></p>
                                             </td>
                                             <td className="!p-2">:</td>
-                                            <td className="!p-2">{formData.cost_center}</td>
+                                            <td className="!p-2">{formData.name_language}</td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-medium !p-2">
-                                                Cost Center No.
-                                                <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(if have cost center)</span></p>
+                                            <td className="font-medium !p-2 text-black">
+                                                Present Address
+                                                {/* <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(if have cost center)</span></p> */}
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
-                                                {formData.cost_number}
+                                                {formData.present_address}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-medium !p-2">
-                                                Candidate name.
+                                            <td className="font-medium !p-2 text-black">
+                                                Nationality
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
-                                                {formData.candidate_name}
+                                                {formData.nationality}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-medium !p-2">
-                                                Interviewer Name
+                                            <td className="font-medium !p-2 text-black">
+                                                Telephone No Home
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
-                                                {formData.interviewer_name}
+                                                {formData.telephone_home}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-medium !p-2">
-                                                Recommended Job Title
+                                            <td className="font-medium !p-2 text-black">
+                                                Telephone Office
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2">
+                                                {formData.telephone_office}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="font-medium !p-2 text-black">
+                                                Mobile number
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2">
+                                                {formData.mobile_number}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="font-medium !p-2 text-black">
+                                                Email Address
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-secondary">
+                                                {formData.email}
+                                            </td>
+                                        </tr>
+                                        {formData.national_id > 1 ? (<tr className="!border-0">
+                                            <td className="font-medium !p-2 text-black">
+                                                National ID No
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-info">
-                                                {formData.recommended_title}
+                                                {formData.national_id}
                                             </td>
-                                        </tr>
+                                        </tr>) : (<tr className="!border-0">
+                                            <td className="font-medium !p-2 text-black">
+                                                Passport ID No
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-info">
+                                                {formData.passport_id}
+                                            </td>
+                                        </tr>)}
+
+
                                     </tbody>
                                 </table>
                             </div>
@@ -203,27 +293,27 @@ const ShowEmployee = () => {
                             >
                                 <button
                                     type="button"
-                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300 active"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300 active"
                                     id="profile-item-1"
                                     data-hs-tab="#profile-1"
                                     aria-controls="profile-1"
                                     role="tab"
                                 ><i className="ti ti-user-circle font-semibold"></i>
-                                    Candidate Profile
+                                    Personal Details
                                 </button>
                                 <button
                                     type="button"
-                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                     id="profile-item-2"
                                     data-hs-tab="#profile-2"
                                     aria-controls="profile-2"
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
-                                    Candidate Competencies
+                                    Employment Histories
                                 </button>
                                 <button
                                     type="button"
-                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                     id="profile-item-3"
                                     data-hs-tab="#profile-3"
                                     aria-controls="profile-3"
@@ -241,76 +331,160 @@ const ShowEmployee = () => {
                                 role="tabpanel"
                                 aria-labelledby="profile-item-1"
                             >
-                                <h5 className="box-title mb-3">
-
-                                    Ranking Creteiral
-                                </h5>
+                                
                                 <div className="overflow-auto">
                                     <table className="ti-custom-table border-0 whitespace-nowrap ti-head-primary">
                                         <thead>
-                                            <th>Ranking</th>
-                                            <th></th>
-                                            <th>Description</th>
-
+                                            <tr >
+                                                <th colSpan={1} className="text-center text-black font-bold text-medium">Name</th>
+                                                <th colSpan={1} className="text-center text-black font-bold text-medium">Status</th>
+                                                <th colSpan={2} className="text-center text-black font-bold text-medium">Name/Remark</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className="">
-                                                <td className="!p-2 font-bold  dark:!text-white/70">
-                                                    Outstanding
-
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                    Exceeding Expectation as Role Model
-                                                </td>
-                                            </tr>
                                             <tr className="!border-0">
-                                                <td className="!p-2 font-bold  dark:!text-black/70">
-                                                    V. Good
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Military Service
                                                 </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                    Exceeding expectation
-                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.military_service}</label></td>
+                                                {formData.military_service == 'Completed' &&
+                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Number &nbsp;{formData.military_number}</td>)
+                                                }
+
 
                                             </tr>
                                             <tr className="!border-0">
-                                                <td className="!p-2 font-bold  dark:!text-white/70">
-                                                    Good
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Marital Status
+                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.marital}</label></td>
+                                                {formData.marital === "Married" && (
+                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Spause name &nbsp;{formData.spause_name}</td>
+                                                )
 
+                                                }
+                                            </tr>
+
+                                            <tr className="!border-0">
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Gender
                                                 </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                    Meet Expectation
-                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.genders}</label></td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}></td>
 
                                             </tr>
                                             <tr className="!border-0">
-                                                <td className="!p-2 font-medium  dark:!text-white/70">
-                                                    Average
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Do you have Driving<br />License?
+                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.driving}</label></td>
+                                                {formData.driving !== 'None' &&
+                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Place issued&nbsp;{formData.place_issued}</td>)
+                                                }
+                                            </tr>
 
+                                            <tr className="!border-0">
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Do you Suffer from<br />any Chronic disease?
                                                 </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                    Below Expectation
-                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.chronic_disease}</label></td>
+                                                {formData.chronic_disease === 'Yes' &&
+                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>{formData.chronic_remark}</td>)
+                                                }
+
 
                                             </tr>
                                             <tr className="!border-0">
-                                                <td className="!p-2 font-medium  dark:!text-white/70">
-                                                    Below Average
-
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Did you have any Surgery<br />Operation before?
                                                 </td>
-                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="surgery_operation" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.surgery_operation}</label></td>
+                                                {
+                                                    formData.surgery_operation === 'Yes' && (
+                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>{formData.surgery_remark}</td>
+                                                    )
+                                                }
+
+
+                                            </tr>
+                                            <tr className="!border-0">
+                                                <td className="!p-2 text-black font-bold text-medium " colSpan={1}>
+                                                    Do you have any relatibe<br /> inside the Company?
+                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.relative_working}</label></td>
+                                                {formData.relative_working === 'Yes' &&
+                                                    (
+                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Name: &nbsp;{formData.relative_name}</td>
+                                                    )
+                                                }
+
+
+                                            </tr>
+                                            {formData.relative_working === 'Yes' &&
+                                                (
+
+                                                    <tr className="!border-0">
+                                                        <td className="!p-2 text-black font-bold text-medium " colSpan={1}>
+                                                            Relation?
+                                                        </td>
+                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                            {formData.relative_inside}</td>
+
+                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Departmen: &nbsp;{formData.former_department}</td>
+
+                                                    </tr>
+
+
+                                                )
+                                            }
+                                            <tr className="!border-0">
+                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                    Have you ever been employed<br />by this company before?
+                                                </td>
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
+                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="employed_before" defaultChecked />
+                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.employed_before}</label></td>
+                                                {formData.employed_before === 'Yes' &&
+                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70">From: &nbsp;&nbsp;{formData.from_date}</td>)
+                                                }
+                                            </tr >
+                                            {formData.employed_before === 'Yes' && (
+                                                <tr className="!border-0 text-black font-bold text-medium">
+                                                    <td>To</td>
+                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70">
+                                                        {formData.to_date}
+                                                    </td>
+                                                    {/* <td className="!p-2 !text-gray-500 dark:!text-white/70">Reference Name:  </td> */}
+                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70">Position: &nbsp;&nbsp;{formData.position}</td>
+                                                </tr>
+                                            )}
+                                            <tr className="!border-0 text-black font-bold text-medium">
+                                                <td>When Would you be<br />able to start, if <br />you were offered a position</td>
                                                 <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                    Doesn’t meet Expectation
+                                                    {formData.readiness_employee}
                                                 </td>
-
+                                                {/* <td className="!p-2 !text-gray-500 dark:!text-white/70">Reference Name:  </td> */}
+                                                <td className="!p-2 !text-gray-500 dark:!text-white/70"></td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                    <br />
 
+                                </div>
                             </div>
                             <div
                                 id="profile-2"
@@ -324,243 +498,102 @@ const ShowEmployee = () => {
 
                                     </div>
                                     {/* <div className="space-y-2"></div> */}
-
-                                    <div className="table-bordered rounded-md overflow-auto">
-                                        <table className="ti-custom-table ti-custom-table-head">
+                                    
+                                    <div className="table-bordered rounded-md overflow-auto" >
+                                        <h2 className="text-black front-medium">Education history</h2>
+                                        <table className="ti-custom-table ti-custom-table-head" >
                                             <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
-                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4">
-                                                        Factors
-                                                    </th>
-                                                    <th scope="col" colSpan={1} className="text-center">Ranking Creterial</th>
-                                                    <th scope="col" colSpan={1} className="!text-end">Comments</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#c1c2c2' }}> Education Level </th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Institute name</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Graduation Year</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Major</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Based In (Degree in)</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td className="">Technical Skills
-                                                        <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(Certificates, Courses, Softwares…etc.)</span></p>
-                                                    </td>
-                                                    <td colSpan={1} className="interactive">
-                                                        {/* <div className = "grid sm:grid-cols-3 gap-2"> */}
-                                                        <label className="p-3 flex w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70" htmlFor="hs-checked-checkbox" >
-                                                            <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="hs-checked-checkbox-1" defaultChecked />
-                                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.technical_skill}</span>
-                                                        </label>
-                                                        {/* </div> */}
-
-                                                    </td>
-
-                                                    <td><input className='ti-form-input' type="text"
-                                                        placeholder="Remark"
-                                                        name="interactive_communication_remark" value={formData.skill_remark}
-                                                        onChange={(e) => handleInputChange('skill_remark', e.target.value)} />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="">Relevant Technical Experience
-
-                                                    </td>
-                                                    <td colSpan={1} className="interactive">
-                                                        {/* <div className = "grid sm:grid-cols-3 gap-2"> */}
-                                                        <label className="p-3 flex w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70" htmlFor="hs-checked-checkbox" >
-                                                            <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="hs-checked-checkbox-1" defaultChecked />
-                                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.relevant_experience}</span>
-                                                        </label>
-                                                        {/* </div> */}
-
-                                                    </td>
-
-                                                    <td><input className='ti-form-input' type="text"
-                                                        placeholder="Remark"
-                                                        name="interactive_communication_remark" value={formData.experience_remark}
-                                                        onChange={(e) => handleInputChange('experience_remark', e.target.value)} />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="">Knowledge of Tools and Equipment
-
-                                                    </td>
-                                                    <td colSpan={1} className="interactive">
-                                                        {/* <div className = "grid sm:grid-cols-3 gap-2"> */}
-                                                        <label className="p-3 flex w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70" htmlFor="hs-checked-checkbox" >
-                                                            <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="hs-checked-checkbox-1" defaultChecked />
-                                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.knowledge_equipment}</span>
-                                                        </label>
-                                                        {/* </div> */}
-
-                                                    </td>
-
-                                                    <td><input className='ti-form-input' type="text"
-                                                        placeholder="Remark"
-                                                        name="interactive_communication_remark" value={formData.knowledge_equipment_remark}
-                                                        onChange={(e) => handleInputChange('equipment_remark', e.target.value)} />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="">Quality and Safety awareness
-
-                                                    </td>
-                                                    <td colSpan={1} className="interactive">
-                                                        {/* <div className = "grid sm:grid-cols-3 gap-2"> */}
-                                                        <label className="p-3 flex w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70" htmlFor="hs-checked-checkbox" >
-                                                            <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="hs-checked-checkbox-1" defaultChecked />
-                                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.quality_awareness}</span>
-                                                        </label>
-                                                        {/* </div> */}
-
-                                                    </td>
-
-                                                    <td><input className='ti-form-input' type="text"
-                                                        placeholder="Remark"
-                                                        name="interactive_communication_remark" value={formData.awareness_remark}
-                                                        onChange={(e) => handleInputChange('skill_remark', e.target.value)} ></input>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="">Physical Capability
-
-                                                    </td>
-                                                    <td colSpan={1} className="interactive">
-                                                        {/* <div className = "grid sm:grid-cols-3 gap-2"> */}
-                                                        <label className="p-3 flex w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70" htmlFor="hs-checked-checkbox" >
-                                                            <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="hs-checked-checkbox-1" defaultChecked />
-                                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.physical_capability}</span>
-                                                        </label>
-                                                        {/* </div> */}
-
-                                                    </td>
-
-                                                    <td><input className='ti-form-input' type="text"
-                                                        placeholder="Remark"
-                                                        name="interactive_communication_remark" value={formData.capability_remark}
-                                                        onChange={(e) => handleInputChange('capability_remark', e.target.value)} />
-                                                    </td>
-                                                </tr>
-
-
-                                                {/* {Array.isArray(practicalData) && practicalData.map((practical, index) => (
-
+                                                {Array.isArray(educationData) && educationData.map((education, index) => (
+                                        
                                                     <tr key={index}>
-
-                                                        <th className="">
-                                                            <span className="font-semibold ">Practical Test {index + 1}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {practical.test_marks}</span>
-
-                                                        </th>
-
-                                                        <td colSpan={1} className="interactive">
-                                                            <label className="p-3 flex w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70" htmlFor="hs-checked-checkbox" >
-                                                                <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="hs-checked-checkbox-1" defaultChecked />
-                                                                <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{practical.ranking_creterial}</span>
-                                                            </label>
+                                                        <td colSpan={1}  className="">{education.education}</td>
+                                                       <td colSpan={1}>
+                                                            {education.institute_name === "Other" ? (
+                                                                <span>{education.other_institute}</span>
+                                                            ) : (
+                                                                <span>{education.institute_name}</span>
+                                                            )}
                                                         </td>
+                                                        <td colSpan={1} >{education.graduation_year}</td>
+                                                        <td colSpan={1} >{education.major}</td>
+                                                        <td colSpan={1} >{education.course}</td>
 
-                                                        <td><input className='ti-form-input' type="text"
-                                                            placeholder="Remark"
-                                                            name="practicl_test_remark" value={practical.practicl_test_remark}
-                                                            onChange={(e) => handleInputChange('capability_remark', e.target.value)} />
-                                                        </td>
                                                     </tr>
-                                                ))} */}
-
-
-
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                
+                                    {/* Employment History */}
+                                    <div className="table-bordered rounded-md overflow-auto">
+                                         <h3 className="text-black front-medium">Employment history starting with your most recent employer // Company can conduct reference check</h3>
+                                        <table className="ti-custom-table ti-custom-table-head" >
+                                            <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
-                                                    <th className="" colSpan={1}>
-                                                        Overall Rating
+                                                     <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>
+                                                        Company name
                                                     </th>
-                                                    <td colSpan={1} className="text-center">
-
-                                                        {formData.overall_rating === "N/A" ? (
-                                                            <button className="relative py-2 px-3 inline-flex justify-center items-center gap-1 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-0 focus:ring-red-500 focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">
-                                                                N/A
-                                                                <span className="badge py-0.5 px-1.5 bg-red-800 text-white">0</span>
-                                                            </button>
-                                                        )
-                                                            : formData.overall_rating === "Below Average" ? (
-                                                                <button className="relative py-2 px-3 inline-flex justify-center items-center gap-1 rounded-md border border-transparent font-semibold bg-orange-500 text-white hover:bg-orange-600 focus:outline-none focus:ring-0 focus:ring-orange-500 focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">
-                                                                    Below Average
-                                                                    <span className="badge py-0.5 px-1.5 bg-orange-800 text-white">1</span>
-                                                                </button>
-                                                            )
-                                                                : formData.overall_rating === "Average" ? (
-
-                                                                    <button className="relative py-2 px-3 inline-flex justify-center items-center gap-1 rounded-md border border-transparent font-semibold bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:ring-0 focus:ring-yellow-500 focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">
-                                                                        Average
-                                                                        <span className="badge py-0.5 px-1.5 bg-yellow-800 text-white">2</span>
-                                                                    </button>
-                                                                )
-                                                                    : formData.overall_rating === "Good" ? (
-                                                                        <button className="relative py-2 px-3 inline-flex justify-center items-center gap-1 rounded-md border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">
-                                                                            Good
-                                                                            <span className="badge py-0.5 px-1.5 bg-black/50 text-white">3</span>
-                                                                        </button>
-                                                                    )
-                                                                        : formData.overall_rating === "V.Good" ? (
-                                                                            <button className="relative py-2 px-3 inline-flex justify-center items-center gap-1 rounded-md border border-transparent font-semibold bg-secondary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">
-                                                                                V.Good
-                                                                                <span className="badge py-0.5 px-1.5 bg-black/50 text-white">4</span>
-                                                                            </button>
-                                                                        )
-                                                                            : formData.overall_rating === "Outstanding" ? (
-
-                                                                                <button className="relative py-2 px-3 inline-flex justify-center items-center gap-1 rounded-md border border-transparent font-semibold bg-success text-white hover:bg-secondary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">
-                                                                                    Outstanding
-                                                                                    <span className="badge py-0.5 px-1.5 bg-black/50 text-white">5</span>
-                                                                                </button>
-                                                                            ) : formData.overall_rating === null}</td>
-
-
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>From</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>To</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Position</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }} >Salary</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                                {Array.isArray(employmentData) && employmentData.map((employment, index) => (
+                                        
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td colSpan={1} className="">{employment.company_name}</td>
+                                                       <td colSpan={1}>{employment.from_date}</td>
+                                                        <td colSpan={1} >{employment.to_date}</td>
+                                                        <td colSpan={1} >{employment.position}</td>
+                                                        <td colSpan={1} >{employment.salary}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {/* Employment Reference check */}
+                                  
+                                    <div className="table-bordered rounded-md overflow-auto">
+                                          <h3 className="text-black front-medium">Employment Reference Check / Please Share your Previos Direct MAnager Contact Details</h3>
+                                        <table className="ti-custom-table ti-custom-table-head" >
+                                            <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
-                                                    <td className="" rowSpan={2}></td>
-                                                    <td className="">Final Recommendation
-                                                    </td>
-                                                    <td colSpan={1}>
-                                                        <input
-                                                            type="checkbox"
-                                                            className="ti-form-checkbox mt-0.5 pointer-events-none"
-                                                            id="final_recommendations-Accepted"
-                                                            checked={
-                                                                formData.final_recommendation ===
-                                                                "Accepted"
-                                                            }
-                                                            disabled
-                                                        />
-                                                        <label
-                                                            htmlFor="final_recommendations-Accepted"
-                                                            className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
-                                                        >
-                                                            Accepted
-                                                        </label>
-                                                        &nbsp;&nbsp;&nbsp;
-                                                        <input
-                                                            type="checkbox"
-                                                            className="ti-form-checkbox mt-0.5 pointer-events-none"
-                                                            id="final_recommendations-Not-Accepted"
-                                                            checked={
-                                                                formData.final_recommendation ===
-                                                                "Not Accepted"
-                                                            }
-                                                            disabled
-                                                        />
-                                                        <label
-                                                            htmlFor="final_recommendations-Not-Accepted"
-                                                            className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
-                                                        >
-                                                            Not Accepted
-                                                        </label>
-
-                                                    </td>
-
-                                                    <td><input className='ti-form-input' type="text"
-                                                        placeholder="Remark"
-                                                        name="practicl_test_remark" value={formData.practicl_test_remark}/>
-                                                        
-                                                    </td>
-
-
+                                                     <th style={{ backgroundColor: '#75c7ce' }}>S/No</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#75c7ce' }}>
+                                                        Referee name
+                                                    </th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Title</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Address</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Contact</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Email</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                                {Array.isArray(referenceCheck) && referenceCheck.map((reference, index) => (
+                                        
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td colSpan={1}  className="">{reference.referee_name}</td>
+                                                       <td colSpan={1}> {reference.referee_title}</td>
+                                                        <td colSpan={1} >{reference.referee_address}</td>
+                                                        <td colSpan={1} >{reference.referee_contact}</td>
+                                                        <td colSpan={1} >{reference.referee_email}</td>
+
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>
@@ -590,9 +623,26 @@ const ShowEmployee = () => {
                                                         </svg>
                                                     </div>
                                                 </div>
-                                                <div className="md:ltr:ml-auto md:rtl:mr-auto">
-                                                    <Link to={`${import.meta.env.BASE_URL}hiring/recruitments/download_candidate/` + formData.id} className="ti-btn  bg-success text-xs m-0 ti-btn-soft p-2 font-semibold !text-gray-500 !text-white/70"><i className="ti ti-download"></i>Download Technical Attachment</Link>
-                                                </div>
+                                                <div className="text-center" id="spinner" style={{ display: showSpinner ? 'block' : 'none' }}>
+                                            <div
+                                            className="ti-spinner text-primary"
+                                            role="status"
+                                            aria-label="loading"
+                                            style={{ width: '100px', height: '100px' }} // Adjust the size as needed
+                                            >
+                                            <span className="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="md:ltr:ml-auto md:rtl:mr-auto">
+                                            <button
+                                            onClick={handleLinkClick}
+                                            className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
+                                            style={{ backgroundColor: '#ea95b2' }}
+                                            >
+                                            <i className="ti ti-cloud-download"></i> Add Download Person Details
+                                            </button>
+                                        </div>
                                             </div>
                                         </div>
                                         <div className="overflow-auto">
@@ -604,13 +654,12 @@ const ShowEmployee = () => {
                                                         <th scope="col">Files</th>
                                                         <th scope="col">Size</th>
                                                         <th scope="col">Modified Date</th>
-                                                        {/* <th scope="col" className="!min-w-[10rem]">Members</th> */}
                                                         <th scope="col" className="!text-end">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {Object.keys(candidateDocument).length > 0 ? (
-                                                        Object.values(candidateDocument).map((document, index) => (
+                                                    {Object.keys(employeeDocument).length > 0 ? (
+                                                        Object.values(employeeDocument).map((document, index) => (
                                                             <tr key={document.id}>
                                                                 <td>{index + 1}</td>
                                                                 <td className="font-medium">
@@ -627,7 +676,7 @@ const ShowEmployee = () => {
                                                                     <div id="hs-overlay-top" className="hs-overlay hidden ti-offcanvas ti-offcanvas-top" tabIndex={-2}>
                                                                         <div className="ti-offcanvas-header">
                                                                             <h3 className="ti-offcanvas-title">
-                                                                                Candidate Document
+                                                                               Employee Person Document
                                                                             </h3>
                                                                             <button type="button" className="ti-btn flex-shrink-0 h-8 w-8 p-0 transition-none text-gray-500 hover:text-gray-700 focus:ring-gray-400 focus:ring-offset-white dark:text-white/70 dark:hover:text-white/80 dark:focus:ring-white/10 dark:focus:ring-offset-white/10" data-hs-overlay="#hs-overlay-top">
                                                                                 <span className="sr-only">Close modal</span>
@@ -648,7 +697,7 @@ const ShowEmployee = () => {
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div className="py-1 ltr:float-right rtl:float-left">
+                                        {/* <div className="py-1 ltr:float-right rtl:float-left">
                                             <nav className="flex items-center space-x-2 rtl:space-x-reverse">
                                                 <Link className="text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" to="#">
                                                     <span aria-hidden="true">«</span>
@@ -662,7 +711,7 @@ const ShowEmployee = () => {
                                                     <span aria-hidden="true">»</span>
                                                 </Link>
                                             </nav>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
 
