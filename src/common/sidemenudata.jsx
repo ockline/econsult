@@ -94,7 +94,7 @@ export const MenuItems = [
 				id: 14, icon: EmployeesSvg, title: "Employee Registrations", type: "sub", active: false, selected: false, children: [
 
 					{ id: 15, path: `${import.meta.env.BASE_URL}employees/personal/employee_list`, type: "link", active: false, selected: false, title: "Personnel Details" },
-					{ id: 16, path: `${import.meta.env.BASE_URL}employees/requireddocuments`, type: "link", active: false, selected: false, title: "Required Documents" },
+					{ id: 16, path: `${import.meta.env.BASE_URL}employees/document/uploaded`, type: "link", active: false, selected: false, title: "Required Documents" },
 					{ id: 17, path: `${import.meta.env.BASE_URL}employees/socialrecords`, type: "link", active: false, selected: false, title: "Social Records" },
 					{ id: 18, path: `${import.meta.env.BASE_URL}employees/inductiontrainning`, type: "link", active: false, selected: false, title: "Induction Training" },
 					{ id: 19, path: `${import.meta.env.BASE_URL}employees/idapplications`, type: "link", active: false, selected: false, title: "Id Application" },

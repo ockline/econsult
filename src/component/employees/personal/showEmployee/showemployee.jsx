@@ -70,24 +70,24 @@ const ShowEmployee = () => {
     useEffect(() => {
         axios.get(`${apiBaseUrl}/employees/edit_employment_employee/${id}`)
             .then((res) => {
-               
+
                 setEmploymentData(res.data.employment_history); // Assuming "education_history" is correct
-        // console.log("dataa", ' ', res.data.employment_history);
+                // console.log("dataa", ' ', res.data.employment_history);
             })
             .catch((error) => {
                 console.error('Error fetching practical data:', error);
             });
     }, [id]);
 
-    
+
     // block for Employmant reference check *************************************************************
     const [referenceCheck, setReferenceCheckData] = useState([]);
-       useEffect(() => {
+    useEffect(() => {
         axios.get(`${apiBaseUrl}/employees/edit_reference_employee/${id}`)
             .then((res) => {
-               
+
                 setReferenceCheckData(res.data.reference_check); // Assuming "education_history" is correct
-        // console.log("dataa", ' ', res.data.reference_check);
+                // console.log("dataa", ' ', res.data.reference_check);
             })
             .catch((error) => {
                 console.error('Error fetching practical data:', error);
@@ -102,7 +102,7 @@ const ShowEmployee = () => {
         axios.get(`${apiBaseUrl}/employees/get_employee_document/${id}`)
             .then((res) => {
                 setEmployeeDocument(res.data.employee_document);
-                  console.log(res.data.employee_document);
+                console.log(res.data.employee_document);
             })
             .catch((error) => {
                 console.error('Error fetching candidate documents:', error);
@@ -118,26 +118,26 @@ const ShowEmployee = () => {
 
     };
     //handling spinner
-      const [showSpinner, setShowSpinner] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
 
-  const handleLinkClick = async () => {
-    // Show the spinner
-    setShowSpinner(true);
+    const handleLinkClick = async () => {
+        // Show the spinner
+        setShowSpinner(true);
 
-    try {
-      // Simulate an asynchronous operation (e.g., fetching the download link)
-      await new Promise((resolve) => setTimeout(resolve, 100));
+        try {
+            // Simulate an asynchronous operation (e.g., fetching the download link)
+            await new Promise((resolve) => setTimeout(resolve, 100));
 
-      // Replace this with your actual link logic
-      window.location.href = `${import.meta.env.BASE_URL}employees/personal/download_employee/` + formData.id;
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      // Hide the spinner when the operation is complete (success or failure)
-      setShowSpinner(false);
-    }
+            // Replace this with your actual link logic
+            window.location.href = `${import.meta.env.BASE_URL}employees/personal/download_employee/` + formData.id;
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            // Hide the spinner when the operation is complete (success or failure)
+            setShowSpinner(false);
+        }
     };
-    
+
     return (
         <div>
             <Helmet>
@@ -331,7 +331,7 @@ const ShowEmployee = () => {
                                 role="tabpanel"
                                 aria-labelledby="profile-item-1"
                             >
-                                
+
                                 <div className="overflow-auto">
                                     <table className="ti-custom-table border-0 whitespace-nowrap ti-head-primary">
                                         <thead>
@@ -498,7 +498,7 @@ const ShowEmployee = () => {
 
                                     </div>
                                     {/* <div className="space-y-2"></div> */}
-                                    
+
                                     <div className="table-bordered rounded-md overflow-auto" >
                                         <h2 className="text-black front-medium">Education history</h2>
                                         <table className="ti-custom-table ti-custom-table-head" >
@@ -513,10 +513,10 @@ const ShowEmployee = () => {
                                             </thead>
                                             <tbody>
                                                 {Array.isArray(educationData) && educationData.map((education, index) => (
-                                        
+
                                                     <tr key={index}>
-                                                        <td colSpan={1}  className="">{education.education}</td>
-                                                       <td colSpan={1}>
+                                                        <td colSpan={1} className="">{education.education}</td>
+                                                        <td colSpan={1}>
                                                             {education.institute_name === "Other" ? (
                                                                 <span>{education.other_institute}</span>
                                                             ) : (
@@ -532,14 +532,14 @@ const ShowEmployee = () => {
                                             </tbody>
                                         </table>
                                     </div>
-                                
+
                                     {/* Employment History */}
                                     <div className="table-bordered rounded-md overflow-auto">
-                                         <h3 className="text-black front-medium">Employment history starting with your most recent employer // Company can conduct reference check</h3>
+                                        <h3 className="text-black front-medium">Employment history starting with your most recent employer // Company can conduct reference check</h3>
                                         <table className="ti-custom-table ti-custom-table-head" >
                                             <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
-                                                     <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
+                                                    <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
                                                     <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>
                                                         Company name
                                                     </th>
@@ -551,11 +551,11 @@ const ShowEmployee = () => {
                                             </thead>
                                             <tbody>
                                                 {Array.isArray(employmentData) && employmentData.map((employment, index) => (
-                                        
+
                                                     <tr key={index}>
                                                         <td>{index + 1}</td>
                                                         <td colSpan={1} className="">{employment.company_name}</td>
-                                                       <td colSpan={1}>{employment.from_date}</td>
+                                                        <td colSpan={1}>{employment.from_date}</td>
                                                         <td colSpan={1} >{employment.to_date}</td>
                                                         <td colSpan={1} >{employment.position}</td>
                                                         <td colSpan={1} >{employment.salary}</td>
@@ -565,13 +565,13 @@ const ShowEmployee = () => {
                                         </table>
                                     </div>
                                     {/* Employment Reference check */}
-                                  
+
                                     <div className="table-bordered rounded-md overflow-auto">
-                                          <h3 className="text-black front-medium">Employment Reference Check / Please Share your Previos Direct MAnager Contact Details</h3>
+                                        <h3 className="text-black front-medium">Employment Reference Check / Please Share your Previos Direct MAnager Contact Details</h3>
                                         <table className="ti-custom-table ti-custom-table-head" >
                                             <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
-                                                     <th style={{ backgroundColor: '#75c7ce' }}>S/No</th>
+                                                    <th style={{ backgroundColor: '#75c7ce' }}>S/No</th>
                                                     <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#75c7ce' }}>
                                                         Referee name
                                                     </th>
@@ -583,11 +583,11 @@ const ShowEmployee = () => {
                                             </thead>
                                             <tbody>
                                                 {Array.isArray(referenceCheck) && referenceCheck.map((reference, index) => (
-                                        
+
                                                     <tr key={index}>
                                                         <td>{index + 1}</td>
-                                                        <td colSpan={1}  className="">{reference.referee_name}</td>
-                                                       <td colSpan={1}> {reference.referee_title}</td>
+                                                        <td colSpan={1} className="">{reference.referee_name}</td>
+                                                        <td colSpan={1}> {reference.referee_title}</td>
                                                         <td colSpan={1} >{reference.referee_address}</td>
                                                         <td colSpan={1} >{reference.referee_contact}</td>
                                                         <td colSpan={1} >{reference.referee_email}</td>
@@ -607,7 +607,8 @@ const ShowEmployee = () => {
                                 className="hidden text-center"
                                 role="tabpanel"
                                 aria-labelledby="profile-item-4"
-                            ><div className="box">
+                            >
+                                <div className="box">
                                     <div className="box-header">
                                         <h5 className="box-title">Recent Files</h5>
                                     </div>
@@ -624,25 +625,25 @@ const ShowEmployee = () => {
                                                     </div>
                                                 </div>
                                                 <div className="text-center" id="spinner" style={{ display: showSpinner ? 'block' : 'none' }}>
-                                            <div
-                                            className="ti-spinner text-primary"
-                                            role="status"
-                                            aria-label="loading"
-                                            style={{ width: '100px', height: '100px' }} // Adjust the size as needed
-                                            >
-                                            <span className="sr-only">Loading...</span>
-                                            </div>
-                                        </div>
+                                                    <div
+                                                        className="ti-spinner text-primary"
+                                                        role="status"
+                                                        aria-label="loading"
+                                                        style={{ width: '100px', height: '100px' }} // Adjust the size as needed
+                                                    >
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
 
-                                        <div className="md:ltr:ml-auto md:rtl:mr-auto">
-                                            <button
-                                            onClick={handleLinkClick}
-                                            className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
-                                            style={{ backgroundColor: '#ea95b2' }}
-                                            >
-                                            <i className="ti ti-cloud-download"></i> Add Download Person Details
-                                            </button>
-                                        </div>
+                                                <div className="md:ltr:ml-auto md:rtl:mr-auto">
+                                                    <button
+                                                        onClick={handleLinkClick}
+                                                        className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
+                                                        style={{ backgroundColor: '#ea95b2' }}
+                                                    >
+                                                        <i className="ti ti-cloud-download"></i> Add Download Person Details
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="overflow-auto">
@@ -676,7 +677,7 @@ const ShowEmployee = () => {
                                                                     <div id="hs-overlay-top" className="hs-overlay hidden ti-offcanvas ti-offcanvas-top" tabIndex={-2}>
                                                                         <div className="ti-offcanvas-header">
                                                                             <h3 className="ti-offcanvas-title">
-                                                                               Employee Person Document
+                                                                                Employee Person Document
                                                                             </h3>
                                                                             <button type="button" className="ti-btn flex-shrink-0 h-8 w-8 p-0 transition-none text-gray-500 hover:text-gray-700 focus:ring-gray-400 focus:ring-offset-white dark:text-white/70 dark:hover:text-white/80 dark:focus:ring-white/10 dark:focus:ring-offset-white/10" data-hs-overlay="#hs-overlay-top">
                                                                                 <span className="sr-only">Close modal</span>

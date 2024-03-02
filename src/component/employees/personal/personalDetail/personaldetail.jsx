@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import {fetchEmployeeDetails } from "../../../../common/employeesdata";
+import { fetchEmployeeDetails } from "../../../../common/employeesdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 
@@ -145,26 +145,28 @@ const PersonalDetails = () => {
                                             <td className="font-semibold">{employee.employee_name}</td>
                                             <td>{employee.job_title}</td>
                                             <td>{employee.mobile_number} </td>
-                                            <td>{employee.progressive_stage === 7 ? (
-                                                <span className="badge bg-success text-white">Registration Completed</span>
-                                            ) : (
-                                                <span className="badge bg-warning text-white">{employee.stage}</span>
-                                            )}
+                                            <td>
+                                                {employee.progressive_stage === 1 ? (
+                                                    <span className="badge bg-warning text-white">Employee Details</span>
+                                                ) : employee.progressive_stage === 2 ? (
+                                                    <span className="badge bg-info text-white">Supportive Document</span>
+                                                ) : employee.progressive_stage === 3 ? (
+                                                    <span className="badge bg-secondary text-white">Social Record</span>
+                                                ) : employee.progressive_stage === 4 ? (
+                                                    <span className="badge bg-primary text-white">Induction Training</span>
+                                                ) : employee.progressive_stage === 5 ? (
+                                                    <span className="badge bg-purple-500 text-white">Contract</span>
+                                                ) : employee.progressive_stage === 6 ? (
+                                                    <span className="badge bg-green-500 text-white">Person ID</span>
+                                                ) : (<span className="badge bg-success text-white">Registration Completed</span>)
+
+                                                }
                                             </td>
                                             <td>{employee.created_at}</td>
-                                            <td>
-                                                {employee.status === 0 ? (
-                                                    <span className="badge bg-info text-white">Submitted</span>
-                                                ) : employee.status === 1 ? (
-                                                    <span className="badge bg-secondary text-white">Initiated</span>
-                                                ) : employee.status === 2 ? (
-                                                    <span className="badge bg-warning text-white">Pending</span>
-                                                ) : employee.status === 3 ? (
-                                                    <span className="badge bg-success text-white">Approved</span>
-                                                ) : (
-                                                    <span className="badge bg-danger text-white">Rejected</span>
-                                                )}
-                                            </td>
+                                           <td>{employee.progressive_stage < 3 && (
+                                                <Link to={`${import.meta.env.BASE_URL}employees/document/upload_document/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 font-md" style={{ backgroundColor: '#285f29' }}><i className="ti ti-cloud-upload"></i>Upload Document</Link>
+                                            )}</td>
+                                            
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}
                                                 <Link

@@ -18,6 +18,19 @@ export const fetchEmployeeDetails = async () => {
 };
 
 // ****************************************************************************************
+      //Employee uploaded required document
+export const fetchEmployeeUploadedDocument = async () => {
+    
+  try {
+    const res = await axios.get(`${apiBaseUrl}/employees/document/show_uploaded_document`);
+    return res.data.employee;
+  } catch (error) {
+    throw new Error('Failed to fetch employee documents: ' + error.message);
+  }
+};
+
+
+// ****************************************************************************************
       //Social Record  Details
 export const fetchSocialRecordDetails = async () => {
   try {
