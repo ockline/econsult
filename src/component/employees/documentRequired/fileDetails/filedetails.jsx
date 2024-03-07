@@ -63,18 +63,19 @@ useEffect(() => {
                 <div className="col-span-12 xl:col-span-8">
                     <div className="box">
                         <div className="box-body space-y-4">
-                            <button className="ti-btn ti-btn-success text-black" onClick={() => handlePreviewClick(employeeFile.description)}> <i className="ti ti-eye-check !text-white"></i>View</button>
+                            <button className="ti-btn ti-btn-success text-black" onClick={() => handlePreviewClick(employeeFile.description)}> <i className="ti ti-eye-check !text-white font-semibold text-medium" ></i>View file</button>
+                            <Link to={`${import.meta.env.BASE_URL}employees/document/file_manager_list/${id}`} className="ti-btn ti-btn-primary m-0 py-2 float-end"><i className="ti ti-arrow-left"></i>Back</Link>
                             {/* <img className="rounded-md" src={ALLImages('jpg17')} alt="Image Description" /> */}
                             <iframe src={documentUrl} width="100%" height="700px" title="Document Preview"></iframe>
                             <div className="sm:flex justify-between space-y-2 sm:space-y-0">
                                 <div className="flex space-x-2 rtl:space-x-reverse"><i className="ri ri-image-line text-primary p-2 leading-none bg-primary/20 rounded-md"></i><h3 className="my-auto font-bold">{employeeFile.doc_name}</h3></div>
-                                <div className="flex space-x-3 rtl:space-x-reverse">
+                                {/* <div className="flex space-x-3 rtl:space-x-reverse">
                                     <i className="ri ri-edit-2-line p-2 leading-none bg-gray-200 text-gray-500 dark:text-white/70 dark:bg-black/20 rounded-md"></i>
                                     <i className="ri ri-star-line p-2 leading-none bg-gray-200 text-gray-500 dark:text-white/70 dark:bg-black/20 rounded-md"></i>
                                     <i className="ri ri-share-line p-2 leading-none bg-gray-200 text-gray-500 dark:text-white/70 dark:bg-black/20 rounded-md"></i>
                                     <i className="ri ri-download-2-line p-2 leading-none bg-gray-200 text-gray-500 dark:text-white/70 dark:bg-black/20 rounded-md"></i>
                                     <i className="ri ri-delete-bin-6-line p-2 leading-none bg-gray-200 text-gray-500 dark:text-white/70 dark:bg-black/20 rounded-md"></i>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

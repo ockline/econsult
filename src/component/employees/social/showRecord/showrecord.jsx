@@ -10,12 +10,12 @@ import { Helmet } from "react-helmet";
 import axios from "axios";
 
 
-const ShowEmployee = () => {
+const ShowSocialRecord = () => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     //URl image
-
+   
 
     //toggle button for image
 
@@ -39,73 +39,63 @@ const ShowEmployee = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/show_employee/${id}`)
+        axios.get(`${apiBaseUrl}/employees/social/show_social/${id}`)
             .then((res) => {
                 // console.log('API Response:', res.data);  // Log the entire response
-                setEmployeeData(res.data.employee);
-                // console.log('data', res.data.employee);
-                // setAssessedCandidateData(res.data.assessed_candidate);
+                setEmployeeData(res.data.social_details);
+                // console.log('data', res.data.social_details);
+
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
     }, [id]);
 
-    //block to return Education ****************************************************************
-    const [educationData, setEducationHistoryData] = useState([]);
-
+    //block to return Relative ****************************************************************
+   const [relativeData, setRelativeDetailData] = useState([]);
+   
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/education_history/${id}`)
+        axios.get(`${apiBaseUrl}/employees/social/relative_detail/${id}`)
             .then((res) => {
-                setEducationHistoryData(res.data.education_history); // wrap the object in an array
-                // console.log("dataa", ' ', res.data.education_history);
+                setRelativeDetailData(res.data.relative_detail); // wrap the object in an array
+                // console.log("dataa", ' ', res.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching Relative detail data:', error);
+            });
+    }, [id]);
+
+
+       // Dependant updateDependanHistory   **********************************************
+
+
+    const [dependantData, setDependantDetailData] = useState([])
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/employees/social/edit_dependant_detail/${id}`)
+            .then((res) => {
+
+                setDependantDetailData(res.data.dependant_detail); // Assuming "education_history" is correct
+                // console.log("dataa", ' ', res.data.dependant_detail);
             })
             .catch((error) => {
                 console.error('Error fetching practical data:', error);
             });
     }, [id]);
 
-    // block for employement *******************************************************
-    const [employmentData, setEmploymentData] = useState([])
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/edit_employment_employee/${id}`)
-            .then((res) => {
 
-                setEmploymentData(res.data.employment_history); // Assuming "education_history" is correct
-                // console.log("dataa", ' ', res.data.employment_history);
-            })
-            .catch((error) => {
-                console.error('Error fetching practical data:', error);
-            });
-    }, [id]);
-
-
-    // block for Employmant reference check *************************************************************
-    const [referenceCheck, setReferenceCheckData] = useState([]);
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/edit_reference_employee/${id}`)
-            .then((res) => {
-
-                setReferenceCheckData(res.data.reference_check); // Assuming "education_history" is correct
-                // console.log("dataa", ' ', res.data.reference_check);
-            })
-            .catch((error) => {
-                console.error('Error fetching practical data:', error);
-            });
-    }, [id]);
-
+    
     // /**   Block for document preview  */
     const [employeeDocument, setEmployeeDocument] = useState([]);
     const [documentUrl, setDocumentUrl] = useState('');
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/get_employee_document/${id}`)
+        axios.get(`${apiBaseUrl}/employeessocial/get_social_document/${id}`)
             .then((res) => {
                 setEmployeeDocument(res.data.employee_document);
                 // console.log(res.data.employee_document);
             })
             .catch((error) => {
-                console.error('Error fetching candidate documents:', error);
+                console.error('Error fetching social record  documents:', error);
             });
     }, [id]);
 
@@ -145,20 +135,20 @@ const ShowEmployee = () => {
             </Helmet>
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Person Details</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Social Record Details</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/personal/employee_list`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/details/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                    {/* <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/personal/show_employee/${formData.id}`}>Employee Person Details
+                    <li className="text-sm">
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/show_record/${formData.id}`}>Employee Social Record Details
 
                         </a>
-                    </li> */}
+                    </li>
                 </ol>
             </div>
 
@@ -178,16 +168,7 @@ const ShowEmployee = () => {
                                     <tbody>
                                         <tr className="">
                                             <td className="font-medium !p-2 text-black">
-                                                Position Applied For
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2">
-                                                {formData.job_title}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="font-bold !p-2 text-black">
-                                                Name in English
+                                                Employee Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
@@ -195,50 +176,48 @@ const ShowEmployee = () => {
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
-                                            <td className="font-medium !p-2 text-black">
-                                                Name in other Language
-                                                <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(if any)</span></p>
+                                            <td className="font-bold !p-2 text-black">
+                                                Depertment Name
                                             </td>
                                             <td className="!p-2">:</td>
-                                            <td className="!p-2">{formData.name_language}</td>
+                                            <td className="!p-2">
+                                                {formData.department}
+                                            </td>
                                         </tr>
+                                        { formData.section !== '' && (
+
+                                            <tr className="!border-0">
+                                                <td className="font-medium !p-2 text-black">
+                                                    Section
+                                                    <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(if any)</span></p>
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2">{formData.section}</td>
+                                            </tr>
+
+                                        )}
+
                                         <tr className="!border-0">
                                             <td className="font-medium !p-2 text-black">
-                                                Present Address
+                                                National ID Number
                                                 {/* <p className="text-gray-500 dark:text-white/70 text-xs my-auto flex space-x-1 rtl:space-x-reverse"><span>(if have cost center)</span></p> */}
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
-                                                {formData.present_address}
+                                                {formData.national_id}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="font-medium !p-2 text-black">
-                                                Nationality
+                                                National ID Expiration Date
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2">
-                                                {formData.nationality}
+                                                {formData.expiration_date}
                                             </td>
                                         </tr>
-                                        <tr className="!border-0">
-                                            <td className="font-medium !p-2 text-black">
-                                                Telephone No Home
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2">
-                                                {formData.telephone_home}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="font-medium !p-2 text-black">
-                                                Telephone Office
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2">
-                                                {formData.telephone_office}
-                                            </td>
-                                        </tr>
+
+
                                         <tr className="!border-0">
                                             <td className="font-medium !p-2 text-black">
                                                 Mobile number
@@ -250,30 +229,40 @@ const ShowEmployee = () => {
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="font-medium !p-2 text-black">
-                                                Email Address
+                                                Home Phone Number
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2">
+                                                {formData.telephone_home}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="font-medium !p-2 text-black">
+                                                Personal Email Address
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-secondary">
-                                                {formData.email}
+                                                {formData.personal_email}
                                             </td>
                                         </tr>
-                                        {formData.national_id > 1 ? (<tr className="!border-0">
+                                        <tr className="!border-0">
                                             <td className="font-medium !p-2 text-black">
-                                                National ID No
+                                                Tin No
                                             </td>
                                             <td className="!p-2">:</td>
-                                            <td className="!p-2 text-info">
-                                                {formData.national_id}
+                                            <td className="!p-2 ">
+                                                {formData.tin}
                                             </td>
-                                        </tr>) : (<tr className="!border-0">
+                                        </tr>
+                                         <tr className="!border-0">
                                             <td className="font-medium !p-2 text-black">
-                                                Passport ID No
+                                                Information For Emergency
                                             </td>
                                             <td className="!p-2">:</td>
-                                            <td className="!p-2 text-info">
-                                                {formData.passport_id}
+                                            <td className="!p-2">
+                                                {formData.remark}
                                             </td>
-                                        </tr>)}
+                                        </tr>
 
 
                                     </tbody>
@@ -299,7 +288,7 @@ const ShowEmployee = () => {
                                     aria-controls="profile-1"
                                     role="tab"
                                 ><i className="ti ti-user-circle font-semibold"></i>
-                                    Personal Details
+                                    Social Details
                                 </button>
                                 <button
                                     type="button"
@@ -309,7 +298,7 @@ const ShowEmployee = () => {
                                     aria-controls="profile-2"
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
-                                    Employment Histories
+                                    Relative Details
                                 </button>
                                 <button
                                     type="button"
@@ -343,14 +332,14 @@ const ShowEmployee = () => {
                                         </thead>
                                         <tbody>
                                             <tr className="!border-0">
-                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
+                                                <td className="!p-2 text-black font-bold text-lg" colSpan={1}>
                                                     Military Service
                                                 </td>
                                                 <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
                                                     <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
                                                     <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.military_service}</label></td>
                                                 {formData.military_service == 'Completed' &&
-                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Number &nbsp;{formData.military_number}</td>)
+                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}><span className="text-black font-bold text-medium" >Number:</span>&nbsp;&nbsp;&nbsp;{formData.military_number}</td>)
                                                 }
 
 
@@ -363,123 +352,38 @@ const ShowEmployee = () => {
                                                     <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
                                                     <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.marital}</label></td>
                                                 {formData.marital === "Married" && (
-                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Spause name &nbsp;{formData.spause_name}</td>
+                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}><span className="text-black font-bold text-medium">No Children:</span>&nbsp;&nbsp;&nbsp;{formData.children_no}</td>
                                                 )
 
                                                 }
                                             </tr>
-
-                                            <tr className="!border-0">
+                                           
+                                    </tbody>
+                                    </table>
+                                           <br/><br/>
+                                    <table className="ti-custom-table border-0 whitespace-nowrap ti-head-success">
+                                        <thead>
+                                            <tr >
+                                                <th colSpan={1} className="text-center text-black font-bold text-medium">Address</th>
+                                                <th colSpan={1} className="text-center text-black font-bold text-medium">City</th>
+                                                <th colSpan={1} className="text-center text-black font-bold text-medium">District</th>
+                                                <th colSpan={1} className="text-center text-black font-bold text-medium">Postal Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="border-0">
                                                 <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
-                                                    Gender
+                                                   {formData.postal_address}
                                                 </td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.genders}</label></td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}></td>
-
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
-                                                    Do you have Driving<br />License?
-                                                </td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.driving}</label></td>
-                                                {formData.driving !== 'None' &&
-                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Place issued&nbsp;{formData.place_issued}</td>)
-                                                }
+                                                <td className="!p-2  text-black font-bold text-medium" colSpan={1}>
+                                                 {formData.city}</td>
+                                                <td className="!p-2  text-black font-bold text-medium" colSpan={1}>
+                                                    {formData.district}</td>
+                                                <td className="!p-2  text-black font-bold text-medium" colSpan={1}>
+                                                    {formData.ward}</td>
                                             </tr>
 
-                                            <tr className="!border-0">
-                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
-                                                    Do you Suffer from<br />any Chronic disease?
-                                                </td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.chronic_disease}</label></td>
-                                                {formData.chronic_disease === 'Yes' &&
-                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>{formData.chronic_remark}</td>)
-                                                }
-
-
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
-                                                    Did you have any Surgery<br />Operation before?
-                                                </td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="surgery_operation" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.surgery_operation}</label></td>
-                                                {
-                                                    formData.surgery_operation === 'Yes' && (
-                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>{formData.surgery_remark}</td>
-                                                    )
-                                                }
-
-
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 text-black font-bold text-medium " colSpan={1}>
-                                                    Do you have any relatibe<br /> inside the Company?
-                                                </td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.relative_working}</label></td>
-                                                {formData.relative_working === 'Yes' &&
-                                                    (
-                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Name: &nbsp;{formData.relative_name}</td>
-                                                    )
-                                                }
-
-
-                                            </tr>
-                                            {formData.relative_working === 'Yes' &&
-                                                (
-
-                                                    <tr className="!border-0">
-                                                        <td className="!p-2 text-black font-bold text-medium " colSpan={1}>
-                                                            Relation?
-                                                        </td>
-                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                            {formData.relative_inside}</td>
-
-                                                        <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={2}>Departmen: &nbsp;{formData.former_department}</td>
-
-                                                    </tr>
-
-
-                                                )
-                                            }
-                                            <tr className="!border-0">
-                                                <td className="!p-2 text-black font-bold text-medium" colSpan={1}>
-                                                    Have you ever been employed<br />by this company before?
-                                                </td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70" colSpan={1}>
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="employed_before" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.employed_before}</label></td>
-                                                {formData.employed_before === 'Yes' &&
-                                                    (<td className="!p-2 !text-gray-500 dark:!text-white/70">From: &nbsp;&nbsp;{formData.from_date}</td>)
-                                                }
-                                            </tr >
-                                            {formData.employed_before === 'Yes' && (
-                                                <tr className="!border-0 text-black font-bold text-medium">
-                                                    <td>To</td>
-                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        {formData.to_date}
-                                                    </td>
-                                                    {/* <td className="!p-2 !text-gray-500 dark:!text-white/70">Reference Name:  </td> */}
-                                                    <td className="!p-2 !text-gray-500 dark:!text-white/70">Position: &nbsp;&nbsp;{formData.position}</td>
-                                                </tr>
-                                            )}
-                                            <tr className="!border-0 text-black font-bold text-medium">
-                                                <td>When Would you be<br />able to start, if <br />you were offered a position</td>
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                    {formData.readiness_employee}
-                                                </td>
-                                                {/* <td className="!p-2 !text-gray-500 dark:!text-white/70">Reference Name:  </td> */}
-                                                <td className="!p-2 !text-gray-500 dark:!text-white/70"></td>
-                                            </tr>
+                                         
                                         </tbody>
                                     </table>
                                     <br />
@@ -499,33 +403,34 @@ const ShowEmployee = () => {
                                     </div>
                                     {/* <div className="space-y-2"></div> */}
 
+                                    
                                     <div className="table-bordered rounded-md overflow-auto" >
-                                        <h2 className="text-black front-medium">Education history</h2>
+                                        <h2 className="text-black font-bold front-medium">Relative Details</h2>
                                         <table className="ti-custom-table ti-custom-table-head" >
                                             <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
-                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#c1c2c2' }}> Education Level </th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Institute name</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Graduation Year</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Major</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#c1c2c2' }}>Based In (Degree in)</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#75c7ce' }}> S/No</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#75c7ce' }}> Relative name </th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Phone number</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Relationship / Lerativeness</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Relative Address</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {Array.isArray(educationData) && educationData.map((education, index) => (
+                                                {Array.isArray(relativeData) && relativeData.map((relative, index) => (
 
                                                     <tr key={index}>
-                                                        <td colSpan={1} className="">{education.education}</td>
-                                                        <td colSpan={1}>
-                                                            {education.institute_name === "Other" ? (
-                                                                <span>{education.other_institute}</span>
+                                                        <td colSpan={1} className="">{index + 1}</td> 
+                                                        <td colSpan={1} >{relative.relative_name}</td>
+                                                        <td colSpan={1}>{relative.relative_number}</td>                           
+                                                         <td colSpan={1} className="">{relative.relationship_id === 16 ? (
+                                                                <span>{relative.other_relationship}</span>
                                                             ) : (
-                                                                <span>{education.institute_name}</span>
-                                                            )}
-                                                        </td>
-                                                        <td colSpan={1} >{education.graduation_year}</td>
-                                                        <td colSpan={1} >{education.major}</td>
-                                                        <td colSpan={1} >{education.course}</td>
+                                                                <span>{relative.relationship}</span>
+                                                            )}</td>
+                                                        <td colSpan={1} >{relative.relative_address}</td>
+                                                        
 
                                                     </tr>
                                                 ))}
@@ -535,30 +440,33 @@ const ShowEmployee = () => {
 
                                     {/* Employment History */}
                                     <div className="table-bordered rounded-md overflow-auto">
-                                        <h3 className="text-black front-medium">Employment history starting with your most recent employer // Company can conduct reference check</h3>
+                                        <h3 className="text-black front-medium font-bold ">Dependent People</h3>
                                         <table className="ti-custom-table ti-custom-table-head" >
                                             <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
                                                     <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
                                                     <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>
-                                                        Company name
+                                                        Dependant  name
                                                     </th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>From</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>To</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Position</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }} >Salary</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Relationship / Lerativeness</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Birthday</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Note / Remark</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {Array.isArray(employmentData) && employmentData.map((employment, index) => (
+                                                {Array.isArray(dependantData) && dependantData.map((dependant, index) => (
 
                                                     <tr key={index}>
                                                         <td>{index + 1}</td>
-                                                        <td colSpan={1} className="">{employment.company_name}</td>
-                                                        <td colSpan={1}>{employment.from_date}</td>
-                                                        <td colSpan={1} >{employment.to_date}</td>
-                                                        <td colSpan={1} >{employment.position}</td>
-                                                        <td colSpan={1} >{employment.salary}</td>
+                                                        <td colSpan={1} className="">{dependant.dependant_name}</td>
+                                                        <td colSpan={1} className="">{dependant.relationship_id === 16 ? (
+                                                                <span>{dependant.other_relationship}</span>
+                                                            ) : (
+                                                                <span>{dependant.relationship}</span>
+                                                            )}</td>
+                                                        {/* <td colSpan={1} >{dependant.to_date}</td> */}
+                                                        <td colSpan={1} >{dependant.dob}</td>
+                                                        <td colSpan={1} >{dependant.description}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -566,37 +474,7 @@ const ShowEmployee = () => {
                                     </div>
                                     {/* Employment Reference check */}
 
-                                    <div className="table-bordered rounded-md overflow-auto">
-                                        <h3 className="text-black front-medium">Employment Reference Check / Please Share your Previos Direct MAnager Contact Details</h3>
-                                        <table className="ti-custom-table ti-custom-table-head" >
-                                            <thead className="bg-gray-50 dark:bg-black/20">
-                                                <tr>
-                                                    <th style={{ backgroundColor: '#75c7ce' }}>S/No</th>
-                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#75c7ce' }}>
-                                                        Referee name
-                                                    </th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Title</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Address</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Contact</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#75c7ce' }}>Referee Email</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {Array.isArray(referenceCheck) && referenceCheck.map((reference, index) => (
-
-                                                    <tr key={index}>
-                                                        <td>{index + 1}</td>
-                                                        <td colSpan={1} className="">{reference.referee_name}</td>
-                                                        <td colSpan={1}> {reference.referee_title}</td>
-                                                        <td colSpan={1} >{reference.referee_address}</td>
-                                                        <td colSpan={1} >{reference.referee_contact}</td>
-                                                        <td colSpan={1} >{reference.referee_email}</td>
-
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                   
                                 </div>
 
                             </div>
@@ -731,4 +609,4 @@ const ShowEmployee = () => {
     );
 };
 
-export default ShowEmployee;
+export default ShowSocialRecord;

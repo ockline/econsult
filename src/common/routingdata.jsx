@@ -53,8 +53,11 @@ import FileManagerList from "../component/employees/documentRequired/fileManager
 import FileDetail from "../component/employees/documentRequired/fileDetails/filedetails";
 // *********** End of block *********************
 
-
-
+//Social Records
+import SocialRecords from "../component/employees/social/socialRecord/details";
+import AddSocialRecord from "../component/employees/social/addRecord/addrecord";
+import EditSocialRecord from "../component/employees/social/editRecord/editrecord";
+import ShowSocialRecord from "../component/employees/social/showRecord/showrecord";
 
 
 
@@ -210,16 +213,17 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/personal/show_employee/:id`, element: <ShowEmployee /> },
     { path: `${import.meta.env.BASE_URL}employees/personal/download_employee/:id`, element: < DownloadEmployee /> },
 
-
     //Required Documentation 
     { path: `${import.meta.env.BASE_URL}employees/document/uploaded`, element: <DocumentDetails /> },
     { path: `${import.meta.env.BASE_URL}employees/document/upload_document/:id`, element: <UploadDocument /> },
     { path: `${import.meta.env.BASE_URL}employees/document/file_manager_list/:id`, element: <FileManagerList /> },
     { path: `${import.meta.env.BASE_URL}employees/document/file_details/:id/:file_id`, element: <FileDetail /> },
 
-
-
-
+    //Social Record 
+    { path: `${import.meta.env.BASE_URL}employees/socialrecords/details`, element: <SocialRecords /> },
+    { path: `${import.meta.env.BASE_URL}employees/socialrecords/add_record/:id`, element: <AddSocialRecord /> },
+    { path: `${import.meta.env.BASE_URL}employees/socialrecords/edit_record/:id`, element: <EditSocialRecord /> },
+    { path: `${import.meta.env.BASE_URL}employees/socialrecords/show_record/:id`, element: <ShowSocialRecord /> },
 
 
 

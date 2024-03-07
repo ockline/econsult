@@ -34,9 +34,9 @@ export const fetchEmployeeUploadedDocument = async () => {
       //Social Record  Details
 export const fetchSocialRecordDetails = async () => {
   try {
-    const res = await axios.get(`${apiBaseUrl}/hiring/technical_interview/show_candidate`);
-    return res.data.candidate;
+    const res = await axios.get(`${apiBaseUrl}/employees/social/show_social_details`);
+    return res.data.social_record;
   } catch (error) {
-    throw new Error('Failed to fetch technical assessed candidates: ' + error.message);
+    throw new Error('Failed to fetch Social record: ' + error.message);
   }
 };

@@ -1061,6 +1061,48 @@ const fetchCountries = async () => {
     return [];
   }
 };
+// block for Relativeness or Dependant *****************************
+export const DependantTypeData = async () => {
+  try {
+    const relativeness = await fetchRelative();
+
+    return [
+      {
+        label: "Relativeness Name",
+        options: relativeness,
+      },
+      // ... other groups
+    ];
+  } catch (error) {
+    console.error('Error fetching relativeness:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+// Example implementation of fetchRelatives
+const fetchRelative = async () => {
+  try {
+    const response = await fetch(`${apiBaseUrl}/dependant_types/show_relationship`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch relativeness');
+    }
+
+    const result = await response.json();
+    
+    // Assuming result.Country is an array of educations objects
+    const formattedRelative = result.relationships.map(relationships => ({
+      label: relationships.name, // replace with the actual property name in your relationships object
+      value: relationships.id,   // replace with the actual property name in your relationships object
+    }));
+
+    return formattedRelative;
+  } catch (error) {
+    console.error('Error fetching relationships:', error.message);
+    // Handle the error, maybe return a default value or log the error
+    return [];
+  }
+};
+
 
 // block for Education and Years    **********************************************************************************
    // Education Level
@@ -1111,6 +1153,27 @@ export const ReferenceCheck = [
   { value: '1', label: 'Referee 1' },
   { value: '2', label: 'Referee 2' },
   { value: '3', label: 'Referee 3' },
+ 
+]
+// ******** Referee number
+export const EmployeeRelative = [
+  { value: '0', label: 'Please select Relative ' },
+  { value: '1', label: 'Relative 1' },
+  { value: '2', label: 'Relative 2' },
+  { value: '3', label: 'Relative 3' },
+  { value: '4', label: 'Relative 4' },
+  { value: '5', label: 'Relative 5' },
+ 
+]
+
+// ******** Referee number
+export const EmployeeDependent = [
+  { value: '0', label: 'Please select Dependent ' },
+  { value: '1', label: 'Dependent 1' },
+  { value: '2', label: 'Dependent 2' },
+  { value: '3', label: 'Dependent 3' },
+  { value: '4', label: 'Dependent 4' },
+  { value: '5', label: 'Dependent 5' },
  
 ]
 
