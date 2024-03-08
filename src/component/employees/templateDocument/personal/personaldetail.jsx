@@ -24,14 +24,7 @@ const PersonalDetail = () => {
                 [id]
             );
     });
-    const [practicalData, setPracticalData] = useState([]);
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/hiring/technical_interview/practical_candidate/${id}`).then((res) => {
-            setPracticalData(res.data.practical_candidate)
-            // console.log(res.data.practical_candidate);
-        })
-    }, [id])
-
+  
     const idToShow = formData.national_id || formData.passport_id || '';
 
     //block to return Education ****************************************************************

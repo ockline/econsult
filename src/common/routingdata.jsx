@@ -58,7 +58,7 @@ import SocialRecords from "../component/employees/social/socialRecord/details";
 import AddSocialRecord from "../component/employees/social/addRecord/addrecord";
 import EditSocialRecord from "../component/employees/social/editRecord/editrecord";
 import ShowSocialRecord from "../component/employees/social/showRecord/showrecord";
-
+import DownloadSocialRecord from "../component/employees/templateDocument/social/socialrecord"
 
 
 
@@ -224,6 +224,7 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/add_record/:id`, element: <AddSocialRecord /> },
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/edit_record/:id`, element: <EditSocialRecord /> },
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/show_record/:id`, element: <ShowSocialRecord /> },
+    { path: `${import.meta.env.BASE_URL}employees/socialrecords/download_social_record/:id`, element: < DownloadSocialRecord /> },
 
 
 

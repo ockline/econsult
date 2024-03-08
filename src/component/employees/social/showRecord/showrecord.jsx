@@ -89,10 +89,10 @@ const ShowSocialRecord = () => {
     const [documentUrl, setDocumentUrl] = useState('');
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/employeessocial/get_social_document/${id}`)
+        axios.get(`${apiBaseUrl}/employees/social/get_social_document/${id}`)
             .then((res) => {
                 setEmployeeDocument(res.data.employee_document);
-                // console.log(res.data.employee_document);
+                console.log(res.data.employee_document);
             })
             .catch((error) => {
                 console.error('Error fetching social record  documents:', error);
@@ -101,32 +101,32 @@ const ShowSocialRecord = () => {
 
     const handlePreviewClick = (description) => {
         // Assuming the documents are stored in a specific folder on the server      
-        const absoluteUrl = `${docBaseUrl}/employees/personal/${description}`;
+        const absoluteUrl = `${docBaseUrl}/employees/social/${id}/${description}`;
         //   console.log('absoluteUrl', absoluteUrl);
         // Update the state with the document URL
         setDocumentUrl(absoluteUrl);
 
     };
     //handling spinner
-    const [showSpinner, setShowSpinner] = useState(false);
+    // const [showSpinner, setShowSpinner] = useState(false);
 
-    const handleLinkClick = async () => {
-        // Show the spinner
-        setShowSpinner(true);
+    // const handleLinkClick = async () => {
+    //     // Show the spinner
+    //     setShowSpinner(true);
 
-        try {
-            // Simulate an asynchronous operation (e.g., fetching the download link)
-            await new Promise((resolve) => setTimeout(resolve, 100));
+    //     try {
+    //         // Simulate an asynchronous operation (e.g., fetching the download link)
+    //         await new Promise((resolve) => setTimeout(resolve, 100));
 
-            // Replace this with your actual link logic
-            window.location.href = `${import.meta.env.BASE_URL}employees/personal/download_employee/` + formData.id;
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            // Hide the spinner when the operation is complete (success or failure)
-            setShowSpinner(false);
-        }
-    };
+    //         // Replace this with your actual link logic
+    //         window.location.href = `${import.meta.env.BASE_URL}employees/socialrecords/download_social_record/` + formData.id;
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     } finally {
+    //         // Hide the spinner when the operation is complete (success or failure)
+    //         setShowSpinner(false);
+    //     }
+    // };
 
     return (
         <div>
@@ -502,7 +502,7 @@ const ShowSocialRecord = () => {
                                                         </svg>
                                                     </div>
                                                 </div>
-                                                <div className="text-center" id="spinner" style={{ display: showSpinner ? 'block' : 'none' }}>
+                                                {/* <div className="text-center" id="spinner" style={{ display: showSpinner ? 'block' : 'none' }}>
                                                     <div
                                                         className="ti-spinner text-primary"
                                                         role="status"
@@ -511,16 +511,18 @@ const ShowSocialRecord = () => {
                                                     >
                                                         <span className="sr-only">Loading...</span>
                                                     </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="md:ltr:ml-auto md:rtl:mr-auto">
-                                                    <button
-                                                        onClick={handleLinkClick}
-                                                        className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
-                                                        style={{ backgroundColor: '#ea95b2' }}
-                                                    >
-                                                        <i className="ti ti-cloud-download"></i> Add Download Person Details
-                                                    </button>
+                                                   
+                                                     <Link
+                                                    aria-label="anchor"
+                                                    to={`${import.meta.env.BASE_URL}employees/socialrecords/download_social_record/` + formData.employee_id}
+                                                  className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
+                                                        style={{ backgroundColor: '#7800ff' }}
+                                                >
+                                                    <i className="ti ti-cloud-download"></i>Download Social Record
+                                                </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -593,13 +595,6 @@ const ShowSocialRecord = () => {
                                         </div> */}
                                     </div>
                                 </div>
-
-                                {/* <Link
-                                        to="#"
-                                        className="ti-btn ti-btn-primary py-1 px-2 m-0"
-                                    >
-                                        View more
-                                    </Link> */}
                             </div>
                         </div>
                     </div>

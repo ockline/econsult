@@ -28,6 +28,7 @@ const AddSocialRecord = () => {
         expiration_date: '',
         passport_id: '',
         military_service: '',
+        military_number: '',
         marital_status: '',
         children_no: '',
         gender: '',
@@ -98,7 +99,7 @@ const AddSocialRecord = () => {
         e.preventDefault();
         // console.log('Form submitted:', formData);
         const DataToSend = {
-            employee_id: formData.employee_id,
+            // employee_id: formData.employee_id,
             district_id: formData.district_id,
             department_id: formData.department_id,
             firstname: formData.firstname,
@@ -107,6 +108,7 @@ const AddSocialRecord = () => {
             national_id: formData.national_id,
             expiration_date: formData.expiration_date,
             military_service: formData.military_service,
+            military_number: formData.military_number,
             marital_status: formData.marital_status,
             children_no: formData.children_no,
             gender: formData.gender,

@@ -639,9 +639,9 @@ const ShowEmployee = () => {
                                                     <button
                                                         onClick={handleLinkClick}
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
-                                                        style={{ backgroundColor: '#ea95b2' }}
+                                                        style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i> Add Download Person Details
+                                                        <i className="ti ti-cloud-download"></i>Download Person Details
                                                     </button>
                                                 </div>
                                             </div>
