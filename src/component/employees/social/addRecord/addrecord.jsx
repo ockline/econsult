@@ -572,11 +572,8 @@ const AddSocialRecord = () => {
         }
     }
 
-
-
     return (
         <div>
-
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Add Social Record Details</h1>
 
@@ -589,14 +586,12 @@ const AddSocialRecord = () => {
                     </li>
                     <li className="text-sm">
                         <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/add_record/${formData.id}`}>
-                            Edit Employee Details
+                            Add Social Record Details
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
                     </li>
                 </ol>
             </div>
-
-
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
                     <h1 className="box-title my-auto font-bold text-lg">Add Employee Social Record</h1>

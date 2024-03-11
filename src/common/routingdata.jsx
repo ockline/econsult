@@ -60,8 +60,12 @@ import EditSocialRecord from "../component/employees/social/editRecord/editrecor
 import ShowSocialRecord from "../component/employees/social/showRecord/showrecord";
 import DownloadSocialRecord from "../component/employees/templateDocument/social/socialrecord"
 
-
-
+// Personnel ID Aplication 
+import PersonnelApplication from "../component/employees/application/idApplication/application";
+import AddApplication from "../component/employees/application/addApplication/addapplication";
+import EditApplication from "../component/employees/application/editApplication/editapplication";
+import ShowApplication from "../component/employees/application/showApplication/showapplication";
+import DownloadApplication from "../component/employees/templateDocument/application/personnelapplication"
 
 
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -177,8 +181,8 @@ export const RouteData = [
     // {/*Depertment and section  */}
     { path: `${import.meta.env.BASE_URL}employers/departments/departments`, element: <Departments />, title: '' },
     // { path: `${import.meta.env.BASE_URL}employers/attachments`, element: <Attachments /> , title: ''},
-    // { path: `${import.meta.env.BASE_URL}employers/badges`, element: <Badges /> , title: ''},
-
+    
+      // /**   **************************************  End of Employer block ******************************************************* */
 
     // {/*  Hiring Block   */}
     //Job application 
@@ -202,9 +206,9 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/technical/show_candidate/:id`, element: <ShowCandidate /> },
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/download_candidate/:id`, element: < DownloadCandidate /> },
 
-    //   End of hiring block
+    // /**   **************************************  End of hiring block ******************************************************* */
 
-    // {/**    Starting of Employee registration  */}
+    // {/**    Starting of Employee registration  block */}
 
     //Employee Person Details
     { path: `${import.meta.env.BASE_URL}employees/personal/employee_list`, element: <PersonalDetails /> },
@@ -226,13 +230,20 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/show_record/:id`, element: <ShowSocialRecord /> },
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/download_social_record/:id`, element: < DownloadSocialRecord /> },
 
+    //Induction Training
+    
+    
+    //Personnel ID Application
+    { path: `${import.meta.env.BASE_URL}employees/applications/all_id_application`, element: <PersonnelApplication /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/create_application/:id`, element: <AddApplication /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/edit_application/:id`, element: <EditApplication /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/show_application/:id`, element: <ShowApplication /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/download_application/:id`, element: < DownloadApplication /> },
 
 
 
 
-
-
-
+/** ************ End of Employee block ********************************************************************************** */
 
 
 

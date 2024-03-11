@@ -97,7 +97,7 @@ export const MenuItems = [
 					{ id: 16, path: `${import.meta.env.BASE_URL}employees/document/uploaded`, type: "link", active: false, selected: false, title: "Required Documents" },
 					{ id: 17, path: `${import.meta.env.BASE_URL}employees/socialrecords/details`, type: "link", active: false, selected: false, title: "Social Records" },
 					{ id: 18, path: `${import.meta.env.BASE_URL}employees/inductiontrainning`, type: "link", active: false, selected: false, title: "Induction Training" },
-					{ id: 19, path: `${import.meta.env.BASE_URL}employees/idapplications`, type: "link", active: false, selected: false, title: "Id Application" },
+					{ id: 19, path: `${import.meta.env.BASE_URL}employees/applications/all_id_application`, type: "link", active: false, selected: false, title: "ID Application" },
 				]
 			},
 			{

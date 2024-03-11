@@ -40,3 +40,14 @@ export const fetchSocialRecordDetails = async () => {
     throw new Error('Failed to fetch Social record: ' + error.message);
   }
 };
+
+// ****************************************************************************************
+      //Social Record  Details
+export const fetchPersonnelApplicationDetails = async () => {
+  try {
+    const res = await axios.get(`${apiBaseUrl}/employees/application/show_application_details`);
+    return res.data.personnel_application;
+  } catch (error) {
+    throw new Error('Failed to fetch Social record: ' + error.message);
+  }
+};
