@@ -1103,6 +1103,13 @@ const fetchRelative = async () => {
   }
 };
 
+//**************************************************** Contract type Test */
+export const ContractType = [
+  { value: '1', label: 'Fixed Term Contract' },
+  { value: '2', label: 'Specific Task Contract' },
+  { value: '3', label: 'Unspecified Contract' },
+ 
+]
 
 // block for Education and Years    **********************************************************************************
    // Education Level

@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchPersonnelApplicationDetails } from "../../../../common/employeesdata";
+import { fetchRequiredContractDetails } from "../../../common/contractsdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const Application = () => {
+const RequiredDetail = () => {
 
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -21,9 +21,9 @@ const Application = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const personnelApplicationDetails = await fetchPersonnelApplicationDetails();
-                setAllData(personnelApplicationDetails);
-                console.log(personnelApplicationDetails);
+                const ContractDetails = await fetchRequiredContractDetails();
+                setAllData(ContractDetails);
+                console.log(ContractDetails);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
             }
@@ -51,7 +51,7 @@ const Application = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // console.log('apiBaseUrl:', apiBaseUrl);
-    function Style2(id) {
+    function Style2(employee_id) {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to edit this file again!",
@@ -63,7 +63,7 @@ const Application = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.post(
-                    `${apiBaseUrl}/employees/application/complete_application_record/${id}`,
+                    `${apiBaseUrl}/contracts/required/complete_contract_detail/${employee_id}`,
                     {},
                     {
                         headers: {
@@ -109,7 +109,7 @@ const Application = () => {
 
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Personnel ID Application</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Details For Contract</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
@@ -119,15 +119,15 @@ const Application = () => {
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/applications/all_id_application/`}>
-                            Personnel Id Application
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required_details/`}>
+                            Required Contract Details
                         </a>
                     </li>
                 </ol>
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h5 className="box-title my-auto text-lg">Personnel ID Application List </h5>
+                    <h5 className="box-title my-auto text-lg">Required Contaract Details List </h5>
                     {/* <Link to={`${import.meta.env.BASE_URL}employees/personal/add_employee`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-address-book"></i>Add Social Records</Link> */}
                 </div>
                 <div className="box-body">
@@ -194,7 +194,7 @@ const Application = () => {
                                         Employee Name
                                     </th>
                                     <th scope="col" className="!text-center font-bold text-black">
-                                       Personal Type
+                                       employer Name
                                     </th><th scope="col" className="!text-center font-bold text-black">
                                         Date Registered
                                     </th>
@@ -206,7 +206,7 @@ const Application = () => {
                                         Status
                                     </th>
                                     <th scope="col" className="!text-center font-bold text-black">
-                                        Apply ID
+                                        Contract Detail
                                     </th>
                                     <th scope="col" className="!text-center font-bold text-black">
                                         Action
@@ -219,9 +219,10 @@ const Application = () => {
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
                                             <td>{employee.employee}</td>
-                                            <td className="font-semibold">{employee.employee_name}</td>
-                                            <td>{employee.personal_type}</td>
-                                            <td>{employee.created_at} </td>
+                                            <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employee_name}
+                                            </td>
+                                            <td>{employee.employer}</td>
+                                            <td>{employee.stages === 1 ? (<>{employee.contract_created}</>) : employee.created_at} </td>
                                             <td className="text-center font-bold">
                                                 {employee.progressive_stage === 1 ? (
                                                     <span className="badge bg-warning text-white">Employee Details</span>
@@ -242,41 +243,35 @@ const Application = () => {
 
                                             <td>
                                                 {
-                                                    employee.stage === 1 ? (
+                                                    employee.stages === 1 ? (
                                                         <span className="badge bg-green-500 text-white" style={{ backgroundColor: '#08adf8' }}>Attended</span>
-                                                    ) : employee.stage === 0 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
+                                                    ) : employee.stages === 0 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
                                                 }
                                             </td>
                                             <td className="text-center font-bold">
                                                 {
-                                                    employee.stage === 1 ? (<></>) :
-                                                        employee.stage === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}employees/applications/create_application/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-credit-card"></i>Add Personnel ID</Link>
+                                                    employee.stages === 1 ? (<></>) :
+                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/required/add_contract_details/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Details </Link>
                                                         )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}
                                                 <Link
                                                     aria-label="anchor"
-                                                    to={`${import.meta.env.BASE_URL}employees/applications/show_application/` + employee.id}
+                                                    to={`${import.meta.env.BASE_URL}contracts/required/show_detail/` + employee.employee_id}
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
                                                 > <i className="ti ti-eye"></i>
                                                 </Link>
-                                                {/* <Link
-                                                    aria-label="anchor"
-                                                    to={`${import.meta.env.BASE_URL}employees/applications/edit_application/` + employee.id}
-                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
-                                                > <i className="ti ti-pencil"></i>
-                                                </Link> */}
-
+                                              
                                                 <button
                                                     aria-label="anchor"
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
                                                     onClick={() => {
-                                                        if (employee.stage === 1) {
+                                                        if (employee.stages === 1) {
                                                             // Show custom toast if employee.stage is 1
                                                             handleCustomToast();
                                                         } else {
                                                             // Navigate to the edit link
-                                                            navigate(`${import.meta.env.BASE_URL}employees/applications/edit_application/` + employee.id);
+                                                            navigate(`${import.meta.env.BASE_URL}contracts/required/edit_details/` + employee.employee_id);
                                                         }
                                                     }}
                                                 >
@@ -313,4 +308,4 @@ const Application = () => {
         </div>
     );
 };
-export default Application;
+export default RequiredDetail;

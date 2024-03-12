@@ -103,11 +103,11 @@ export const MenuItems = [
 			{
 				id: 20, icon: ContractMangementSvg, title: "Contracts", type: "sub", active: false, selected: false, children: [
 
-					{ id: 20, path: `${import.meta.env.BASE_URL}contractmanagement/requireddetails`, type: "link", active: false, selected: false, title: "Required Details" },
-					{ id: 21, path: `${import.meta.env.BASE_URL}contractmanagement/fixedterm`, type: "link", active: false, selected: false, title: "Fixed Term" },
-					{ id: 22, path: `${import.meta.env.BASE_URL}contractmanagement/specifictask`, type: "link", active: false, selected: false, title: "Specific Task" },
-					{ id: 23, path: `${import.meta.env.BASE_URL}contractmanagement/unspecified`, type: "link", active: false, selected: false, title: "Unspecified" },
-					{ id: 24, path: `${import.meta.env.BASE_URL}contractmanagement/termconditions`, type: "link", active: false, selected: false, title: "Terms & Contitions" },
+					{ id: 20, path: `${import.meta.env.BASE_URL}contracts/required_details`, type: "link", active: false, selected: false, title: "Required Details" },
+					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/fixed/fixedterm`, type: "link", active: false, selected: false, title: "Fixed Term" },
+					{ id: 22, path: `${import.meta.env.BASE_URL}contracts/specific/specifictask`, type: "link", active: false, selected: false, title: "Specific Task" },
+					{ id: 23, path: `${import.meta.env.BASE_URL}contracts/unspecified/unspecified`, type: "link", active: false, selected: false, title: "Unspecified" },
+					{ id: 24, path: `${import.meta.env.BASE_URL}contracts/terms/termconditions`, type: "link", active: false, selected: false, title: "Terms & Contitions" },
 				]
 			},
 			//******************************** */

@@ -27,7 +27,7 @@ import HrInterview from "../component/hiring/recruitments/hrInterviews/interview
 import AddAssessment from "../component/hiring/recruitments/hrInterviews/addAssessment/assessment";
 import EditAssessment from "../component/hiring/recruitments/hrInterviews/editAssessment/editassessment";
 import ShowAssessment from "../component/hiring/recruitments/hrInterviews/showAssessment/showassessment";
-import DownloadAssessment from "../component/hiring/templatesamples/hrinterviews/assessmenttemplate"
+import DownloadAssessment from "../component/hiring/templatesamples/hrinterviews/assessmenttemplate";
 
 //Technical 
 import TechnicalInterview from "../component/hiring/recruitments/techInterviews/interviewed";
@@ -35,7 +35,7 @@ import AddCandidate from "../component/hiring/recruitments/techInterviews/addCan
 import EditCandidate from "../component/hiring/recruitments/techInterviews/editCandidate/editcandidate";
 import EditPractical from "../component/hiring/recruitments/techInterviews/editCandidate/editpracticaltest";
 import ShowCandidate from "../component/hiring/recruitments/techInterviews/showCandidate/showcandidate";
-import DownloadCandidate from "../component/hiring/templatesamples/technicalinterview/candidatetemplate"
+import DownloadCandidate from "../component/hiring/templatesamples/technicalinterview/candidatetemplate";
 
 //************ End of Hiring block ******************************
 
@@ -44,7 +44,7 @@ import PersonalDetails from "../component/employees/personal/personalDetail/pers
 import AddEmployee from "../component/employees/personal/addEmployee/addemployee";
 import EditEmployee from "../component/employees/personal/editEmployee/editemployee";
 import ShowEmployee from "../component/employees/personal/showEmployee/showemployee";
-import DownloadEmployee from "../component/employees/templateDocument/personal/personaldetail"
+import DownloadEmployee from "../component/employees/templateDocument/personal/personaldetail";
 
 //Reduired Documentation
 import DocumentDetails from "../component/employees/documentRequired/uploaded/uploaded";
@@ -58,14 +58,26 @@ import SocialRecords from "../component/employees/social/socialRecord/details";
 import AddSocialRecord from "../component/employees/social/addRecord/addrecord";
 import EditSocialRecord from "../component/employees/social/editRecord/editrecord";
 import ShowSocialRecord from "../component/employees/social/showRecord/showrecord";
-import DownloadSocialRecord from "../component/employees/templateDocument/social/socialrecord"
+import DownloadSocialRecord from "../component/employees/templateDocument/social/socialrecord";
 
 // Personnel ID Aplication 
 import PersonnelApplication from "../component/employees/application/idApplication/application";
 import AddApplication from "../component/employees/application/addApplication/addapplication";
 import EditApplication from "../component/employees/application/editApplication/editapplication";
 import ShowApplication from "../component/employees/application/showApplication/showapplication";
-import DownloadApplication from "../component/employees/templateDocument/application/personnelapplication"
+import DownloadApplication from "../component/employees/templateDocument/application/personnelapplication";
+
+/** *******  End of Employee Registration Block *********************************************************************** */
+
+
+/**  Start of contract Block */
+       //Required Details || Taarifa za MWajiriwa kwaajili ya mikataba - kitambulisho
+import RequiredDetails from "../component/contractManagement/requiredDetails/details";
+import AddRequiredDetails from "../component/contractManagement/requiredDetails/addDetails/adddetail";
+import EditRequiredDetails from "../component/contractManagement/requiredDetails/editDetails/editdetail";
+import ShowRequiredDetails from "../component/contractManagement/requiredDetails/showDetails/showdetail";
+import DownloadContractDetail from "../component/contractManagement/templateContracts/contractDetail/contract";
+        
 
 
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -240,19 +252,20 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/applications/show_application/:id`, element: <ShowApplication /> },
     { path: `${import.meta.env.BASE_URL}employees/applications/download_application/:id`, element: < DownloadApplication /> },
 
-
-
-
 /** ************ End of Employee block ********************************************************************************** */
 
 
+/** Start of Contract block */
+    { path: `${import.meta.env.BASE_URL}contracts/required_details`, element: <RequiredDetails /> },
+   { path: `${import.meta.env.BASE_URL}contracts/required/add_contract_details/:id`, element: <AddRequiredDetails /> },
+    { path: `${import.meta.env.BASE_URL}contracts/required/edit_details/:id`, element: <EditRequiredDetails /> },
+    { path: `${import.meta.env.BASE_URL}contracts/required/show_detail/:id`, element: <ShowRequiredDetails /> },
+    { path: `${import.meta.env.BASE_URL}contracts/required/download_contract_detail/:id`, element: < DownloadContractDetail /> },
 
 
 
 
-
-
-
+/** ************ End of Contracts block ********************************************************************************** */
 
 
 
