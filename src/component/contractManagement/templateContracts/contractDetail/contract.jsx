@@ -52,15 +52,6 @@ const ContractDetails = () => {
                                     <div className="text-center">
                                         <h1 className="text-2xl text-black uppercase font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '0.2px' }}>TARIFA za MWAJIRIWA KWAAJIRI YA MKATABA- KITAMBULISHO "A"</h1>
                                     </div>
-                                    {/* <div className="text-end">
-                                        <div className="border border-gray-300 p-4 float-right" style={{ width: '150px', height: '150px', border: '2px solid black' }}>
-                                            <div className="mb-4">
-                                                <label htmlFor="passportNumber" className="block text-sm font-medium text-gray-700 text-center">
-                                                    photo
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div> */}
                                 </div>
 
 
