@@ -46,11 +46,11 @@ const ContractDetails = () => {
                                             </div>
                                         </div>
                                 </span>
-                                &nbsp;
+                                &nbsp;&nbsp;
                                 <div className="flex flex-col lg:flex-row justify-between mb-5 space-y-4">
                                    {/* <div className="text-end"></div> */}
                                     <div className="text-center">
-                                        <h1 className="text-2xl text-black uppercase font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '0.2px' }}>TARIFA za MWAJIRIWA KWAAJIRI YA MKATABA- KITAMBULISHO "A"</h1>
+                                        <h1 className="text-2xl text-black uppercase font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '0.2px' }}>TARIFA za MWAJIRIWA KWAAJIRI YA MKATABA- KIAMBATANISHO "A"</h1>
                                     </div>
                                 </div>
 
