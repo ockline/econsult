@@ -71,12 +71,21 @@ import DownloadApplication from "../component/employees/templateDocument/applica
 
 
 /**  Start of contract Block */
+import EmployeeContracts from "../component/contractManagement/Contracted/employeeContract";
+
        //Required Details || Taarifa za MWajiriwa kwaajili ya mikataba - kitambulisho
 import RequiredDetails from "../component/contractManagement/requiredDetails/details";
 import AddRequiredDetails from "../component/contractManagement/requiredDetails/addDetails/adddetail";
 import EditRequiredDetails from "../component/contractManagement/requiredDetails/editDetails/editdetail";
 import ShowRequiredDetails from "../component/contractManagement/requiredDetails/showDetails/showdetail";
 import DownloadContractDetail from "../component/contractManagement/templateContracts/contractDetail/contract";
+
+    // Fixed Term Contract    
+import FixedContract from "../component/contractManagement/fixed/contractFixed/fixedContract";
+import AddFixedContract from "../component/contractManagement/fixed/addFixed/addFixed";
+import EditFixedContract from "../component/contractManagement/fixed/editFixed/editFixed";
+import ShowFixedContract from "../component/contractManagement/fixed/showFixed/showFixed";
+// import DownloadFixedContract from "../component/contractManagement/templateContracts/contractDetail/contract";
         
 
 
@@ -255,13 +264,25 @@ export const RouteData = [
 /** ************ End of Employee block ********************************************************************************** */
 
 
-/** Start of Contract block */
+    /** Start of Contract block */
+    //fetch all employee contracts   
+      { path: `${import.meta.env.BASE_URL}contracts/employee_contracted`, element: <EmployeeContracts/> },  
+    
+        // Contract details
     { path: `${import.meta.env.BASE_URL}contracts/required_details`, element: <RequiredDetails /> },
    { path: `${import.meta.env.BASE_URL}contracts/required/add_contract_details/:id`, element: <AddRequiredDetails /> },
     { path: `${import.meta.env.BASE_URL}contracts/required/edit_details/:id`, element: <EditRequiredDetails /> },
     { path: `${import.meta.env.BASE_URL}contracts/required/show_detail/:id`, element: <ShowRequiredDetails /> },
     { path: `${import.meta.env.BASE_URL}contracts/required/download_contract_detail/:id`, element: < DownloadContractDetail /> },
 
+    
+    // Fixed Term Contract
+    
+    { path: `${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts`, element: <FixedContract /> },
+    { path: `${import.meta.env.BASE_URL}contracts/fixed/add_fixed_contract/:id`, element: <AddFixedContract /> },
+    { path: `${import.meta.env.BASE_URL}contracts/fixed/edit_fixed/:id`, element: <EditFixedContract /> },
+    { path: `${import.meta.env.BASE_URL}contracts/fixed/show_fixed/:id`, element: <ShowFixedContract /> },
+    // { path: `${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/:id`, element: < DownloadFixedContract /> },
 
 
 
