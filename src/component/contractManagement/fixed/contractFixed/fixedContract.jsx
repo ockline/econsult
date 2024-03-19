@@ -62,32 +62,42 @@ const FixedContracts = () => {
             confirmButtonText: 'Yes, Complete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.post(
-                    `${apiBaseUrl}/contracts/required/complete_contract_detail/${employee_id}`,
+          const res = axios.post(
+                    `${apiBaseUrl}/contracts/fixed/complete_fixed_contract/${employee_id}`,
                     {},
                     {
                         headers: {
                             'X-CSRF-TOKEN': 'form/multi-part',
                         },
                     }
-                )
+          )
+                // console.log('wazungu', res.data)
                     .then(response => {
-                        // Handle the response if needed
-                        Swal.fire(
-                            'Completed',
-                            'Your file has been Completed.',
-                            'success'
-                        );
-                    })
-                    .catch(error => {
-                        // Handle errors if necessary
-                        console.error('Error completing file:', error);
-                        Swal.fire(
-                            'Error',
-                            'An error occurred while completing the file.',
-                            'error'
-                        );
-                    });
+                if (response.data.status === 404) {
+                    // Handle 404 status code
+                    Swal.fire(
+                        'Error',
+                        response.data.message,
+                        'error'
+                    );
+                } else {
+                    // Handle other responses
+                    Swal.fire(
+                        'Completed',
+                        'Your file has been Completed.',
+                        'success'
+                    );
+                }
+            })
+            .catch(error => {
+                // Handle errors if necessary
+                console.error('Error completing file:', error);
+                Swal.fire(
+                    'Error',
+                    'An error occurred while completing the file.',
+                    'error'
+                );
+               });
             }
         });
     }
@@ -221,9 +231,9 @@ const FixedContracts = () => {
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
-                                            <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employer}
+                                             <td>{employee.employer}</td>
+                                            <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employee_name}
                                             </td>
-                                            <td>{employee.employee_name}</td>
                                             <td>{employee.stages === 1 ? (<>{employee.contract_created}</>) : employee.created_at} </td>
                                             <td className="text-center font-bold">
                                                 {employee.progressive_stage === 1 ? (
@@ -247,13 +257,13 @@ const FixedContracts = () => {
                                                 {
                                                     employee.stages === 1 ? (
                                                         <span className="badge bg-green-500 text-white" style={{ backgroundColor: '#08adf8' }}>Attended</span>
-                                                    ) : employee.stages === 1 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
+                                                    ) : employee.stages === 0 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
                                                 }
                                             </td>
                                             <td className="text-center font-bold">
                                                 {
-                                                    employee.stages === 0 ? (<></>) :
-                                                        employee.stages === 1 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/fixed/add_fixed_contract/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Fixed</Link>
+                                                    employee.stages === 1 ? (<></>) :
+                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/fixed/add_fixed_contract/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Fixed</Link>
                                                         )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}

@@ -175,7 +175,7 @@ const AddFixedContract = () => {
                 .then(() => {
 
                 // This code will be executed after the "ok" button is clicked and the modal is closed
-                navigate('/contracts/required_details/'); // Call the navigate function to redirect to the specified route
+                navigate('/contracts/fixed/fixed_contracts/'); // Call the navigate function to redirect to the specified route
                 });
             }
         }

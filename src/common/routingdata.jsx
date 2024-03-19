@@ -85,7 +85,7 @@ import FixedContract from "../component/contractManagement/fixed/contractFixed/f
 import AddFixedContract from "../component/contractManagement/fixed/addFixed/addFixed";
 import EditFixedContract from "../component/contractManagement/fixed/editFixed/editFixed";
 import ShowFixedContract from "../component/contractManagement/fixed/showFixed/showFixed";
-// import DownloadFixedContract from "../component/contractManagement/templateContracts/contractDetail/contract";
+import DownloadFixedContract from "../component/contractManagement/templateContracts/contractFixed/fixed";
         
 
 
@@ -282,7 +282,7 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}contracts/fixed/add_fixed_contract/:id`, element: <AddFixedContract /> },
     { path: `${import.meta.env.BASE_URL}contracts/fixed/edit_fixed/:id`, element: <EditFixedContract /> },
     { path: `${import.meta.env.BASE_URL}contracts/fixed/show_fixed/:id`, element: <ShowFixedContract /> },
-    // { path: `${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/:id`, element: < DownloadFixedContract /> },
+    { path: `${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/:id`, element: < DownloadFixedContract /> },
 
 
 

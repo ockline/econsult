@@ -47,6 +47,7 @@ const EditFixedContract = () => {
            saturday_to: '',
            covered_statutory: '',
            job_description_doc: null,
+           fixed_contract_signed: null,
            error_list: [],
     });
     //fetch contract details data'
@@ -140,6 +141,7 @@ const EditFixedContract = () => {
            covered_statutory: formData.covered_statutory,
             employee_id: formData.employee_id,
             job_description_doc: formData.job_description_doc,
+             fixed_contract_signed: formData.fixed_contract_signed,
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/contracts/fixed/update_fixed_contract/${id}`, DataToSend, {
@@ -177,7 +179,7 @@ const EditFixedContract = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Fixed Contract Created Successfully',
+                    title: 'Fixed Contract Updated Successfully',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -186,7 +188,7 @@ const EditFixedContract = () => {
                 .then(() => {
 
                 // This code will be executed after the "ok" button is clicked and the modal is closed
-                // navigate('/contracts/required_details/'); // Call the navigate function to redirect to the specified route
+                navigate('/contracts/fixed/fixed_contracts/'); // Call the navigate function to redirect to the specified route
                 });
             }
         }
@@ -240,8 +242,8 @@ const EditFixedContract = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
-                    'Social Record Saved!',
-                    'Social Record completed Successfully.',
+                    'Fixed Contract Saved!',
+                    'Fixed Contract completed Successfully.',
                     'success'
                 ).then(() => {
                     navigate('/employees/socialrecords/details/');
@@ -572,6 +574,10 @@ const EditFixedContract = () => {
                                         onChange={(e) => handleInputChange('covered_statutory', e.target.value)} placeholder="Coverder by Statutory" required />
                                     <span className="text-danger">{formData.error_list.covered_statutory}</span>
                                 </div>
+                                 <div className="space-y-2" id="attachment">
+                                            <label className="ti-form-label mb-0 font-bold text-lg ">Signed Fixed Contract (Max size 2MB)</label>
+                                            <input type="file" name="fixed_contract_signed" id="small-file-input" onChange={(e) => handleFileInputChange('fixed_contract_signed', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                        </div>
                             </div>
                         )}
                         <br />
@@ -596,7 +602,7 @@ const EditFixedContract = () => {
                             {step === 2 && (
                                 <div className="float-end">
                                     <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
-                                        <i className="ti ti-corner-up-right-double"></i>Submit Contract Details                                    </button>
+                                        <i className="ti ti-corner-up-right-double"></i>Update Fixed Contract                                     </button>
                                     {/* <Link to="#" className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-primary m-0 whitespace-nowrap" data-hs-overlay="#task-compose" style={{ backgroundColor: '#619162' }}>
                                         <i className="ti ti-database"></i>Add Relative details
                                     </Link>&nbsp; */}
