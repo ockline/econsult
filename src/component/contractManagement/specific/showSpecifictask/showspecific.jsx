@@ -9,7 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-const ShowContractDetails = () => {
+const ShowSpecificContract = () => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
@@ -38,17 +38,15 @@ const ShowContractDetails = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/contracts/required/show_contract_detail/${id}`)
+        axios.get(`${apiBaseUrl}/contracts/specific/show_specific_task/${id}`)
             .then((res) => {
                 // console.log('API Response:', res.data);  // Log the entire response
-                setEmployeeData(res.data.contract_detail);
-                // console.log('data', res.data.contract_detail);
+                setEmployeeData(res.data.specific_task);
+                console.log('data', res.data.specific_task);
                 if (res.data.status === 404) {
                     Dangersweetalert()
-
                     // This code will be executed after the "ok" button is clicked and the modal is closed
-                    navigate('/contracts/required_details/'); // Call the navigate function to redirect to the specified route
-
+                    navigate('/contracts/specific/specific_task/'); // Call the navigate function to redirect to the specified route
                 }
             })
             .catch((error) => {
@@ -92,7 +90,7 @@ const ShowContractDetails = () => {
     const [documentUrl, setDocumentUrl] = useState('');
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/contracts/required/get_contract_document/${id}`)
+        axios.get(`${apiBaseUrl}/contracts/specific/get_specific_document/${id}`)
             .then((res) => {
                 setEmployeeDocument(res.data.contract_document);
                 console.log(res.data.contract_document);
@@ -104,14 +102,14 @@ const ShowContractDetails = () => {
 
     const handlePreviewClick = (description) => {
         // Assuming the documents are stored in a specific folder on the server      
-        const absoluteUrl = `${docBaseUrl}/contracts/details/${id}/${description}`;
-          console.log('absoluteUrl', absoluteUrl);
+        const absoluteUrl = `${docBaseUrl}/contracts/specific/${id}/${description}`;
+        console.log('absoluteUrl', absoluteUrl);
         // Update the state with the document URL
         setDocumentUrl(absoluteUrl);
 
     };
 
-    
+
     return (
         <div>
             <Helmet>
@@ -119,17 +117,17 @@ const ShowContractDetails = () => {
             </Helmet>
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Contract Details</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Specific Task Contract</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required_details/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/specific/specific_task/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required/show_detail/${formData.id}`}>Show Contract Details
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/specific/show_specific_task/`}>Show Specific Task Contract
 
                         </a>
                     </li>
@@ -150,9 +148,19 @@ const ShowContractDetails = () => {
                             <div className="xl:overflow-hidden overflow-x-auto">
                                 <table className="ti-custom-table border-0">
                                     <tbody>
+
+                                        <tr className="border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                                BETWEEN (EmployerName)
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.employer_name}
+                                            </td>
+                                        </tr>
                                         <tr className="">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Full Name
+                                                AND (Employee Name )
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black font-medium">
@@ -161,29 +169,11 @@ const ShowContractDetails = () => {
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Employer / Company Name
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black">
-                                                {formData.employer}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
                                                 Contract Type
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black text-secondary font-bold">
-                                                {formData.contract_type}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Birth Place
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black">
-                                                {formData.birth_place}
+                                                {formData.name}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -197,13 +187,41 @@ const ShowContractDetails = () => {
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Age
+                                                Mobile Number
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.age}
+                                                {formData.phone_number}
                                             </td>
                                         </tr>
+                                        <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                                Registration Number
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.reg_number}
+                                            </td>
+                                        </tr>
+                                         <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                               Department Name
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.department}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                               Gender
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.gender}
+                                            </td>
+                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -227,7 +245,7 @@ const ShowContractDetails = () => {
                                     aria-controls="profile-1"
                                     role="tab"
                                 ><i className="ti ti-user-circle font-semibold"></i>
-                                    Contract Details
+                                    Employee Particulars
                                 </button>
                                 <button
                                     type="button"
@@ -237,7 +255,7 @@ const ShowContractDetails = () => {
                                     aria-controls="profile-2"
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
-                                    Next of Kin
+                                    Remuneration & Hours
                                 </button>
                                 <button
                                     type="button"
@@ -264,47 +282,47 @@ const ShowContractDetails = () => {
                                         <tbody>
                                             <tr className="">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Residence Place
+                                                    Position
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black font-medium">
-                                                    {formData.residence_place}
+                                                    {formData.job_title}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Permanent Residence
+                                                  NSSF Number
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.permanent_residence}
+                                                    {formData.nssf_number}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Email Address
+                                                    Bank Name
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black text-info">
-                                                    {formData.email}
+                                                    {formData.bank_name}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Postal Address
+                                                    Bank Account Number
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.postal_address}
+                                                    {formData.bank_account_no}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Phone Number
+                                                    Bank Account Name
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.phone_number}
+                                                    {formData.work_station}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -316,9 +334,10 @@ const ShowContractDetails = () => {
                                                     {formData.place_recruitment}
                                                 </td>
                                             </tr>
+
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Work Station
+                                                    Place of Work
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
@@ -327,29 +346,54 @@ const ShowContractDetails = () => {
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Date Employed
+                                                    Residence Place
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.date_employed}
+                                                    {formData.residence_place}
                                                 </td>
-
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Gender
+                                                    Start Date
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    <input type="checkbox" className="ti-form-checkbox mt-0.5 pointer-events-none" id="relative-inside" defaultChecked />
-                                                    <label htmlFor="hs-checked-checkbox" className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">{formData.gender}</label>
+                                                    {formData.start_date}
+                                                </td>
+                                            </tr>
+                                             <tr className="!border-0">
+                                                <td className="!p-2 !text-lg font-bold text-black">
+                                                    Expected Expire Date
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 text-black">
+                                                    {formData.expected_end_date}
+                                                </td>
+                                            </tr>
+                                             <tr className="!border-0">
+                                                <td className="!p-2 !text-lg font-bold text-black">
+                                                    Email
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 text-black">
+                                                    {formData.email}
+                                                </td>
+                                            </tr>
+                                             <tr className="!border-0">
+                                                <td className="!p-2 !text-lg font-bold text-black">
+                                                   Supervisor
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 text-black">
+                                                    {formData.supervisor}
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <br />
-                               
+
                             </div>
                             <div
                                 id="profile-2"
@@ -364,48 +408,55 @@ const ShowContractDetails = () => {
                                     </div>
 
                                     {/* Workflow History */}
-                                      <h3 className="text-black front-medium font-bold ">Next of Kin Details</h3>
+                                    <h3 className="text-black front-medium font-bold ">Remuneration</h3>
                                     <div className="table-bordered rounded-md overflow-auto">
-                                      
+
                                         <table className="ti-custom-table ti-custom-table-head" >
                                             <thead className="bg-gray-50 dark:bg-black/20">
                                                 <tr>
                                                     <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
-                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>
-                                                        Full name
-                                                    </th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Recidence Place</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Phone Number</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Relationship / Lerativeness</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>Name</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Description</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {/* {Array.isArray(dependantData) && dependantData.map((dependant, index) => ( */}
-
-                                                    <tr >
-                                                        <td>1</td>
-                                                        <td colSpan={1} className="">{formData.fullname_next1}</td>
-                                                    <td colSpan={1} className="">{formData.residence1}</td>
-                                                        <td colSpan={1} >{formData.phone_number1}</td>
-                                                        <td colSpan={1} >{formData.relationship}</td>
+                                                <tr >
+                                                    <td>1</td>
+                                                    <td colSpan={1} className="">Monthly Salary</td>
+                                                    <td colSpan={1} className="">{formData.monthly_salary}</td>
                                                 </tr>
-                                                      <tr >
-                                                        <td>2</td>
-                                                        <td colSpan={1} className="">{formData.fullname_next2}</td>
-                                                    <td colSpan={1} className="">{formData.residence2}</td>
-                                                        <td colSpan={1} >{formData.phone_number2}</td>
-                                                        <td colSpan={1} >{formData.relationship2}</td>
+                                                <tr>
+                                                    <td colSpan={1} >2</td>
+                                                    <td colSpan={1} >Basic Salary</td>
+                                                    <td colSpan={1} className="">{formData.basic_salary}</td>
                                                 </tr>
-                                                {/* ))} */}
+                                                <tr>
+                                                    <td colSpan={1} className="">3</td>
+                                                    <td colSpan={1} >Housing Allowance</td>
+                                                    <td colSpan={1} >{formData.house_allowance}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">4</td>
+                                                    <td colSpan={1} >Meal Allowance</td>
+                                                    <td colSpan={1} >{formData.meal_allowance}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">5</td>
+                                                    <td colSpan={1} >Transport Allowance</td>
+                                                    <td colSpan={1} >{formData.transport_allowance}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">6</td>
+                                                    <td colSpan={1} >Risk/Bush Allowance</td>
+                                                    <td colSpan={1} >{formData.risk_bush_allowance}</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                     {/* Employment Reference check */}
                                 </div>
-
                             </div>
-
-
                             <div
                                 id="profile-3"
                                 className="hidden text-center"
@@ -430,15 +481,15 @@ const ShowContractDetails = () => {
                                                 </div>
 
                                                 <div className="md:ltr:ml-auto md:rtl:mr-auto">
-                                                   
-                                                     <Link
-                                                    aria-label="anchor"
-                                                    to={`${import.meta.env.BASE_URL}contracts/required/download_contract_detail/` + formData.employee_id}
-                                                  className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
+
+                                                    <Link
+                                                        aria-label="anchor"
+                                                        to={`${import.meta.env.BASE_URL}contracts/specific/download_specific_task/` + formData.employee_id}
+                                                        className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
-                                                >
-                                                    <i className="ti ti-cloud-download"></i>Download Contract Detail
-                                                </Link>
+                                                    >
+                                                        <i className="ti ti-cloud-download"></i>Download Personnel Application
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -462,7 +513,7 @@ const ShowContractDetails = () => {
                                                                 <td className="font-medium">
                                                                     {document.doc_name}
                                                                 </td>
-                                                                
+
                                                                 <td>{document.doc_modified}</td>
                                                                 <td>
 
@@ -493,21 +544,6 @@ const ShowContractDetails = () => {
                                                 </tbody>
                                             </table>
                                         </div>
-                                        {/* <div className="py-1 ltr:float-right rtl:float-left">
-                                            <nav className="flex items-center space-x-2 rtl:space-x-reverse">
-                                                <Link className="text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" to="#">
-                                                    <span aria-hidden="true">«</span>
-                                                    <span className="sr-only">Previous</span>
-                                                </Link>
-                                                <Link className="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium rounded-full" to="#" aria-current="page">1</Link>
-                                                <Link className="w-10 h-10 text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" to="#">2</Link>
-                                                <Link className="w-10 h-10 text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" to="#">3</Link>
-                                                <Link className="text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" to="#">
-                                                    <span className="sr-only">Next</span>
-                                                    <span aria-hidden="true">»</span>
-                                                </Link>
-                                            </nav>
-                                        </div> */}
                                     </div>
                                 </div>
                             </div>
@@ -519,4 +555,4 @@ const ShowContractDetails = () => {
     );
 };
 
-export default ShowContractDetails;
+export default ShowSpecificContract;

@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchemployeeContract } from "/src/common/contractsdata";
+import { fetchSpecificTaskContract } from "/src/common/contractsdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const EmployeeContracts = () => {
+const SpecificContract = () => {
 
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -21,9 +21,9 @@ const EmployeeContracts = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const EmployeeContracts = await fetchemployeeContract();
-                setAllData(EmployeeContracts);
-                console.log(EmployeeContracts);
+                const SpecificTaskContracts = await fetchSpecificTaskContract();
+                setAllData(SpecificTaskContracts);
+                console.log(SpecificTaskContracts);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
             }
@@ -50,7 +50,58 @@ const EmployeeContracts = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  
+    // console.log('apiBaseUrl:', apiBaseUrl);
+    function Style2(employee_id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to edit this file again!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5e76a6',
+            cancelButtonColor: '#edcb63',
+            confirmButtonText: 'Yes, Complete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+          const res = axios.post(
+                    `${apiBaseUrl}/contracts/fixed/complete_fixed_contract/${employee_id}`,
+                    {},
+                    {
+                        headers: {
+                            'X-CSRF-TOKEN': 'form/multi-part',
+                        },
+                    }
+          )
+                // console.log('wazungu', res.data)
+                    .then(response => {
+                if (response.data.status === 404) {
+                    // Handle 404 status code
+                    Swal.fire(
+                        'Error',
+                        response.data.message,
+                        'error'
+                    );
+                } else {
+                    // Handle other responses
+                    Swal.fire(
+                        'Completed',
+                        'Your file has been Completed.',
+                        'success'
+                    );
+                }
+            })
+            .catch(error => {
+                // Handle errors if necessary
+                console.error('Error completing file:', error);
+                Swal.fire(
+                    'Error',
+                    'An error occurred while completing the file.',
+                    'error'
+                );
+               });
+            }
+        });
+    }
+
 
     const [showToast, setShowToast] = useState(false);
 
@@ -68,7 +119,7 @@ const EmployeeContracts = () => {
 
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employees Contracts</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Specific Task Contracts</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
@@ -78,15 +129,15 @@ const EmployeeContracts = () => {
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts/`}>
-                           Employees Contracts
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/specific/specific_task/`}>
+                            Fixed Contracts
                         </a>
                     </li>
                 </ol>
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h5 className="box-title my-auto text-lg">Contracted Employee List </h5>
+                    <h5 className="box-title my-auto text-lg">Specifi Task Contract List </h5>
                     {/* <Link to={`${import.meta.env.BASE_URL}employees/personal/add_employee`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-address-book"></i>Add Social Records</Link> */}
                 </div>
                 <div className="box-body">
@@ -156,16 +207,19 @@ const EmployeeContracts = () => {
                                     <th scope="col" className="!text-center font-bold text-black">
                                         Employee (AND)
                                     </th>
-                                     <th scope="col" className="!text-center font-bold text-black">
-                                        Contract Type
-                                    </th>
+                                    
                                     <th scope="col" className="!text-center font-bold text-black">
                                         Contracted Date 
                                     </th>
-                                   
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        Stage
+                                    </th>
 
                                     <th scope="col" className="!text-center font-bold text-black">
                                         Status
+                                    </th>
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        Contract Detail
                                     </th>
                                     <th scope="col" className="!text-center font-bold text-black">
                                         Action
@@ -177,29 +231,66 @@ const EmployeeContracts = () => {
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
-                                            {/* <td>{employee.employee}</td> */}
-                                            
-                                            <td>{employee.employer_name}</td>
+                                             <td>{employee.employer}</td>
                                             <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employee_name}
                                             </td>
-                                            <td>{employee.name} </td>
+                                            <td>{employee.stages === 1 ? (<>{employee.contract_created}</>) : employee.created_at} </td>
                                             <td className="text-center font-bold">
-                                                {employee.created_at }
+                                                {employee.progressive_stage === 1 ? (
+                                                    <span className="badge bg-warning text-white">Employee Details</span>
+                                                ) : employee.progressive_stage === 2 ? (
+                                                    <span className="badge bg-info text-white">Supportive Document</span>
+                                                ) : employee.progressive_stage === 3 ? (
+                                                    <span className="badge bg-secondary text-white">Social Record</span>
+                                                ) : employee.progressive_stage === 4 ? (
+                                                    <span className="badge bg-primary text-white">Induction Training</span>
+                                                ) : employee.progressive_stage === 5 ? (
+                                                    <span className="badge bg-purple-500 text-white">Contract</span>
+                                                ) : employee.progressive_stage === 6 ? (
+                                                    <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span>
+                                                ) : (<span className="badge bg-success text-white">Registration Completed</span>)
+
+                                                }
                                             </td>
-                                             <td className="text-center font-bold">
+
+                                            <td>
                                                 {
-                                                    employee.status === 1 ? (<></>) :
-                                                        employee.status === 0 ? (<span className="ti-btn ti-btn-info m-0 py-2 btn-sm"  >Submitted </span>) : (<span  className="ti-btn ti-btn-danger m-0 py-2 btn-sm">Rejected </span>
-                                                        )}
+                                                    employee.stages === 1 ? (
+                                                        <span className="badge bg-green-500 text-white" style={{ backgroundColor: '#08adf8' }}>Attended</span>
+                                                    ) : employee.stages === 0 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
+                                                }
                                             </td>
+                                            <td className="text-center font-bold">
+                                                {
+                                                    employee.stages === 1 ? (<></>) :
+                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/specific/add_specific_task/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Specific</Link>
+                                                        )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}
                                                 <Link
                                                     aria-label="anchor"
-                                                    to={`${import.meta.env.BASE_URL}contracts/required/show_detail/` + employee.employee_id}
+                                                    to={`${import.meta.env.BASE_URL}contracts/specific/show_specific_task/` + employee.employee_id}
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
                                                 > <i className="ti ti-eye"></i>
                                                 </Link>
+                                              
+                                                <button
+                                                    aria-label="anchor"
+                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+                                                    onClick={() => {
+                                                        if (employee.stages === 1) {
+                                                            // Show custom toast if employee.stage is 1
+                                                            handleCustomToast();
+                                                        } else {
+                                                            // Navigate to the edit link
+                                                            navigate(`${import.meta.env.BASE_URL}contracts/specific/edit_specific_task/` + employee.employee_id);
+                                                        }
+                                                    }}
+                                                >
+                                                    <i className="ti ti-pencil"></i>
+                                                </button>
+
+
                                             </td>
                                         </tr>
                                     ))}
@@ -229,4 +320,4 @@ const EmployeeContracts = () => {
         </div>
     );
 };
-export default EmployeeContracts;
+export default SpecificContract;

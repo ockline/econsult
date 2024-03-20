@@ -129,7 +129,7 @@ const ShowFixedContract = () => {
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/show_fixed/${formData.id}`}>Show Fixed Contract
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/show_fixed/${formData.employee_id}`}>Show Fixed Contract
 
                         </a>
                     </li>
@@ -437,7 +437,7 @@ const ShowFixedContract = () => {
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i>Download Personnel Application
+                                                        <i className="ti ti-cloud-download"></i>Download Fixed Contract
                                                     </Link>
                                                 </div>
                                             </div>

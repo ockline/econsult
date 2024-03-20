@@ -244,17 +244,17 @@ const AddFixedContract = () => {
     return (
         <div>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Detail For Contract</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Fixed Contract</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/details/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contract/fixed/fixed_contracts/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/add_record/${formData.id}`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/add_fixed_contract/${formData.id}`}>
                             Add Contact Details
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
@@ -263,7 +263,7 @@ const AddFixedContract = () => {
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h1 className="box-title my-auto font-bold text-lg">Add Employee Detail For Contract</h1>
+                    <h1 className="box-title my-auto font-bold text-lg">Add Employee Fixed Term Contract</h1>
                     <Link to={`${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
@@ -326,7 +326,7 @@ const AddFixedContract = () => {
                                     <span className="text-danger">{formData.error_list.job_profile}</span>
                                 </div>
                                  <div className="space-y-2" id="attachment">
-                                            <label className="ti-form-label mb-0 font-bold text-lg ">Job Description Attachment<span style={{ color: "red" }}></span> (if didnt upload)</label>
+                                            <label className="ti-form-label mb-0 font-bold text-lg ">Job Description <span style={{ color: "red" }}></span> (if didn`t upload)</label>
                                             <input type="file" name="job_description_doc" id="small-file-input" onChange={(e) => handleFileInputChange('job_description_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                         </div>
                                 <div className="space-y-2">

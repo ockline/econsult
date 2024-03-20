@@ -274,6 +274,11 @@ export const CostCenterSelect = [
   { value: '2', label: 'No' },
  
 ]
+export const Banking = [
+  { value: 'CRDB', label: 'CRDB' },
+  { value: 'NMB', label: 'NMB' },
+  { value: 'NBC', label: 'NBC' }
+]
 
 export const DepartmentData = async () => {
   try {

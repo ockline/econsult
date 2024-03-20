@@ -86,7 +86,14 @@ import AddFixedContract from "../component/contractManagement/fixed/addFixed/add
 import EditFixedContract from "../component/contractManagement/fixed/editFixed/editFixed";
 import ShowFixedContract from "../component/contractManagement/fixed/showFixed/showFixed";
 import DownloadFixedContract from "../component/contractManagement/templateContracts/contractFixed/fixed";
-        
+    
+//Specific Task //SpecificTaskContract
+import SpecificTaskContract from "../component/contractManagement/specific/specificTask/specific";
+import AddSpecificTask from "../component/contractManagement/specific/addSpecific/addspecifictask";
+import EditSpecificTask from "../component/contractManagement/specific/editSpecifictask/editspecific";
+import ShowSpecificTask from "../component/contractManagement/specific/showSpecifictask/showspecific";
+import DownloadSpecificTask from "../component/contractManagement/templateContracts/specific/specifictask";
+
 
 
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -284,8 +291,12 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}contracts/fixed/show_fixed/:id`, element: <ShowFixedContract /> },
     { path: `${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/:id`, element: < DownloadFixedContract /> },
 
-
-
+    //Specific Task contracts/specific/specific_task
+    { path: `${import.meta.env.BASE_URL}contracts/specific/specific_task`, element: <SpecificTaskContract /> },
+    { path: `${import.meta.env.BASE_URL}contracts/specific/add_specific_task/:id`, element: <AddSpecificTask /> },
+    { path: `${import.meta.env.BASE_URL}contracts/specific/edit_specific_task/:id`, element: <EditSpecificTask /> },
+    { path: `${import.meta.env.BASE_URL}contracts/specific/show_specific_task/:id`, element: <ShowSpecificTask /> },
+    { path: `${import.meta.env.BASE_URL}contracts/specific/download_specific_task/:id`, element: < DownloadSpecificTask /> },
 /** ************ End of Contracts block ********************************************************************************** */
 
 

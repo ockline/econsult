@@ -105,8 +105,8 @@ export const MenuItems = [
 					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/employee_contracted`, type: "link", active: false, selected: false, title: "Contracts" },
 					{ id: 20, path: `${import.meta.env.BASE_URL}contracts/required_details`, type: "link", active: false, selected: false, title: "Required Details" },
 					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts`, type: "link", active: false, selected: false, title: "Fixed Term" },
-					{ id: 22, path: `${import.meta.env.BASE_URL}contracts/specific/specifictask`, type: "link", active: false, selected: false, title: "Specific Task" },
-					{ id: 23, path: `${import.meta.env.BASE_URL}contracts/unspecified/unspecified`, type: "link", active: false, selected: false, title: "Unspecified" },
+					{ id: 22, path: `${import.meta.env.BASE_URL}contracts/specific/specific_task`, type: "link", active: false, selected: false, title: "Specific Task" },
+					// { id: 23, path: `${import.meta.env.BASE_URL}contracts/unspecified/unspecified`, type: "link", active: false, selected: false, title: "Unspecified" },
 					{ id: 24, path: `${import.meta.env.BASE_URL}contracts/terms/termconditions`, type: "link", active: false, selected: false, title: "Terms & Contitions" },
 				]
 			},
