@@ -94,6 +94,15 @@ import EditSpecificTask from "../component/contractManagement/specific/editSpeci
 import ShowSpecificTask from "../component/contractManagement/specific/showSpecifictask/showspecific";
 import DownloadSpecificTask from "../component/contractManagement/templateContracts/specific/specifictask";
 
+// Terms and Condition 
+import TermConditions from "../component/contractManagement/termsCondition/terms/termcondition";
+import SignedTermConditions from "../component/contractManagement/termsCondition/terms/landingpage";
+import AddTermConditions from "../component/contractManagement/termsCondition/addTerms/addterm";
+import EditTermConditions from "../component/contractManagement/termsCondition/editTerms/editterm";
+import ShowTermConditions from "../component/contractManagement/termsCondition/showTerm/showterm";
+import DownloadTermConditions from "../component/contractManagement/templateContracts/terms/termcondition";
+
+
 
 
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -297,6 +306,15 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}contracts/specific/edit_specific_task/:id`, element: <EditSpecificTask /> },
     { path: `${import.meta.env.BASE_URL}contracts/specific/show_specific_task/:id`, element: <ShowSpecificTask /> },
     { path: `${import.meta.env.BASE_URL}contracts/specific/download_specific_task/:id`, element: < DownloadSpecificTask /> },
+    
+       //Terms and Conditions   
+    { path: `${import.meta.env.BASE_URL}contracts/terms/term_conditions`, element: <TermConditions /> },
+     { path: `${import.meta.env.BASE_URL}contracts/terms/signed_term_conditions`, element: <SignedTermConditions/> }, //all signed condition
+    { path: `${import.meta.env.BASE_URL}contracts/terms/add_term_condition/:id`, element: <AddTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}contracts/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}contracts/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}contracts/terms/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    
 /** ************ End of Contracts block ********************************************************************************** */
 
 
