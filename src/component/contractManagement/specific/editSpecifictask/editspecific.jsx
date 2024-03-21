@@ -6,12 +6,27 @@ import Creatable from "react-select/creatable";
 import DatePicker from 'react-datepicker';
 import axios from "axios";
 import Swal from "sweetalert2";
+import moment from 'moment';
+import TimePicker from 'rc-time-picker';
+
+const showSecond = true;
+const str = showSecond ? 'HH:mm:ss' : 'HH:mm';
 
 
 
 const EditSpecifiTaskContract = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+
+    const formatTime = (dateString) => {
+        // Check if the dateString is a valid date string
+        if (!dateString || isNaN(new Date(dateString))) {
+            return ''; // Return an empty string or handle the error as needed
+        }
+        const date = new Date(dateString);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    };
 
     let navigate = useNavigate();
     const [step, setStep] = useState(1);
@@ -147,7 +162,7 @@ const EditSpecifiTaskContract = () => {
             department_id: formData.department_id,
             monthly_salary: formData.monthly_salary,
             job_description_doc: formData.job_description_doc,
-             specific_contract_signed: formData.specific_contract_signed,
+            specific_contract_signed: formData.specific_contract_signed,
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/contracts/specific/update_specific_task/${id}`, DataToSend, {
@@ -275,19 +290,19 @@ const EditSpecifiTaskContract = () => {
     // // Parse the string into a Date object
 
 
-// Function to format time
-const formatTime = (dateString) => {
-  // Check if the dateString is a valid date string
-  if (!dateString || isNaN(new Date(dateString))) {
-    return ''; // Return an empty string or handle the error as needed
-  }
-  const date = new Date(dateString);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-};
+    // // Function to format time
+    // const formatTime = (dateString) => {
+    //   // Check if the dateString is a valid date string
+    //   if (!dateString || isNaN(new Date(dateString))) {
+    //     return ''; // Return an empty string or handle the error as needed
+    //   }
+    //   const date = new Date(dateString);
+    //   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    // };
 
 
-    
-    
+
+
     return (
         <div>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -548,32 +563,22 @@ const formatTime = (dateString) => {
                                     <span className="text-danger">{formData.error_list.ordinary_working}</span>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Working From <span style={{ color: "red" }}> *</span></label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">
+                                        Working From <span style={{ color: "red" }}> *</span>
+                                    </label>
                                     <div className="flex rounded-sm overflow-auto">
                                         <div
-                                            className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                className="ri ri-time-line"></i></span>
+                                            className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10"
+                                        >
+                                            <span className="text-sm text-gray-500 dark:text-white/70">
+                                                <i className="ri ri-time-line"></i>
+                                            </span>
                                         </div>
-                                        {/* <input type="text" name="working_from" className="my-auto ti-form-input" value={formatTime(formData.working_from)} onChange={(e) => handleInputChange('working_from', e.target.value)}   required /> */}
-                                             {/* <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
-                                            name="working_from" value={formatTime(formData.working_from)} onChange={(e) => handleInputChange('working_from', e.target.value)} timeIntervals={15}
-                                            timeCaption="Time" dateFormat="h:mm aa" showTimeInput showTimeSelectOnly
-                                        /> */}
-                                       <DatePicker
-                                    className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
-                                    name="working_from"
-                                    selected={formData.working_from}
-                                    onChange={(date) => handleInputChange('working_from', date)}
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                    showTimeInput
-                                    showTimeSelectOnly
-                                    />
-
+                                        <input type="text" name="working_from" className="my-auto ti-form-input" value={formData.working_from}
+                                            onChange={(e) => handleInputChange('working_from', e.target.value)} placeholder="08:20 PM " required />
                                     </div>
                                 </div>
+
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Working To <span style={{ color: "red" }}> *</span></label>
                                     <div className="flex rounded-sm overflow-auto">
@@ -582,8 +587,8 @@ const formatTime = (dateString) => {
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-time-line"></i></span>
                                         </div>
-                                       
-                                         <input type="text" name="working_to" className="my-auto ti-form-input" value={formatTime(formData.working_to)} onChange={(e) => handleInputChange('working_to', e.target.value)} placeholder="Employer ordinary days"  required />
+                                        <input type="text" name="working_to" className="my-auto ti-form-input" value={formData.working_to}
+                                            onChange={(e) => handleInputChange('working_to', e.target.value)} placeholder="08:20 PM " required />
 
                                     </div>
                                 </div>
@@ -603,7 +608,7 @@ const formatTime = (dateString) => {
                                     </div>
                                     <span className="text-danger">{formData.error_list.night_shift}</span>
                                 </div>
-                                {formData.night_shift === "Yes" && (
+                                { formData.night_shift === "Yes" && (
                                     <>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-lg">Night Working From <span style={{ color: "red" }}> *</span></label>
@@ -613,8 +618,8 @@ const formatTime = (dateString) => {
                                                     <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                         className="ri ri-time-line"></i></span>
                                                 </div>
-                                              
-                                                 <input type="text" name="night_working_from" className="my-auto ti-form-input" value={formatTime(formData.night_working_from)} onChange={(e) => handleInputChange('night_working_from', e.target.value)} placeholder="Employer ordinary days" required />
+
+                                                <input type="text" name="night_working_from" className="my-auto ti-form-input" value={formData.night_working_from} onChange={(e) => handleInputChange('night_working_from', e.target.value)} placeholder="Night working From ie 08:00 AM " required />
 
                                             </div>
                                         </div>
@@ -626,37 +631,32 @@ const formatTime = (dateString) => {
                                                     <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                         className="ri ri-time-line"></i></span>
                                                 </div>
-                                                
-                                                {/* <input type="text" name="night_working_to" className="my-auto ti-form-input" value={formData.night_working_to}
-                                                    onChange={(e) => handleInputChange('night_working_to', e.target.value)} placeholder="night working to"
-                                                    required /> */}
-                                                {/* <span className="text-danger">{formData.error_list.night_working_to}</span> */}
-                                                <input type="text" name="night_working_to" className="my-auto ti-form-input" value={formatTime(formData.night_working_to)} onChange={(e) => handleInputChange('night_working_to', e.target.value)} placeholder="Employer ordinary days" required />
+                                                <input type="text" name="night_working_to" className="my-auto ti-form-input" value={formData.night_working_to} onChange={(e) => handleInputChange('night_working_to', e.target.value)} placeholder="Night working To 17:00 PM " required />
                                             </div>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-lg">Night Working Shift hours  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="night_shift_hours" className="my-auto ti-form-input" value={formData.night_shift_hours}
-                                                onChange={(e) => handleInputChange('night_shift_hours', e.target.value)} placeholder="Night Working Shift hours per week" required />
+                                                onChange={(e) => handleInputChange('night_shift_hours', e.target.value)} placeholder="Night Working Shift hours per week ie 6" required />
                                             <span className="text-danger">{formData.error_list.night_shift_hours}</span>
                                         </div>
                                     </>
                                 )}
                                 {/* End of   Night shift */}
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">On Saturday from </label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">On Saturday from <span>({formatTime(formData.saturday_from)})</span></label>
                                     <div className="flex rounded-sm overflow-auto">
                                         <div
                                             className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-time-line"></i></span>
-                                        </div>                                       
-                                        <input type="text" name="saturday_from" className="my-auto ti-form-input" value={formatTime(formData.saturday_from)} onChange={(e) => handleInputChange('saturday_from', e.target.value)} placeholder="Employer ordinary days" required />
+                                        </div>
+                                        <input type="text" name="saturday_from" className="my-auto ti-form-input" value={formData.saturday_from} onChange={(e) => handleInputChange('saturday_from', e.target.value)} placeholder="Employer ordinary days" required />
 
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Saturday To <span style={{ color: "red" }}> *</span></label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Saturday To <span style={{ color: "red" }}> *</span>({formatTime(formData.saturday_to)})</label>
 
                                     <div className="flex rounded-sm overflow-auto">
                                         <div
@@ -664,7 +664,7 @@ const formatTime = (dateString) => {
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-time-line"></i></span>
                                         </div>
- <input type="text" name="saturday_to" className="my-auto ti-form-input" value={formatTime(formData.saturday_to)} onChange={(e) => handleInputChange('saturday_to', e.target.value)} placeholder="Employer ordinary days" required />
+                                        <input type="text" name="saturday_to" className="my-auto ti-form-input" value={formData.saturday_to} onChange={(e) => handleInputChange('saturday_to', e.target.value)} placeholder="Employer ordinary days" required />
                                     </div>
                                 </div>
                                 <div className="space-y-2" id="attachment">

@@ -488,7 +488,7 @@ const ShowSpecificContract = () => {
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i>Download Personnel Application
+                                                        <i className="ti ti-cloud-download"></i>Download Specific Task Contract
                                                     </Link>
                                                 </div>
                                             </div>

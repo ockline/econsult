@@ -63,7 +63,7 @@ const SpecificContract = () => {
         }).then((result) => {
             if (result.isConfirmed) {
           const res = axios.post(
-                    `${apiBaseUrl}/contracts/fixed/complete_fixed_contract/${employee_id}`,
+                    `${apiBaseUrl}/contracts/specific/complete_specific_task/${employee_id}`,
                     {},
                     {
                         headers: {
@@ -235,23 +235,25 @@ const SpecificContract = () => {
                                             <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employee_name}
                                             </td>
                                             <td>{employee.stages === 1 ? (<>{employee.contract_created}</>) : employee.created_at} </td>
-                                            <td className="text-center font-bold">
-                                                {employee.progressive_stage === 1 ? (
-                                                    <span className="badge bg-warning text-white">Employee Details</span>
-                                                ) : employee.progressive_stage === 2 ? (
-                                                    <span className="badge bg-info text-white">Supportive Document</span>
-                                                ) : employee.progressive_stage === 3 ? (
-                                                    <span className="badge bg-secondary text-white">Social Record</span>
-                                                ) : employee.progressive_stage === 4 ? (
-                                                    <span className="badge bg-primary text-white">Induction Training</span>
-                                                ) : employee.progressive_stage === 5 ? (
-                                                    <span className="badge bg-purple-500 text-white">Contract</span>
-                                                ) : employee.progressive_stage === 6 ? (
-                                                    <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span>
-                                                ) : (<span className="badge bg-success text-white">Registration Completed</span>)
+                                            {employee.stages === 1 ? (<td> <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span> </td>) : (
+                                                <td className="text-center font-bold">
+                                                    {employee.progressive_stage === 1 ? (
+                                                        <span className="badge bg-warning text-white">Employee Details</span>
+                                                    ) : employee.progressive_stage === 2 ? (
+                                                        <span className="badge bg-info text-white">Supportive Document</span>
+                                                    ) : employee.progressive_stage === 3 ? (
+                                                        <span className="badge bg-secondary text-white">Social Record</span>
+                                                    ) : employee.progressive_stage === 4 ? (
+                                                        <span className="badge bg-primary text-white">Induction Training</span>
+                                                    ) : employee.progressive_stage === 5 ? (
+                                                        <span className="badge bg-purple-500 text-white">Contract</span>
+                                                    ) : employee.progressive_stage === 6 ? (
+                                                        <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span>
+                                                    ) : (<span className="badge bg-success text-white">Registration Completed</span>)
 
-                                                }
-                                            </td>
+                                                    }
+                                                </td>
+                                            )}
 
                                             <td>
                                                 {
