@@ -96,7 +96,6 @@ import DownloadSpecificTask from "../component/contractManagement/templateContra
 
 // Terms and Condition 
 import TermConditions from "../component/contractManagement/termsCondition/terms/termcondition";
-import SignedTermConditions from "../component/contractManagement/termsCondition/terms/landingpage";
 import AddTermConditions from "../component/contractManagement/termsCondition/addTerms/addterm";
 import EditTermConditions from "../component/contractManagement/termsCondition/editTerms/editterm";
 import ShowTermConditions from "../component/contractManagement/termsCondition/showTerm/showterm";
@@ -309,7 +308,6 @@ export const RouteData = [
     
        //Terms and Conditions   
     { path: `${import.meta.env.BASE_URL}contracts/terms/term_conditions`, element: <TermConditions /> },
-     { path: `${import.meta.env.BASE_URL}contracts/terms/signed_term_conditions`, element: <SignedTermConditions/> }, //all signed condition
     { path: `${import.meta.env.BASE_URL}contracts/terms/add_term_condition/:id`, element: <AddTermConditions /> },
     { path: `${import.meta.env.BASE_URL}contracts/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
     { path: `${import.meta.env.BASE_URL}contracts/terms/show_term_condition/:id`, element: <ShowTermConditions /> },

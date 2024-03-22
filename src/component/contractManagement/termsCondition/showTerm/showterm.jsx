@@ -90,7 +90,7 @@ const ShowTermCondition = () => {
     const [documentUrl, setDocumentUrl] = useState('');
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/contracts/specific/get_specific_document/${id}`)
+        axios.get(`${apiBaseUrl}/contracts/terms/get_specific_document/${id}`)
             .then((res) => {
                 setEmployeeDocument(res.data.contract_document);
                 console.log(res.data.contract_document);
@@ -102,7 +102,7 @@ const ShowTermCondition = () => {
 
     const handlePreviewClick = (description) => {
         // Assuming the documents are stored in a specific folder on the server      
-        const absoluteUrl = `${docBaseUrl}/contracts/specific/${id}/${description}`;
+        const absoluteUrl = `${docBaseUrl}/contracts/terms/${id}/${description}`;
         console.log('absoluteUrl', absoluteUrl);
         // Update the state with the document URL
         setDocumentUrl(absoluteUrl);
@@ -121,13 +121,13 @@ const ShowTermCondition = () => {
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/specific/specific_task/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/terms/term_conditions/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/specific/show_specific_task/`}>Show Term and Condition
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/terms/show_term_condition/${formData.employee_id}`}>Show Term and Condition
 
                         </a>
                     </li>
@@ -246,16 +246,6 @@ const ShowTermCondition = () => {
                                     role="tab"
                                 ><i className="ti ti-user-circle font-semibold"></i>
                                     Employee Particulars
-                                </button>
-                                <button
-                                    type="button"
-                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
-                                    id="profile-item-2"
-                                    data-hs-tab="#profile-2"
-                                    aria-controls="profile-2"
-                                    role="tab"
-                                ><i className="ti ti-urgent font-semibold"></i>
-                                    Remuneration & Hours
                                 </button>
                                 <button
                                     type="button"
@@ -395,68 +385,7 @@ const ShowTermCondition = () => {
                                 <br />
 
                             </div>
-                            <div
-                                id="profile-2"
-                                className="hidden"
-                                role="tabpanel"
-                                aria-labelledby="profile-item-2"
-                            >
-                                <div className="grid lg:grid-cols-1 gap-6 second-page none" id="new_page">
-
-                                    <div className=" space-y-2">
-
-                                    </div>
-
-                                    {/* Workflow History */}
-                                    <h3 className="text-black front-medium font-bold ">Remuneration</h3>
-                                    <div className="table-bordered rounded-md overflow-auto">
-
-                                        <table className="ti-custom-table ti-custom-table-head" >
-                                            <thead className="bg-gray-50 dark:bg-black/20">
-                                                <tr>
-                                                    <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
-                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>Name</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Description</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr >
-                                                    <td>1</td>
-                                                    <td colSpan={1} className="">Monthly Salary</td>
-                                                    <td colSpan={1} className="">{formData.monthly_salary}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} >2</td>
-                                                    <td colSpan={1} >Basic Salary</td>
-                                                    <td colSpan={1} className="">{formData.basic_salary}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">3</td>
-                                                    <td colSpan={1} >Housing Allowance</td>
-                                                    <td colSpan={1} >{formData.house_allowance}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">4</td>
-                                                    <td colSpan={1} >Meal Allowance</td>
-                                                    <td colSpan={1} >{formData.meal_allowance}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">5</td>
-                                                    <td colSpan={1} >Transport Allowance</td>
-                                                    <td colSpan={1} >{formData.transport_allowance}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">6</td>
-                                                    <td colSpan={1} >Risk/Bush Allowance</td>
-                                                    <td colSpan={1} >{formData.risk_bush_allowance}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    {/* Employment Reference check */}
-                                </div>
-                            </div>
+                          
                             <div
                                 id="profile-3"
                                 className="hidden text-center"
@@ -499,8 +428,6 @@ const ShowTermCondition = () => {
                                                     <tr>
                                                         <th>S/No</th>
                                                         <th scope="col" className="!min-w-[13rem]">Document Name</th>
-                                                        {/* <th scope="col">Files</th>
-                                                        <th scope="col">Size</th> */}
                                                         <th scope="col">Modified Date</th>
                                                         <th scope="col" className="!text-end">Action</th>
                                                     </tr>

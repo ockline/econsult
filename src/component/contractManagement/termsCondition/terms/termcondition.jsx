@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchSpecificTaskContract } from "/src/common/contractsdata";
+import { fetchTermConditionContract } from "/src/common/contractsdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
@@ -21,9 +21,9 @@ const TermConditions = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const SpecificTaskContracts = await fetchSpecificTaskContract();
-                setAllData(SpecificTaskContracts);
-                console.log(SpecificTaskContracts);
+                const TermConditionContracts = await fetchTermConditionContract();
+                setAllData(TermConditionContracts);
+                console.log(TermConditionContracts);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
             }
@@ -63,7 +63,7 @@ const TermConditions = () => {
         }).then((result) => {
             if (result.isConfirmed) {
           const res = axios.post(
-                    `${apiBaseUrl}/contracts/specific/complete_specific_task/${employee_id}`,
+                    `${apiBaseUrl}/contracts/terms/complete_term_condition/${employee_id}`,
                     {},
                     {
                         headers: {
@@ -254,7 +254,6 @@ const TermConditions = () => {
                                                     }
                                                 </td>
                                             )}
-
                                             <td>
                                                 {
                                                     employee.stages === 1 ? (
@@ -265,13 +264,13 @@ const TermConditions = () => {
                                             <td className="text-center font-bold">
                                                 {
                                                     employee.stages === 1 ? (<></>) :
-                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/specific/add_specific_task/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Specific</Link>
+                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/terms/add_term_condition/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Terms</Link>
                                                         )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}
                                                 <Link
                                                     aria-label="anchor"
-                                                    to={`${import.meta.env.BASE_URL}contracts/specific/show_specific_task/` + employee.employee_id}
+                                                    to={`${import.meta.env.BASE_URL}contracts/terms/show_term_condition/` + employee.employee_id}
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
                                                 > <i className="ti ti-eye"></i>
                                                 </Link>
@@ -285,7 +284,7 @@ const TermConditions = () => {
                                                             handleCustomToast();
                                                         } else {
                                                             // Navigate to the edit link
-                                                            navigate(`${import.meta.env.BASE_URL}contracts/specific/edit_specific_task/` + employee.employee_id);
+                                                            navigate(`${import.meta.env.BASE_URL}contracts/terms/edit_term_condition/` + employee.employee_id);
                                                         }
                                                     }}
                                                 >

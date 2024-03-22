@@ -45,6 +45,16 @@ export const fetchSpecificTaskContract = async () => {
   }
 };
 
+// Termsa and Condtions
+export const fetchTermConditionContract = async () => {
+  try {
+    const res = await axios.get(`${apiBaseUrl}/contracts/terms/show_term_conditions`);
+    return res.data.term_conditions;
+  } catch (error) {
+    throw new Error('Failed to fetch Show Term condition: ' + error.message);
+  }
+};
+
 //Unspecified_contract
 // export const fetchUnspecifiedContract = async () => {
 //   try {

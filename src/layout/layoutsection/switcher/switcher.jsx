@@ -502,8 +502,7 @@ const Switcher = ({local_varaiable,ThemeChanger}) => {
                     </div>
                 </div>
                 <div className="ti-offcanvas-footer">
-                    <Link className="ti-btn ti-btn-primary" target='_blank' to="https://themeforest.net/user/spruko/portfolio">Try Now</Link>
-                    <Link className="ti-btn ti-btn-secondary" target='_blank' to="https://themeforest.net/user/spruko/portfolio">Our Protfolio</Link>
+                  
                     <Link id="reset-all" className="ti-btn ti-btn-danger" to="#" onClick={() => switcherdata.Reset(ThemeChanger)} >Reset</Link>
                 </div>
             </div>

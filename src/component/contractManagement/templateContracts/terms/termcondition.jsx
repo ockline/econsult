@@ -54,53 +54,42 @@ const TermConditionTemplate = () => {
                         <div className="box-body">
                             <form className="printable-content">
 
-                                <div className="table-bordered rounded-md overflow-auto" style={{ border: '4px solid black' }}>
+                                <div className="table-bordered rounded-md overflow-auto" style={{
+                                    border: '5px solid black',
+                                    boxShadow: 'inset 0 0 0 2px black',
+                                    outline: '4px solid transparent', /* Adjust the width to control the gap */
+                                    padding: '10px'
+                                }}>
                                     <br /><br /><br />
                                     <div className="flex flex-col lg:flex-row justify-between mb-5 space-y-4">
                                         {/* <div className="text-end"></div> */}
                                         <div className="text-center">
-                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">MKATABA WA AJIRA</h1>
+                                            <h1 className="text-2xl text-black uppercase font-semibold text-center"></h1>
                                             <br /><br />
-                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">(CONTRACT OF EMPLOYMENT)
+                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">
                                             </h1><br />
-                                            <br />
-                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">WA</h1>
+                                            <br /><br /><br /><br /><br /><br /><br></br>
+
+                                            <h1 className="text-3xl text-black uppercase font-bold text-center">MASHARTI YA MKATABA WA AJIRA</h1>
                                             <br /><br />
-                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">(FOR)</h1>
+                                            <h1 className="text-2xl text-black uppercase font-semibold text-center"></h1>
                                             <br /><br />
-                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">KAZI MAALUM</h1>
+                                            <h1 className="text-2xl text-black uppercase font-semibold text-center"></h1>
                                             <br />
-                                            <h1 className="text-2xl text-black uppercase font-semibold text-center">(SPECIFIC TASK)</h1>
+                                            <h1 className="text-2xl text-black uppercase font-semibold text-center"></h1>
+                                            <br />
+                                            <br />
                                         </div>
                                     </div>
-                                    <br /><br />
+                                    <br /><br /><br /><br /><br /><br /><br /><br></br>
+                                    <br /><br></br><br /><br></br><br /><br></br>
                                     <table className="w-full border-collaps">
                                         <tbody>
                                             <tr>
                                                 <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
-                                                    <h4 className="text-lg text-black ">
-                                                        Jina la Mfanyakazi:<br />(Name of Employee:)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <span className="text-sm text-black font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '3px' }}>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.employee_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        </span>
-                                                    </h4>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
-                                                    <h4 className="text-lg text-black  ">
-                                                        Nafasi ya kazi:<br />(Position:)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <span className="text-sm text-black font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '3px' }}>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.job_title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        </span>
-                                                    </h4>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
-                                                    <h4 className="text-lg text-black  ">
-                                                        Nambari ya Usajili:<br />(Registration Number:)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <span className="text-sm text-black font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '3px' }}>
+                                                    <h4 className="text-lg text-black font-bold">
+                                                        Namba ya Utambulisho wa Mfanyakazi:
+                                                        <span className="text-md text-black font-medium" style={{ borderBottom: '3px dotted black', paddingBottom: '2px', display: 'inline-block', width: '310px' }}>
                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.reg_number}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </span>
                                                     </h4>
@@ -108,52 +97,85 @@ const TermConditionTemplate = () => {
                                             </tr>
                                             <tr>
                                                 <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
-                                                    <h4 className="text-lg text-black ">
-                                                        Namba ya Nssf Nambari:<br />(NSSF Number:)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <span className="text-sm text-black font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '3px' }}>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.nssf_number}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <h4 className="text-lg text-black font-bold ">
+                                                        Jina la Mfanyakazi:
+                                                        <span className="text-md text-black font-medium" style={{ borderBottom: '3px dotted black', paddingBottom: '2px', display: 'inline-block', width: '460px' }}>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.employee_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        </span>
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                              <tr>
+                                                <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
+                                                    <h4 className="text-lg text-black font-bold ">
+                                                        Daraja / Nafasi ya kazi:
+                                                        <span className="text-md text-black font-medium" style={{ borderBottom: '3px dotted black', paddingBottom: '1px', display: 'inline-block', width: '440px' }}>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.job_title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        </span>
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                              <tr>
+                                                <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
+                                                    <h4 className="text-lg text-black font-bold ">
+                                                        Idara / Kitengo:
+                                                        <span className="text-md text-black font-medium" style={{ borderBottom: '3px dotted black', paddingBottom: '1px', display: 'inline-block', width: '500px' }}>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.department}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </span>
                                                     </h4>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
-                                                    <h4 className="text-lg text-black  ">
-                                                        Nambari ya Banki&nbsp;({formData.bank_name}):<br />({formData.bank_name} Account Number:)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <span className="text-sm text-black font-semibold" style={{ borderBottom: '2px solid black', paddingBottom: '3px' }}>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.bank_account_no}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <h4 className="text-lg text-black font-bold ">
+                                                        Sahihi ya Mfanyakazi:
+                                                        <span className="text-md text-black font-medium" style={{ borderBottom: '3px dotted black', paddingBottom: '2px', display: 'inline-block', width: '440px' }}>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.employee_nam}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                         </span>
                                                     </h4>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
+                                                    <h4 className="text-lg text-black font-bold">
+                                                        Tarehe:
+                                                        <span className="text-md text-black font-medium" style={{ borderBottom: '3px dotted black', paddingBottom: '1px', display: 'inline-block', width: '560px' }}>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formData.date_contracted}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        </span>
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                          
+                                          
                                         </tbody>
                                     </table>
                                     <br /><br />
                                 </div>
-                                <br/><br/><br /><br /><br></br>
-                                    <div><br/></div>
+                              <div style={{ marginBottom: '600px' }}></div>
                                 <div className="sm:grid grid-cols-12 gap-12 pb-5 space-y-5">
                                     <div className="md:col-span-12 col-span-9  my-auto">
                                         <br /><br /><br /><br />
                                         <table className="w-full border-collaps">
                                             <tbody>
-                                                <br /><br /><br /><br /><br /><br />
-                                                <br/><br/><br/><br/><br/><br/><br/><br/>
+
                                                 <tr>
-                                                    <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
+                                                    <td colSpan={2} className="p-4 " style={{ lineHeight: '1.5' }}>
                                                         <h4 className="text-lg text-black font-semibold  text-center">
-                                                            Mkataba huu ni kati ya (this contract is between)
+                                                            MASHARTI YA MKATABA WA AJIRA
 
                                                         </h4>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-bold" style={{ width: '800px', lineHeight: '1.0' }} >
+                                                        <h4 className="text-md text-black font-bold  ">
+                                                            Kazi
+                                                        </h4><br />
+                                                        <h4 className="text-lg text-black font-bold" style={{ width: '800px', lineHeight: '1.5' }} >
                                                             MWAJIRI:
-                                                            <span className="text-sm text-black font-bold" >
-                                                                &nbsp;&nbsp;&nbsp;{formData.employer_name}&nbsp;&nbsp;&nbsp;<label className="text-sm font-medium ">
-                                                                    ambaye; atafuata Sheria ya Ajira na mahusiano Kazini za Jamuhuri ya Muungano wa Tanzania na kuhakikisha hafanyi ubaguzi wa dhahiri au usiokuwa wa dhahiri kwa mwajiriwa, katika sera au mazoea katika moja ya sababu zifuatazo: Rangi, Utaifa, Kabila au sehemu anayotoka, Asili au Uasili wa Taifa, Asili ya kijamii, Maoni ya kisiasa au kidini, Jinsia, Ujauzito, ulemavu, VVU/UKIMWI, Umri; au Maisha anayoishi.</label>
+                                                            <span className="text-md text-black font-bold" >
+                                                                &nbsp;&nbsp;&nbsp;{formData.employer_name}&nbsp;&nbsp;&nbsp;<label className="text-md font-medium">
+                                                                    wanafuatilia sera ya usawa katika ajira, kutokuwa na ubaguzi kwa mfanyakazi yeyote kwa rangi, umri, jinsia, utaifa, dini kwa kuzingatia Sheria ya Ajira na Mahusiano kazini.</label>
                                                             </span>
 
                                                         </h4>
@@ -161,755 +183,405 @@ const TermConditionTemplate = () => {
                                                 </tr>
                                                 <tr>
                                                     <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-bold" style={{ lineHeight: '1.0' }} >
-                                                            EMPLOYER:
-                                                            <span className="text-sm text-black font-bold" >
-                                                                &nbsp;&nbsp;&nbsp;{formData.employer_name}&nbsp;&nbsp;&nbsp;<label className="text-sm text-black font-medium">
-                                                                    who will follow the Employment and The Labor Relations Act of the United Republic of Tanzania and making sure that he does not discriminate intentionally or unintentionally to the employee in policies or behavior in the following places: - Color, Nationality, Tribe, or place they come from, ethnicity, political views, religious views, sex, pregnancy, disabled, HIV/AIDS, age, or the life one is living.</label>
-                                                            </span>
-
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr><td className="text-lg text-center font-bold text-black">NA / AND</td></tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-semibold " style={{ width: '800px', lineHeight: '1.0' }} >
-                                                            {formData.employee_name} wa (of) {formData.residence_place}
-                                                            <span className="text-sm text-black font-semibold" >
-                                                                (hapa kama mfanyakazi/herein as employee.)
-                                                            </span>
-
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-semibold" style={{ lineHeight: '1.0' }} >
-                                                            Tarehe ya Kuzaliwa: <br />(Date of Birth)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span className="text-sm text-black font-semibold" >
-                                                                &nbsp;&nbsp;&nbsp;{formData.dob}&nbsp;&nbsp;&nbsp;
-                                                            </span>
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-semibold " style={{ lineHeight: '1.0' }} >
-                                                            Namba ya Simu: <br />(Mobile Number)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span className="text-sm text-black font-semibold" >
-                                                                &nbsp;&nbsp;&nbsp;{formData.phone_number}&nbsp;&nbsp;&nbsp;
-
-                                                            </span>
-
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-semibold " style={{ lineHeight: '1.0' }} >
-                                                            Jinsia: <br />(Sex)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span className="text-sm text-black font-semibold" >
-                                                                {formData.gender === "Male" ? (<> &nbsp;&nbsp;&nbsp;ME &nbsp;&nbsp;&nbsp;</>) : (<> &nbsp;&nbsp;&nbsp;KE &nbsp;&nbsp;&nbsp;</>)}
-
+                                                        <h4 className="text-lg text-black font-bold" style={{ lineHeight: '1.5' }} >
+                                                            Nafasi za Kazi katika Mradi wa
+                                                            <span className="text-md text-black font-bold" >
+                                                                &nbsp;&nbsp;&nbsp;{formData.employer_name}&nbsp;&nbsp;&nbsp;<label className="text-md  font-medium">
+                                                                    imegawanyika katika Makundi matatu::</label>
                                                             </span>
                                                         </h4>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td className="text-center text-black" colSpan={1}>
-                                                    <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                NA KWAHIYO:
-                                                            </h4>
-                                                    </td>
-                                                    <td>
-                                                        <span className="text-sm text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                            Mwajiri yupo kwenye biashara ya ujenzi.
-                                                            <br /><br />
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="text-center text-black">
-                                   <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                WHEREAS:
-                                                            </h4>
-                                                    </td>
-                                                    <td>
-                                                        <span className="text-sm text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                            The Employer is in the business of construction.
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <br />
-                                                <tr>
-                                                    <td className="text-center text-black">
-                                                    <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                NA KWAHIYO:
-                                                            </h4>
-                                                    </td>
-                                                    <td>
-                                                        <span className=" text-black font-medium" style={{ width: '1300%', lineHeight: '1.0' }} >
-                                                            Umeajiriwa katika idara ya <label className="text-lg text-black font-bold">{formData.department}</label>  kitengo cha <label className="text-lg text-black font-bold">{formData.department}</label> kama <label className="text-lg text-black font-bold">{formData.job_title}.</label>  Utatakiwa kufanya kazi zote zinazohusiana na <label className="text-lg text-black font-bold">{formData.job_title}</label>  katika kitengo cha <label className="text-lg text-black font-bold">{formData.department} </label>kama utakavyopangiwa na msimamizi wako
-                                                        </span></td>
-                                                </tr>
-                                                <br />
-                                                <tr>
-                                                    <td className="text-center text-black">
-                                                    <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                WHEREAS:
-                                                    </h4>
-                                                    </td>
-                                                    <td>
-                                                        <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                            The Employee is expected;. <br />
-                                                            You are employed to undertake Technician work as <label className="text-lg text-black font-bold">{formData.job_title}</label> at <label className="text-lg text-black font-bold">{formData.department}</label> Department, packaging <label className="text-lg text-black font-bold">{formData.department}.</label> You will be handling all <label className="text-lg text-black font-bold">{formData.job_title}</label>work at <label className="text-lg text-black font-bold">{formData.department}</label>  as per instruction from your supervisor.
-                                                        </span></td>
-                                                </tr>
-                                                <br />
-                                            </tbody>
-                                        </table>
-                                        <br /><br /><br />
-                                        <div>  <br/><br/><br/>  <br /><br /><br /></div>
-                                        <table>
-                                            <tbody>
-                                                  <br /><br /><br />
-                                                <tr>
-                                                    <td className="p-4 ">
-                                                        <h4 className="text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                            1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kuanza Kazi <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start Date
-                                                            <br /> <br />
-                                                            <span className="text-sm text-black font-medium"  style={{  width: '800px' }}>
-                                                                Mkataba huu unaanza/ulianza tarehe <label className="text-lg text-black font-bold">{formData.start_date}</label> na utafikia kikomo pale tu “Kazi Maalumu” itakapofikia ukomo/kukamilika ambapo utaratibu wa Sheria ya Ajira na Uhusiano Kazini [SURA 366 MAREJEO YA 2019] ikisomwa kwa Pamoja na Kanuni za ajira na Mahusiano Kazini [KANUNI ZA UTENDAJI BORA] T.S. Na 42/2007 utafuatwa. Mwajiri wako atakupa notisi ya siku ishirini na nane (28) kwamba kazi maalumu inakaribia kuisha na dhamira ya kuvunja mkataba huu.<br />
-                                                                (This Employment contract will start/started on <label className="text-lg text-black font-bold">{formData.start_date}</label> and it will end then when the “Specific Task” reached to an end, whereas the Employment and Labour Relations Act [CAP 366 R.E. 2019] read together with The Employment and Labour Relations Rules [CODE OF GOOD PRACTICE] G.N No. 42/2007 will guide. Your employer will give you a twenty-eight (28) days’ notice that the specific task is about to end and intention to end this contract)
-                                                            </span>
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-bold " style={{ lineHeight: '1.0' }} >
-                                                            2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mahali Pa Kuajiriwa: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Place of Recruitment)
-                                                            <span className="text-sm text-black font-semibold" >&nbsp;&nbsp;&nbsp;
-                                                                {formData.place_recruitment}&nbsp;&nbsp;&nbsp;
-
-
-                                                            </span>
-
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-bold " style={{ lineHeight: '1.0' }} >
-                                                            3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mahali Pa Kazi: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Place of Work)
-                                                            <span className="text-sm text-black font-semibold" >&nbsp;&nbsp;&nbsp;
-                                                                {formData.work_station}&nbsp;&nbsp;&nbsp;
-
-
-                                                            </span>
-
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-bold " style={{ lineHeight: '1.0' }} >
-                                                            4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kitengo: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Department)
-                                                            <span className="text-sm text-black font-semibold" >&nbsp;&nbsp;&nbsp;
-                                                                {formData.department}&nbsp;&nbsp;&nbsp;
-                                                            </span>
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-lg text-black font-bold " style={{ lineHeight: '1.0' }} >
-                                                            5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Msimamizi: <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Supervisor)
-                                                            <span className="text-sm text-black font-semibold" >&nbsp;&nbsp;&nbsp;
-                                                                {formData.supervisor}&nbsp;&nbsp;&nbsp;
-                                                            </span>
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-md text-black font-medium " style={{ lineHeight: '1.0' }} >
-                                                            Ujira na Marupurupu yanayotolewa na Mwajiri
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-4" >
-                                                        <h4 className="text-md text-black font-medium " style={{ width: '800px', lineHeight: '1.0' }} >
-                                                            Mshahara wako Kwa mwezi utakuwa <label className="text-lg text-black font-bold">Tshs. {formData.monthly_salary}</label> Ambao utajumuisha yafuatayo:-
-                                                        </h4>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div className="table-bordered rounded-md overflow-auto">
-                                            <table className="ti-custom-table ti-custom-table-head" >
-                                                <thead className="bg-gray-50 dark:bg-black/20">
-                                                </thead>
-                                                <tbody>
-                                                    <tr className="border-0">
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                Ujira:
-                                                            </h4></td>
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.basic_salary}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} ><h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                            Nyumba
-                                                        </h4></td>
-                                                        <td colSpan={2} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.house_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                Chakula
-                                                            </h4></td>
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.meal_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} ><h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                            Usafiri
-                                                        </h4></td>
-                                                        <td colSpan={1} className="">
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.transport_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1}><h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                            Posho ya KuishiKufanya Kazi<br />Mazingira Magumu
-                                                        </h4></td>
-                                                        <td colSpan={1} className="">
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.risk_bush_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <br />
-                                        <span className="text-lg text-black font-semibold" >Salary and Benefits given by the employer
-                                        </span><br />
-                                        <h4 className="text-lg text-black font-medium " style={{ width: '800px', lineHeight: '1.0' }} >
-                                            The employees’ monthly salary is <label className="text-lg text-black font-bold">Tshs. {formData.monthly_salary}</label> which will include the following: -
-                                        </h4>
-                                        <br />
-                                        <div className="table-bordered rounded-md overflow-auto">
-                                            <table className="ti-custom-table ti-custom-table-head" >
-                                                <thead className="bg-gray-50 dark:bg-black/20">
-                                                </thead>
-                                                <tbody>
-                                                    <tr className="border-0">
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                Basic Salary:
-                                                            </h4></td>
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.basic_salary}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} ><h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                            Housing Allowance
-                                                        </h4></td>
-                                                        <td colSpan={2} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.house_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                Meal Allowance
-                                                            </h4></td>
-                                                        <td colSpan={1} className="" >
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.meal_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1} ><h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                            Transport Allowance
-                                                        </h4></td>
-                                                        <td colSpan={1} className="">
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.transport_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colSpan={1}><h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                            Risk / Bush Allowance
-                                                        </h4></td>
-                                                        <td colSpan={1} className="">
-                                                            <h4 className="text-lg text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
-                                                                {formData.risk_bush_allowance}
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <br />
-                                          <br/><br/><br/> <br/><br/><br />
-                                        <div>
-                                            <table>
-                                                <tbody >
-                                                    <tr >
-                                                        {/* <td></td> */}
-                                                        <td className="" colSpan={2}>
-                                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Saa za Kazi<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Hours of Work)
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.&nbsp;&nbsp;</td>
-                                                        <td  style={{  width: '1200px' }}>
-                                                            <span className=" text-black font-medium" style={{ width: '1200px', lineHeight: '1.0' }} >
-                                                                Masaa ya kazi yataanza saa 08:00 Asubuhi mpaka saa 17:00 jioni (Jumatatu Mpaka Ijumaa) na Saa 08:00 Asubuhi mpaka saa 13:00 mchana (Siku za Jumamosi). Kama mfanyakazi atatakiwa kufanya kazi usiku masaa ya kazi yataanza saa 18:00 mpaka 03:00 usiku (Jumatatu Mpaka Ijumaa) na saa 18:00 mpaka saa 00:00 usiku (Siku za Jumamosi). Jumla ya masaa ya kazi 45 kwa wiki.<br />
-                                                                (Working hours shall be from 08:00 AM in the morning until 17:00 PM in the evening (Monday to Friday) and 8:00 AM in the morning until 13:00 PM in the afternoon (Saturday). As an employee who will work the night shift working hours shall be from 18:00PM in the evening until 03:00 AM in the morning (Monday to Friday) and 18:00 PM until 00:00 AM midnight (Saturday). Total working hours shall be 45 in a week).
-
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Kazi katika saa za ziada zitafanyika kwa makubaliano na kwa ruhusa kutoka kwa msimamizi wako husik. <br />
-                                                                (Any overtime work shall be first agreed and approved by your supervisor)
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Mfanyakazi anaweza kutakiwa kufanya kazi Jumapili/ Siku za mapumziko au baada ya masaa ya kazi, na atalipwa stahiki zake kama ilivyoainishwa kwa kuzingatia sheria za Kazi na Ajira za Jamuhuri ya Muungano wa Tanzania. <br />
-                                                                (The employee may be required to work on Sundays or overtime and they will be paid their overtime dues in accordance with the Employment and Labour Relations Act of Tanzania and its Regulations).
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br />
-
-
-
-
-                                                </tbody>
-                                            </table>
-
-                                            <br /><br />
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        {/* <td></td> */}
-                                                        <td className="" colSpan={2}>
-                                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Likizo ya Mwaka<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Annual Leave)
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="" colSpan={2}>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Likizo ya mwaka mzunguko wake ni miezi 12 na likizo nyingine zilizobakimzunguko wake ni miezi 36<br />
-                                                                (Annual Leave is in the 12 months’ cycle and other leave’s remaining are in 36 months)
-                                                            </span>
-                                                            <br /> <br />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.&nbsp;&nbsp;</td>
-                                                        <td >
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Mfanyakazi atastahili kupewa likizo ya siku 28 mfululizo katikamzunguko wa miezi 12 kama kazi hii maalumu itachukua Zaidi ya muda huo au kama muda huo.<br />
-                                                                (The employee shall be entitled to 28 days leave in a row from the 12 months’ cycle and if this specific task shall take more than that time or equal)
-
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Siku za likizo zinaweza kukatwa na mwajiri iwapo mfanyakazi alipewaruhusa mbalimbali. <br />
-                                                                (Leave days can be deducted if the employee has received leaves or day offs several times)
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Mwajiri anaweza kuamua siku ya kuanza likizo mfanyakazi ndani yamiezi sita kuanzia siku ambayo mfanyakazi alistahili kuanza likizo. <br />
-                                                                (The employer can decide the start date of the leave for the employee within six months from the day the employee is entitled to start leave).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Muda wa kuanza likizo baada ya miezi 6 unaweza kuongezwa kwamakubaliano iwapo yapo mahitaji ya uendeshaji na nyongeza ya mudawa kuanza likizo isizidi miezi 12. <br />
-                                                                (The leave days’ start date after six months can be moved forward after six months in agreement if there is a need in the project and the leave can be added to start in not more than twelve months).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Mfanyakazi hapaswi kufanya kazi wakati wa likizo. <br />
-                                                                (The employee is not allowed to work during leave days).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; f.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Hairuhisiwi kumlipa mfanyakazi pesa badala ya likizo (kununua likizo)isipokuwa tu wakati wa kusitisha ajira. <br />
-                                                                (It is not allowed to pay the employee instead of leave days (buying leave days) only when the employment contract comes to end).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Likizo ya mwaka haitakiwi kuchukuliwa wakati wa likizo nyingine auwakati wa kipindi cha notisi ya kusitisha ajira. <br />
-                                                                (Annual leave will not be taken durin another leaves or during the period of notice of ending the employment).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Mwajiri ni lazima amlipe mfanyakazi mshahara wake wakati wa likizo. <br />
-                                                                (The employer will pay the employee during the annual leave).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div>
-                                            <br/><br /><br/><br/><br/> <br/><br/>
-                                            <table>
-                                                <tbody>
-                                                    <br/><br/>
-                                                    <tr>
-                                                        {/* <td></td> */}
-                                                        <td className="" colSpan={2}>
-                                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Likizo ya Ugonjwa<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  (Sick Leave)
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  a.&nbsp;&nbsp;</td>
-                                                        <td >
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Mfanyakazi anastahili likizo ya ugonjwa ya angalau siku 126 kulingana na sheria za kazi za Tanzania.<br />
-                                                                (The employee is entitled to sick leave of at least 126 days in accordance with the Employment and Labour Relations Act of Tanzania)
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Katika siku 63 za kwanza mfanyakazi anastahili kulipwa mshahara kamili na katika siku 63 zinazofuata anastahili kulipwa nusu mshahara <br />
-                                                                (In the first 63 days the employee is entitled to be paid full salary and the following 63 days the employee is entitled half salary).
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Kabla ya kuchukua likizo ya ugonjwa mfanyakazi anapaswa kuwasilisha kwa Mwajiri uthibitisho wa Daktari. <br />
-                                                                (Before taking the sick leave the employee must submit proof to the employer from the Doctor).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        {/* <td></td> */}
-                                                        <td className="" colSpan={2}>
-                                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Usitishaji AjiraLikizo ya Mwaka<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  (Termination of Employment)
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="" colSpan={2}>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Usitishaji ajira ni kukoma kwa mkataba wa ajira, kutokana na sababu mbalimbali kama vile<br />
-                                                                (Termination of the agreement will come to be due to the following reasons)
-                                                            </span>
-                                                            <br /> <br />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.&nbsp;&nbsp;</td>
-                                                        <td >
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Usitishaji ajira kwa sababu ya uwezo mdogo wa kazi/ Utendaji usioridhisha.<br />
-                                                                (Termination due to poor performance)
-
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ width: '800px', lineHeight: '1.0' }} >
-                                                                Usitishaji wa ajira kwa sababu ya mahitaji ya uendeshaji. <br />
-                                                                (Termination due to Operational Requirements).
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Kujiuzulu au kuacha kazi mfanyakazi kwa kutoa notisi ya siku 28 au malipo badala ya notisi hiyo. <br />
-                                                                (Resignation of his employee at his own will be by giving employer a notice of 28 days or payment in lieu of that notice).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Mfanyakazi kuachishwa kazi na mwajiri wake kwa kupewa NOTISI, <br />
-                                                                (Employee termination after receiving a notice from the employer).
-                                                            </span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Kumaliza kazi ya mkataba wa muda maalum  <br />
-                                                                (The end of the Specific Task).
-                                                            </span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Kuachishwa kazi kwa sababu yautovu wa nidhamu, kwa tukio litakalofanya vigumu      kuendelea na mkataba, kifo nk.
-                                                                <br />
-                                                                (Termination due to Misconduct, any other reason that will make it impossible for the contract to continue, death and others).
-                                                            </span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Kwa makubaliano  <br />
-                                                                (Termination by agreement).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div>
-                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Malipo ya Mwisho wa Mkataba<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Payment to be paid upon Termination of the Contract)<br /><br />
-                                                <span className="text-sm text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                    Mwajiriwa atalipwa malipo yake mwisho wa mkataba huu kulingana na Sheria za Kazi za Jamhuri ya Muungano wa Tanzania.  <br />
-                                                    (The Employee shall be paid his dues at the end of this contract in accordance with the Employment and Labour Relations Act of Tanzania).
-                                                </span>
-                                            </h4>
-                                        </div>
-                                        <div>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        {/* <td></td> */}
-                                                        <td className="" colSpan={2}>
-                                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mengineyo au Jumlaa<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Others or General)
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.&nbsp;&nbsp;</td>
-                                                        <td >
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Mkataba huu upo katika lugha mbili Kiswahili na kingereza kwa faida ya mwajiri na mwajiriwa na endapo kutatokea utata wa tafsiri ya lugha katika mkataba huu, Kiswahili kitasimama kama lugha sahihi ya makubaliano<br />
-                                                                (This contract is written in English and Swahili for the benefits of both the employer and employee and when it happens that the translation of the language in this contract is in question, the Swahili language will prevail as the correct language in this agreement)
-
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Uishapo mkataba huu wa kazi maalumu, muajiri ataamua kama atamuajiri muajiriwa katika kazi nyingine maalumu au mahusiano yao kuishia hapo mkataba huu uishapo.. <br />
-                                                                (Upon termination of this contract of specific task, the employer will decide to hire the employee for another specific task or end the employment relationship with the employee at the end of this contract).
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br/><br/><br/> <br/><br/><br />
-                                                    <tr>
-                                                        <td className="text-center text-black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.&nbsp;&nbsp;</td>
-                                                        <td>
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Mkataba huu maalumu utaisha pale ambapo msimamizi wa kitengo hapo juu atathibitisha kumalizika kwa kazi maalumu tajwa hapo juu.. <br />
-                                                                (This contract of specific task shall end when the supervisor of the department mentioned above shall certify that the task mentioned above is completed).
-                                                            </span></td>
-                                                    </tr>
-                                                    <br />
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        {/* <td></td> */}
-                                                        <td className="" colSpan={2}>
-                                                            <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.0' }}>
-                                                                12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sheria, Mkataba<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Governing Law and Contract)
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                                        <td >
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Mkataba huu utaendeshwa na kutafsiriwa chini ya sheria za Jamuhuri ya Muungano wa Tanzania.<br />
-                                                                (This Employment Contract will be guided and translated under the laws of the United
-                                                                Republic of Tanzania)
-
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                                        <td >
-                                                            <span className=" text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                                Mfanyakazi anahaki/ anahitajika kurejelea masharti ya mkataba wa ajira ambayo ni
-                                                                sehemu ya mkataba huu wa ajira.. Masharti ya mkataba yanaweza kubadilika na ni lazima yatumwe kwa maandishi na kusainiwa na pande zote mbili (Mwajili na Mwajiliwa).
-                                                                <br />
-                                                                (The Employee has the right or is required to refer to the terms of the contract which is part of this contract. The terms of this contract can change and they must be in writing and signed by both parties (Employer) and (Employee). )
-
-                                                                <br /><br />
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <br />
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div>
-                                            <span className="p-4 text-lg text-black font-medium" style={{ lineHeight: '1.0' }} >
-                                                Tafadhali sahihi Mkataba huu (Nakala 2)
-                                            </span>
-                                            <br /><br />
-                                         
-                                            <div>
-                                                <table>
-                                                    <tbody>
-                                                        <tr className="border-0">
-                                                            <td className="" >
-                                                                <h4 className="text-lg text-black font-bold flex items-center" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '350px' }}>
-                                                                    Mwajiriwa:<br />Employee:
-                                                                </h4></td>&nbsp;&nbsp;
-                                                            <td className="" >
-                                                                <h4 className="text-lg text-black font-bold flex items-center" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '350px' }}>
-                                                                    Mwajiri : <br /> Employer
-                                                                </h4>
-                                                            </td>
-                                                        </tr>
-                                                         <br/>
-                                                        <tr>
-                                                            <td ><h4 className="text-lg text-black font-bold flex items-center" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '350px' }}>
-                                                                Sahihi:(Signature)
-                                                            </h4></td>&nbsp;&nbsp;
-                                                            <td colSpan={2} className="" >
-                                                                <h4 className="text-lg text-black font-bold flex items-center" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '350px' }}>
-                                                                    Sahihi:(Signature)
-                                                                </h4>
-                                                            </td>
-                                                        </tr>
-                                                        <br/>
-                                                        <tr>
-                                                            <td className="" >
-                                                                <h4 className="text-lg text-black font-bold flex items-center" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '350px' }}>
-                                                                    Tarehe: <br /> (Date)
-                                                                </h4></td>&nbsp;&nbsp;
-                                                            <td className="" >
-                                                                <h4 className="text-lg text-black font-bold flex items-center" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '350px' }}>
-                                                                    Tarehe:<br />(Date)
-                                                                </h4>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
                                     </div>
+                                </div>
+                                <div><div>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-center text-black">
+                                                    <h4 className="p-6  text-md text-black font-bold " style={{ lineHeight: '1.5' }}>
+                                                        1.
+                                                    </h4>
+                                                </td>
+                                                <td>
+                                                    <h4 className="text-md  font-medium">
+                                                    <span className="text-md text-black font-medium" style={{ width: '1300%', lineHeight: '1.5' }} >
+                                                        <label className="text-lg text-black font-bold">Nafasi ya uongozi – </label>  Wafanyakazi  wanaoajiriwa kwenye kada hii ni mameneja walio na mamlaka ya kimeneja, Wafanyakazi wenye ujuzi na uzoefu wa hali ya juu wana mishahala maalum ambayo imejumuisha makato yote ya kisheria na posho zisizo za kisheria- kama zipo. Hakuna posho au malipo ya muda wa ziada yatakayolipwa.
+                                                        </span>
+                                                        </h4>
+                                                </td>
+                                            </tr>
+                                            <br/><br/>
+                                            <tr>
+                                                <td className="text-center text-black">
+                                                    <h4 className="p-6  text-md text-black font-bold " style={{ lineHeight: '1.5' }}>
+                                                        2.
+                                                    </h4>
+                                                </td>
+                                                <td>
+                                                    <span className="text-md text-black font-medium" style={{ width: '1300%', lineHeight: '1.5' }} >
+                                                        <label className="text-lg text-black font-bold">Nafasi ya viongozi wasaidizi: </label> Wafanyakazi walio katika kada hii inawajumuisha wafanyakazi wote wenye Shahada, na wataalamu wengine ambao wanatambulika kama wasimamizi. Hii inajumuisha Wahandisi, Wahasibu, Wapimaji Ramani, Maafisa Rasilimali Watu, Wasimamizi wa Kazi. Nafasi hii inakaribisha mshahara ghafi ukijumuisha posho ya madaraka ambayo ni sawa na asilimia 30% ya mshahara wa mwezi kujumuisha
+                                                    </span></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="text-center text-black">
+                                                    <h4 className="p-6  text-md text-black font-bold " style={{ lineHeight: '1.5' }}>
+                                                        3.
+                                                    </h4>
+                                                </td>
+                                                <td>
+                                                    <span className="text-md text-black font-medium" style={{ width: '1300%', lineHeight: '1.5' }} >
+                                                        <label className="text-lg text-black font-bold">Mafundi: </label> Mtumishi aliyeajiriwa katika kada hii anakua katika usimamizi wa msimamizi au mfanyakazi wa cheo cha juu. Kada hii inapata malipo ya saa za ziada.
+                                                    </span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div></div>
+                               
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            {/* <td></td> */}
+                                            <td className="" colSpan={2}>
+                                                <h4 className="p-4 text-lg text-black font-bold " style={{ lineHeight: '1.5' }}>
+                                                    Nidhamu
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="" colSpan={2}>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Mwajiri ana haki ya kusitisha mkataba wa mfanyakazi ikiwa mfanyakazi atashindwa kufanya kazi au kufanya makosa yafuatayo. Hata hivyo usitishwaji wa mkataba wowote utafuata taratibu na kanuni kama ilivyoainishwa kwenye sheria ya ajira na mahusiano kazini Tanzania.
+                                                    <br />
+                                                    Mfanyakazi atafikishwa kwenye kamati ya nidhamu n ahata kupelekea kuachishwa kazi ikiwa atafanya makosa yafuatayo:
+                                                </span>
+                                                <br /> <br />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i.&nbsp;&nbsp;</td>
+                                            <td >
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Kuchelewa kazini kulikokithiri
+                                                    
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Kutokuwepo kazini kwa siku 5 za kazi bila sababu maalum.
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        
+                                        
+                                        <tr>
+                                            <td className="text-center text-black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Uzembe kazini, kutokutii maelekezo, utovu wa nidhamu, ukosefu wa ujuzi, na ukiukaji mkubwa wa sheria za usalama.
+                                                </span></td>
+                                        </tr>
+                                    
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iv.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Wizi, udanganyifu, kughushi, kuharibu mali kwa makusudi, kupigana, kushiriki kwenye mgomo usiofuata sheria/ kusababisha migogoro, kulewa au kunywa pombe muda wa kazi na kutoa taarifa zinazohusu kampuni au shughuli za miradi.
+                                                </span></td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Kukutwa na pombe, kilevi chochote au bangi eneo la mradi, itapelekea utovu wa nidhamu ambao utasababisha mfanyakazi kuachishwa kazi.
+                                                </span></td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vi.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                  Kuvuta sigara kwenye maeneo yasiyoruhusiwa kwa sababu za kiafya na usalama.
+                                                </span></td>
+                                        </tr>
+                                      
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Kushindwa kufanya kazi uliyoajiriwa nayo kwa sababu tofauti na ugonjwa.
+                                                </span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; viii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                  Kupigana au kuleta fujo au taharuki pahala pa kazi, kwa mwajiriwa mwenzako, au mtu yeyote ndani ya mradi.
+                                                    
+                                                </span></td>
+                                        </tr>
+                                     <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ix.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Kutoweka kazini wakati wa kazi bila ruhusa.
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                 Wafanyakazi wote wataanza likizo zao jumamosi na kurudi Jumapili ili kuweza kupatiwa usafiri.
+                                                </span></td>
+                                        </tr>
+                                      <br/><br/><br/> <br/><br/><br/> <br/><br/><br/>
+                                        <tr >
+                                           
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xi.&nbsp;&nbsp;</td>
+                                            <td><br/><br/> <br/><br/><br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5'}} >
+                                                    Ili Mfanyakazi aweze kupata likizo lazima utaratabu wa kupata likizo ufuatwe ikiwemo kujaza fomu ya likizo na mkuu wa idara husika kupitisha likizo hiyo. Hakuna mfanyakazi ataruhusiwa kwenda likizo bila kufuata utaratibu. Fomu ya likizo lazima ikabidhiwe kitengo cha rasilimali watu kabla ya kutoka nje ya mradi. 
+                                                </span></td>
+                                        </tr>
+                                        <br />
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Huruhusiwi kufanya kazi masaa ya ziada kama huna idhini kutoka kwa kiongozi wako.
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xiii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Huruhusiwi kutumia kifaa cha mahudhurio jumapili kama hujafanya kazi.
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xiv.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Ukipata tatizo toa taarifa kwa kiongozi wako na kama hajatatua ndani ya saa 24 uende ofisi ya Rasilimali watu. Kama tatizo linamuhusu Mkuu wa Kitengo nenda Ofisi ya Rasilimali watu moja kwa moja.
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xv.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Kuwa makini na kipindi cha mapumziko cha mchana, kuchelewa baada ya chakula bila taarifa unaweza kuadhibiwa.
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xvi.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                  Huruhusiwi kutumia kadi ya mahudhurio kuonyesha umeingia kazini ilhali haupo kazini
+                                                </span></td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xvii.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Hairuhusiwi kumpa mtu mwingine kifaa chako cha mahudhurio ili akitumie kuonyesha  umeingia kazini.
+                                                </span></td>
+                                        </tr>
+                                        <br />
+                                    </tbody>
+                                </table>
+                                {/* last paragraph */}
+                                 
+                                  <div style={{ marginBottom: '1200px' }}></div>
+                                
+                                                               
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            {/* <td></td> */}
+                                            <td className="" colSpan={2}>
+                                                <br/><br/>
+                                                <h4 className="p-4 text-lg text-black font-bold text-center" style={{ lineHeight: '1.5' }}>
+                                                    VITU VYA KUZINGATIA KWA AFYA YA KIMAZINGIRA NA TARATIBU ZA KIUSALAMA NA MAKUBALIANO YA UTENDAJI KAZI WENYE TIJA.
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="" colSpan={2}>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                  Wafanyakazi wanapaswa kukubali muongozo huu wa afya na usalama mahala pa kazi katika mradi ili kuwafanya waweze kufanya kazi kwa usalama na ufanisi. Kwamba watazingatia taratibu zilizoainishwa;
+                                                </span>
+                                                <br/><br/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;</td>
+                                            <td ><br />
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                  I will come to work physically fit and alert as I understand the hazard associated with a person under the influence of alcohol or other drug that numbs the sense and slows reaction time.
+                                                    <br />
+                                                    Nitakuja kufanya kazi nikiwa afya njema na naelewa madhara ya kufanya kazi nikiwa nimetumia pombe au madawa ya kulevya kwamba zinapunguza ufahamu na kupunguza umakini kazini.
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                               Nitatumia nguo na vifaa vya usalama vilivyoainishwa kwa kazi yangu kama inavyostahili.
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        
+                                        
+                                        <tr>
+                                            <td className="text-center text-black"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Nitafuata taratibu alama na maelekezo yote ya kimazingira katika mradi huu.
+                                                </span></td>
+                                        </tr>
+                                    
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Nitatunza vifaa vya kazi ambavyo natumia na kurudisha vifaa vibovu kwa kiongozi wangu au ghala la vifaa
+                                                </span></td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Sitajaribu kurekebisha umeme au waya za umeme nitamjulisha kiongozi wangu au fundi wa umeme inapotokea itilafu ya umeme.
+                                                </span></td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.&nbsp;&nbsp;</td>
+                                            <td><br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                 Kama nitahitajika kupanda, nitahakikisha matumizi ya ngazi au majukwaa ni salama. Ngazi za chuma hazitatumika tutakapokua tunafanya kazi zinazohusiana na umeme kwa sababu ni hatari kutokana na kuweza kusafirisha umeme.
+                                                </span></td>
+                                        </tr>
+                                      
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7.&nbsp;&nbsp;</td>
+                                            <td><br />
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Sitaweza kufanya kazi kwenye urefu wa mita 2 bila kutumia mkanda wa usalama na vifaa vyote vingine vitakavyonikinga nisidondoke.
+                                                </span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8.&nbsp;&nbsp;</td>
+                                            <td><br />
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                               Sitasafisha au kufanya kazi yeyote katika eneo lenye machine zisizolindwa mpaka nitakapo funga swichi zote kwa kufuata taratibu za mradi za kuzima na nitakapojua kiongozi wangu ameamua hivyo.         
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9.&nbsp;&nbsp;</td>
+                                            <td><br />
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Sitaendesha gari au mtambo wowote ambao sijafundishwa namna ya kuutumia au kuruhusiwa kuutumia.
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.&nbsp;&nbsp;</td>
+                                            <td><br />
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                Nitaendesha gari au mtambo niliopewa /Gari/mashine nitakapohakikisha kwamba uko vizuri vifaa vyote vya kiusalama kama breki na taa zinafanya kazi vizuri.
+                                                </span></td>
+                                        </tr>
+                                      
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Sitapumzika chini au pembezoni mwa gari au mtambo wakati wa kazi 
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12.&nbsp;&nbsp;</td>
+                                            <td><br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Nitatii taratibu zote za usalama barabarani za mradi na za nchi. Nitafunga mkanda wa usalama mara tu niingiapo kwenye gari au mtambo.
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                    Sitaruka kwenda chini au kuharakisha kuruka umbali mrefu ilhali nikijua madhara ya ajali itakayotokea.
+                                                </span></td>
+                                        </tr>
+                                        <br/>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Sitajihusisha na kutaniana, kugombezana au kurushiana vifaa hata kwa mchezo kwa kua nafahamu kitendo hicho kinaweza sababisha ajali kwangu na wengine.
+                                                </span></td>
+                                        </tr>
+                                         <br/>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                  Nitatumia hewa mgando kwa sababu za kikazi tu, ninafahamu kwamba kutumia kwa mchezo au kupuliza nguo za kazi inaweza kusababisha ajali mbaya.
+                                                </span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16.&nbsp;&nbsp;</td>
+                                            <td>
+                                                 <br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                Nitaweka eneo langu la kazi kuwa safi na kwenye mpangilio mzuri na nitasafisha mafuta na mwagiko la vimiminika vingine.
+                                                </span></td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center text-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17.&nbsp;&nbsp;</td>
+                                            <td>
+                                                <br/>
+                                                <span className="text-md text-black font-medium" style={{ width: '800px', lineHeight: '1.5' }} >
+                                                   Nitatoa taarifa ya kitendo chochote ambacho sio cha usalama ambacho nitakiona kwa kiongozi wangu wa kazi.
+                                                </span></td>
+                                        </tr>
+                                        <br />
+                                    </tbody>
+                                </table>
+                                <div><div>
+                                    <br />
+                                    <div>
+                                        <span className="p-4 text-lg text-black font-medium" style={{ lineHeight: '1.5' }} >
+                                             Mimi&nbsp;<label style={{ borderBottom: '3px dotted black', paddingBottom: '0.2px', display: 'inline-block', width: '350px' }}></label>&nbsp;ninaahidi nitazingatia maelekezo yote na nitakua&nbsp;&nbsp; mtumishi mwenye ndidhamu muda wote.
+                                        </span>
+                                        <br /><br />
+                                    <span className="p-4 text-lg text-black font-bold" style={{ lineHeight: '1.5' }} >
+                                             Sahihi ya Mfanyakazi: &nbsp;<label style={{ borderBottom: '3px dotted black', paddingBottom: '0.2px', display: 'inline-block', width: '250px' }}></label>&nbsp;&nbsp; Tarehe.<label style={{ borderBottom: '3px dotted black', paddingBottom: '0.2px', display: 'inline-block', width: '250px' }}></label>
+                                        </span>
+                                       
+
+                                    </div>
+                                </div>
                                 </div>
                             </form>
                             <div className="flex justify-end">
