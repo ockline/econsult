@@ -39,28 +39,36 @@ import DownloadCandidate from "../component/hiring/templatesamples/technicalinte
 
 //************ End of Hiring block ******************************
 
-//{/**  start of Employee REgistration */} 
+//{/**  start of Employee REgistration */}  step 1
 import PersonalDetails from "../component/employees/personal/personalDetail/personaldetail";
 import AddEmployee from "../component/employees/personal/addEmployee/addemployee";
 import EditEmployee from "../component/employees/personal/editEmployee/editemployee";
 import ShowEmployee from "../component/employees/personal/showEmployee/showemployee";
 import DownloadEmployee from "../component/employees/templateDocument/personal/personaldetail";
 
-//Reduired Documentation
+//Reduired Documentation step 2
 import DocumentDetails from "../component/employees/documentRequired/uploaded/uploaded";
 import UploadDocument from "../component/employees/documentRequired/uploadDocument/uploaddocument";
 import FileManagerList from "../component/employees/documentRequired/fileManagerlist/filemanagers";
 import FileDetail from "../component/employees/documentRequired/fileDetails/filedetails";
 // *********** End of block *********************
 
-//Social Records
+//Social Records step 3
 import SocialRecords from "../component/employees/social/socialRecord/details";
 import AddSocialRecord from "../component/employees/social/addRecord/addrecord";
 import EditSocialRecord from "../component/employees/social/editRecord/editrecord";
 import ShowSocialRecord from "../component/employees/social/showRecord/showrecord";
 import DownloadSocialRecord from "../component/employees/templateDocument/social/socialrecord";
 
-// Personnel ID Aplication 
+
+//Induction Training  step 4
+import InductionTraining from "../component/employees/induction/training/inductionTraining";
+import AddInductionTraining from "../component/employees/induction/addInduction/addtraining";
+import EditInductionTraining from "../component/employees/induction/editInduction/edittraining";
+import ShowInductionTraining from "../component/employees/induction/showInduction/showtraining";
+import DownloadInductionTraining from "../component/employees/templateDocument/induction/inductiontraining";
+
+// Personnel ID Aplication  ******* its after contract generation step 6
 import PersonnelApplication from "../component/employees/application/idApplication/application";
 import AddApplication from "../component/employees/application/addApplication/addapplication";
 import EditApplication from "../component/employees/application/editApplication/editapplication";
@@ -70,7 +78,7 @@ import DownloadApplication from "../component/employees/templateDocument/applica
 /** *******  End of Employee Registration Block *********************************************************************** */
 
 
-/**  Start of contract Block */
+/**  Start of contract Block  step  5*/  
 import EmployeeContracts from "../component/contractManagement/Contracted/employeeContract";
 
        //Required Details || Taarifa za MWajiriwa kwaajili ya mikataba - kitambulisho
@@ -266,7 +274,12 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/show_record/:id`, element: <ShowSocialRecord /> },
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/download_social_record/:id`, element: < DownloadSocialRecord /> },
 
-    //Induction Training
+    //Induction Training  employees/induction/induction_trainning
+     { path: `${import.meta.env.BASE_URL}employees/induction/induction_trainning`, element: <InductionTraining /> },
+    { path: `${import.meta.env.BASE_URL}employees/induction/add_induction_training/:id`, element: <AddInductionTraining /> },
+    { path: `${import.meta.env.BASE_URL}employees/induction/edit_induction_training/:id`, element: <EditInductionTraining /> },
+    { path: `${import.meta.env.BASE_URL}employees/induction/show_induction_training/:id`, element: <ShowInductionTraining /> },
+    { path: `${import.meta.env.BASE_URL}employees/induction/download_induction_training/:id`, element: < DownloadInductionTraining /> },
     
     
     //Personnel ID Application

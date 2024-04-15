@@ -266,6 +266,80 @@ export const DisabledGroupData = [
     options: Group6,
   },
 ];
+//****************  block of Mostly used  select */
+export const ExplanationSelectcomponent = [
+  { value: 'The structure', label: 'The structure' },
+  { value: 'The type of work', label: 'The type of work' },
+ 
+];
+ 
+//List and introduce the key people and their roles:
+export const KeyPeoplaSelectcomponent = [
+  { value: 'Manager/owner', label: 'Manager/owner' },
+  { value: 'Supervisor(s)', label: 'Supervisor(s)' },
+   { value: 'Co-workers', label: 'Co-workers' },
+  { value: 'Health and safety representative(s)', label: 'Health and safety representative(s)' },
+  { value: 'Fire/emergency warden(s)', label: 'Fire/emergency warden(s)' },
+  
+];
+
+//Explanation of Employee Employment Conditions:
+export const EmploymentSelectcomponent = [
+  { value: 'Terms of contracts', label: 'Terms of contracts' },
+  { value: 'Job description and responsibilities', label: 'Job description and responsibilities' },
+   { value: 'Leave entitlements', label: 'Leave entitlements' },
+  { value: 'Notification of sick leave or absences', label: 'Notification of sick leave or absences' },
+  { value: 'Out-of-hours inquiries and emergency procedures', label: 'Out-of-hours inquiries and emergency procedures' },
+  { value: 'Time recording procedures', label: 'Time recording procedures' },
+  { value: 'Work times and meal breaks', label: 'Work times and meal breaks' }, 
+];
+//Explain employee remuneration:
+export const RemunerationSelectcomponent = [
+  { value: 'Pay arrangements', label: 'Pay arrangements' },
+  { value: 'Rates of pay and allowances', label: 'Rates of pay and allowances' },
+   { value: 'Superannuation', label: 'Superannuation' },
+  { value: 'Taxation and any other deductions ', label: 'Taxation and any other deductions ' },
+  { value: '	Union membership.', label: '	Union membership.' },
+];
+//Explanation of work health and safety administration:
+export const HealthSelectcomponent = [
+  { value: ' Consultative and communication processes, including employee health and safety representatives', label: ' Consultative and communication processes, including employee health and safety representatives' },
+  { value: 'Nature of the Working Compound', label: 'Nature of the Working Compound' },
+   { value: '	Hazardous identification, Prevention, and Protection', label: '	Hazardous identification, Prevention, and Protection' },
+  { value: 'Reporting of accident and disease', label: 'Reporting of accident and disease' },
+   { value: 'PPE', label: 'PPE' },
+  { value: 'Living Accommodation', label: 'Living Accommodation' },
+   { value: 'General Provisions', label: 'General Provisions' },
+  { value: 'Workers compensation claims', label: 'Workers compensation claims' },
+   { value: 'Emergency plan, procedures, exits, and fire extinguishers', label: 'Emergency plan, procedures, exits, and fire extinguishers' },
+  { value: 'First aid facilities such as the first aid kit and room', label: 'First aid facilities such as the first aid kit and room' },
+   { value: 'Information on workplace hazards and controls', label: 'Information on workplace hazards and controls' },
+ 
+];
+//Show the environment:
+export const EnvironmentSelectcomponent = [
+  { value: 'Car parking', label: 'Car parking' },
+  { value: 'Eating facilities', label: 'Eating facilities' },
+   { value: 'Locker and change rooms', label: 'Locker and change rooms' },
+  { value: 'Washing and toilet facilities', label: 'Washing and toilet facilities' },
+     { value: 'Workstation, tools, machinery, and equipment used for the job.', label: 'Workstation, tools, machinery, and equipment used for the job.' },
+  { value: 'recreation places (football pitch, gym, gaming place)', label: 'recreation places (football pitch, gym, gaming place)' }, 
+];
+
+//Explanation apropos training:
+export const AproposSelectcomponent = [
+  { value: 'First aid, fire safety, and emergency procedures training', label: 'First aid, fire safety, and emergency procedures training' },
+  { value: 'Hazard-specific training (for example, manual handling, hazardous substances)', label: 'Hazard-specific training (for example, manual handling, hazardous substances)' },
+   { value: 'On-the-job training in safe work procedures', label: 'On-the-job training in safe work procedures' },
+  { value: 'Job-specific training (for example, if a license or permit  is required)', label: 'Job-specific training (for example, if a license or permit  is required)' }, 
+];
+//Conduct a follow-up review:
+export const FollowUpSelectcomponent = [
+  { value: 'Repeat any training required or provide additional training if needed', label: 'Repeat any training required or provide additional training if needed' },
+  { value: 'Review work practices and procedures with the worker', label: 'Review work practices and procedures with the worker' },
+   { value: 'Ask and answer questions', label: 'Ask and answer questions' }, 
+];
+
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 //  /* starting of returning departments  */

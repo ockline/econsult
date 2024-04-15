@@ -125,9 +125,9 @@ const PersonalDetails = () => {
                                     <th scope="col" className="">
                                         Stage
                                     </th>
-                                    <th scope="col" className="">
+                                    {/* <th scope="col" className="">
                                         Registration<br />Date
-                                    </th>
+                                    </th> */}
                                     <th scope="col" className="font-semibold">
                                         Status
                                     </th>
@@ -162,7 +162,7 @@ const PersonalDetails = () => {
 
                                                 }
                                             </td>
-                                            <td>{employee.created_at}</td>
+                                            {/* <td>{employee.created_at}</td> */}
                                            <td>{employee.progressive_stage < 3 && (
                                                 <Link to={`${import.meta.env.BASE_URL}employees/document/upload_document/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 font-md" style={{ backgroundColor: '#285f29' }}><i className="ti ti-cloud-upload"></i>Upload Document</Link>
                                             )}</td>
