@@ -172,7 +172,7 @@ const InductionTraining = () => {
                                         </td>
                                             <td className="text-center font-bold">
                                                   {
-                                                employee.progressive_stage !== 4 ? ( <Link to={`${import.meta.env.BASE_URL}employees/induction/add_induction_training/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-settings"></i>Add Induction Training</Link> ) : ( <></>
+                                                employee.progressive_stage !== 4 ? ( <Link to={`${import.meta.env.BASE_URL}employees/induction/add_induction_training/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-settings"></i>Add Induction </Link> ) : ( <></>
                                                  )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}

@@ -436,7 +436,7 @@ const EditApplication = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Title Name <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="department_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} required />
+                                    <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} required />
                                     <span className="text-danger">{formData.error_list.job_title_id}</span>
                                 </div>
                                 <div className="space-y-2">
