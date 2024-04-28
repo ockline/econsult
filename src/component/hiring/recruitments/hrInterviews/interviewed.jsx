@@ -45,6 +45,11 @@ const Interviewed = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+		function formatDate(dateString) {
+    const date = new Date(dateString);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`;
+}
 
 	return (
 		<div>
@@ -128,7 +133,7 @@ const Interviewed = () => {
 																	) : <span className="badge bg-warning text-white">Waiting List</span>
 																		}										 
 															 </td>
-																<td>{assessed.date}</td>
+																<td>{formatDate(assessed.date)}</td>
 																<td>
 																{assessed.status === 0 ? (
 																	<span className="badge bg-info text-white">Submitted</span>

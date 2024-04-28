@@ -1,13 +1,15 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import { fetchSocialRecordDetails } from "../../../../common/employeesdata";
+import { fetchInductionRecordDetails } from "../../../../common/employeesdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const InductionTraining = () => {
 
-
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const [allData, setAllData] = useState([]);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,8 +18,8 @@ const InductionTraining = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const socialRecordDetails = await fetchSocialRecordDetails();
-                setAllData(socialRecordDetails);
+                const inductionDetails = await fetchInductionRecordDetails();
+                setAllData(inductionDetails);
                 // console.log(employeeDetails);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
@@ -44,6 +46,55 @@ const InductionTraining = () => {
 
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    
+    //complete stage /induction/complete_induction_training
+    
+   function Style2(e, id) {
+    e.preventDefault(); 
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to edit this file again!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#5e76a6',
+        cancelButtonColor: '#edcb63',
+        confirmButtonText: 'Yes, Complete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.post(
+                `${apiBaseUrl}/employees/induction/complete_induction_training/${id}`,
+                {},
+                {
+                    headers: {
+                        'X-CSRF-TOKEN': 'form/multi-part',
+                    },
+                }
+            )
+            .then(response => {
+                // Handle the response if needed
+                Swal.fire(
+                    'Completed',
+                    'Your file has been Completed.',
+                    'success'
+                );
+                // Reload the page after successful completion
+                if (response.status === 200) {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                // Handle errors if necessary
+                console.error('Error completing file:', error);
+                Swal.fire(
+                    'Error',
+                    'An error occurred while completing the file.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
 
     return (
         <div>
@@ -143,7 +194,7 @@ const InductionTraining = () => {
                                             <td>{index + 1 + indexOfFirstEntry}</td>
                                             <td>{employee.employee_no}</td>
                                             <td className="font-semibold">{employee.employee_name}</td>
-                                            <td>{employee.job_title}</td>
+                                            <td>{employee.department}</td>
                                             <td>{employee.mobile_number} </td>
                                             <td className="text-center font-bold">
                                                 {employee.progressive_stage === 1 ? (
@@ -170,10 +221,15 @@ const InductionTraining = () => {
                                                 ) : (<span className="badge bg-warning text-white">Not Attended</span>)
                                                 }
                                         </td>
-                                            <td className="text-center font-bold">
+                                            {/* <td className="text-center font-bold">
                                                   {
                                                 employee.progressive_stage !== 4 ? ( <Link to={`${import.meta.env.BASE_URL}employees/induction/add_induction_training/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-settings"></i>Add Induction </Link> ) : ( <></>
-                                                 )}</td>
+                                                 )}</td> */}
+                                            <td className="text-center font-bold">
+                                                {
+                                                    employee.stage === 1 ? (<></>) :
+                                                        employee.stage === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={(e) => Style2(e, employee.id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}employees/applications/create_application/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-settings"></i>Add Induction</Link>
+                                                        )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}
                                                 <Link

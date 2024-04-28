@@ -51,3 +51,14 @@ export const fetchPersonnelApplicationDetails = async () => {
     throw new Error('Failed to fetch Social record: ' + error.message);
   }
 };
+
+// ******************* get Induction   to initiate
+      //Social Record  Details
+export const fetchInductionRecordDetails = async () => {
+  try {
+    const res = await axios.get(`${apiBaseUrl}/employees/induction/show_induction_details`);
+    return res.data.induction_detail;
+  } catch (error) {
+    throw new Error('Failed to fetch Social record: ' + error.message);
+  }
+};

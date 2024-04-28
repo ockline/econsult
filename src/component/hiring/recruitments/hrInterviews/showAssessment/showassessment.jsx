@@ -99,7 +99,15 @@ const ShowAssessment = () => {
   // Update the state with the document URL
   setDocumentUrl(absoluteUrl);
      
-  };
+    };
+    
+    	function formatDate(dateString) {
+    const date = new Date(dateString);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`;
+}
+    
+    
 
     return (
         <div>
@@ -153,7 +161,7 @@ const ShowAssessment = () => {
                                             </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2">
-                                                   {formData.date} 
+                                                   {formatDate(formData.date)} 
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -1048,7 +1056,7 @@ const ShowAssessment = () => {
 												</td>
 												<td>1</td>
 												<td>2MB</td>
-												<td>{document.doc_modified}</td>
+												<td>{formatDate(document.doc_modified)}</td>
                                                 <td>
 
                                                     <button type="button" className="ti-btn ti-btn-success text-black" data-hs-overlay="#hs-overlay-top" onClick={() => handlePreviewClick(document.description)}><i className="ti ti-eye-check !text-white"></i>Preview 

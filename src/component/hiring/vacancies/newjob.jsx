@@ -21,6 +21,12 @@ const Newjob = () => {
 	}, []
 	);
 
+	function formatDate(dateString) {
+    const date = new Date(dateString);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`;
+}
+	
 	return (
 		<div>
            <PageHeader currentpage="New Jobs" activepage="Basic Ui" mainpage="New Jobs" />
@@ -80,8 +86,8 @@ const Newjob = () => {
 												<td className="font-medium">{ vacancy.employer}</td>
 												<td>{vacancy.job_title}</td>
 												<td>{vacancy.vacancy_type}</td>
-												<td>{vacancy.position_vacant}</td>
-												<td>{vacancy.deadline_date}</td>
+												<td>{formatDate(vacancy.position_vacant)}</td>
+												<td>{formatDate(vacancy.deadline_date)}</td>
 												<td className="text-end font-medium">
 													<Link className="text-white hover:text-info" to={`${import.meta.env.BASE_URL}hiring/vacancies/show_job/` + vacancy.id}>
 													<button
