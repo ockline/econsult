@@ -385,14 +385,14 @@ export const MenuItems = [
 					{ id: 129, type: "sub", active: false, selected: false, title: "Sign In", children: [
 
 							// { id: 130, path: `${import.meta.env.BASE_URL}Authentication/signin/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 131, path: `${import.meta.env.BASE_URL}Authentication/signin/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
+							{ id: 131, path: `${import.meta.env.BASE_URL}Authentication/signin`, type: "link", active: false, selected: false, title: "Cover-1" },
 							// { id: 132, path: `${import.meta.env.BASE_URL}Authentication/signin/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
 						]
 					},
 					{ id: 133, type: "sub", active: false, selected: false, title: "Sign Up", children: [
 
 							// { id: 134, path: `${import.meta.env.BASE_URL}Authentication/signup/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 135, path: `${import.meta.env.BASE_URL}Authentication/signup/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
+							{ id: 135, path: `${import.meta.env.BASE_URL}Authentication/signup`, type: "link", active: false, selected: false, title: "Cover-1" },
 							// { id: 136, path: `${import.meta.env.BASE_URL}Authentication/signup/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
 						]
 					},

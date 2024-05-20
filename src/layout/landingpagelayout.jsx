@@ -15,12 +15,15 @@ useEffect(() => {
 }, []);
 
   return (
-    <Provider store={store}>
-        <Landingswitcher/>
-        <Outlet/>
-        <Backtotop/>
-        <div id="responsive-overlay"></div>
-    </Provider>
+    // <Provider store={store}>
+    //     <Landingswitcher/>
+    //     <Outlet/>
+    //     <Backtotop/>
+    //     <div id="responsive-overlay"></div>
+    // </Provider>
+    <ContextProvider>
+                <RouterProvider router={router} />
+            </ContextProvider>
   )
 }
 

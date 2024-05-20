@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate  } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ALLImages from '../../../../common/imagesData'
+import { useStatecontext } from "../../../../contexts/ContextProvider";
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 
 const SignInCover1 = () => {
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
-  
-    
+
+
     const navigate = useNavigate();
-    const RouteChange = () => {
-        let path = `${import.meta.env.BASE_URL}dashboards/normal/`;
-        navigate(path);
-    }
-    
-    
-   
+
+
+
+
 
     const [state, setState] = useState({
         email: '',
@@ -23,6 +21,8 @@ const SignInCover1 = () => {
     });
     const [loggedIn, setLoggedIn] = useState(false);
     const [error, setError] = useState('');
+    const [errors, setErrors] = useState(null);
+    const { setUser, setToken } = useStatecontext();
 
     const csrfToken = async () => {
         // Implement your logic to fetch CSRF token
@@ -40,8 +40,8 @@ const SignInCover1 = () => {
             [e.target.name]: e.target.value,
         });
     };
-  
-   
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         //   console.log('Form submitted!');
@@ -51,106 +51,139 @@ const SignInCover1 = () => {
         };
 
         try {
-            const token = await csrfToken();
-            console.log('CSRF Token:', token);
-            // Use the retrieved CSRF token in your request
-            const resp = await axios.post(`${apiBaseUrl}/login`, body, {
-                headers: {
-                    'X-CSRF-Token': token,
-                },
+
+            const res = await axios.post(`${apiBaseUrl}/login`, body, {
+
             });
-            console.log('hellow hapaaa');
-            console.log(resp.data.message);
+
+
             console.log('**************************');
-            console.log(resp.status);
-                if (resp.status === 200) {
-                    setLoggedIn(true);
-                    // setUser(resp.data.user); // Make sure setUser is defined
-                    navigate('/dashboard/normal'); // Redirect to the 'dashboard' route
+            console.log(res.status);
+            if (res.data.status === 422) {
+                swal({
+                    title: 'Operation Failed',
+                    text: res.data.message,
+                    icon: 'error',
+                    button: 'OK',
+                });
+            } else {
+                swal({
+                    title: 'Success',
+                    text: res.data.message,
+                    icon: 'success',
+                    button: 'OK',
+                    closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
+                }).then(() => {
+                    const data = res.data.token;
+                    console.log('humu ndani', data);
+                    setUser(res.data.user)
+                    setToken(data)
+
                 }
-            
+
+                );
+            }
+
+
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError(error.response.data.message);
             }
         }
-      };
-  
-     
-  return (
+    };
 
-<div className='flex justify-center min-h-screen align-middle'>
-        <Helmet>
-        <html dir='ltr' class="h-full"></html>
-          <body class="cover1 justify-center"></body>
-        </Helmet>
-        <main id="content"  className="w-full max-w-md mx-auto my-auto p-6">
-            {/* <Link to={`${import.meta.env.BASE_URL}dashboards/normal/`} className="header-logo">
-                <img src={ALLImages('dark')} alt="logo" className="mx-auto block"/>
-            </Link> */}
-              <h1 className=" header-logo block text-2xl font-bold text-gray-800 dark:text-white">
-                  Ellen & Ethan Consult Management System (ECMS)</h1>
-              <hr></hr>
-            <div className="mt-7 bg-white rounded-sm shadow-sm dark:bg-bgdark">
-                <div className="p-4 sm:p-7">
-                    <div className="text-center">
-                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Sign in</h1>
-                        <p className="mt-3 text-sm text-gray-600 dark:text-white/70">
-                            If you have an account yet?
-                            {/* <Link className="text-primary decoration-2 hover:underline font-medium" to={`${import.meta.env.BASE_URL}Authentication/signup/cover1`}> Sign up here</Link> */}
-                        </p>
-                    </div>
 
-                    <div className="mt-5">
-                        <div
-                            className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 ltr:before:mr-6 rtl:before:ml-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 ltr:after:ml-6 rtl:after:mr-6 dark:text-white/70 dark:before:border-white/10 dark:after:border-white/10">
-                            </div>
+    return (
 
-                          <div>
-                              <form className="relative" onSubmit={handleSubmit}>
-                            <div className="grid gap-y-4">
-                                <div>
-                                    <label htmlFor="email" className="block text-sm mb-2 dark:text-white">Email address</label>
-                                    <div className="relative">
-                                        <input type="email" id="email" name="email" value={state.email} onChange={changeHandler}
-                                            className="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
-                                            required/>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between items-center">
-                                        <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Password</label>
-                                        <Link className="text-sm text-primary decoration-2 hover:underline font-medium"
-                                            to={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover1`}>Forgot password?</Link>
-                                    </div>
-                                    <div className="relative">
-                                        <input type="password" id="password" name="password"  value={state.password} onChange={changeHandler}
-                                            className="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
-                                            required/>
-                                    </div>
-                                </div>
-                                <div className="flex items-center">
-                                    <div className="flex">
-                                        <input id="remember-me" name="remember-me" type="checkbox"
-                                            className="shrink-0 mt-0.5 border-gray-200 rounded text-primary pointer-events-none focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:checked:bg-primary dark:checked:border-primary dark:focus:ring-offset-white/10"/>
-                                    </div>
-                                    <div className="ltr:ml-3 rtl:mr-3">
-                                        <label htmlFor="remember-me" className="text-sm dark:text-white">Remember me</label>
-                                    </div>
-                                </div>
-                                      {/* <Link to="#" className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">Sign in</Link> */}
-                                      
-                                      <button type="submit" name="submit" className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10">Login</button>
-                                  </div>
-                             </form>
-                        </div>
-                    </div>
-                </div>
+        // <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            
+
+             <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <img src= {ALLImages('dark')} alt="logo" className="mx-auto block justify-center mb-2"/>
+        <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+         Socrate Management System (SMS)
+        </h2>
+        {/* <p className="mt-2 text-center text-sm leading-5 text-blue-500 max-w">
+          Or
+          <a href="#" className="font-medium text-blue-500 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+            create a new account
+          </a>
+        </p> */}
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">Email address</label>
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={state.email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  placeholder="user@example.com"
+                />
+                {/* {errors.email && ( */}
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
+                    </svg>
+                    {/* <span className="text-red-500 ml-1">{errors.email}</span> */}
+                  </div>
+                {/* )} */}
+              </div>
             </div>
-        </main>
-    </div>
 
-  )
+            <div className="mt-6">
+              <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">Password</label>
+              <div className="mt-1 rounded-md shadow-sm">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={state.password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                />
+                {/* {errors.password && (
+                  <div className="text-red-500 mt-1">{errors.password}</div>
+                )} */}
+              </div>
+            </div>
+
+            <div className="mt-6 flex items-center justify-between">
+              <div className="flex items-center">
+                <input id="remember_me" name="remember" type="checkbox" value="1" className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" />
+                <label htmlFor="remember_me" className="ml-2 block text-sm leading-5 text-gray-900">Remember me</label>
+              </div>
+
+              <div className="text-sm leading-5">
+                <a href="#" className="font-medium text-blue-500 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <span className="block w-full rounded-md shadow-sm">
+                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                  Sign in
+                </button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+        
+    )
 }
 
 export default SignInCover1;

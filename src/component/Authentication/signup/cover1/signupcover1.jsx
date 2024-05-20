@@ -107,19 +107,26 @@ const SignUpCover1 = (props) => {
                     error_list: validationErrors,
                 }));
             }
-            else if(res.data.status === 500) {
-                    swal({
-                        title: "Failed to Create user",
-                        text: res.data.message,
-                        icon: "warning",
-                        button: "ok",
-                    });
-                    // Additional logic or state updates after successful creation
-                }
-            else {
-                alert('Successfuly saved');
-                    // Additional logic or state updates after successful creation
-                }
+             if (res.data.status === 500) {
+            swal({
+                title: 'Operation Failed',
+                text: resp.data.message,
+                icon: 'error',
+                button: 'OK',
+            });
+        } else if (res.data.status === 201) {
+            swal({
+                title: 'Success',
+                text: resp.data.message,
+                icon: 'success',
+                button: 'OK',
+                closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
+            }).then(() => {
+                // navigate('/Authentication/signin/cover1/');
+            }
+
+            );
+        }
                            
             }       
         catch (error) {
@@ -221,10 +228,10 @@ const SignUpCover1 = (props) => {
     
         return (
             <div className="flex justify-center min-h-screen align-middle">
-                <Helmet>
+                {/* <Helmet>
                     <html dir='ltr' class="h-full"></html>
                     <body class="cover1 justify-center"></body>
-                </Helmet>
+                </Helmet> */}
                 <main id="content"  className="">
                     <Link to={`${import.meta.env.BASE_URL}Authentication/signup/cover1/`} className="header-logo justify-center">
                         <br/><br/>
@@ -239,7 +246,7 @@ const SignUpCover1 = (props) => {
                                     <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Sign up</h1>
                                     <p className="mt-3 text-sm text-gray-600 dark:text-white/70">
                                         Already have an account?
-                                        <Link className="text-primary decoration-2 hover:underline font-medium" to={`${import.meta.env.BASE_URL}Authentication/signin/cover1`}> Sign in here</Link>
+                                        <Link className="text-primary decoration-2 hover:underline font-medium" to={`${import.meta.env.BASE_URL}Authentication/signin`}> Sign in here</Link>
                                     </p>
                                 </div>
                                 <div className="mt-7">
