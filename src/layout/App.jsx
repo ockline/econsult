@@ -10,10 +10,14 @@ import { Provider } from "react-redux";
 import store from "../redux/store";
 import { useState } from "react";
 import * as switcherdata from "../common/switcherdata";
-import {ThemeChanger} from "../redux/Action"
+import { ThemeChanger } from "../redux/Action"
+import { useNavigate } from 'react-router-dom';
+import useInactivity from '../redux/useInactivity';
+
 
 const App = () => {
-	let [MyclassName , setMyClass] = useState("")
+	let [MyclassName, setMyClass] = useState("")
+	let navigate = useNavigate();
 
 	const Bodyclickk = () => {
 		if (localStorage.getItem("Syntoverticalstyles") == "icontext") {
@@ -27,6 +31,23 @@ const App = () => {
 		import("preline");
 
 	}, []);
+	const logout = async () => {
+        try {
+            await axios.post('/api/logout', {}, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+        } catch (error) {
+            console.error('Error during logout:', error);
+        } finally {
+            localStorage.removeItem('token');
+            history.push('/login');
+        }
+    };
+
+    useInactivity(logout, 300000);
+	
 	return (
 		<Fragment>
 			<Provider store={store}>

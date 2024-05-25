@@ -102,7 +102,8 @@ const SignInCover1 = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <img src= {ALLImages('dark')} alt="logo" className="mx-auto block justify-center mb-2"/>
         <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-         Socrate Management System (SMS)
+            Socrate Management System
+            {/* (SMS) */}
         </h2>
         {/* <p className="mt-2 text-center text-sm leading-5 text-blue-500 max-w">
           Or
@@ -123,8 +124,10 @@ const SignInCover1 = () => {
                   name="email"
                   type="email"
                   required
-                  value={state.email}
-                  onChange={(e) => setEmail(e.target.value)}
+                    value={state.email}
+                    onChange={changeHandler}
+                                
+                  // onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                   placeholder="user@example.com"
                 />
@@ -148,7 +151,8 @@ const SignInCover1 = () => {
                   type="password"
                   required
                   value={state.password}
-                  onChange={(e) => setPassword(e.target.value)}
+                    // onChange={(e) => setPassword(e.target.value)}
+                    onChange={changeHandler}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
                 {/* {errors.password && (
@@ -164,9 +168,8 @@ const SignInCover1 = () => {
               </div>
 
               <div className="text-sm leading-5">
-                <a href="#" className="font-medium text-blue-500 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-                  Forgot your password?
-                </a>
+                 <Link className="text-sm text-primary decoration-2 hover:underline font-medium"
+                                    to={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover1`}>Forgot  your password?</Link>
               </div>
             </div>
 

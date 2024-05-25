@@ -24,6 +24,15 @@ const Header = ({local_varaiable,ThemeChanger})=>{
             };
         }
 
+          const onLogout = (ev) => {
+        ev.preventDefault();
+        axiosClient.post('/logout')
+            .then(() => {
+                setUser(null);
+                setToken(null);
+            });
+    };
+        
         const handleResize = () => {
             const windowObject = window;
             if (windowObject.innerWidth <= 991) {
@@ -306,6 +315,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                         </div>
 
                         <div className="responsive-logo">
+                            
                             <Link className="responsive-logo-dark" to={`${import.meta.env.BASE_URL}dashboards/normal`} aria-label="Brand">
                                 <img src={ALLImages('logo')} alt="logo" className="mx-auto" /></Link>
                             <Link className="responsive-logo-light" to={`${import.meta.env.BASE_URL}dashboards/normal`} aria-label="Brand">
@@ -391,7 +401,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                 <div className="py-2 first:pt-0 last:pb-0" id="allCartsContainer">
                                                     {allData.map((idx) => (
                                                         <div className="ti-dropdown-item relative header-box" key={Math.random()}>
-                                                            <Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/cart/`} className="flex items-center space-x-3 rtl:space-x-reverse w-full">
+                                                            <Link to={`${import.meta.env.BASE_URL}contracts/employee_contracted/`} className="flex items-center space-x-3 rtl:space-x-reverse w-full">
                                                                 <img src={idx.src} alt="product-img" className="avatar p-2 shadow-none  shrink-0 items-center justify-center rounded-sm bg-gray-100 dark:bg-black/20 !ring-transparent" />
                                                                 <div>
                                                                     <p className="text-sm font-medium text-gray-800 dark:text-white">{idx.name}</p>
@@ -401,7 +411,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                                     </div>
                                                                 </div>
                                                             </Link>
-                                                            <Link aria-label="anchor" to="#" onClick={() => handleRemove(idx.id)} className="header-remove-btn ltr:ml-auto rtl:mr-auto flex-shrink-0 inline-flex items-center justify-center text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
+                                                            <Link aria-label="anchor" to={`${import.meta.env.BASE_URL}contracts/employee_contracted/`} onClick={() => handleRemove(idx.id)} className="header-remove-btn ltr:ml-auto rtl:mr-auto flex-shrink-0 inline-flex items-center justify-center text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
                                                                 <i className="ri-close-circle-line"></i>
                                                             </Link>
                                                         </div>
@@ -418,7 +428,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                     </div>
                                                 </div>
                                                 <div className="py-2 first:pt-0 px-5">
-                                                    <Link className="w-full ti-btn ti-btn-primary p-2" to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/checkout/`}>
+                                                    <Link className="w-full ti-btn ti-btn-primary p-2" to={`${import.meta.env.BASE_URL}contracts/employee_contracted/`}>
                                                         Proceed to Attend
                                                     </Link>
                                                 </div>
@@ -439,7 +449,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                         <div className="hs-dropdown-menu ti-dropdown-menu w-[20rem] border-0" aria-labelledby="dropdown-notification">
                                             <div className="ti-dropdown-header !bg-primary border-b dark:border-white/10 flex justify-between items-center">
                                                 <p className="ti-dropdown-header-title !text-white font-semibold">Pending Workflows</p>
-                                                <Link to="#" className="badge bg-black/20 text-white rounded-sm">Mark All Read</Link>
+                                                <Link to={`${import.meta.env.BASE_URL}contracts/employee_contracted/`} className="badge bg-black/20 text-white rounded-sm">Mark All Read</Link>
                                             </div>
                                             <div className="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
                                                 <div className="py-2 first:pt-0 last:pb-0" id="allNotifyContainer">
@@ -523,7 +533,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                             </div>
                                             <div className="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
                                                 <div className="grid grid-cols-3 gap-0 p-4 pt-2">
-                                                    <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="block pt-0 p-2 text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
+                                                    <Link to={`${import.meta.env.BASE_URL}contracts/employee_contracted/`} className="block pt-0 p-2 text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                                                         <i className="ri ri-mail-line leading-none text-2xl avatar ring-0 bg-primary/20 text-primary rounded-sm p-3 my-3 align-middle flex justify-center mx-auto"></i>
                                                         <div className="text-xs font-semibold text-gray-800 dark:text-white">Hiring</div>
                                                     </Link>
@@ -557,19 +567,28 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                         </div>
                                     </div>
                                     <div className="header-profile hs-dropdown ti-dropdown" data-hs-dropdown-placement="bottom-right">
-                                        <button id="dropdown-profile" type="button" className="hs-dropdown-toggle ti-dropdown-toggle gap-2 p-0 flex-shrink-0 h-8 w-8 rounded-full shadow-none focus:ring-gray-400 text-xs dark:focus:ring-white/10">
-                                            <img className="inline-block rounded-full ring-2 ring-white dark:ring-white/10"
-                                                src={ALLImages('jpg57')} alt="Image Description" />
-                                        </button>
-
+                                        {/* <button id="dropdown-profile" type="button" className="hs-dropdown-toggle ti-dropdown-toggle gap-2 p-0 flex-shrink-0 h-8 w-8 rounded-full shadow-none focus:ring-gray-400 text-xs dark:focus:ring-white/10">
+                                            {/* <img className="inline-block rounded-full ring-2 ring-white dark:ring-white/10"
+                                                src={ALLImages('jpg57')} alt="Image Description" /> *
+                                        </button>  */}
+                                        {/* {user?.name} */}
+                                        <Link to="#" className="ti-dropdown-item" >
+                                            <img className="avatar shadow-none rounded-full !ring-transparent"
+                                                        src={ALLImages('jpg57')} alt="profile-img" />
+                                                    <i className="ti ti-user-circle text-lg"></i>
+                                            Logout
+                                                </Link>
                                         <div className="hs-dropdown-menu ti-dropdown-menu border-0 w-[20rem]" aria-labelledby="dropdown-profile">
                                             <div className="ti-dropdown-header !bg-primary flex">
                                                 <div className="ltr:mr-3 rtl:ml-3">
-                                                    <img className="avatar shadow-none rounded-full !ring-transparent"
-                                                        src={ALLImages('jpg57')} alt="profile-img" />
+                                                    
+                                                     <Link to={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`} className="ti-dropdown-item">
+                                                    <i className="ti ti-user-circle text-lg"></i>
+                                                    Profile
+                                                </Link>
                                                 </div>
                                                 <div>
-                                                    <p className="ti-dropdown-header-title !text-white">Json Taylor</p>
+                                                    <p className="ti-dropdown-header-title !text-white">user</p>
                                                     <p className="ti-dropdown-header-content !text-white/50">Web Designer</p>
                                                 </div>
                                             </div>

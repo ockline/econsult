@@ -5,7 +5,7 @@ import {useStatecontext} from "../../contexts/ContextProvider";
 function GuestLayout() {
     const {token} = useStatecontext();
     if (token){
-        return <Navigate to="/dasboards/normal/" />
+        return <Navigate to="/" />
     }
     return (
         <div>

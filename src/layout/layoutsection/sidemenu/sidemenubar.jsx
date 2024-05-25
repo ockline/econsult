@@ -1,53 +1,64 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import ALLImages from "../../../common/imagesData";
 import MenuItems from "../../../common/sidemenuData";
-import { connect } from "react-redux"
-import { ThemeChanger } from "../../../redux/Action"
+import { connect } from "react-redux";
+import { ThemeChanger } from "../../../redux/Action";
 import store from "../../../redux/store";
 import { Closedmenu, Defaultmenu, DetachedFn, DoubletFn, iconOverayFn, iconText } from "../../../common/switcherdata";
+
 let history = [];
 
 const Sidebar = ({ local_varaiable, ThemeChanger }) => {
-	const [menuitems, setMenuitems] = useState(MenuItems);
-	useEffect(() => {
-		history.push(location.pathname);  // add  history to history  stack for current location.pathname to prevent multiple history calls innerWidth  and innerWidth  calls from  multiple users. This is important because the history stack is not always empty when the user clicks  the history       
-		if (history.length > 2) {
-			history.shift();
-		}
-		if (history[0] !== history[1]) {
-			setSidemenu();
-		}
-		let mainContent = document.querySelector(".main-content");
-		mainContent.addEventListener("click", mainContentClickFn);
-		return () => {
-			mainContent.removeEventListener("click", mainContentClickFn);
-		};
+    const [menuitems, setMenuitems] = useState(MenuItems);
 
-	}, [location])
+    useEffect(() => {
+        history.push(location.pathname);
+        if (history.length > 2) {
+            history.shift();
+        }
+        if (history[0] !== history[1]) {
+            setSidemenu();
+        }
+        const mainContent = document.querySelector(".main-content");
+        if (mainContent) {
+            mainContent.addEventListener("click", mainContentClickFn);
+            return () => {
+                mainContent.removeEventListener("click", mainContentClickFn);
+            };
+        }
+    }, [location]);
 
-	useEffect(() => {
-		if (
-			local_varaiable.dataNavLayout == "horizontal" &&
-			window.innerWidth >= 992
-		) {
-			clearMenuActive();
+    useEffect(() => {
+        if (
+            local_varaiable.dataNavLayout === "horizontal" &&
+            window.innerWidth >= 992
+        ) {
+            clearMenuActive();
+        }
+    }, [local_varaiable.dataNavLayout]);
 
-		}
-	}, []);
+    const mainContentClickFn = () => {
+        if (
+            local_varaiable.dataNavLayout === "horizontal" &&
+            window.innerWidth >= 992
+        ) {
+            clearMenuActive();
+        }
+    };
+
+  
+   
 
 
-	//  In Horizontal When we click the body it should we Closed
-	function mainContentClickFn() {
-		if (
-			local_varaiable.dataNavLayout === "horizontal" &&
-			window.innerWidth >= 992
-		) {
-			clearMenuActive();
 
-		}
-	}
+const mapStateToProps = (state) => ({
+    local_varaiable: state.local_varaiable,
+});
+
+const mapDispatchToProps = {
+    ThemeChanger,
+};
 	function setSidemenu(list) {
 		let dd = list ? list.path + '/' : location.pathname;
 		if (menuitems) {

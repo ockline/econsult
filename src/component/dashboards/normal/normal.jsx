@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import { NormalsOverView, NormalsValue, SocialVisitor } from "../../../common/chartData";
 import ALLImages from "../../../common/imagesData";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import { connect } from "react-redux"
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const Normals = ({local_varaiable}) => {
+const Normal = () => {
+	
+	  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
+	
+	const [employeeData, setEmployeeDetails] = useState([])
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/home/normal/show_employees`)
+            .then((res) => {
+
+                setEmployeeDetails(res.data.employees); // Assuming "education_history" is correct
+                // console.log("dataa", ' ', res.data.dependant_detail);
+            })
+            .catch((error) => {
+                console.error('Error fetching practical data:', error);
+            });
+    }, []);
+
+	
 	return (
 		<div>
 			<PageHeader currentpage="Dashboard" activepage="Home" mainpage="Dashboard"/>
@@ -33,285 +52,36 @@ const Normals = ({local_varaiable}) => {
 									<thead className="bg-gray-50 dark:bg-black/20">
 										<tr className="">
 											<th scope="col" className="dark:text-white/80">S.no</th>
-											<th scope="col" className="dark:text-white/80">Staff name</th>
-											<th scope="col" className="dark:text-white/80">Department name</th>
-											<th scope="col" className="dark:text-white/80 min-w-[300px]">Number of File</th>
+											<th scope="col" className="dark:text-white/80">Employee No</th>
+											<th scope="col" className="dark:text-white/80">Employee Name</th>
+											<th scope="col" className="dark:text-white/80 min-w-[300px]">Job Title</th>
 											<th scope="col" className="dark:text-white/80">Ordered Date</th>
 											<th scope="col" className="dark:text-white/80">Status</th>
 									    	<th scope="col" className="dark:text-white/80">Action</th>
 										</tr>
 									</thead>
-									<tbody className="">
-										<tr className="">
-											<td>1</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full">
-													<div className="block w-full my-auto">
-														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">Black
-                                Heals For Women</span>
-														<span className="block text-xs text-gray-400 dark:text-white/80 !font-normal">#2343</span>
-													</div>
-												</div>
-											</td>
-											<td className="!text-success font-semibold text-base">#user1</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">Socrates
-                                Itumay</p>
-														<span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">socratesitumay@gmail.com</span>
-													</div>
-												</div>
-											</td>
-											<td>10-12-2022</td>
-											<td><span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80">Success</span>
-											</td>
-					
-											<td className="font-medium space-x-2 rtl:space-x-reverse">
-												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails/`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-													</Link>
-												</div>
-												
-											</td>
-										</tr>
-										<tr className="">
-											<td>2</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full">
-													
-													<div className="block w-full my-auto">
-														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">White
-                                Tshirt</span>
-														<span className="block text-xs text-gray-400 dark:text-white/80 !font-normal">#5655</span>
-													</div>
-												</div>
-											</td>
-											<td className="!text-success font-semibold text-base">#user2</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">
-                                Json Taylor</p>
-														<span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">jsontaylor2416@gmail.com</span>
-													</div>
-												</div>
-											</td>
-											<td>11-12-2022</td>
-											<td><span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80">Shipping</span>
-											</td>
-											
-											<td className="font-medium space-x-2 rtl:space-x-reverse">
-												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails/`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-													</Link>
-												</div>
-												
-											</td>
-										</tr>
-										<tr className="">
-											<td>3</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full">
-													
-													<div className="block w-full my-auto">
-														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">Jacket
-                                For Men</span>
-														<span className="block text-xs text-gray-400 dark:text-white/80 !font-normal">#15245</span>
-													</div>
-												</div>
-											</td>
-											<td className="!text-success font-semibold text-base">#user3</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">
-                                Suzika Stallone</p>
-														<span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">suzikastallone3214@gmail.com</span>
-													</div>
-												</div>
-											</td>
-											<td>12-12-2022</td>
-											<td><span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80">Out
-                            For Delivery</span>
-											</td>
-											
-											<td className="font-medium space-x-2 rtl:space-x-reverse">
-												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails/`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-													</Link>
-												</div>
-												
-											</td>
-										</tr>
-										<tr className="">
-											<td>4</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full">
-													
-													<div className="block w-full my-auto">
-														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">Airpods</span>
-														<span className="block text-xs text-gray-400 dark:text-white/80 !font-normal">#45415</span>
-													</div>
-												</div>
-											</td>
-											<td className="!text-success font-semibold text-base">#user4</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">
-                                Selena Deoyl</p>
-														<span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">selenadeoyl114@gmail.com</span>
-													</div>
-												</div>
-											</td>
-											<td>12-12-2022</td>
-											<td><span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/10 text-danger/80">Cancelled</span>
-											</td>
-											
-											<td className="font-medium space-x-2 rtl:space-x-reverse">
-												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails/`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-													</Link>
-												</div>
-												
-											</td>
-										</tr>
-										<tr className="">
-											<td>5</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full">
-													
-													<div className="block w-full my-auto">
-														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">Jasmine
-                                Fragrance</span>
-														<span className="block text-xs text-gray-400 dark:text-white/80 !font-normal">#35656</span>
-													</div>
-												</div>
-											</td>
-											<td className="!text-success font-semibold text-base">#user5</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">
-                                Roman Killon</p>
-														<span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">romankillon143@gmail.com</span>
-													</div>
-												</div>
-											</td>
-											<td>13-12-2022</td>
-											<td><span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-primary/10 text-primary/80">Ordered</span>
-											</td>
-											
-											<td className="font-medium space-x-2 rtl:space-x-reverse">
-												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails/`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-													</Link>
-												</div>
-												
-											</td>
-										</tr>
-										<tr className="">
-											<td>6</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full">
-													
-													<div className="block w-full my-auto">
-														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">Smart
-                                Watch</span>
-														<span className="block text-xs text-gray-400 dark:text-white/80 !font-normal">#622545</span>
-													</div>
-												</div>
-											</td>
-											<td className="!text-success font-semibold text-base">#user6</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">
-                                Charlie Davieson</p>
-														<span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">charliedavieson@gmail.com</span>
-													</div>
-												</div>
-											</td>
-											<td>13-12-2022</td>
-											<td><span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-secondary/10 text-secondary/80">Packed</span>
-											</td>
-											
-											<td className="font-medium space-x-2 rtl:space-x-reverse">
-												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails/`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-													</Link>
-												</div>
-												
-											</td>
-										</tr>
-									</tbody>
+									
+										 <tbody>
+                                                {Array.isArray(employeeData) && employeeData.map((employee, index) => (
+
+                                                    <tr key={index}>
+														<td>{index + 1}</td>
+														<td colSpan={1} className="">{employee.employee_no}</td>
+                                                        
+                                                        <td colSpan={1} className="">{employee.fixed_employee  ? (
+                                                                <span>{employee.fixed_employee}</span>
+                                                            ) : (
+                                                                <span>{employee.employee_name}</span>
+														)}</td>
+														<td colSpan={1} className="">{employee.job}</td>
+                                                        {/* <td colSpan={1} >{employee.to_date}</td> */}
+                                                        <td colSpan={1} >{employee.dob}</td>
+                                                        <td colSpan={1} >{employee.description}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+										
+									
 								</table>
 							</div>
 						</div>
@@ -323,8 +93,6 @@ const Normals = ({local_varaiable}) => {
 	);
 };
 
-const mapStateToProps = (state) => ({
-	local_varaiable: state
-  })
 
-export default connect(mapStateToProps,{})(Normals)
+
+ export default Normal
