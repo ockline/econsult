@@ -1,10 +1,59 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import ALLImages from "../../../common/imagesData";
 import { NormalsOverviewHRM } from "../../../common/chartData";
+import axios from 'axios';
 
 const Hrm = () => {
+	
+	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
+	
+	
+	//block for retrive staticstics 
+		//count contracted employees  from differnt employern employed
+	const [employedData, setEmployedCount] = useState([])
+	const [activeEmployer, setActiveEmployer] = useState()
+	const [unactiveEmployer, setUnActiveEmployer] = useState()
+	const [allEmployer, setAllEmployerCount] = useState()
+	
+	console.log('ngapi',activeEmployer);
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/home/excecutive/employee_count`)
+            .then((res) => {
+
+				setEmployedCount(res.data.employed_count['employed']); // Assuming "education_history" 
+				setActiveEmployer(res.data.employed_count['active_client']);
+				setUnActiveEmployer(res.data.employed_count['unactive_client']);
+				setAllEmployerCount(res.data.employed_count['all_client']);
+                // console.log("dataa", ' ', res.data.dependant_detail);
+            })
+            .catch((error) => {
+                console.error('Error fetching contracted data:', error);
+            });
+    }, []);
+	
+	const [employeeData, setEmployeeDetails] = useState([])
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/home/normal/show_employees`)
+            .then((res) => {
+
+                setEmployeeDetails(res.data.employees); // Assuming "education_history" is correct
+                // console.log("dataa", ' ', res.data.dependant_detail);
+            })
+            .catch((error) => {
+                console.error('Error fetching practical data:', error);
+            });
+    }, []);
+	
+	
+	
+	
+	
+	
+	
+	
 	return (
 		<div>
 			<PageHeader currentpage="Executive Dashboard" activepage="Home" mainpage="Executive Dashboard" />
@@ -21,7 +70,7 @@ const Hrm = () => {
 								<div className="flex-1">
 									<p className="text-sm">Total Employees</p>
 									<div className="flex justify-between items-center">
-										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">1,238</h5>
+										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">{ employedData }</h5>
 										<span className="text-success badge bg-success/20 rounded-sm p-1"><i
 											className="ti ti-trending-up leading-none"></i> +1.03%</span>
 									</div>
@@ -135,7 +184,7 @@ const Hrm = () => {
 										<div className="flex-1 font-semibold">
 											<div className="flex justify-between items-center mb-2">
 												<p className="mb-0 text-gray-800 dark:text-white">Active Clients</p>
-												<span>85/120</span>
+												<span>{activeEmployer}/{allEmployer}</span>
 											</div>
 											<div className="ti-main-progress bg-gray-200 dark:bg-black/20 mb-2">
 												<div className="ti-main-progress-bar bg-success text-xs text-white text-center" role="progressbar" style={{width: "55%"}}
@@ -157,7 +206,7 @@ const Hrm = () => {
 										<div className="flex-1 font-semibold">
 											<div className="flex justify-between items-center mb-2">
 												<p className="mb-0 text-gray-800 dark:text-white">Un Active Clients</p>
-												<span>350/390</span>
+												<span>{unactiveEmployer}/{allEmployer}</span>
 											</div>
 											<div className="ti-main-progress bg-gray-200 dark:bg-black/20 mb-2">
 												<div className="ti-main-progress-bar bg-secondary text-xs text-white text-center" role="progressbar" 

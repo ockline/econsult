@@ -130,3 +130,28 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 		</HelmetProvider>
 	</Fragment>,
 );
+
+
+
+
+
+// function App() {
+//     useEffect(() => {
+//         setupIdleListener();
+//         document.body.style.zoom = '0.9';
+//     }, []);
+//     return (
+//       <BrowserRouter>
+//           <div className="App">
+//               <Routes>
+//                   <Route path="/" element={<Authentication/>} />
+//                   <Route path="/scheme-selection" element={<SelectScheme/>} />
+//                   <Route path="/main/*" element={<Main/>}>
+//                   </Route>
+//               </Routes>
+//           </div>
+//       </BrowserRouter>
+//   );
+// }
+
+// export default App;

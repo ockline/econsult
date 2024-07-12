@@ -1,0 +1,9 @@
+export const NIDA_UPDATES_STATUSES = {
+  PENDING: "0",
+  VALIDATED: "1",
+  APPROVED: "2",
+  INVALID_NIDA: "3",
+  FAILED: "4",
+  REJECTED: "5",
+  INVALID_SOCRATE_NO: "6",
+};
