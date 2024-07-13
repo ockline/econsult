@@ -12,7 +12,7 @@ import png7 from "../assets/img/authentication/social/3.png";
 //firebase 
 import png8 from "../assets/img/authentication/firbase/1.png";
 import png9 from "../assets/img/authentication/firbase/2.png";
-
+import authenticate from "../assets/img/authentication/firbase/authenticate.png";
 // brandlogo 
 import dark from "../assets/img/brand-logos/desktop-dark.png";
 import logo from "../assets/img/brand-logos/desktop-logo.png";
@@ -279,7 +279,7 @@ import desktoplight from "../assets/img/brand-logos/desktop-light.png";
 
 const ALLImages = (img) => {
 	const i = {
-	 png1,png2,png3,png4,png6,png5,png7,png8,png9,png10,
+	 png1,png2,png3,png4,png6,png5,png7,png8,png9,authenticate,png10,
 	 png11,png13,png14,png15,png16,png17,png18,png19,png20,
 	 png21,png22,png23,png24,png25,png26,png27,png28,png29,png30,
 	 png31,png32,png33,png34,png35,png36,png37,png38,png39,png40,

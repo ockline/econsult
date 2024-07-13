@@ -6,10 +6,12 @@ import { connect } from "react-redux"
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Normal = () => {
+const Normal = (props) => {
 	
 	  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-    const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
+	const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
+	
+	
 	
 	const [employeeData, setEmployeeDetails] = useState([])
     useEffect(() => {
@@ -23,7 +25,7 @@ const Normal = () => {
                 console.error('Error fetching practical data:', error);
             });
     }, []);
-
+	console.log('ndaii natafuta dataa');
 	
 	return (
 		<div>
