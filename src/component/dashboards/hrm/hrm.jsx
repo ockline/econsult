@@ -17,6 +17,7 @@ const Hrm = () => {
 	const [activeEmployer, setActiveEmployer] = useState()
 	const [unactiveEmployer, setUnActiveEmployer] = useState()
 	const [allEmployer, setAllEmployerCount] = useState()
+	const [activeEmployed, setActiveEmployed] = useState()
 	
 	console.log('ngapi',activeEmployer);
     useEffect(() => {
@@ -27,6 +28,7 @@ const Hrm = () => {
 				setActiveEmployer(res.data.employed_count['active_client']);
 				setUnActiveEmployer(res.data.employed_count['unactive_client']);
 				setAllEmployerCount(res.data.employed_count['all_client']);
+				setActiveEmployed(res.data.employed_count['active_employee']);
                 // console.log("dataa", ' ', res.data.dependant_detail);
             })
             .catch((error) => {
@@ -91,7 +93,7 @@ const Hrm = () => {
 								<div className="flex-1">
 									<p className="text-sm">Present Employees</p>
 									<div className="flex justify-between items-center">
-										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">916</h5>
+										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">{activeEmployed}</h5>
 										<span className="text-success badge bg-success/20 rounded-sm p-1"><i
 											className="ti ti-trending-up leading-none"></i> +0.36%</span>
 									</div>
@@ -112,7 +114,7 @@ const Hrm = () => {
 								<div className="flex-1">
 									<p className="text-sm">Employees In Leave</p>
 									<div className="flex justify-between items-center">
-										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">159</h5>
+										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">0</h5>
 										<span className="text-danger badge bg-danger/20 rounded-sm p-1"><i
 											className="ti ti-trending-down leading-none"></i> -1.28%</span>
 									</div>
@@ -133,11 +135,184 @@ const Hrm = () => {
 								<div className="flex-1">
 									<p className="text-sm">Absent employees</p>
 									<div className="flex justify-between items-center">
-										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">773</h5>
+										<h5 className="mb-0 text-2xl font-semibold text-gray-800 dark:text-white">0</h5>
 										<span className="text-success badge bg-success/20 rounded-sm p-1"><i
 											className="ti ti-trending-down leading-none"></i>+4.25%</span>
 									</div>
 									<span className=" text-gray-500 dark:text-white/70 text-xs">This Month</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className="grid grid-cols-12 gap-x-6">
+				<div className="col-span-12">
+					<div className="box">
+						<div className="box-header">
+							<div className="flex">
+								<h5 className="box-title my-auto">Staff overview Details</h5>
+								<div className=" block ltr:ml-auto rtl:mr-auto my-auto">
+									<button type="button" className="ti-btn m-0 rounded-sm p-1 px-3 !border border-gray-200 text-gray-400 hover:text-gray-500 hover:bg-gray-200 hover:border-gray-200 focus:ring-gray-200  dark:hover:bg-black/30 dark:border-white/10 dark:hover:border-white/20 dark:focus:ring-white/10 dark:focus:ring-offset-white/10">
+                      View All</button>
+								</div>
+							</div>
+						</div>
+						<div className="box-body">
+							<div className="table-bordered rounded-sm ti-custom-table-head overflow-auto">
+								<table className="ti-custom-table ti-custom-table-head whitespace-nowrap">
+									<thead className="bg-gray-50 dark:bg-black/20">
+										<tr className="">
+											<th scope="col" className="dark:text-white/80">S.no</th>
+											<th scope="col" className="dark:text-white/80">Employee Details</th>
+											<th scope="col" className="dark:text-white/80">Department</th>
+											<th scope="col" className="dark:text-white/80">Designation</th>
+											<th scope="col" className="dark:text-white/80">Assigned file</th>
+											<th scope="col" className="dark:text-white/80">Aging</th>
+											
+										</tr>
+									</thead>
+									<tbody className="">
+										<tr>
+											<td>1</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Robert Steeve</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Front End</span></td>
+											<td><span>UI Designer</span></td>
+											<td><span>12</span></td>
+											<td><span>2</span></td>
+											
+											
+																				</tr>
+										<tr>
+											<td className="tx-center">2</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Steeve Robert</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Front End</span></td>
+											<td><span>UI Developer</span></td>
+											<td><span>15</span></td>
+											<td><span>0</span></td>
+											
+																				</tr>
+										<tr>
+											<td className="tx-center">3</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Mary Rose</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Back End</span></td>
+											<td><span>PHP Developer</span></td>
+											<td><span>22</span></td>
+											<td><span>1</span></td>
+											
+																				</tr>
+										<tr>
+											<td className="tx-center">4</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Stella Rose</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Android</span></td>
+											<td><span>Ionic Developer</span></td>
+											<td><span>21</span></td>
+											<td><span>0</span></td>
+											
+																				</tr>
+										<tr>
+											<td className="tx-center">5</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">John Abraham</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Front End</span></td>
+											<td><span>UI Designer</span></td>
+											<td><span>12</span></td>
+											<td><span>3</span></td>
+											
+											
+										</tr>
+										<tr>
+											<td className="tx-center">6</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Richard Bose</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Front End</span></td>
+											<td><span>UI Developer</span></td>
+											<td><span>12</span></td>
+											<td><span>4</span></td>
+											
+											
+										</tr>
+										<tr>
+											<td className="tx-center">7</td>
+											<td>
+												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
+													<div className="block w-full my-auto">
+														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Abagnale Mal</span>
+														
+													</div>
+												</div>
+											</td>
+											<td><span>Back End</span></td>
+											<td><span>Java Developer</span></td>
+											<td><span>25</span></td>
+											<td><span>0</span></td>
+											
+											
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className="box-footer">
+							<div className="sm:flex items-center">
+								<div className="">
+                      showing 5 Entries <i className="ri-arrow-right-line ml-2 font-semibold"></i>
+								</div>
+								<div className="ltr:ml-auto rtl:mr-auto">
+									<nav className="flex justify-center items-center space-x-2 rtl:space-x-reverse">
+										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center gap-2 rounded-sm" to="#">
+											<span aria-hidden="true">Prev</span>
+											<span className="sr-only">Previous</span>
+										</Link>
+										<Link className="bg-primary text-white py-1 px-2 leading-none inline-flex items-center text-sm font-medium rounded-sm" to="#" aria-current="page">1</Link>
+										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center text-sm font-medium rounded-sm" to="#">2</Link>
+										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center text-sm font-medium rounded-sm" to="#">3</Link>
+										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center gap-2 rounded-sm" to="#">
+											<span className="sr-only">Next</span>
+											<span aria-hidden="true">Next</span>
+										</Link>
+									</nav>
 								</div>
 							</div>
 						</div>
@@ -228,7 +403,7 @@ const Hrm = () => {
 										<div className="flex-1 font-semibold">
 											<div className="flex justify-between items-center mb-2">
 												<p className="mb-0 text-gray-800 dark:text-white">Ongoing Project</p>
-												<span>110/200</span>
+												<span>1/2</span>
 											</div>
 											<div className="ti-main-progress bg-gray-200 dark:bg-black/20 mb-2">
 												<div className="ti-main-progress-bar bg-warning text-xs text-white text-center" style={{width: "75%"}} role="progressbar" 
@@ -250,7 +425,7 @@ const Hrm = () => {
 										<div className="flex-1 font-semibold">
 											<div className="flex justify-between items-center mb-2">
 												<p className="mb-0 text-gray-800 dark:text-white">Completed Project</p>
-												<span>100/200</span>
+												<span>1/2</span>
 											</div>
 											<div className="ti-main-progress bg-gray-200 dark:bg-black/20 mb-2">
 												<div className="ti-main-progress-bar bg-success text-xs text-white text-center" style={{width: "55%"}} role="progressbar" 
@@ -266,8 +441,8 @@ const Hrm = () => {
 					</div>
 				</div>
 			</div>
-
-			<div className="grid grid-cols-12 gap-x-5">
+			{/* block for Leave history */}
+			{/* <div className="grid grid-cols-12 gap-x-5">
 				<div className="col-span-12 lg:col-span-5">
 					<div className="box">
 						<div className="box-header flex justify-between">
@@ -657,181 +832,9 @@ const Hrm = () => {
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> */}
 
-			<div className="grid grid-cols-12 gap-x-6">
-				<div className="col-span-12">
-					<div className="box">
-						<div className="box-header">
-							<div className="flex">
-								<h5 className="box-title my-auto">Staff overview Details</h5>
-								<div className=" block ltr:ml-auto rtl:mr-auto my-auto">
-									<button type="button" className="ti-btn m-0 rounded-sm p-1 px-3 !border border-gray-200 text-gray-400 hover:text-gray-500 hover:bg-gray-200 hover:border-gray-200 focus:ring-gray-200  dark:hover:bg-black/30 dark:border-white/10 dark:hover:border-white/20 dark:focus:ring-white/10 dark:focus:ring-offset-white/10">
-                      View All</button>
-								</div>
-							</div>
-						</div>
-						<div className="box-body">
-							<div className="table-bordered rounded-sm ti-custom-table-head overflow-auto">
-								<table className="ti-custom-table ti-custom-table-head whitespace-nowrap">
-									<thead className="bg-gray-50 dark:bg-black/20">
-										<tr className="">
-											<th scope="col" className="dark:text-white/80">S.no</th>
-											<th scope="col" className="dark:text-white/80">Employee Details</th>
-											<th scope="col" className="dark:text-white/80">Department</th>
-											<th scope="col" className="dark:text-white/80">Designation</th>
-											<th scope="col" className="dark:text-white/80">Assigned file</th>
-											<th scope="col" className="dark:text-white/80">Aging</th>
-											
-										</tr>
-									</thead>
-									<tbody className="">
-										<tr>
-											<td>1</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Robert Steeve</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Front End</span></td>
-											<td><span>UI Designer</span></td>
-											<td><span>12</span></td>
-											<td><span>2</span></td>
-											
-											
-																				</tr>
-										<tr>
-											<td className="tx-center">2</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Steeve Robert</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Front End</span></td>
-											<td><span>UI Developer</span></td>
-											<td><span>15</span></td>
-											<td><span>0</span></td>
-											
-																				</tr>
-										<tr>
-											<td className="tx-center">3</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Mary Rose</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Back End</span></td>
-											<td><span>PHP Developer</span></td>
-											<td><span>22</span></td>
-											<td><span>1</span></td>
-											
-																				</tr>
-										<tr>
-											<td className="tx-center">4</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Stella Rose</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Android</span></td>
-											<td><span>Ionic Developer</span></td>
-											<td><span>21</span></td>
-											<td><span>0</span></td>
-											
-																				</tr>
-										<tr>
-											<td className="tx-center">5</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">John Abraham</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Front End</span></td>
-											<td><span>UI Designer</span></td>
-											<td><span>12</span></td>
-											<td><span>3</span></td>
-											
-											
-										</tr>
-										<tr>
-											<td className="tx-center">6</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Richard Bose</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Front End</span></td>
-											<td><span>UI Developer</span></td>
-											<td><span>12</span></td>
-											<td><span>4</span></td>
-											
-											
-										</tr>
-										<tr>
-											<td className="tx-center">7</td>
-											<td>
-												<div className="flex space-x-3 rtl:space-x-reverse w-full min-w-[200px]">
-													<div className="block w-full my-auto">
-														<span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 max-w-[180px] truncate">Abagnale Mal</span>
-														
-													</div>
-												</div>
-											</td>
-											<td><span>Back End</span></td>
-											<td><span>Java Developer</span></td>
-											<td><span>25</span></td>
-											<td><span>0</span></td>
-											
-											
-										</tr>
-										
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div className="box-footer">
-							<div className="sm:flex items-center">
-								<div className="">
-                      showing 5 Entries <i className="ri-arrow-right-line ml-2 font-semibold"></i>
-								</div>
-								<div className="ltr:ml-auto rtl:mr-auto">
-									<nav className="flex justify-center items-center space-x-2 rtl:space-x-reverse">
-										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center gap-2 rounded-sm" to="#">
-											<span aria-hidden="true">Prev</span>
-											<span className="sr-only">Previous</span>
-										</Link>
-										<Link className="bg-primary text-white py-1 px-2 leading-none inline-flex items-center text-sm font-medium rounded-sm" to="#" aria-current="page">1</Link>
-										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center text-sm font-medium rounded-sm" to="#">2</Link>
-										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center text-sm font-medium rounded-sm" to="#">3</Link>
-										<Link className="text-gray-500 hover:text-primary e py-1 px-2 leading-none inline-flex items-center gap-2 rounded-sm" to="#">
-											<span className="sr-only">Next</span>
-											<span aria-hidden="true">Next</span>
-										</Link>
-									</nav>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			
 		</div>
 	);
 };
