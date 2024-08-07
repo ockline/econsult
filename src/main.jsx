@@ -52,82 +52,86 @@ import Firebaselayout from "./layout/firebase/firebaselayout";
 import Firebaselogin from "./layout/firebase/firebaselogin";
 import Firebaseregister from "./layout/firebase/firebaseregister";
 import ScrollToTop from "./ScrollToTop/ScrolltoTop";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const helmetContext = {};
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<Fragment>
-		<HelmetProvider context={helmetContext}>
-		<BrowserRouter>
-		<ScrollToTop/>
-			<Routes>
+		<Provider store={store}>
+			<HelmetProvider context={helmetContext}>
+			<BrowserRouter>
+			<ScrollToTop/>
+				<Routes>
 
-				<Route path={`${import.meta.env.BASE_URL}`} element={<Firebaselayout />}>
-					<Route index element={<Firebaselogin />} />
-					<Route path={`${import.meta.env.BASE_URL}firebase/firebaselogin`} element={<Firebaselogin />} />
-					<Route path={`${import.meta.env.BASE_URL}firebase/firebaseregister`} element={<Firebaseregister />} />
-				</Route>
+					<Route path={`${import.meta.env.BASE_URL}`} element={<Firebaselayout />}>
+						<Route index element={<Firebaselogin />} />
+						<Route path={`${import.meta.env.BASE_URL}firebase/firebaselogin`} element={<Firebaselogin />} />
+						<Route path={`${import.meta.env.BASE_URL}firebase/firebaseregister`} element={<Firebaseregister />} />
+					</Route>
 
-				{RouteData.map((idx) => (
-					<Fragment key={Math.random()}>
-						{/* //Main page */}
-						<Route path={`${import.meta.env.BASE_URL}`} element={<App />}>
-							<Route  index element={<Normals />} />
-							<Route exact path={idx.path} element={idx.element} />
-						</Route>
-						<Route path={`${import.meta.env.BASE_URL}`} element={<Pagelayout />}>
-							<Route path={`${import.meta.env.BASE_URL}pagecomponent/aboutus`} element={<Aboutus />} />
-							<Route path={`${import.meta.env.BASE_URL}pagecomponent/faqs`} element={<Faqs />} />
-							<Route path={`${import.meta.env.BASE_URL}pagecomponent/Contactus`} element={<Contactus />} />
-							<Route path={`${import.meta.env.BASE_URL}pagecomponent/terms&conditions`} element={<TermsConditions />} />
+					{RouteData.map((idx) => (
+						<Fragment key={Math.random()}>
+							{/* //Main page */}
+							<Route path={`${import.meta.env.BASE_URL}`} element={<App />}>
+								<Route  index element={<Normals />} />
+								<Route exact path={idx.path} element={idx.element} />
+							</Route>
+							<Route path={`${import.meta.env.BASE_URL}`} element={<Pagelayout />}>
+								<Route path={`${import.meta.env.BASE_URL}pagecomponent/aboutus`} element={<Aboutus />} />
+								<Route path={`${import.meta.env.BASE_URL}pagecomponent/faqs`} element={<Faqs />} />
+								<Route path={`${import.meta.env.BASE_URL}pagecomponent/Contactus`} element={<Contactus />} />
+								<Route path={`${import.meta.env.BASE_URL}pagecomponent/terms&conditions`} element={<TermsConditions />} />
 
-							{/* Profile */}
-							<Route path={`${import.meta.env.BASE_URL}pagecomponent/profile/home`} element={<Home />} />
-						</Route>
+								{/* Profile */}
+								<Route path={`${import.meta.env.BASE_URL}pagecomponent/profile/home`} element={<Home />} />
+							</Route>
 
-						{/* LandingPage  */}
-						<Route path={`${import.meta.env.BASE_URL}`} element={<Landingpagelayout />}>
-							<Route path={`${import.meta.env.BASE_URL}pagecomponent/landing`} element={<Landing />} />
-						</Route>
+							{/* LandingPage  */}
+							<Route path={`${import.meta.env.BASE_URL}`} element={<Landingpagelayout />}>
+								<Route path={`${import.meta.env.BASE_URL}pagecomponent/landing`} element={<Landing />} />
+							</Route>
 
-						{/* Authentication */}
-						
-						<Route path={`${import.meta.env.BASE_URL}`} element={<Authenticationlayout />}>
-						<Route path="*" element={<Error404/>} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/commingsoon`} element={<Commingsoon />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/createpassword/basic`} element={<CreatePasswordBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/createpassword/cover1`} element={<CreatePasswordCover1 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/createpassword/cover2`} element={<CreatePasswordCover2 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/errorpage/error404`} element={<Error404 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/errorpage/error500`} element={<Error500 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/basic`} element={<ForgetPasswordBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover1`} element={<ForgetPasswordCover1 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover2`} element={<ForgetPasswordCover2 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/basic`} element={<LockScreenBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/cover1`} element={<LockScreenCover1 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/cover2`} element={<LockScreenCover2 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/basic`} element={<ResetPasswordBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/cover1`} element={<ResetPasswordCover1 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/cover2`} element={<ResetPasswordCover2 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/signin/basic`} element={<SignInBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/signin/cover1`} element={<SignInCover1 />} />
-							{/* <Route path={`${import.meta.env.BASE_URL}Authentication/signin/cover2`} element={<SignInCover2 />} /> */}
-							<Route path={`${import.meta.env.BASE_URL}Authentication/signup/basic`} element={<SignUpBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/signup/cover1`} element={<SignUpCover1 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/signup/cover2`} element={<SignUpCover2 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/twostepverification/basic`} element={<VerificationBasic />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/twostepverification/cover1`} element={<VerificationCover1 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/twostepverification/cover2`} element={<VerificationCover2 />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/underconstruction`} element={<Underconstruction />} />
-							<Route path={`${import.meta.env.BASE_URL}Authentication/undermaintenance`} element={<Undermaintenance />} />
-						</Route>
-						
-					</Fragment>
-				))}
+							{/* Authentication */}
+							
+							<Route path={`${import.meta.env.BASE_URL}`} element={<Authenticationlayout />}>
+							<Route path="*" element={<Error404/>} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/commingsoon`} element={<Commingsoon />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/createpassword/basic`} element={<CreatePasswordBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/createpassword/cover1`} element={<CreatePasswordCover1 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/createpassword/cover2`} element={<CreatePasswordCover2 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/errorpage/error404`} element={<Error404 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/errorpage/error500`} element={<Error500 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/basic`} element={<ForgetPasswordBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover1`} element={<ForgetPasswordCover1 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover2`} element={<ForgetPasswordCover2 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/basic`} element={<LockScreenBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/cover1`} element={<LockScreenCover1 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/cover2`} element={<LockScreenCover2 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/basic`} element={<ResetPasswordBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/cover1`} element={<ResetPasswordCover1 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/cover2`} element={<ResetPasswordCover2 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/signin/basic`} element={<SignInBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/signin/cover1`} element={<SignInCover1 />} />
+								{/* <Route path={`${import.meta.env.BASE_URL}Authentication/signin/cover2`} element={<SignInCover2 />} /> */}
+								<Route path={`${import.meta.env.BASE_URL}Authentication/signup/basic`} element={<SignUpBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/signup/cover1`} element={<SignUpCover1 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/signup/cover2`} element={<SignUpCover2 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/twostepverification/basic`} element={<VerificationBasic />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/twostepverification/cover1`} element={<VerificationCover1 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/twostepverification/cover2`} element={<VerificationCover2 />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/underconstruction`} element={<Underconstruction />} />
+								<Route path={`${import.meta.env.BASE_URL}Authentication/undermaintenance`} element={<Undermaintenance />} />
+							</Route>
+							
+						</Fragment>
+					))}
 
-			</Routes>
-		</BrowserRouter>
-		</HelmetProvider>
+				</Routes>
+			</BrowserRouter>
+			</HelmetProvider>
+		</Provider>
 	</Fragment>,
 );
 

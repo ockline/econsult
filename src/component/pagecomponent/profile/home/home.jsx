@@ -814,13 +814,7 @@ const Home = () => {
                                                         Lorem ipsum dolor sit
                                                         amet consectetur
                                                         adipisicing elit.
-                                                        Nostrum sit consequuntur
-                                                        quia aperiam quibusdam
-                                                        rerum ut! Id ducimus
-                                                        nobis rerum modi veniam
-                                                        odit totam rem
-                                                        asperiores adipisci, sed
-                                                        quia voluptas?
+                                                        
                                                     </p>
                                                 </div>
                                             </div>

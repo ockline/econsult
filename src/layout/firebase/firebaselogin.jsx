@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate  } from 'react-router-dom'
 import ALLImages from '../../common/imagesData'
 import { Helmet } from 'react-helmet';
+import { UserChanger, RolesChanger } from '../../redux/Action';
+import { connect } from "react-redux"
 import axios from 'axios';
 
-const Firebaselogin = () => {
+const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
   
     
@@ -51,7 +53,7 @@ const Firebaselogin = () => {
         const body = {
             email: state.email,
             password: state.password,
-        };
+      };
 
         try {
             const token = await csrfToken();
@@ -79,10 +81,13 @@ const Firebaselogin = () => {
                 }).then(() => {
                      console.log('perruuuuuuuuuuuuuu')
                     const data = resp.data.token;
-                      if (data) {
-                        console.log('humu ndani', data);
-                     setUser(resp.data.user);
-                    setToken(data);
+                    if (data) {
+                      console.log('humu ndani', resp.data);
+                      setUser(resp.data.user);
+                      // set user and roles to redux
+                      UserChanger(resp.data.user);
+                      RolesChanger(resp.data.user_roles.map(r => r.alias));
+                      setToken(data);
                     }
                 }
 
@@ -172,6 +177,8 @@ const Firebaselogin = () => {
   )
 }
 
+const mapStateToProps = (state) => ({
+    local_varaiable: state
+  })
+export default connect(mapStateToProps,{UserChanger, RolesChanger})(Firebaselogin);
 
-
-export default Firebaselogin;

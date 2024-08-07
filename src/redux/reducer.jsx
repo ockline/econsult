@@ -24,7 +24,9 @@ let initialState = {
         iconText:"",
         body:{
             class:""
-        }
+        },
+        roles: ['ALL'],
+        user: {}
 };
 
 export default function reducer(state = initialState, action) {
@@ -35,6 +37,15 @@ export default function reducer(state = initialState, action) {
     case "ThemeChanger":
       state = payload
       return state
+
+    case "UserChanger":
+      return {...state, user: payload}
+
+    case "RolesChanger":
+      // payload will be an array of roles, of which in every case 'ALL' alias will be available
+      // data = [1, 2, 3, 4]
+      console.log('Setting roles:', payload);
+      return {...state, roles: ['ALL', ...payload]}
 
     default:
       return state;

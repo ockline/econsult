@@ -569,7 +569,8 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                         src={ALLImages('jpg57')} alt="profile-img" />
                                                 </div>
                                                 <div>
-                                                    <p className="ti-dropdown-header-title !text-white">Json Taylor</p>
+                                                    {/* {JSON.stringify(local_varaiable, null, 2)} */}
+                                                    <p className="ti-dropdown-header-title !text-white">{local_varaiable.user.firstname} {local_varaiable.user.middlename} {local_varaiable.user.lastname}</p>
                                                     <p className="ti-dropdown-header-content !text-white/50">Web Designer</p>
                                                 </div>
                                             </div>

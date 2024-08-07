@@ -401,6 +401,13 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 		}
 	}
 
+	const hasRole = (requiredRoles) => {
+		// returns true when user has atleast one of the roles required by menu item
+		// User roles = ['ALL'] - required = ['ALL', 'DEV']
+		// local_varaiable.roles.map((r) => requiredRoles.includes(r)) => [true]
+		return local_varaiable.roles.map((r) => requiredRoles.includes(r)).includes(true);
+	}
+
 
 	return (
 		<Fragment>
@@ -425,13 +432,13 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 							<path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
 						</svg></div>
 						<ul className="main-menu">
-
-							{menuitems.map((firstlayer) =>
+						
+							{menuitems.filter((i) => hasRole(i.roles || ['ALL'])).map((firstlayer) =>
 								<React.Fragment key={Math.random()}>
 									{firstlayer.menutitle ? <li className="slide__category">
 										{firstlayer.menutitle}
 									</li> : ""}
-									{firstlayer.Items.map((secondlayer) =>
+									{firstlayer.Items.filter((i) => hasRole(i.roles || ['ALL'])).map((secondlayer) =>
 										secondlayer.type === "link" ?
 											<li className={`slide ${secondlayer.active ? "active" : ''}`} key={Math.random()} >
 
@@ -449,7 +456,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 														<li className="slide side-menu__label1">
 															<a href="">{secondlayer.title}</a>
 														</li>
-														{secondlayer.children.map((thirdlayer) =>
+														{secondlayer.children.filter((i) => hasRole(i.roles || ['ALL'])).map((thirdlayer) =>
 															<React.Fragment key={Math.random()} >
 																{thirdlayer.type === "link" ? <li className={`slide ${thirdlayer.active ? "active" : ''}`}>
 																	{
