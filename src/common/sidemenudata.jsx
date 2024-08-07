@@ -1,113 +1,80 @@
 import React from "react";
 
 //Svg icons of Dashboard
-
 const Dashboardsvg = <i className="ri-home-8-line side-menu__icon"></i>
-
 const SettingsSvg = <i className="ri-tools-line side-menu__icon"></i>
-
-//Svg icons for modules
-
     //client registration
 const EmployersSvg = <i className="ri-apps-2-line side-menu__icon"></i>
-
 const HiringsSvg = <i className="ri-advertisement-line side-menu__icon"></i>
 
      //employee Registration 
 const EmployeesSvg  = <i className="ri-creative-commons-by-line side-menu__icon"></i>
-
 const ContractMangementSvg =  <i className="ri-attachment-line side-menu__icon"></i>
-
 const AttendancesSvg =  <i className="ri-calendar-2-line side-menu__icon"></i>
-
 const LeavesSvg = <i className="ri-community-line side-menu__icon"></i>
-
 const IndustrialRelationshipSvg = <i className="ri-links-fill side-menu__icon"></i>
-
 const CompliancesSvg = <i className="ri-service-line side-menu__icon"></i>
-
 const ExitsSvg = <i className="ri-send-plane-2-line side-menu__icon"></i>
-
 const PayrollsSvg = <i className="ri-creative-commons-nc-line side-menu__icon"></i>
-
 const ReportsSvg = <i className="ri-bar-chart-grouped-line side-menu__icon"></i>
-
-
-const ComponentsSvg = <i className="ri-inbox-line side-menu__icon"></i>
-
-const ElementsSvg = <i className="ri-cpu-line side-menu__icon"></i>
-
-const FormsSvg = <i className="ri-file-text-line side-menu__icon"></i>
-
-const AdvancedUISvg = <i className="ri-stack-line side-menu__icon"></i>
-
-const BasicUISvg = <i className="ri-file-list-3-line side-menu__icon"></i>
-
-const NestedSvg = <i className="ri-node-tree side-menu__icon"></i>
-
-const MapsSvg = <i className="ri-map-pin-user-line side-menu__icon"></i>
-
-const ChartsSvg = <i className="ri-pie-chart-2-line side-menu__icon"></i>
-
 const PagesSvg = <i className="ri-book-open-line side-menu__icon"></i>
-
-const IconsSvg = <i className="ri-camera-lens-line side-menu__icon"></i>
-
 const AuthenticationSvg = <i className="ri-error-warning-line side-menu__icon"></i>
 
 
 
 export const MenuItems = [
-	{ id: 1, menutitle: "MAIN", roles: ['MD', 'DEV', 'ALL'], Items: [
+	{ id: 1, menutitle: "MAIN", roles: ['MD', 'DEV', 'ALL','SA','OM', 'RI','RR','RA'], Items: [
 
 			{ id: 2,icon: Dashboardsvg, title: "Dashboards", type: "sub", active: false, selected: false, roles: ['MD', 'DEV', 'ALL'], children: [
 
 					{ id: 3, path: `${import.meta.env.BASE_URL}dashboards/normal`, type: "link", active: false, selected: false, title: "Normal", roles: ['ALL'] },
-				{ id: 4, path: `${import.meta.env.BASE_URL}dashboards/hrm`, type: "link", active: false, selected: false, title: "HRM", roles: ['MD', 'DEV'] },
+				{ id: 4, path: `${import.meta.env.BASE_URL}dashboards/hrm`, type: "link", active: false, selected: false, title: "HRM", roles: ['MD', 'DEV', 'OM'] },
 				],
 			},
 
-			{ id: 5, path: `${import.meta.env.BASE_URL}settings`, icon: SettingsSvg, title: "System setting", type: "link", active: false, selected: false },
+			{ id: 5, path: `${import.meta.env.BASE_URL}settings`, icon: SettingsSvg, title: "System setting", type: "link", active: false, roles: ['MD', 'DEV', 'ALL', 'SA'], selected: false},
 		]
 	},
 	{
 		menutitle: "GENERAL", Items: [
 	
 			{
-				id: 6, icon: EmployersSvg, title: "Employers", type: "sub", active: false, selected: false, children: [
-					{ id: 7, path: `${import.meta.env.BASE_URL}employers/registrations/registrations`, type: "link", active: false, selected: false, title: "Registration" },
+				id: 6, icon: EmployersSvg, title: "Employers", type: "sub", active: false, selected: false, roles: ['MD', 'DEV', 'OM','RI','RR','RA'],  children: [
+					{ id: 7, path: `${import.meta.env.BASE_URL}employers/registrations/registrations`, type: "link", active: false, selected: false, roles: ['MD', 'DEV', 'OM','RI','RR','RA'], title: "Registration" },
 					// { id: 8, path: `${import.meta.env.BASE_URL}employers/departments/departments`, type: "link", active: false, selected: false, title: "Departments" },
 					// { id: 9, path: `${import.meta.env.BASE_URL}employers/attachments`, type: "link", active: false, selected: false, title: "Attachments" },
 				]
 			},
 			{
 				//Hiring block
-				id: 10, icon: HiringsSvg, title: "Hiring", type: "sub", active: false, selected: false, children: [
+				id: 10, icon: HiringsSvg, title: "Hiring", type: "sub", active: false, roles: ['MD', 'DEV', 'VI', 'VA', 'II', 'IA', 'IC','IV','INA' ], selected: false, children: [
 
-					{ id: 11, path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, type: "link", active: false, selected: false, title: "Job Vacancy" },
-					{ id: 12, path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, type: "link", active: false, selected: false, title: "HR Competency Interviews" },
-					{ id: 13, path: `${import.meta.env.BASE_URL}hiring/recruitments/technical_interviewed`, type: "link", active: false, selected: false, title: "Technical Interviews" },
+					{ id: 11, path: `${import.meta.env.BASE_URL}hiring/vacancies/jobs`, type: "link", active: false, selected: false, roles: [ 'DEV', 'VI', 'VA', 'II', 'IA', 'IC','IV','INA' ], title: "Job Vacancy" },
+					{ id: 12, path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, type: "link", active: false, selected: false, title: "HR Competency Interviews", roles: [ 'DEV', 'VI', 'VA', 'II', 'IA', 'IC','IV','INA' ]},
+					{ id: 13, path: `${import.meta.env.BASE_URL}hiring/recruitments/technical_interviewed`, type: "link", active: false, selected: false, title: "Technical Interviews", roles: [ 'DEV', 'VI', 'VA', 'II', 'IA', 'IC','IV','INA' ], },
 				]
 			},
 			
 			{
-				id: 14, icon: EmployeesSvg, title: "Employee Registrations", type: "sub", active: false, selected: false, children: [
+				id: 14, icon: EmployeesSvg, title: "Employee Registrations", type: "sub", active: false, selected: false, roles: [ 'DEV', 'II', 'IA', 'IC','IV','INA','HI','HC','HA',
+'SI','SR','ITI','ITR','ITAr'], children: [
 
-					{ id: 15, path: `${import.meta.env.BASE_URL}employees/personal/employee_list`, type: "link", active: false, selected: false, title: "Personnel Details" },
-					{ id: 16, path: `${import.meta.env.BASE_URL}employees/document/uploaded`, type: "link", active: false, selected: false, title: "Required Documents" },
-					{ id: 17, path: `${import.meta.env.BASE_URL}employees/socialrecords/details`, type: "link", active: false, selected: false, title: "Social Records" },
-					{ id: 18, path: `${import.meta.env.BASE_URL}employees/induction/induction_trainning`, type: "link", active: false, selected: false, title: "Induction Training" },
-					{ id: 19, path: `${import.meta.env.BASE_URL}employees/applications/all_id_application`, type: "link", active: false, selected: false, title: "ID Application" },
+					{ id: 15, path: `${import.meta.env.BASE_URL}employees/personal/employee_list`, type: "link", active: false, selected: false, title: "Personnel Details",roles: [ 'DEV', 'II', 'IA', 'IC','IV','INA','HI','HC','HA', 'SI','SR' ] },
+					{ id: 16, path: `${import.meta.env.BASE_URL}employees/document/uploaded`, type: "link", active: false, selected: false, title: "Required Documents", roles: [ 'DEV', 'II', 'IA', 'IC','IV','INA' ,'HI','HC','HA' ] },
+					{ id: 17, path: `${import.meta.env.BASE_URL}employees/socialrecords/details`, type: "link", active: false, selected: false, title: "Social Records", roles: [ 'DEV', 'SI','SR' ] },
+					{ id: 18, path: `${import.meta.env.BASE_URL}employees/induction/induction_trainning`, type: "link", active: false, selected: false, title: "Induction Training",roles: [ 'DEV', 'ITI','ITR','ITAr'] },
+					{ id: 19, path: `${import.meta.env.BASE_URL}employees/applications/all_id_application`, type: "link", active: false, selected: false, title: "ID Application",roles: [ 'DEV', 'II', 'IA', 'IC','IV','INA' ,'HI','HC','HA',
+'SI','SR'] },
 				]
 			},
 			{
-				id: 20, icon: ContractMangementSvg, title: "Contracts", type: "sub", active: false, selected: false, children: [
-					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/employee_contracted`, type: "link", active: false, selected: false, title: "Contracts" },
-					{ id: 20, path: `${import.meta.env.BASE_URL}contracts/required_details`, type: "link", active: false, selected: false, title: "Required Details" },
-					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts`, type: "link", active: false, selected: false, title: "Fixed Term" },
-					{ id: 22, path: `${import.meta.env.BASE_URL}contracts/specific/specific_task`, type: "link", active: false, selected: false, title: "Specific Task" },
+				id: 20, icon: ContractMangementSvg, title: "Contracts", type: "sub", active: false, selected: false, roles: [ 'DEV', 'CI','CR','CA' ], children: [
+					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/employee_contracted`, type: "link", active: false, selected: false, title: "Contracts", roles: [ 'DEV', 'CI' ], },
+					{ id: 20, path: `${import.meta.env.BASE_URL}contracts/required_details`, type: "link", active: false, selected: false, title: "Required Details" ,roles: [ 'DEV', 'CI','CR','CA' ],},
+					{ id: 21, path: `${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts`, type: "link", active: false, selected: false, title: "Fixed Term",roles: [ 'DEV', 'CI','CR','CA' ], },
+					{ id: 22, path: `${import.meta.env.BASE_URL}contracts/specific/specific_task`, type: "link", active: false, selected: false, title: "Specific Task",roles: [ 'DEV', 'CI','CR','CA' ], },
 					// { id: 23, path: `${import.meta.env.BASE_URL}contracts/unspecified/unspecified`, type: "link", active: false, selected: false, title: "Unspecified" },
-					{ id: 24, path: `${import.meta.env.BASE_URL}contracts/terms/term_conditions`, type: "link", active: false, selected: false, title: "Terms & Contitions" },
+					{ id: 24, path: `${import.meta.env.BASE_URL}contracts/terms/term_conditions`, type: "link", active: false, selected: false, title: "Terms & Contitions", roles: [ 'DEV', 'CI','CR','CA' ], },
 				]
 			},
 			//******************************** */
@@ -116,10 +83,10 @@ export const MenuItems = [
 			
 			//************************************* */
 			{
-				id: 25, icon: AttendancesSvg, title: "Attendances", type: "sub", active: false, selected: false, children: [
+				id: 25, icon: AttendancesSvg, title: "Attendances", type: "sub", active: false, selected: false,roles: [ 'DEV', 'SA','MD','AF' ], children: [
 
-					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normaworking`, type: "link", active: false, selected: false, title: "Normal Working Hours" },
-					{ id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing" },
+					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normaworking`, type: "link", active: false, selected: false, title: "Normal Working Hours", roles: [ 'DEV', 'SA','MD','AF' ], },
+					{ id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing", roles: [ 'DEV', 'SA','MD','AF' ], },
 				]
 			},
 			{
@@ -190,70 +157,13 @@ export const MenuItems = [
 			
 			// {/* End of block   */}
 			
-			//************************************* */
-			
-			
-			
-			
-		
-
-			{ id: 67, icon: ComponentsSvg, title: "Components", type: "sub", active: false, selected: false, children: [
-
-					{ id: 68, path: `${import.meta.env.BASE_URL}components/accordion`, type: "link", active: false, selected: false, title: "Accordion" },
-				
-					{ id: 70, path: `${import.meta.env.BASE_URL}components/avatars`, type: "link", active: false, selected: false, title: "Avatars" },
-					{ id: 71, path: `${import.meta.env.BASE_URL}components/badges`, type: "link", active: false, selected: false, title: "Badges" },
-					{ id: 72, path: `${import.meta.env.BASE_URL}components/blockquotes`, type: "link", active: false, selected: false, title: "Blockquotes" },
-					{ id: 73, path: `${import.meta.env.BASE_URL}components/buttons`, type: "link", active: false, selected: false, title: "Buttons" },
-					{ id: 74, path: `${import.meta.env.BASE_URL}components/cards`, type: "link", active: false, selected: false, title: "Cards" },
-					{ id: 75, path: `${import.meta.env.BASE_URL}components/collapse`, type: "link", active: false, selected: false, title: "Collapse" },
-					{ id: 76, path: `${import.meta.env.BASE_URL}components/listgroup`, type: "link", active: false, selected: false, title: "List Group" },
-					{ id: 77, path: `${import.meta.env.BASE_URL}components/list`, type: "link", active: false, selected: false, title: "List" },
-					{ id: 78, path: `${import.meta.env.BASE_URL}components/indicators`, type: "link", active: false, selected: false, title: "Indicators" },
-					{ id: 79, path: `${import.meta.env.BASE_URL}components/progress`, type: "link", active: false, selected: false, title: "Progress" },
-					{ id: 80, path: `${import.meta.env.BASE_URL}components/skeletons`, type: "link", active: false, selected: false, title: "Skeleton" },
-					{ id: 81, path: `${import.meta.env.BASE_URL}components/spinners`, type: "link", active: false, selected: false, title: "Spinners" },
-					{ id: 82, path: `${import.meta.env.BASE_URL}components/toasts`, type: "link", active: false, selected: false, title: "Toast" }
-				]
-			},
-			//  
+			//************************************* */		
 		]
 	},
-	{ menutitle: "LEVELS", Items: [
-			{ icon: NestedSvg, title: "Nested Menu", type: "sub", active: false, selected: false, children: [
-
-					{ title: "Nested-1", path: `${import.meta.env.BASE_URL}`, type: "link", active: false, selected: false },
-
-					{ title: "Nested-2", type: "sub", active: false, selected: false, children: [
-
-							{ type: "link", path: `${import.meta.env.BASE_URL}`, active: false, selected: false, title: "Nested-2-1" },
-						
-						]
-					},
-				]
-			},
-		]
-	},
-	{ menutitle: "MAPS & CHARTS", Items: [
-			{ id: 78, icon: MapsSvg, title: "Maps", type: "sub", active: false, selected: false, children: [
-
-					{ id: 80, path: `${import.meta.env.BASE_URL}maps/leafletmap`, type: "link", active: false, selected: false, title: "New Jobs" },
-					{ id: 81, path: `${import.meta.env.BASE_URL}maps/simplemap`, type: "link", active: false, selected: false, title: "Simple Maps" },
-
-				]
-			},
-			{ id: 82, icon: ChartsSvg, title: "Charts", type: "sub", active: false, selected: false, children: [
-
-					{ id: 83, path: `${import.meta.env.BASE_URL}charts/apexchart`, type: "link", active: false, selected: false, title: "Apex Chart" },
-					{ id: 84, path: `${import.meta.env.BASE_URL}charts/chartjs`, type: "link", active: false, selected: false, title: "Chart JS" },
-					{ id: 85, path: `${import.meta.env.BASE_URL}charts/echart`, type: "link", active: false, selected: false, title: "E-Chart" },
-
-				]
-			},
-		]
-	},
-	{ menutitle: "PAGES", Items: [
-			{ id: 86, icon: PagesSvg, title: "Pages", type: "sub", active: false, selected: false, children: [
+	
+	
+	{ menutitle: "MANAGE PROFILES", Items: [
+			{ id: 86, icon: PagesSvg, title: "Profiles", type: "sub", active: false, selected: false, children: [
 					{ id: 87, title: "Profile", type: "sub", active: false, selected: false, children: [
 
 							{ id: 88, path: `${import.meta.env.BASE_URL}pagecomponent/profile/home`, type: "link", active: false, selected: false, title: "Home" },
@@ -261,65 +171,19 @@ export const MenuItems = [
 
 						]
 					},
-					{ id: 90, title: "Invoice", type: "sub", active: false, selected: false, children: [
+					
+					// { id: 97, title: "Mail", type: "sub", active: false, selected: false, children: [
 
-							{ id: 91, path: `${import.meta.env.BASE_URL}pagecomponent/invoice/invoicelist`, type: "link", active: false, selected: false, title: "Invoice List" },
-							{ id: 92, path: `${import.meta.env.BASE_URL}pagecomponent/invoice/invoicedetails`, type: "link", active: false, selected: false, title: "Invoice Details" },
+					// 		{ id: 98, path: `${import.meta.env.BASE_URL}pagecomponent/mail/mainMail`, type: "link", active: false, selected: false, title: "Mail" },
+					// 		{ id: 99, path: `${import.meta.env.BASE_URL}pagecomponent/mail/chat`, type: "link", active: false, selected: false, title: "Chat" },
+					// 		{ id: 100, path: `${import.meta.env.BASE_URL}pagecomponent/mail/mailsettings`, type: "link", active: false, selected: false, title: "Mail-settings" },
 
-						]
-					},
-					{ id: 93, title: "Blog", type: "sub", active: false, selected: false, children: [
-
-							{ id: 94, path: `${import.meta.env.BASE_URL}pagecomponent/blog/blogmain`, type: "link", active: false, selected: false, title: "Blog" },
-							{ id: 95, path: `${import.meta.env.BASE_URL}pagecomponent/blog/blogdetails`, type: "link", active: false, selected: false, title: "Blog Detail" },
-							{ id: 96, path: `${import.meta.env.BASE_URL}pagecomponent/blog/blogedit`, type: "link", active: false, selected: false, title: "Edit Blog" },
-
-						]
-					},
-					{ id: 97, title: "Mail", type: "sub", active: false, selected: false, children: [
-
-							{ id: 98, path: `${import.meta.env.BASE_URL}pagecomponent/mail/mainMail`, type: "link", active: false, selected: false, title: "Mail" },
-							{ id: 99, path: `${import.meta.env.BASE_URL}pagecomponent/mail/chat`, type: "link", active: false, selected: false, title: "Chat" },
-							{ id: 100, path: `${import.meta.env.BASE_URL}pagecomponent/mail/mailsettings`, type: "link", active: false, selected: false, title: "Mail-settings" },
-
-						]
-					},
-					{ id: 101, title: "E-Commerce", type: "sub", active: false, selected: false, children: [
-
-							{ id: 102, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/product`, type: "link", active: false, selected: false, title: "Products" },
-							{ id: 103, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productlist`, type: "link", active: false, selected: false, title: "Product list" },
-							{ id: 104, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/addproduct`, type: "link", active: false, selected: false, title: "Add Product" },
-							{ id: 105, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/editproduct`, type: "link", active: false, selected: false, title: "Edit Product" },
-							{ id: 106, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productdetails`, type: "link", active: false, selected: false, title: "Products Details" },
-							{ id: 107, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/cart`, type: "link", active: false, selected: false, title: "Cart" },
-							{ id: 108, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/checkout`, type: "link", active: false, selected: false, title: "Checkout" },
-							{ id: 109, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orders`, type: "link", active: false, selected: false, title: "Orders" },
-							{ id: 110, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails`, type: "link", active: false, selected: false, title: "Order Details" },
-							{ id: 111, path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/wishlist`, type: "link", active: false, selected: false, title: "Wishlist" },
-
-						]
-					},
-					{ id: 112, path: `${import.meta.env.BASE_URL}pagecomponent/aboutus`, title: "About Us", type: "link", active: false, selected: false },
-					{ id: 113, path: `${import.meta.env.BASE_URL}pagecomponent/contacts`, title: "Contacts", type: "link", active: false, selected: false },
-					{ id: 114, path: `${import.meta.env.BASE_URL}pagecomponent/pricingtables`, title: "Pricing Tables", type: "link", active: false, selected: false },
-					{ id: 115, path: `${import.meta.env.BASE_URL}pagecomponent/timeline`, title: "Timeline", type: "link", active: false, selected: false },
-					{ id: 116, path: `${import.meta.env.BASE_URL}pagecomponent/team`, title: "Team", type: "link", active: false, selected: false },
-					{ id: 117, path: `${import.meta.env.BASE_URL}pagecomponent/landing`, title: "Landing", type: "link", active: false, selected: false },
-					{ id: 118, path: `${import.meta.env.BASE_URL}pagecomponent/todolist`, title: "To-do List", type: "link", active: false, selected: false },
-					{ id: 119, path: `${import.meta.env.BASE_URL}pagecomponent/tasks`, title: "Tasks", type: "link", active: false, selected: false },
-					{ id: 120, path: `${import.meta.env.BASE_URL}pagecomponent/reviews`, title: "Reviews", type: "link", active: false, selected: false },
-					{ id: 121, path: `${import.meta.env.BASE_URL}pagecomponent/faqs`, title: "Faqs", type: "link", active: false, selected: false },
-					{ id: 122, path: `${import.meta.env.BASE_URL}pagecomponent/Contactus`, title: "Contact Us", type: "link", active: false, selected: false },
-					{ id: 123, path: `${import.meta.env.BASE_URL}pagecomponent/terms&conditions`, title: "Terms & Conditions", type: "link", active: false, selected: false },
-					{ id: 124, path: `${import.meta.env.BASE_URL}pagecomponent/emptypages`, title: "EmptyPage", type: "link", active: false, selected: false },
+					// 	]
+					// },
+					
 				]
 			},
-			{ id: 125, icon: IconsSvg, title: "Icons", type: "sub", active: false, selected: false, children: [
-
-					{ id: 126, path: `${import.meta.env.BASE_URL}icon/tablericons`, type: "link", active: false, selected: false, title: "Tabler Icons" },
-					{ id: 127, path: `${import.meta.env.BASE_URL}icon/remixicons`, type: "link", active: false, selected: false, title: "Remix Icons" },
-				]
-			},
+			
 			{ id: 128, icon: AuthenticationSvg, title: "Authentication", type: "sub", active: false, selected: false, children: [
 
 					{ id: 129, type: "sub", active: false, selected: false, title: "Sign In", children: [
