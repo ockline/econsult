@@ -504,11 +504,11 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                         </Link>
                                                     </div>
                                                 </div>
-                                                <div className="py-2 first:pt-0 px-5">
+                                                {/* <div className="py-2 first:pt-0 px-5">
                                                     <Link className="w-full ti-btn ti-btn-primary p-2" to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`}>
                                                         View All
                                                     </Link>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -548,11 +548,11 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                         <div className="text-xs font-semibold text-gray-800 dark:text-white">Leaves</div>
                                                     </Link>
                                                 </div>
-                                                <div className="py-2 first:pt-0 px-5">
+                                                {/* <div className="py-2 first:pt-0 px-5">
                                                     <Link className="w-full ti-btn ti-btn-primary p-2" to="#">
                                                         View All
                                                     </Link>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -579,23 +579,16 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                     <i className="ti ti-user-circle text-lg"></i>
                                                     Profile
                                                 </Link>
-                                                <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="ti-dropdown-item">
+                                                {/* <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="ti-dropdown-item">
                                                     <i className="ti ti-inbox text-lg"></i>
                                                     Inbox
-                                                </Link>
-                                                <Link to={`${import.meta.env.BASE_URL}pagecomponent/tasks/`} className="ti-dropdown-item">
-                                                    <i className="ti ti-clipboard-check text-lg"></i>
-                                                    Task Manager
-                                                </Link>
+                                                </Link>  */}
                                                 <Link to={`${import.meta.env.BASE_URL}pagecomponent/profile/profilesetting/`} className="ti-dropdown-item">
                                                     <i className="ti ti-adjustments-horizontal text-lg"></i>
                                                     Settings
                                                 </Link>
-                                                <Link to={`${import.meta.env.BASE_URL}dashboards/crypto/`} className="ti-dropdown-item">
-                                                    <i className="ti ti-wallet text-lg"></i>
-                                                    Bal: $7,12,950
-                                                </Link>
-                                                <Link to={`${import.meta.env.BASE_URL}firebase/firebaselogin/`} className="ti-dropdown-item">
+                                              
+                                                <Link to={`${import.meta.env.BASE_URL}login`} className="ti-dropdown-item">
                                                     <i className="ti ti-logout  text-lg"></i>
                                                     Log Out
                                                 </Link>

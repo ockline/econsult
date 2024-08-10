@@ -1,0 +1,10 @@
+.roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust the minmax value to fit your layout */
+    gap: 16px; /* Space between items */
+}
+
+.role-item {
+    display: flex;
+    align-items: center;
+}

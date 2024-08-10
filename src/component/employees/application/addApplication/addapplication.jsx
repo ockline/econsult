@@ -19,6 +19,22 @@ const AddApplication = () => {
     let navigate = useNavigate();
    
     
+       //Departments  ******************************
+    const [departments, setDepartments] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const dept = await DepartmentData();
+                setDepartments(dept);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
+    
     
   const [isDocumentChecked, setIsDocumentChecked] = useState({});
 

@@ -85,37 +85,37 @@ export const MenuItems = [
 			{
 				id: 25, icon: AttendancesSvg, title: "Attendances", type: "sub", active: false, selected: false,roles: [ 'DEV', 'SA','MD','AF' ], children: [
 
-					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normaworking`, type: "link", active: false, selected: false, title: "Normal Working Hours", roles: [ 'DEV', 'SA','MD','AF' ], },
-					{ id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing", roles: [ 'DEV', 'SA','MD','AF' ], },
+					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normaworking`, type: "link", active: false, selected: false, title: "Normal Working Hours", roles: [ 'DEV', 'SA','MD','AF' ] },
+					{ id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing", roles: [ 'DEV', 'SA','MD','AF' ] },
 				]
 			},
 			{
-				id: 28, icon: LeavesSvg, title: "Leaves", type: "sub", active: false, selected: false, children: [
+				id: 28, icon: LeavesSvg, title: "Leaves", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','MD','AF' ], children: [
 
-					{ id: 29, path: `${import.meta.env.BASE_URL}leaves/annual`, type: "link", active: false, selected: false, title: "Annual " },
-					{ id: 30, path: `${import.meta.env.BASE_URL}leaves/unpaid`, type: "link", active: false, selected: false, title: "Unpaid" },
-					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionates`, type: "link", active: false, selected: false, title: "Compasionate" },
-					{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity " },
-					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/partenity`, type: "link", active: false, selected: false, title: "Partenity" },
-					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sickfullpaid`, type: "link", active: false, selected: false, title: "Sick full Paid" },
-					{ id: 35, path: `${import.meta.env.BASE_URL}leaves/sickhalfpaid`, type: "link", active: false, selected: false, title: "Sick Half Paid" },
-					{ id: 36, path: `${import.meta.env.BASE_URL}leaves/sickunpaid`, type: "link", active: false, selected: false, title: "Sick Unpaid" },
+					{ id: 29, path: `${import.meta.env.BASE_URL}leaves/annual`, type: "link", active: false, selected: false, title: "Annual", roles: [ 'DEV', 'SA','AF' ] },
+					{ id: 30, path: `${import.meta.env.BASE_URL}leaves/unpaid`, type: "link", active: false, selected: false, title: "Unpaid",  roles: [ 'DEV', 'SA','AF' ] },
+					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionates`, type: "link", active: false, selected: false, title: "Compasionate", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/partenity`, type: "link", active: false, selected: false, title: "Partenity", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sickfullpaid`, type: "link", active: false, selected: false, title: "Sick full Paid", roles: [ 'DEV', 'SA','AF']  },
+					{ id: 35, path: `${import.meta.env.BASE_URL}leaves/sickhalfpaid`, type: "link", active: false, selected: false, title: "Sick Half Paid", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 36, path: `${import.meta.env.BASE_URL}leaves/sickunpaid`, type: "link", active: false, selected: false, title: "Sick Unpaid", roles: [ 'DEV', 'SA','AF' ]  },
 				]
 			},
-			{ id: 37, icon: CompliancesSvg, title: "Compliance", type: "sub", active: false, selected: false, children: [
+			{ id: 37, icon: CompliancesSvg, title: "Compliance", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF' ],  children: [
 
-				{ id: 38, path: `${import.meta.env.BASE_URL}compliances/templategeneration`, type: "link", active: false, selected: false, title: "Template Generation" },
-				{ id: 38, path: `${import.meta.env.BASE_URL}compliances/occupational`, type: "link", active: false, selected: false, title: "Occupational Reconciliation" },
+				{ id: 38, path: `${import.meta.env.BASE_URL}compliances/templategeneration`, type: "link", active: false, selected: false, title: "Template Generation", roles: [ 'DEV', 'SA','AF' ]  },
+				{ id: 38, path: `${import.meta.env.BASE_URL}compliances/occupational`, type: "link", active: false, selected: false, title: "Occupational Reconciliation", roles: [ 'DEV', 'SA','AF' ]  },
 				,
 			]
 			},
-			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, children: [
+			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF' ], children: [
 
-					{ id: 40, path: `${import.meta.env.BASE_URL}exits/resignations`, type: "link", active: false, selected: false, title: "Resignations" },
-					{ id: 41, path: `${import.meta.env.BASE_URL}exits/endcontracts`, type: "link", active: false, selected: false, title: "End of Contract" },
-					{ id: 42, path: `${import.meta.env.BASE_URL}exits/endspecificcontracts`, type: "link", active: false, selected: false, title: "End of Specific Task" },
-					{ id: 43, path: `${import.meta.env.BASE_URL}exits/mutuals`, type: "link", active: false, selected: false, title: "Mutual Aggrement" },
-					{ id: 44, path: `${import.meta.env.BASE_URL}elements/retrenchments`, type: "link", active: false, selected: false, title: "Retrenchment" },
+					{ id: 40, path: `${import.meta.env.BASE_URL}exits/resignations`, type: "link", active: false, selected: false, title: "Resignations", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 41, path: `${import.meta.env.BASE_URL}exits/endcontracts`, type: "link", active: false, selected: false, title: "End of Contract", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 42, path: `${import.meta.env.BASE_URL}exits/endspecificcontracts`, type: "link", active: false, selected: false, title: "End of Specific Task", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 43, path: `${import.meta.env.BASE_URL}exits/mutuals`, type: "link", active: false, selected: false, title: "Mutual Aggrement", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 44, path: `${import.meta.env.BASE_URL}elements/retrenchments`, type: "link", active: false, selected: false, title: "Retrenchment", roles: [ 'DEV', 'SA','AF' ]  },
 				]
 			},
 			{ id: 45, icon: IndustrialRelationshipSvg, title: "Industrial Relationship", type: "sub", active: false, selected: false, children: [

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import axios from "axios";
- 
+ import Swal from "sweetalert2";
 
 const Registrations = () => {
 	

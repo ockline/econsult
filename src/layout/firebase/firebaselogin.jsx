@@ -27,7 +27,8 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
         password: '',
     });
     const [loggedIn, setLoggedIn] = useState(false);
-    const [error, setError] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
 
     const csrfToken = async () => {
         // Implement your logic to fetch CSRF token
@@ -54,7 +55,7 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
             email: state.email,
             password: state.password,
       };
-
+      setIsLoading(true);
         try {
             const token = await csrfToken();
             console.log('CSRF Token:', token);
@@ -71,15 +72,9 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
                     icon: 'error',
                     button: 'OK',
                 });
+              setIsLoading(false);
             } else {
-                swal({
-                    title: 'Success',
-                    text: resp.data.message,
-                    icon: 'success',
-                    button: 'OK',
-                    closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
-                }).then(() => {
-                     console.log('perruuuuuuuuuuuuuu')
+                                  
                     const data = resp.data.token;
                     if (data) {
                       console.log('humu ndani', resp.data);
@@ -88,25 +83,24 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
                       UserChanger(resp.data.user);
                       RolesChanger(resp.data.user_roles.map(r => r.alias));
                       setToken(data);
-                    }
-                }
-
-                );
-            }
-            
+                     
+                  }
+                  setIsLoading(false);
+                }            
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError(error.response.data.message);
-            }
+          }
+          setIsLoading(false);
         }
       };
   
      
   return (
 
-<div className='flex justify-center min-h-screen align-middle'>
-      
-                <div className="font-[sans-serif] bg-white flex items-center justify-center min-h-[75vh] p-4">
+<div className='flex justify-center  align-middle'>
+      {/* bg-white */}
+                <div className="font-[sans-serif]  flex items-center justify-center min-h-[75vh] p-4">
 
              <div class="shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)] max-w-4xl max-md:max-w-lg rounded-md p-6">
        <h1 className="text-lg"><b>SOCRATE MANAGEMENT SYSTEM (ESMS)</b></h1>
@@ -162,9 +156,22 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
             </div>
 
             <div class="mt-12">
-              <button type="submit" class="w-full shadow-xl py-2.5 px-5 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
-                Sign in
-              </button>
+               <button
+            type="submit"
+            className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+            disabled={isLoading} // Disable the button when loading
+        >
+            {isLoading ? (
+                <>
+                    <span className="ti-spinner text-white" role="status" aria-label="loading">
+                        <span className="sr-only">Loading...</span>
+                    </span>
+                    Loading...
+                </>
+            ) : (
+                'Sign in'
+            )}
+        </button>
               <p class="text-gray-800 text-sm text-center mt-6">Don't have an account <a href="#" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</a></p>
             </div>
           </form>
