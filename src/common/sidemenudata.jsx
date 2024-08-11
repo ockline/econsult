@@ -23,18 +23,30 @@ const AuthenticationSvg = <i className="ri-error-warning-line side-menu__icon"><
 
 
 export const MenuItems = [
-	{ id: 1, menutitle: "MAIN", roles: ['MD', 'DEV', 'ALL','SA','OM', 'RI','RR','RA'], Items: [
+	{ id: 1, menutitle: "MAIN", roles: ['MD', 'DEV','SA', 'ALL','OM', 'RI','RR','RA'], Items: [
 
 			{ id: 2,icon: Dashboardsvg, title: "Dashboards", type: "sub", active: false, selected: false, roles: ['MD', 'DEV', 'ALL'], children: [
 
 					{ id: 3, path: `${import.meta.env.BASE_URL}dashboards/normal`, type: "link", active: false, selected: false, title: "Normal", roles: ['ALL'] },
-				{ id: 4, path: `${import.meta.env.BASE_URL}dashboards/hrm`, type: "link", active: false, selected: false, title: "HRM", roles: ['MD', 'DEV', 'OM'] },
+				{ id: 4, path: `${import.meta.env.BASE_URL}dashboards/hrm`, type: "link", active: false, selected: false, title: "Executive", roles: ['MD', 'DEV', 'OM'] },
 				],
 			},
 
-			{ id: 5, path: `${import.meta.env.BASE_URL}settings`, icon: SettingsSvg, title: "System setting", type: "link", active: false, roles: ['MD', 'DEV', 'ALL', 'SA'], selected: false},
+		{ id: 5, path: `${import.meta.env.BASE_URL}add_roles`, icon: SettingsSvg, title: "System setting", type: "link", active: false, roles: ['MD', 'DEV', 'ALL', 'SA'], selected: false },
+			
+		{
+		id: 70, icon: SettingsSvg, title: "System Settings", type: "sub", active: false, selected: false, roles: ['DEV', 'SA'], children: [
+
+					{ id: 71, path: `${import.meta.env.BASE_URL}add_roles`, type: "link", active: false, selected: false, title: "Add Roles", roles: ['DEV', 'SA'] },
+				{ id: 72, path: `${import.meta.env.BASE_URL}manage_roles`, type: "link", active: false, selected: false, title: "Manage Roles", roles: ['DEV','SA' ] },
+				],
+	},
+		
 		]
 	},
+	
+
+			
 	{
 		menutitle: "GENERAL", Items: [
 	

@@ -62,3 +62,16 @@ export const fetchInductionRecordDetails = async () => {
     throw new Error('Failed to fetch Social record: ' + error.message);
   }
 };
+
+
+//user roles
+
+export const fetchUserRolesData = async () => {
+    
+  try {
+    const res = await axios.get(`${apiBaseUrl}/roles/get_user_roles`);
+    return res.data.user_roles;
+  } catch (error) {
+    throw new Error('Failed to fetch  user role: ' + error.message);
+  }
+};

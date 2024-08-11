@@ -3,6 +3,12 @@
 import Calender from "../component/advancedUi/calender/calender";
 import Hrm from "../component/dashboards/hrm/hrm";
 import Normals from "../component/dashboards/normal/normal";
+//Sysytem Setting (Manage Roles)
+import AddRoles from "../component/systemsettings/settings";
+import ManageRoles from "../component/systemsettings/UserRoles";
+
+
+
 //Employer Registration
 import Registrations from "../component/employers/registrations/registrations";
 import AddClient from "../component/employers/registrations/addclients/AddClient";
@@ -182,7 +188,6 @@ import Product from "../component/pagecomponent/Ecommerce/product/product";
 import Productdetails from "../component/pagecomponent/Ecommerce/productdetails/productdetails";
 import Productlist from "../component/pagecomponent/Ecommerce/productlist/productlist";
 import Wishlist from "../component/pagecomponent/Ecommerce/wishlist/wishlist";
-import Emptypages from "../component/pagecomponent/emptypages/emptypages";
 import Invoicedetails from "../component/pagecomponent/invoice/invoicedetails/invoicedetails";
 import Invoicelist from "../component/pagecomponent/invoice/invoicelist/invoicelist";
 import Chat from "../component/pagecomponent/mail/chat/chat";
@@ -195,7 +200,7 @@ import Tasks from "../component/pagecomponent/tasks/tasks";
 import Team from "../component/pagecomponent/team/team";
 import Timeline from "../component/pagecomponent/timeline/timeline";
 import Todolist from "../component/pagecomponent/todolist/todolist";
-import Settings from "../component/systemsettings/settings";
+
 import Remixicons from "../component/icon/remixicons/remixicons";
 import Tablericons from "../component/icon/tablericons/tablericons";
 
@@ -211,10 +216,9 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}dashboards/hrm`, element: <Hrm />, title: '' },
 
 
-    // {/* System Setting content */}
-
-    { path: `${import.meta.env.BASE_URL}settings`, element: <Settings />, title: '' },
-
+    // {/* System Setting content */} ManageRoles
+    { path: `${import.meta.env.BASE_URL}add_roles`, element: <AddRoles />, title: '' },
+    { path: `${import.meta.env.BASE_URL}manage_roles`, element: <ManageRoles />, title: '' },
 
     // {/* Employer/ Client content */}
 
@@ -472,7 +476,7 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}pagecomponent/todolist`, element: <Todolist /> },
     { path: `${import.meta.env.BASE_URL}pagecomponent/tasks`, element: <Tasks /> },
     { path: `${import.meta.env.BASE_URL}pagecomponent/reviews`, element: <Reviews /> },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/emptypages`, element: <Emptypages /> },
+ 
 
     // {/* Profile content */ }
 
@@ -527,8 +531,8 @@ export const SearchData = [
 
     // {/* System Settings content */}
 
-    { path: `${import.meta.env.BASE_URL}settings`, element: <Settings />, title: 'settings' },
-
+    { path: `${import.meta.env.BASE_URL}add_roles`, element: <AddRoles />, title: 'Add Roles' },
+    { path: `${import.meta.env.BASE_URL}manage_roles`, element: <ManageRoles />, title: 'Manage Roles' },
     // {/*Employer of client Registration content  */}
     { path: `${import.meta.env.BASE_URL}employers/registrations/registrations`, element: <Registrations />, title: 'employer' },
     { path: `${import.meta.env.BASE_URL}employers/departments/departments`, element: <Departments />, title: 'department' },
@@ -605,28 +609,11 @@ export const SearchData = [
     { path: `${import.meta.env.BASE_URL}advancedUi/filemanager/filemanagerlist`, element: <Filemanagerlist />, title: 'filemanagerlist' },
     { path: `${import.meta.env.BASE_URL}advancedUi/filemanager/filemanagermain`, element: <Filemanagermain />, title: 'filemanagermain' },
 
-    // {/* Basic UI content */ }
-
-    { path: `${import.meta.env.BASE_URL}basicUi/dropdowns`, element: <Dropdowns />, title: 'dropdowns' },
-    { path: `${import.meta.env.BASE_URL}basicUi/modal`, element: <Modal />, title: 'modal' },
-    { path: `${import.meta.env.BASE_URL}basicUi/offcanvas`, element: <Offcanvas />, title: 'offcanvas' },
-    { path: `${import.meta.env.BASE_URL}basicUi/tooltip&popover`, element: <TooltipPopover />, title: 'tooltip&popover' },
 
     // {/* Table content */ }
     { path: `${import.meta.env.BASE_URL}basicUi/tables/basictable`, element: <Basictable />, title: 'basictable' },
     { path: `${import.meta.env.BASE_URL}basicUi/tables/datatable`, element: <Datatable />, title: 'datatable' },
     { path: `${import.meta.env.BASE_URL}basicUi/tables/tableEdit`, element: <TableEdit />, title: 'tableEdit' },
-
-    // {/* Maps content */ }
-
-    { path: `${import.meta.env.BASE_URL}maps/leafletmap`, element: <Leafletmap />, title: 'leafletmap' },
-    { path: `${import.meta.env.BASE_URL}maps/vectormap`, element: <Simplemap />, title: 'vectormap' },
-
-    // {/* Charts content */ }
-
-    { path: `${import.meta.env.BASE_URL}charts/apexchart`, element: <Apexchart />, title: 'apexchart' },
-    { path: `${import.meta.env.BASE_URL}charts/chartjs`, element: <Chartjs />, title: 'chartjs' },
-    { path: `${import.meta.env.BASE_URL}charts/echart`, element: <Echart />, title: 'echart' },
 
     // {/* Pages content */ }
 
@@ -637,7 +624,7 @@ export const SearchData = [
     { path: `${import.meta.env.BASE_URL}pagecomponent/todolist`, element: <Todolist />, title: 'todolist' },
     { path: `${import.meta.env.BASE_URL}pagecomponent/tasks`, element: <Tasks />, title: 'tasks' },
     { path: `${import.meta.env.BASE_URL}pagecomponent/reviews`, element: <Reviews />, title: 'reviews' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/emptypages`, element: <Emptypages />, title: 'emptypages' },
+    
 
     // {/* Profile content */ }
 
@@ -648,11 +635,7 @@ export const SearchData = [
     { path: `${import.meta.env.BASE_URL}pagecomponent/invoice/invoicedetails`, element: <Invoicedetails />, title: 'invoicedetails' },
     { path: `${import.meta.env.BASE_URL}pagecomponent/invoice/invoicelist`, element: <Invoicelist />, title: 'invoicelist' },
 
-    // {/* Blog content */ }
-
-    { path: `${import.meta.env.BASE_URL}pagecomponent/blog/blogdetails`, element: <Blogdetails />, title: 'blogdetails' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/blog/blogedit`, element: <Blogedit />, title: 'blogedit' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/blog/blogmain`, element: <Blogmain />, title: 'blogmain' },
+ 
 
     // {/* Mail content */ }
 
@@ -660,22 +643,9 @@ export const SearchData = [
     { path: `${import.meta.env.BASE_URL}pagecomponent/mail/mailsettings`, element: <Mailsettings />, title: 'mailsettings' },
     { path: `${import.meta.env.BASE_URL}pagecomponent/mail/mainMail`, element: <MainMail />, title: 'mainMail' },
 
-    // {/* Ecommerce-content content */ }
+  
 
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/addproduct`, element: <Addproduct />, title: 'addproduct' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/cart`, element: <Cart />, title: 'cart' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/checkout`, element: <Checkout />, title: 'checkout' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/editproduct`, element: <Editproduct />, title: 'editproduct' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orderdetails`, element: <Orderdetails />, title: 'orderdetails' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/orders`, element: <Orders />, title: 'orders' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/product`, element: <Product />, title: 'product' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productdetails`, element: <Productdetails />, title: 'productdetails' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/productlist`, element: <Productlist />, title: 'productlist' },
-    { path: `${import.meta.env.BASE_URL}pagecomponent/Ecommerce/wishlist`, element: <Wishlist />, title: 'wishlist' },
+   
 
-    // {/* Icons content */ }
-
-    { path: `${import.meta.env.BASE_URL}icon/remixicons`, element: <Remixicons />, title: 'remixicons' },
-    { path: `${import.meta.env.BASE_URL}icon/tablericons`, element: <Tablericons />, title: 'tablericons' },
-
+  
 ]

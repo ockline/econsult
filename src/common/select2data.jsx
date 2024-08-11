@@ -1085,9 +1085,10 @@ const fetchUsers = async () => {
     return [];
   }
 }
-const usermchongo = await fetchUsers();
-console.log('welimba');
-console.log(usermchongo);
+
+
+
+
 
 //**************************************************** Practical Test */
 export const PracticalTest = [
