@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import { ThemeChanger } from "../../redux/Action";
 import '../../assets/css/RolesCheckboxGrid.css'; 
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const UserRoles = ({ local_varaiable, ThemeChanger }) => {
     useEffect(() => {
@@ -74,7 +75,7 @@ const UserRoles = ({ local_varaiable, ThemeChanger }) => {
     //return all user assigned roles 
     
     const [usersRoles, setUserRoles] = useState([]);
-    console.log('waleteee', usersRoles);
+  
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -89,6 +90,20 @@ const UserRoles = ({ local_varaiable, ThemeChanger }) => {
     }, []);
     
 
+    
+    function Style2() {
+  return Swal.fire({
+    title: 'Are you sure?',
+    text: "You want to remove this role(s)?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#5e76a6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!',
+  });
+}
+
+    
     //  let navigate = useNavigate();
     const [formData, setFormData] = useState({
         user_id: '',
@@ -119,34 +134,37 @@ const UserRoles = ({ local_varaiable, ThemeChanger }) => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        // Handle form submission logic here
-        e.preventDefault();
-        // console.log('Form submitted:', formData);
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Prompt the confirmation dialog
+    const result = await Style2();
+
+    if (result.isConfirmed) {
+        // If the user confirmed, proceed with the deletion
         const DataToSend = {
             user_id: formData?.user_id,
             role_id: formData.role_id,
-
-
         };
-        setIsLoading(true)
+
+        console.log('Form submitted:', DataToSend);
+        setIsLoading(true);
+
         try {
-
-            const resp = await axios.post(`${apiBaseUrl}/roles/add_user_roles`, DataToSend, {
+            const resp = await axios.delete(`${apiBaseUrl}/roles/remove_user_roles`, {
                 headers: {
-                    "Content-Type": "multipart/form-data"
-                }
+                    "Content-Type": "application/json",
+                },
+                data: DataToSend,
             });
-            if (resp.data.validator_err) {
-                // Handle validation errors
-                const validationErrors = resp.data.validator_err;
 
-                // Update component state with validation errors
+            if (resp.data.validator_err) {
+                const validationErrors = resp.data.validator_err;
                 setFormData((prevData) => ({
                     ...prevData,
                     error_list: validationErrors,
                 }));
-                // Format validation errors for display in SweetAlert
+
                 const formattedErrors = Object.keys(validationErrors).map((field) => (
                     `${validationErrors[field].join(', ')}`
                 )).join('\n');
@@ -163,28 +181,30 @@ const UserRoles = ({ local_varaiable, ThemeChanger }) => {
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
-                })
-                setIsLoading(false)
-                // Additional logic or state updates after successful update
+                });
+                setIsLoading(false);
             } else if (resp.data.status === 200) {
                 swal({
                     title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
-                    closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
+                    closeOnClickOutside: false,
+                }).then(() => {
+                    // fetchData();
+                    // Handle any post-success actions here
                 });
-                // .then(() => {
-                // navigate('/employees/personal/employee_list/'); 
-                // });
             }
-            setIsLoading(false)
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Unexpected error:", error.message);
-        };
-        setIsLoading(false)
-    };
+        } finally {
+            setIsLoading(false);
+        }
+    } else {
+        // If the user canceled, do nothing
+        setIsLoading(false);
+    }
+};
 
     const filteredData = usersRoles.filter((roles) =>
         roles.user_name.toLowerCase().includes(searchQuery.toLowerCase())
