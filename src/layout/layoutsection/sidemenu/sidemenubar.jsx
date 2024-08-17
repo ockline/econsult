@@ -2,10 +2,10 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Link } from 'react-router-dom'
 import ALLImages from "../../../common/imagesData";
-import MenuItems from "../../../common/sidemenuData";
 import { connect } from "react-redux"
 import { ThemeChanger } from "../../../redux/Action"
 import store from "../../../redux/store";
+import  MenuItems from "../../../common/sidemenudata";
 import { Closedmenu, Defaultmenu, DetachedFn, DoubletFn, iconOverayFn, iconText } from "../../../common/switcherdata";
 let history = [];
 
@@ -54,7 +54,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 			menuitems.filter(mainlevel => {
 				if (mainlevel.Items) {
 					mainlevel.Items.filter((items) => {
-						if(ulRef.current.href != location.href || localStorage.Syntoverticalstyles != 'doublemenu'){
+						if(ulRef.current && ulRef.current.href != location.href || localStorage.Syntoverticalstyles != 'doublemenu'){
 							items.active = false;
 						}
 						items.selected = false;

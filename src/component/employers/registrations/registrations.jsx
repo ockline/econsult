@@ -144,7 +144,6 @@ function Style1() {
 		  })
 	 }
 
-	
     return (
         <div>
         			

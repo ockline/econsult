@@ -36,7 +36,7 @@ const Filedetails = () => {
 				<div className="col-span-12 xl:col-span-4">
 					<div className="box">
 						<div className="box-header">
-							<h5 className="box-title">File Details</h5>
+							<h5 className="box-title">File Detailsdddd</h5>
 						</div>
 						<div className="box-body p-0">
 							<div className="rounded-lg overflow-auto">

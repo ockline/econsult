@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
-import {Link}  from "react-router-dom";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux"
 import axios from "axios";
+import {ThemeChanger} from "../../../redux/Action"
+import store from "../../../redux/store";
 
-const Newjob = () => {
+const Newjob = ({local_varaiable, ThemeChanger}) => {
 	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
 	const [vacancies, setVacancies] = useState([]);
+	console.log('wazunguuuu', local_varaiable.roles)
 	
 	useEffect(() => {
 		const vacanciesData = async () => {
@@ -88,11 +92,21 @@ const Newjob = () => {
 												<td>{vacancy.vacancy_type}</td>
 												<td>{formatDate(vacancy.position_vacant)}</td>
 												<td>{formatDate(vacancy.deadline_date)}</td>
-												<td className="text-end font-medium">
+												<td className="justify-center font-medium">
+<Link className="text-white hover:text-info" to={`${import.meta.env.BASE_URL}hiring/vacancies/workflow/` + vacancy.id}>
+													<button
+													variant=""
+													className="ti-btn btn-sm ti-btn-primary me-1"
+													type="button"
+													
+													>
+																Initiate
+													</button>
+													</Link>&nbsp;
 													<Link className="text-white hover:text-info" to={`${import.meta.env.BASE_URL}hiring/vacancies/show_job/` + vacancy.id}>
 													<button
 													variant=""
-													className="ti-btn ti-btn-success me-1"
+													className="ti-btn ti-btn-success me-1 btn-sm"
 													type="button"
 													><i className="ti ti-eye"></i>
 													View
@@ -107,17 +121,8 @@ const Newjob = () => {
 													><i className="ti ti-edit"></i>
 																Edit
 													</button>
-													</Link>&nbsp;
-													{/* <Link className="text-danger hover:text-primary" to="#">
-													<button
-													variant=""
-													className="ti-btn ti-btn-danger me-1"
-													type="button"
-													onClick={(e) => handleDeleteClick(e, vacancy.id)}
-													>
-													Delete
-													</button>
-													</Link> */}
+													</Link>
+													
 												</td>
 												</tr>		
 														)
@@ -149,4 +154,9 @@ const Newjob = () => {
 		</div>
 	);
 };
-export default Newjob;
+
+
+const mapStateToProps = (state) => ({
+    local_varaiable: state
+  })
+export default connect(mapStateToProps,{ThemeChanger})(Newjob);

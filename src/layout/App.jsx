@@ -1,18 +1,24 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Outlet } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom'
 import { Helmet } from "react-helmet-async";
 import Backtotop from "./layoutsection/backtotop/backtotop";
 import Footer from "./layoutsection/footer/footer";
 import Header from "./layoutsection/header/header";
 import Sidebar from "./layoutsection/sidemenu/sidemenubar";
 import Switcher from "./layoutsection/switcher/switcher";
-import { Provider } from "react-redux";
-import { useState } from "react";
 import * as switcherdata from "../common/switcherdata";
-import {ThemeChanger} from "../redux/Action"
+import { UserChanger, RolesChanger } from "../redux/Action.jsx"
+import axios from 'axios';
+import { connect } from "react-redux"
+
  
-const App = () => {
+const App = ({local_varaiable, UserChanger, RolesChanger}) => {
+	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
 	let [MyclassName , setMyClass] = useState("")
+	const navigate = useNavigate()
+
+	const [initializing, setInitializing] = useState(true);
 
 	const Bodyclickk = () => {
 		if (localStorage.getItem("Syntoverticalstyles") == "icontext") {
@@ -21,9 +27,46 @@ const App = () => {
 	}
 	useEffect(() => {
 
-		import("preline");
+		// import("preline");
+		console.log('Initializing')
+		initialize()
 
 	}, []);
+
+	 const csrfToken = async () => {
+        // Implement your logic to fetch CSRF token
+        // For example, if you are using Laravel, you might retrieve it from a meta tag in the HTML
+        const metaTag = document.querySelector('meta[name="csrf-token"]');
+        if (metaTag) {
+            return metaTag.getAttribute('content');
+        }
+        // Replace this logic with your actual CSRF token retrieval mechanism
+    };
+
+	async function initialize() {
+		// perform request to obtain user details and set to the redux state
+		setInitializing(true);
+        try {
+            const token = await sessionStorage.getItem('token');
+            console.log('CSRF Token:', token);
+            // Use the retrieved CSRF token in your request
+            const resp = await axios.get(`${apiBaseUrl}/get_user_token`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+			// set user and roles to redux
+			
+			UserChanger(resp.data.user);
+			RolesChanger(resp.data.user_roles.map(r => r.alias));
+			setInitializing(false)
+		} catch (e) {
+			// navigate to login page
+			console.log(e)
+			navigate('')
+		}
+	}
 	return (
 		<Fragment>
 				<Helmet
@@ -39,6 +82,12 @@ const App = () => {
 					}}
 				/>
 				<Switcher />
+				{initializing ?<div className="text-center mt-[360px]">
+    <div className="ti-spinner text-primary w-12 h-12" role="status" aria-label="loading">
+        <span className="sr-only">Loading...</span>
+    </div>
+</div>
+ : 
 				<div className="page">
 					<Sidebar />
 					<Header />
@@ -48,7 +97,7 @@ const App = () => {
 						</div>
 					</div>
 					<Footer />
-				</div>
+				</div> }
 				<Backtotop />
 				<div id="responsive-overlay"></div>
 			{/* </Provider> */}
@@ -56,4 +105,9 @@ const App = () => {
 	);
 };
 
-export default App;
+
+const mapStateToProps = (state) => ({
+    local_varaiable: state
+  })
+export default connect(mapStateToProps,{UserChanger, RolesChanger})(App);
+

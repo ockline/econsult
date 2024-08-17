@@ -25,6 +25,7 @@ import Jobs from "../component/hiring/vacancies/newjob";
 import AddJob from "../component/hiring/vacancies/addjobs/addjob";
 import EditJob from "../component/hiring/vacancies/editjobs/editjob";
 import ShowJob from "../component/hiring/vacancies/showjob";
+import JobWorkflow from "../component/hiring/vacancies/workflows/workflow"
 import DownloadJob from "../component/hiring/templatesamples/vacancies/jobtemplate";
 
 //Recruitment  (HR and Technical Interview)
@@ -211,13 +212,13 @@ export const RouteData = [
 
     // {/* Dashboard content */}
 
-    { path: `${import.meta.env.BASE_URL}dashboards/normal`, element: <Normals />, title: '' },
+    { path: `${import.meta.env.BASE_URL}dashboards/normal`, element: <Normals />, title: '', roles : ['ALL'] },
     { path: `${import.meta.env.BASE_URL}dashboards/ecommerce`, element: <Ecommerce />, title: '' },
     { path: `${import.meta.env.BASE_URL}dashboards/hrm`, element: <Hrm />, title: '' },
 
 
     // {/* System Setting content */} ManageRoles
-    { path: `${import.meta.env.BASE_URL}add_roles`, element: <AddRoles />, title: '' },
+    { path: `${import.meta.env.BASE_URL}add_roles`, element: <AddRoles />, title: '', roles: ['DEV', 'SA'] },
     { path: `${import.meta.env.BASE_URL}manage_roles`, element: <ManageRoles />, title: '' },
 
     // {/* Employer/ Client content */}
@@ -238,6 +239,7 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/add_job`, element: <AddJob /> },
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/edit_job/:id`, element: <EditJob /> },
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/show_job/:id`, element: <ShowJob /> },
+    { path: `${import.meta.env.BASE_URL}hiring/vacancies/workflow/:id`, roles: [ 'DEV', 'VI', 'VA' ], element: <JobWorkflow /> },
     { path: `${import.meta.env.BASE_URL}hiring/vacancies/download_job/:id`, element: <DownloadJob /> },
     //   HR interview
     { path: `${import.meta.env.BASE_URL}hiring/recruitments/hr_interviewed`, element: <HrInterview /> },

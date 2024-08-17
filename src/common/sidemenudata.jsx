@@ -32,7 +32,6 @@ export const MenuItems = [
 				],
 			},
 
-		{ id: 5, path: `${import.meta.env.BASE_URL}add_roles`, icon: SettingsSvg, title: "System setting", type: "link", active: false, roles: ['MD', 'DEV', 'ALL', 'SA'], selected: false },
 			
 		{
 		id: 70, icon: SettingsSvg, title: "System Settings", type: "sub", active: false, selected: false, roles: ['DEV', 'SA'], children: [
@@ -41,6 +40,8 @@ export const MenuItems = [
 				{ id: 72, path: `${import.meta.env.BASE_URL}manage_roles`, type: "link", active: false, selected: false, title: "Manage Roles", roles: ['DEV','SA' ] },
 				],
 	},
+	// { id: 7, path: `${import.meta.env.BASE_URL}add_role`, icon: SettingsSvg, title: "System setting", type: "link", active: false, roles: ['MD', 'DEV', 'ALL', 'SA'], selected: false },
+
 		
 		]
 	},

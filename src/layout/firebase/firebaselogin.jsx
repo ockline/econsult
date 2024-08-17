@@ -48,53 +48,80 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
     };
   
    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        //   console.log('Form submitted!');
-        const body = {
-            email: state.email,
-            password: state.password,
-      };
-      setIsLoading(true);
-        try {
-            const token = await csrfToken();
-            console.log('CSRF Token:', token);
-            // Use the retrieved CSRF token in your request
-            const resp = await axios.post(`${apiBaseUrl}/login`, body, {
-                headers: {
-                    'X-CSRF-Token': token,
-                },
-            });
-            if (resp.data.status === 422) {
-                swal({
-                    title: 'Operation Failed',
-                    text: resp.data.message,
-                    icon: 'error',
-                    button: 'OK',
-                });
-              setIsLoading(false);
-            } else {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //   console.log('Form submitted!');
+    const body = {
+      email: state.email,
+      password: state.password,
+    };
+    setIsLoading(true);
+    try {
+      const token = await csrfToken();
+      console.log('CSRF Token:', token);
+      // Use the retrieved CSRF token in your request
+      const resp = await axios.post(`${apiBaseUrl}/login`, body, {
+        headers: {
+          'X-CSRF-Token': token,
+        },
+      });
+      if (resp.data.status === 422) {
+        swal({
+          title: 'Operation Failed',
+          text: resp.data.message,
+          icon: 'error',
+          button: 'OK',
+        });
+        setIsLoading(false);
+      } else {
                                   
-                    const data = resp.data.token;
-                    if (data) {
-                      console.log('humu ndani', resp.data);
-                      setUser(resp.data.user);
-                      // set user and roles to redux
-                      UserChanger(resp.data.user);
-                      RolesChanger(resp.data.user_roles.map(r => r.alias));
-                      setToken(data);
+        const data = resp.data.token;
+        if (data) {
+          console.log('humu ndani', resp.data);
+          setUser(resp.data.user);
+          // set user and roles to redux
+          UserChanger(resp.data.user);
+          RolesChanger(resp.data.user_roles.map(r => r.alias));
+          sessionStorage.setItem('token', data)
+          setToken(data);
                      
-                  }
-                  setIsLoading(false);
-                }            
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                setError(error.response.data.message);
-          }
-          setIsLoading(false);
         }
-      };
-  
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if (error.response.status === 401) {
+          setError(error.response.data.message);
+        } else {
+          swal({
+            title: 'Request Failed',
+            text: `Error ${error.response.status}: ${error.response.data.message}`,
+            icon: 'error',
+            button: 'OK',
+          });
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        swal({
+          title: 'Network Error',
+          text: 'Failed to connect to the server. Please check your internet connection and try again.',
+          icon: 'error',
+          button: 'OK',
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        swal({
+          title: 'Unexpected Error',
+          text: error.message,
+          icon: 'error',
+          button: 'OK',
+        });
+      }
+      setIsLoading(false);
+    }
+  }
      
   return (
 
