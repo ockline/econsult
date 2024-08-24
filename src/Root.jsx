@@ -78,8 +78,6 @@ function Root({ local_varaiable }) {
                     <Route path={`${import.meta.env.BASE_URL}pagecomponent/profile/home`} element={<Home />} />
                 </Route>
 
-                
-
                 {/* Authentication */}
                 
                 <Route path={`${import.meta.env.BASE_URL}`} element={<Authenticationlayout />}>
