@@ -11,8 +11,8 @@ export default defineConfig({
     // 'process.env.REACT_APP_API_BASE_URL': JSON.stringify('http://127.0.0.1:8000/api'),
     // 'import.meta.env.VITE_REACT_APP_DOC_BASE_URL': JSON.stringify('http://127.0.0.1:8000'),
     
-     'process.env.REACT_APP_API_BASE_URL': JSON.stringify('socratedevtest.esocrate.co.tz/api'),
- 'import.meta.env.VITE_REACT_APP_DOC_BASE_URL': JSON.stringify('socratedevtest.esocrate.co.tz'),
+     'process.env.REACT_APP_API_BASE_URL': JSON.stringify('https://socratedevtest.esocrate.co.tz/api'),
+ 'import.meta.env.VITE_REACT_APP_DOC_BASE_URL': JSON.stringify('https://socratedevtest.esocrate.co.tz'),
   },
   build: {
     chunkSizeWarningLimit: 5000000,
