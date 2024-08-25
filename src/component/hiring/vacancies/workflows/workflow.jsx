@@ -72,7 +72,80 @@ const Workflow = ({local_varaiable,ThemeChanger}) => {
   setDocumentUrl(absoluteUrl);
      
     };
-    //************************************************* */
+	//************************************************* */
+	 const [formInitiateData, setFormInitiateData] = useState({
+            
+            initiate_comment: '',
+            error_list: [],
+        });
+
+        const handleInitiateInputChange = (stepName, value) => {
+            setFormInitiateData((prevData) => ({
+                ...prevData,
+                [stepName]: value,
+                 error_list: { ...prevData.error_list, [stepName] : null },
+            }));
+        };
+	const handleInitiateSubmit = async (e) => {
+             e.preventDefault();
+    
+            const DataToSend = {
+            employer_id: formData?.employer_id,
+            initiate_comment: formInitiateData.initiate_comment,
+                        
+		};
+		console.log('wangumbee', DataToSend);
+		
+            try {
+                const resp = await axios.post(`${apiBaseUrl}/workflows/vacancies/initiate_workflow`, DataToSend, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+                 if (resp.data.validator_err) {
+                // Handle validation errors
+                const validationErrors = resp.data.validator_err;
+
+                // Update component state with validation errors
+                setFormInitiateData((prevData) => ({
+                    ...prevData,
+                    error_list: validationErrors,
+                }));
+                   
+         // Format validation errors for display in SweetAlert
+        const formattedErrors = Object.keys(validationErrors).map((field) => (
+            `${field}: ${validationErrors[field].join(', ')}`
+        )).join('\n');
+
+        swal({
+            title: 'Sorry! Operation failed',
+            text: formattedErrors,
+            icon: 'error',
+            button: 'OK',
+        });
+            }else if (resp.data.status === 500) {
+            swal({
+              title: 'Failed',
+              text: resp.data.message,
+              icon: 'warning',
+              button: 'ok',
+            })
+            // Additional logic or state updates after successful update
+          } else if(resp.data.status === 200) {
+                     swal({
+                         title: 'Success',
+                         text: resp.data.message,
+                         icon: 'success',
+                         button: 'ok',
+                     });
+            }
+            }
+           catch (error) {
+            console.error("Unexpected error:", error.message);
+        };
+    };
+	
+	
            
     return (
     <div>
@@ -197,19 +270,24 @@ const Workflow = ({local_varaiable,ThemeChanger}) => {
 						</div>
 					</div>
 				</div>
-        <form className="space-y-3">
+        <form className="space-y-3" onSubmit={handleInitiateSubmit}>
             <label htmlFor="input-label" className="ti-form-label">Comment</label>
             <textarea
                 type="text"
-                id="input-label"
-                className="ti-form-input"
+										id="input-label"
+										name="initiate_comment"
+										className="ti-form-input"
+										
+										value={formInitiateData.initiate_comment}
+                                                onChange={(e) => handleInitiateInputChange('initiate_comment', e.target.value)}
                 placeholder="Write Comment"
+
             />
             
             <div className="grid grid-cols-12 gap-x-6">
                 <div className="col-span-6"></div>
                 <div className="col-span-6">
-                    <button type="submit" className="ti-btn ti-btn-success">Initiate</button>
+                    <button type="submit" onClick={handleInitiateSubmit} className="ti-btn ti-btn-success">Initiate</button>
                     <button type="submit" className="ti-btn ti-btn-danger">Cancel</button>
                 </div>
             </div>
@@ -222,7 +300,7 @@ const Workflow = ({local_varaiable,ThemeChanger}) => {
                                          <div className="col-span-12 lg:col-span-6">
 					<div className="box">
 						<div className="box-header">
-							<h5 className="box-title"> Workflow History</h5>
+							<h5 className="box-title"> Workflow Historywww</h5>
 						</div>
 						<div className="box-body">
 							<div className="hs-accordion-group">
@@ -322,7 +400,9 @@ const Workflow = ({local_varaiable,ThemeChanger}) => {
                                 </form>
                         </div>
 
-                        )}
+						)}
+						
+						
                         {roles.includes('VA') && (
                             <div className="box-body">
                                 {/* <div>

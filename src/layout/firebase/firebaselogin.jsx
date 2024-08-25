@@ -105,7 +105,7 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
       } else if (error.request) {
         // The request was made but no response was received
         swal({
-          title: 'Network Error',
+          title: 'Error',
           text: 'Failed to connect to the server. Please check your internet connection and try again.',
           icon: 'error',
           button: 'OK',
