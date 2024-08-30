@@ -482,7 +482,7 @@ export const RouteData = [
 
     // {/* Profile content */ }
 
-    { path: `${import.meta.env.BASE_URL}pagecomponent/profile/profilesetting`, element: <Profilesetting /> },
+    { path: `${import.meta.env.BASE_URL}user/profile_setting`, element: <Profilesetting /> },
 
     // {/* Invoice content */ }
 
@@ -630,7 +630,7 @@ export const SearchData = [
 
     // {/* Profile content */ }
 
-    { path: `${import.meta.env.BASE_URL}pagecomponent/profile/profilesetting`, element: <Profilesetting />, title: 'profilesetting' },
+    { path: `${import.meta.env.BASE_URL}user/profile_setting`, element: <Profilesetting />, title: 'profilesetting' },
 
     // {/* Invoice content */ }
 

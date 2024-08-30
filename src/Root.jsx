@@ -88,7 +88,7 @@ function Root({ local_varaiable }) {
                     <Route path={`${import.meta.env.BASE_URL}Authentication/errorpage/error500`} element={<Error500 />} />
                     <Route path={`${import.meta.env.BASE_URL}Authentication/forgetpassword/cover1`} element={<ForgetPasswordCover1 />} />
                     <Route path={`${import.meta.env.BASE_URL}Authentication/lockscreen/cover1`} element={<LockScreenCover1 />} />
-                    <Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword/cover1`} element={<ResetPasswordCover1 />} />
+                    <Route path={`${import.meta.env.BASE_URL}Authentication/resetpassword`} element={<ResetPasswordCover1 />} />
                     <Route path={`${import.meta.env.BASE_URL}Authentication/signin/cover1`} element={<SignInCover1 />} />
                     <Route path={`${import.meta.env.BASE_URL}Authentication/signup/basic`} element={<SignUpBasic />} />
                     <Route path={`${import.meta.env.BASE_URL}Authentication/signup/cover1`} element={<SignUpCover1 />} />

@@ -8,8 +8,10 @@ import { TagsInput } from "react-tag-input-component";
 import { LanguageData, TimeZoneData } from "../../../../common/select2data";
 import ProfileService from "../../../../common/profileservices";
 import { Helmet } from "react-helmet";
+import store from "../../../../redux/store";
+import { ThemeChanger } from "../../../../redux/Action"
 
-const Profilesetting = () => {
+const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
 	const [startDate, setStartDate] = useState(new Date());
 	const [selected, setSelected] = useState(['Laravel', 'Angular', 'Html', 'VueJs', 'React' ]);  // react-tag-input-component
 
@@ -59,6 +61,11 @@ const Profilesetting = () => {
 				}))
 		
 			}, [location])
+	
+	// <p className="ti-dropdown-header-title !text-white">{local_varaiable.user.firstname} {local_varaiable.user.middlename} {local_varaiable.user.lastname}</p>
+	
+	
+	console.log('datatata',local_varaiable)
 	return (
 		<div>
 			<Helmet>
@@ -137,7 +144,7 @@ const Profilesetting = () => {
 											<div className= "grid lg:grid-cols-2 gap-6">
 												<div className= "space-y-2">
 													<label className= "ti-form-label mb-0">First Name</label>
-													<input type="text" className= "my-auto ti-form-input" placeholder="Firstname"/>
+													<input type="text" className= "my-auto ti-form-input" placeholder="Firstname" name="firstname" />
 												</div>
 												<div className= "space-y-2">
 													<label className= "ti-form-label mb-0">Last Name</label>

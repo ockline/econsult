@@ -583,15 +583,20 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                     <i className="ti ti-inbox text-lg"></i>
                                                     Inbox
                                                 </Link>  */}
-                                                <Link to={`${import.meta.env.BASE_URL}pagecomponent/profile/profilesetting/`} className="ti-dropdown-item">
+                                                <Link to={`${import.meta.env.BASE_URL}user/profile_setting/`} className="ti-dropdown-item">
                                                     <i className="ti ti-adjustments-horizontal text-lg"></i>
                                                     Settings
                                                 </Link>
-                                              
+                                              <Link to={`${import.meta.env.BASE_URL}Authentication/resetpassword`} className="ti-dropdown-item">
+                                                    <i className="ti ti-adjustments-horizontal text-lg"></i>
+                                                    Reset Password
+                                                </Link>
                                                 <Link to={`${import.meta.env.BASE_URL}login`} className="ti-dropdown-item">
                                                     <i className="ti ti-logout  text-lg"></i>
                                                     Log Out
                                                 </Link>
+                                                
+                                                 
                                             </div>
                                         </div>
                                     </div>

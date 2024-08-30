@@ -230,7 +230,7 @@ export const MenuItems = [
 					{ id: 145, type: "sub", active: false, selected: false, title: "Reset Password", children: [
 
 							// { id: 146, path: `${import.meta.env.BASE_URL}Authentication/resetpassword/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 147, path: `${import.meta.env.BASE_URL}Authentication/resetpassword/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
+							{ id: 147, path: `${import.meta.env.BASE_URL}Authentication/resetpassword`, type: "link", active: false, selected: false, title: "Cover-1" },
 							// { id: 148, path: `${import.meta.env.BASE_URL}Authentication/resetpassword/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
 						]
 					},
