@@ -58,7 +58,7 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
     setIsLoading(true);
     try {
       const token = await csrfToken();
-      console.log('CSRF Token:', token);
+      console.log('waletee Token:', token);
       // Use the retrieved CSRF token in your request
       const resp = await axios.post(`${apiBaseUrl}/login`, body, {
         headers: {
