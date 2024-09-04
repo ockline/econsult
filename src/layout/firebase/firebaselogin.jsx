@@ -65,6 +65,7 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
           'X-CSRF-Token': token,
         },
       });
+      console.log('walete wazunguuuu',resp.data);
       if (resp.data.status === 422) {
         swal({
           title: 'Operation Failed',
@@ -77,7 +78,7 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
                                   
         const data = resp.data.token;
         if (data) {
-          console.log('humu ndani', resp.data);
+          // console.log('humu ndani', resp.data);
           setUser(resp.data.user);
           // set user and roles to redux
           UserChanger(resp.data.user);
