@@ -79,7 +79,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
         const theme = store.getState()
         let sidemenuType = theme.dataNavLayout;
         if (window.innerWidth >= 992) {
-            console.log("Workinh",sidemenuType,theme.dataVerticalStyle); 
+            // console.log("Workinh",sidemenuType,theme.dataVerticalStyle); 
             if (sidemenuType === 'vertical') {
                 let verticalStyle = theme.dataVerticalStyle;
                 switch (verticalStyle) {

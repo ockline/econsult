@@ -237,63 +237,63 @@ const UploadDocument = () => {
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">ID Copy  (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Passport, Voters, Driving license, National Id</span>
-                                <input type="file" name="id_copy" id="small-file-input"
+                                <input type="file" accept=".pdf" name="id_copy" id="small-file-input"
                                     onChange={(e) => handleFileInputChange('id_copy', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.id_copy}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Passport size Photo (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">White Background, Blue background</span>
-                                <input type="file" name="passport_doc" id="small-file-input-1"
+                                <input type="file" accept=".pdf" name="passport_doc" id="small-file-input-1"
                                     onChange={(e) => handleFileInputChange('passport_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.passport_doc}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Combined Accademic (max 3MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Combined Copies of accademic Proffessional certificate & transcipt </span>
-                                <input type="file" name="combined_certificate" id="small-file-input-2"
+                                <input type="file" accept=".pdf" name="combined_certificate" id="small-file-input-2"
                                     onChange={(e) => handleFileInputChange('combined_certificate', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.combined_certificate}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Curriculum Vitae (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Detailed</span>
-                                <input type="file" name="cv_doc" id="small-file-input-3"
+                                <input type="file" accept=".pdf" name="cv_doc" id="small-file-input-3"
                                     onChange={(e) => handleFileInputChange('cv_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.cv_doc}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Copy of NSSf  (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Copy of social security membership card / number </span>
-                                <input type="file" name="nssf_membership" id="small-file-input-4"
+                                <input type="file" accept=".pdf" name="nssf_membership" id="small-file-input-4"
                                     onChange={(e) => handleFileInputChange('nssf_membership', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.nssf_membership}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Introduction Letter  (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Introduction letter from the local Municipal</span>
-                                <input type="file" name="induction_doc" id="small-file-input-6"
+                                <input type="file" accept=".pdf" name="induction_doc" id="small-file-input-6"
                                     onChange={(e) => handleFileInputChange('induction_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.induction_doc}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Combined Guarantors Letter (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">A letter from a reputed person quarantying you in case of any financial liability </span>
-                                <input type="file" name="guarantors" id="small-file-input-7"
+                                <input type="file" accept=".pdf" name="guarantors" id="small-file-input-7"
                                     onChange={(e) => handleFileInputChange('guarantors', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.guarantors}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Reference letter  (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">From a recognized person with a recognized address </span>
-                                <input type="file" name="referenc_doc" id="small-file-input-8"
+                                <input type="file" accept=".pdf" name="referenc_doc" id="small-file-input-8"
                                     onChange={(e) => handleFileInputChange('referenc_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.referenc_doc}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Certificate of Cervice (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">From Previous formData </span>
-                                <input type="file" name="certificate_service" id="small-file-input-9"
+                                <input type="file" accept=".pdf" name="certificate_service" id="small-file-input-9"
                                     onChange={(e) => handleFileInputChange('certificate_service', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.certificate_service}</span>
                             </div>
@@ -301,21 +301,21 @@ const UploadDocument = () => {
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Bank Details / Bank Verification Form  (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Preferably CRDB </span>
-                                <input type="file" name="bank_detail_doc" id="small-file-input-10"
+                                <input type="file" accept=".pdf" name="bank_detail_doc" id="small-file-input-10"
                                     onChange={(e) => handleFileInputChange('bank_detail_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.bank_detail_doc}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Criminal Bureau verification (max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Police clearence form</span>
-                                <input type="file" name="police_doc" id="small-file-input-11"
+                                <input type="file" accept=".pdf" name="police_doc" id="small-file-input-11"
                                     onChange={(e) => handleFileInputChange('police_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.police_doc}</span>
                             </div>
                             <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Occupational check-up (OSHA)(max 2MB)</label>
                                 <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">	Pre-employment occupational Medical check-up form (OSHA)</span>
-                                <input type="file" name="osha_checkup" id="small-file-input-12"
+                                <input type="file" accept=".pdf" name="osha_checkup" id="small-file-input-12"
                                     onChange={(e) => handleFileInputChange('osha_checkup', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.osha_checkup}</span>
                             </div>

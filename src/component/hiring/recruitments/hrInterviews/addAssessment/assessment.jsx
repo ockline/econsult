@@ -476,7 +476,7 @@ const Assessment = () => {
                                 </div>
                                   <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Military Attachment</label>
-                                            <input type="file" name="military_doc" id="small-file-input" 
+                                            <input type="file" accept=".pdf" name="military_doc" id="small-file-input" 
                                             onChange={(e) => handleFileInputChange('military_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           
                                         </div>

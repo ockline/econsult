@@ -116,7 +116,32 @@ import EditTermConditions from "../component/contractManagement/termsCondition/e
 import ShowTermConditions from "../component/contractManagement/termsCondition/showTerm/showterm";
 import DownloadTermConditions from "../component/contractManagement/templateContracts/terms/termcondition";
 
-
+//Leave Management
+//Annual
+import AnnualLeave from "../component/leaves/AnnualLeave/index";
+import AddAnnualLeave from "../component/leaves/AnnualLeave/AddAnnual";
+// import EditAnnualLeave from "../component/leaves/AnnualLeave/EditAnnual";
+// import ShowLeave from "../component/leaves/AnnualLeave/ShowLeave";
+// //Sick
+import SickLeave from "../component/leaves/SickLeave/index";
+// import AddLeave from "../component/leaves/SickLeave/AddLeave";
+// import EditSickLeave from "../component/leaves/SickLeave/EditLeave";
+// import ShowSickLeave from "../component/leaves/SickLeave/ShowLeave";
+// //Maternity
+import MaternityLeave from "../component/leaves/Maternity/index";
+// import AddMaternity from "../component/leaves/Maternity/AddMaternity";
+// import EditMaternity from "../component/leaves/Maternity/EditMaternity";
+// import ShowMaternityLeave from "../component/leaves/Maternity/ShowMaternity";
+// //Partenity
+import PartenityLeave from "../component/leaves/Partenity/index";
+// import AddPartenity from "../component/leaves/Partenity/AddPartenity";
+// import EditPartenity from "../component/leaves/Partenity/EditPartenity";
+// import ShowPartenityLeave from "../component/leaves/Partenity/ShowPartenity";
+// //Compansionate
+import CompansionatLeave from "../component/leaves/Compasionate/index";
+// import AddCompasionate from "../component/leaves/Compasionate/AddCompasionate";
+// import EditCompasionate from "../component/leaves/Compasionate/EditCompasionate";
+// import ShowCompasionateLeave from "../component/leaves/Compasionate/ShowCompasionate";
 
 
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -331,6 +356,29 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}contracts/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
     { path: `${import.meta.env.BASE_URL}contracts/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
     { path: `${import.meta.env.BASE_URL}contracts/terms/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    
+    
+    
+    
+    //Leave Management   
+    //   annual and emergenece leave
+    { path: `${import.meta.env.BASE_URL}leaves/annual`, element: <AnnualLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/annual/create-leave`, element: <AddAnnualLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    
+    { path: `${import.meta.env.BASE_URL}leaves/sick-leave`, element: <SickLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/add_term_condition/:id`, element: <AddTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    
+    { path: `${import.meta.env.BASE_URL}leaves/sick-leave`, element: <SickLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/add_term_condition/:id`, element: <AddTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/terms/download_term_condition/:id`, element: <DownloadTermConditions /> }, 
     
 /** ************ End of Contracts block ********************************************************************************** */
 

@@ -354,6 +354,14 @@ export const Banking = [
   { value: 'NBC', label: 'NBC' }
 ]
 
+//leave type
+
+export const LeaveType = [
+  { value: '1', label: 'Paid Leave' },
+  { value: '2', label: 'Un Paid Leave'}
+ 
+  ]
+
 export const DepartmentData = async () => {
   try {
     const departments = await fetchDepartments();

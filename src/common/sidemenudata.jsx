@@ -106,13 +106,14 @@ export const MenuItems = [
 				id: 28, icon: LeavesSvg, title: "Leaves", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','MD','AF' ], children: [
 
 					{ id: 29, path: `${import.meta.env.BASE_URL}leaves/annual`, type: "link", active: false, selected: false, title: "Annual", roles: [ 'DEV', 'SA','AF' ] },
-					{ id: 30, path: `${import.meta.env.BASE_URL}leaves/unpaid`, type: "link", active: false, selected: false, title: "Unpaid",  roles: [ 'DEV', 'SA','AF' ] },
-					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionates`, type: "link", active: false, selected: false, title: "Compasionate", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sick-leave`, type: "link", active: false, selected: false, title: "Sick Leave", roles: ['DEV', 'SA', 'AF'] },
+						{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity", roles: [ 'DEV', 'SA','AF' ]  },
 					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/partenity`, type: "link", active: false, selected: false, title: "Partenity", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sickfullpaid`, type: "link", active: false, selected: false, title: "Sick full Paid", roles: [ 'DEV', 'SA','AF']  },
-					{ id: 35, path: `${import.meta.env.BASE_URL}leaves/sickhalfpaid`, type: "link", active: false, selected: false, title: "Sick Half Paid", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 36, path: `${import.meta.env.BASE_URL}leaves/sickunpaid`, type: "link", active: false, selected: false, title: "Sick Unpaid", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionates`, type: "link", active: false, selected: false, title: "Compasionate", roles: [ 'DEV', 'SA','AF' ]  },
+				
+					
+					// { id: 35, path: `${import.meta.env.BASE_URL}leaves/sickhalfpaid`, type: "link", active: false, selected: false, title: "Sick Half Paid", roles: [ 'DEV', 'SA','AF' ]  },
+					// { id: 36, path: `${import.meta.env.BASE_URL}leaves/sickunpaid`, type: "link", active: false, selected: false, title: "Sick Unpaid", roles: [ 'DEV', 'SA','AF' ]  },
 				]
 			},
 			{ id: 37, icon: CompliancesSvg, title: "Compliance", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF' ],  children: [
