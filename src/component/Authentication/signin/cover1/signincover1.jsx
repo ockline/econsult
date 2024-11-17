@@ -52,7 +52,7 @@ const SignInCover1 = () => {
 
         try {
             const token = await csrfToken();
-            console.log('CSRF Token:', token);
+            // console.log('CSRF Token:', token);
             // Use the retrieved CSRF token in your request
             const resp = await axios.post(`${apiBaseUrl}/login`, body, {
                 headers: {

@@ -360,7 +360,30 @@ export const LeaveType = [
   { value: '1', label: 'Paid Leave' },
   { value: '2', label: 'Un Paid Leave'}
  
-  ]
+]
+
+export const SickLeaveType = [
+  { value: '5', label: 'Full Paid Leave' },
+  { value: '6', label: 'Half Paid Leave' },
+  { value: '7', label: 'Un Paid Leave'}
+ 
+]
+
+export const MaternityLeave = [
+  { value: '3', label: 'Maternity Leave' },
+  // { value: '2', label: 'Un Paid Leave'}
+ 
+]
+export const PaternityLeave = [
+  { value: '4', label: 'Paternity Leave' },
+  // { value: '2', label: 'Un Paid Leave'}
+ 
+]
+export const CompassionateLeave = [
+  { value: '8', label: 'Compassionate Leave' },
+  // { value: '2', label: 'Un Paid Leave'}
+ 
+]
 
 export const DepartmentData = async () => {
   try {

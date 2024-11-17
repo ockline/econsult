@@ -98,7 +98,7 @@ export const MenuItems = [
 			{
 				id: 25, icon: AttendancesSvg, title: "Attendances", type: "sub", active: false, selected: false,roles: [ 'DEV', 'SA','MD','AF' ], children: [
 
-					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normaworking`, type: "link", active: false, selected: false, title: "Normal Working Hours", roles: [ 'DEV', 'SA','MD','AF' ] },
+					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normal_attendance`, type: "link", active: false, selected: false, title: "Normal Working Hours", roles: [ 'DEV', 'SA','MD','AF' ] },
 					{ id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing", roles: [ 'DEV', 'SA','MD','AF' ] },
 				]
 			},
@@ -108,8 +108,8 @@ export const MenuItems = [
 					{ id: 29, path: `${import.meta.env.BASE_URL}leaves/annual`, type: "link", active: false, selected: false, title: "Annual", roles: [ 'DEV', 'SA','AF' ] },
 					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sick-leave`, type: "link", active: false, selected: false, title: "Sick Leave", roles: ['DEV', 'SA', 'AF'] },
 						{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/partenity`, type: "link", active: false, selected: false, title: "Partenity", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionates`, type: "link", active: false, selected: false, title: "Compasionate", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/paternity`, type: "link", active: false, selected: false, title: "Partenity", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionate`, type: "link", active: false, selected: false, title: "Compasionate", roles: [ 'DEV', 'SA','AF' ]  },
 				
 					
 					// { id: 35, path: `${import.meta.env.BASE_URL}leaves/sickhalfpaid`, type: "link", active: false, selected: false, title: "Sick Half Paid", roles: [ 'DEV', 'SA','AF' ]  },

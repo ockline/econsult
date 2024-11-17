@@ -44,7 +44,7 @@ function Root({ local_varaiable }) {
 		// returns true when user has atleast one of the roles required by menu item
 		// User roles = ['ALL'] - required = ['ALL', 'DEV']
 		// local_varaiable.roles.map((r) => requiredRoles.includes(r)) => [true]
-        console.log(local_varaiable.roles, requiredRoles, local_varaiable.roles.map((r) => requiredRoles.includes(r)), local_varaiable.roles.map((r) => requiredRoles.includes(r)).includes(true))
+        (local_varaiable.roles, requiredRoles, local_varaiable.roles.map((r) => requiredRoles.includes(r)), local_varaiable.roles.map((r) => requiredRoles.includes(r)).includes(true))
 		return local_varaiable.roles.map((r) => requiredRoles.includes(r)).includes(true);
 	}
 

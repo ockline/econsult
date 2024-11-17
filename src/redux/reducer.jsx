@@ -44,7 +44,7 @@ export default function reducer(state = initialState, action) {
     case "RolesChanger":
       // payload will be an array of roles, of which in every case 'ALL' alias will be available
       // data = [1, 2, 3, 4]
-      console.log('Setting roles:', payload);
+      // console.log('Setting roles:', payload);
       return {...state, roles: ['ALL', ...payload]}
 
     default:

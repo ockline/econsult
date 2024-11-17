@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 
 
-const AddContractDetail = () => {
+const AddAnnual = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -23,7 +23,7 @@ const AddContractDetail = () => {
 		setInitializing(true);
         try {
             const token = await sessionStorage.getItem('token');
-            console.log('CSRF Token:', token);
+            // console.log('CSRF Token:', token);
             // Use the retrieved CSRF token in your request
             const resp = await axios.get(`${apiBaseUrl}/get_user_token`, {
                 headers: {
@@ -404,4 +404,4 @@ const AddContractDetail = () => {
         </div>
     );
 };
-export default AddContractDetail;
+export default AddAnnual;

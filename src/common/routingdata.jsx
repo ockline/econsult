@@ -120,28 +120,48 @@ import DownloadTermConditions from "../component/contractManagement/templateCont
 //Annual
 import AnnualLeave from "../component/leaves/AnnualLeave/index";
 import AddAnnualLeave from "../component/leaves/AnnualLeave/AddAnnual";
-// import EditAnnualLeave from "../component/leaves/AnnualLeave/EditAnnual";
-// import ShowLeave from "../component/leaves/AnnualLeave/ShowLeave";
-// //Sick
-import SickLeave from "../component/leaves/SickLeave/index";
-// import AddLeave from "../component/leaves/SickLeave/AddLeave";
-// import EditSickLeave from "../component/leaves/SickLeave/EditLeave";
-// import ShowSickLeave from "../component/leaves/SickLeave/ShowLeave";
-// //Maternity
-import MaternityLeave from "../component/leaves/Maternity/index";
-// import AddMaternity from "../component/leaves/Maternity/AddMaternity";
-// import EditMaternity from "../component/leaves/Maternity/EditMaternity";
-// import ShowMaternityLeave from "../component/leaves/Maternity/ShowMaternity";
-// //Partenity
-import PartenityLeave from "../component/leaves/Partenity/index";
-// import AddPartenity from "../component/leaves/Partenity/AddPartenity";
-// import EditPartenity from "../component/leaves/Partenity/EditPartenity";
-// import ShowPartenityLeave from "../component/leaves/Partenity/ShowPartenity";
+import EditAnnualLeave from "../component/leaves/AnnualLeave/EditAnnual";
+import ShowLeave from "../component/leaves/AnnualLeave/ShowLeave";
+
+ //Sick
+import SickLeave from "../component/leaves/SickLeave/Index";
+import AddSickLeave from "../component/leaves/SickLeave/AddLeave";
+import EditSickLeave from "../component/leaves/SickLeave/EditLeave";
+import ShowSickLeave from "../component/leaves/SickLeave/ShowLeave";
+import DownloadSickLeave from  "../component/leaves/SickLeave/Download"
+
+//Maternity
+import MaternityLeave from "../component/leaves/Maternity/Index";
+import AddMaternityLeave from "../component/leaves/Maternity/AddMaternity";
+import EditMaternityLeave from "../component/leaves/Maternity/EditMaternity";
+import ShowMaternityLeave from "../component/leaves/Maternity/ShowMaternity";
+import DownloadMaternityLeave from  "../component/leaves/Maternity/Download"
+
+//Paternity
+import PaternityLeave from "../component/leaves/Paternity/Index";
+import AddPaternityLeave from "../component/leaves/Paternity/AddPaternity";
+import EditPaternityLeave from "../component/leaves/Paternity/EditPaternity";
+import ShowPaternityLeave from "../component/leaves/Paternity/ShowPaternity";
+import DownloadPaternityLeave from  "../component/leaves/Paternity/Download"
+
 // //Compansionate
-import CompansionatLeave from "../component/leaves/Compasionate/index";
-// import AddCompasionate from "../component/leaves/Compasionate/AddCompasionate";
-// import EditCompasionate from "../component/leaves/Compasionate/EditCompasionate";
-// import ShowCompasionateLeave from "../component/leaves/Compasionate/ShowCompasionate";
+import CompassionateLeave from "../component/leaves/Compassionate/Index";
+import AddCompassionateLeave from "../component/leaves/Compassionate/AddCompassionate";
+import EditCompassionateLeave from "../component/leaves/Compassionate/EditCompassionate";
+import ShowCompassionateLeave from "../component/leaves/Compassionate/ShowCompassionate";
+import DownloadCompassionateLeave from "../component/leaves/Compassionate/Download"
+
+
+//attendances
+import Attendance from "../component/attendances/NormalWorking/Index";
+// import AddAttendance from "../component/attendances/NormalWorking/AddAttendance";
+// import EditAttendance from "../component/attendances/NormalWorking/EditAttendance";
+// import ShowAttendance from "../component/attendances/NormalWorking/ShowAttendance";
+
+import OverTimeAttendance from "../component/attendances/OverTime/Index";
+
+
+
 
 
 import Carousel from "../component/advancedUi/carousel/carousel";
@@ -364,27 +384,48 @@ export const RouteData = [
     //   annual and emergenece leave
     { path: `${import.meta.env.BASE_URL}leaves/annual`, element: <AnnualLeave /> },
     { path: `${import.meta.env.BASE_URL}leaves/annual/create-leave`, element: <AddAnnualLeave /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/annual/edit_term_condition/:id`, element: <EditTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/annual/show_term_condition/:id`, element: <ShowTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/annual/download_term_condition/:id`, element: <DownloadTermConditions /> },
     
+    // sick leave 
     { path: `${import.meta.env.BASE_URL}leaves/sick-leave`, element: <SickLeave /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/add_term_condition/:id`, element: <AddTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/sick/create-leave`, element: <AddSickLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/:id`, element: <EditSickLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/:id`, element: <ShowSickLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/sick/download_sick_leave/:id`, element: <DownloadSickLeave /> },
     
-    { path: `${import.meta.env.BASE_URL}leaves/sick-leave`, element: <SickLeave /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/add_term_condition/:id`, element: <AddTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/edit_term_condition/:id`, element: <EditTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/show_term_condition/:id`, element: <ShowTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/terms/download_term_condition/:id`, element: <DownloadTermConditions /> }, 
+    // maternity
+    { path: `${import.meta.env.BASE_URL}leaves/maternity`, element: <MaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/maternity/create_maternity_leave`, element: <AddMaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/maternity/edit_maternity_leave/:id`, element: <EditMaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/maternity/show_maternity_leave/:id`, element: <ShowMaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/maternity/download_maternity_leave/:id`, element: <DownloadMaternityLeave /> }, 
+    
+     // parternity
+    { path: `${import.meta.env.BASE_URL}leaves/paternity`, element: <PaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/paternity/create_paternity_leave`, element: <AddPaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/paternity/edit_paternity_leave/:id`, element: <EditPaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/paternity/show_paternity_leave/:id`, element: <ShowPaternityLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/paternity/download_paternity_leave/:id`, element: <DownloadPaternityLeave /> }, 
+    
+    //Compessionate
+     { path: `${import.meta.env.BASE_URL}leaves/compassionate`, element: <CompassionateLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/compassionate/create_compassionate_leave`, element: <AddCompassionateLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/compassionate/edit_compassionate_leave/:id`, element: <EditCompassionateLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/compassionate/show_compassionate_leave/:id`, element: <ShowCompassionateLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/compassionate/download_compassionate_leave/:id`, element: <DownloadCompassionateLeave /> },
     
 /** ************ End of Contracts block ********************************************************************************** */
+    /** ************** Start Attendance block */
 
+    { path: `${import.meta.env.BASE_URL}attendances/normal_attendance`, element: <Attendance /> },
+    // { path: `${import.meta.env.BASE_URL}attendances/normal/create_normal_attendance`, element: <AddAttendance /> },
+    // { path: `${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/:id`, element: <EditAttendance /> },
+    // { path: `${import.meta.env.BASE_URL}attendances/normal/show_normal_attendance/:id`, element: <ShowAttendance /> },
 
-
-
+    
+    { path: `${import.meta.env.BASE_URL}attendances/overtime`, element: <OverTimeAttendance /> },
 
 
 

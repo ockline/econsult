@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -10,7 +10,8 @@ const Index = () => {
 	
 	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 	
-	 const [annualLeave, setAnnualLeave] = useState([]);
+	const [annualLeave, setAnnualLeave] = useState([]);
+	let navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnnualLeave = async () => {
@@ -261,10 +262,16 @@ function Style1() {
 															</Link>
 															</div>
 															&nbsp;&nbsp;
-														<Link to={`${import.meta.env.BASE_URL}leaves/annual/editLeave/${annual.id}`} className="ti-btn ti-btn-primary me-1">
-													    <i className="ti ti-edit-circle"></i>
-														Edit
-														</Link>
+											
+														<button 
+                                                    aria-label="anchor"
+                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+                                                    onClick={() => {
+                                                   navigate(`${import.meta.env.BASE_URL}leaves/annual/editLeave/${annual.id}`);   
+                                                    }}
+                                                   >
+                                                    <i className="ti ti-pencil"></i>
+                                                </button>
 															&nbsp;&nbsp;
 												
 														

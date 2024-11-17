@@ -10,19 +10,19 @@ const Index = () => {
 	
 	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 	
-	 const [annualLeave, setAnnualLeave] = useState([]);
+	 const [sickLeave, setSickLeave] = useState([]);
 
   useEffect(() => {
-    const fetchAnnualLeave = async () => {
+    const fetchSickLeave = async () => {
       try {
-        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_annual_leave`);
-        setAnnualLeave(res.data.annual_leave);
+        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_sick_leave`);
+        setSickLeave(res.data.sick_leave);
       } catch (error) {
-        throw new Error('Failed to fetch annual leave: ' + error.message);
+        throw new Error('Failed to fetch sick leave: ' + error.message);
       }
     };
 
-    fetchAnnualLeave();
+    fetchSickLeave();
   }, []); // The empty dependency array ensures that the effect runs only once on component mount
 
 	
@@ -173,7 +173,7 @@ function Style1() {
 							<div className="flex">
 								<h5 className="box-title my-auto">Employees Sick Leave</h5>
 								<div className="space-y-2">
-                                     	<Link to={`${import.meta.env.BASE_URL}leaves/annual/create-leave/`}>
+                                     	<Link to={`${import.meta.env.BASE_URL}leaves/sick/create-leave/`}>
 								    <button type="button" className="ti-btn ti-btn-primary ">
 									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Leave							
 									</button>
@@ -211,7 +211,7 @@ function Style1() {
 									</thead>
 									<tbody className="">
 										{
-											annualLeave?.map((annual, index) => (
+											sickLeave?.map((annual, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -250,7 +250,7 @@ function Style1() {
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}leaves/show_annual_leave/${annual.id}`}
+													<Link to={`${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/${annual.id}`}
 														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 														<i className="ti ti-eye"></i>
 														<span
@@ -261,14 +261,14 @@ function Style1() {
 															</Link>
 															</div>
 															&nbsp;&nbsp;
-														<Link to={`${import.meta.env.BASE_URL}leaves/annual/editLeave/${annual.id}`} className="ti-btn ti-btn-primary me-1">
+														<Link to={`${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/${annual.id}`} className="ti-btn ti-btn-primary me-1">
 													    <i className="ti ti-edit-circle"></i>
 														Edit
 														</Link>
 															&nbsp;&nbsp;
 												
 														
-											{annual.status === 'Active' ? (
+											{annual.status === null ? (
 										<button
 											type="button"
 											className="ti-btn ti-btn-success show-example-btn"

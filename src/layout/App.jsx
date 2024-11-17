@@ -28,7 +28,6 @@ const App = ({local_varaiable, UserChanger, RolesChanger}) => {
 	useEffect(() => {
 
 		// import("preline");
-		console.log('Initializing')
 		initialize()
 
 	}, []);
@@ -48,7 +47,7 @@ const App = ({local_varaiable, UserChanger, RolesChanger}) => {
 		setInitializing(true);
         try {
             const token = await sessionStorage.getItem('token');
-            console.log('CSRF Token:', token);
+            // console.log('CSRF Token:', token);
             // Use the retrieved CSRF token in your request
             const resp = await axios.get(`${apiBaseUrl}/get_user_token`, {
                 headers: {
