@@ -271,7 +271,11 @@ function Style1() {
                                                     }}
                                                    >
                                                     <i className="ti ti-pencil"></i>
-                                                </button>
+														</button>
+														
+														
+														
+														
 															&nbsp;&nbsp;
 												
 														

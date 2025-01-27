@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -10,19 +10,20 @@ const Index = () => {
 	
 	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 	
-	 const [sickLeave, setSickLeave] = useState([]);
+	const [annualLeave, setAnnualLeave] = useState([]);
+	let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSickLeave = async () => {
+    const fetchAnnualLeave = async () => {
       try {
-        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_sick_leave`);
-        setSickLeave(res.data.sick_leave);
+        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_annual_leave`);
+        setAnnualLeave(res.data.annual_leave);
       } catch (error) {
-        throw new Error('Failed to fetch sick leave: ' + error.message);
+        throw new Error('Failed to fetch annual leave: ' + error.message);
       }
     };
 
-    fetchSickLeave();
+    fetchAnnualLeave();
   }, []); // The empty dependency array ensures that the effect runs only once on component mount
 
 	
@@ -148,7 +149,7 @@ function Style1() {
         <div>
         			
 		<div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Leave Management</h1>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Industrial Relashionship Management</h1>
 
 				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
 					<li className="text-sm">
@@ -159,7 +160,7 @@ function Style1() {
 					</li>
 					<li className="text-sm">
 					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employers/registrations/registrations`}>
-						Leave Management
+						Industrial Relashionship Management
 						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
 					</a>
 					</li>
@@ -171,25 +172,15 @@ function Style1() {
 					<div className="box">
 						<div className="box-header">
 							<div className="flex">
-								<h5 className="box-title my-auto">Employees Sick Leave</h5>
+								<h5 className="box-title my-auto">Employees Disciplinary Cases</h5>
 								<div className="space-y-2">
-                                     	<Link to={`${import.meta.env.BASE_URL}leaves/sick/create-leave/`}>
+                                     	<Link to={`${import.meta.env.BASE_URL}leaves/annual/create-leave/`}>
 								    <button type="button" className="ti-btn ti-btn-primary ">
-									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Leave							
+									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Misconduct							
 									</button>
 							   </Link>    
 									</div>
-									{/* <div className="space-y-2">
-                                         <div className="hs-dropdown ti-dropdown block ltr:ml-auto rtl:mr-auto my-auto">
-									
-									<button type="button" className="hs-dropdown-toggle ti-dropdown-toggle rounded-sm p-1 px-3 !border border-gray-200 text-gray-400 hover:text-gray-500 hover:bg-gray-200 hover:border-gray-200 focus:ring-gray-200  dark:hover:bg-black/30 dark:border-white/10 dark:hover:border-white/20 dark:focus:ring-white/10 dark:focus:ring-offset-white/10">View All <i className="ti ti-chevron-down"></i></button>
-									<div className="hs-dropdown-menu ti-dropdown-menu">
-										<Link className="ti-dropdown-item" to="#">Download</Link>
-										<Link className="ti-dropdown-item" to="#">Import</Link>
-										<Link className="ti-dropdown-item" to="#">Export</Link>
-									</div>
-								</div>
-                               </div> */}
+								
 							</div>
 						</div>
 						<div className="box-body">
@@ -211,7 +202,7 @@ function Style1() {
 									</thead>
 									<tbody className="">
 										{
-											sickLeave?.map((annual, index) => (
+											annualLeave?.map((annual, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -250,7 +241,7 @@ function Style1() {
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/${annual.id}`}
+													<Link to={`${import.meta.env.BASE_URL}leaves/show_annual_leave/${annual.id}`}
 														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 														<i className="ti ti-eye"></i>
 														<span
@@ -261,21 +252,24 @@ function Style1() {
 															</Link>
 															</div>
 															&nbsp;&nbsp;
-																									
+											
 														<button 
                                                     aria-label="anchor"
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
                                                     onClick={() => {
-                                                   navigate(`${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/${annual.id}`);   
+                                                   navigate(`${import.meta.env.BASE_URL}leaves/annual/editLeave/${annual.id}`);   
                                                     }}
                                                    >
                                                     <i className="ti ti-pencil"></i>
-                                                </button>	
+														</button>
+														
+														
+														
 														
 															&nbsp;&nbsp;
 												
 														
-											{annual.status === null ? (
+											{annual.status === 'Active' ? (
 										<button
 											type="button"
 											className="ti-btn ti-btn-success show-example-btn"

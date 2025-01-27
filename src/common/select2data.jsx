@@ -11,6 +11,10 @@ export const ProductVisibility = [
   { value: 'Private', label: 'Private' },
   { value: 'Public', label: 'Public' }
 ]
+export const capacityType = [
+    { value: '1', label: 'Illness' },
+    { value: '2', label: 'Poor Performance' },
+]
 export const Category = [
   { value: 'Clothing', label: 'Clothing' },
   { value: 'Footware', label: 'Footware' },

@@ -587,7 +587,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                     <i className="ti ti-adjustments-horizontal text-lg"></i>
                                                     Settings
                                                 </Link>
-                                              <Link to={`${import.meta.env.BASE_URL}Authentication/resetpassword`} className="ti-dropdown-item">
+                                              <Link to={`Authentication/resetpassword`} className="ti-dropdown-item">
                                                     <i className="ti ti-adjustments-horizontal text-lg"></i>
                                                     Reset Password
                                                 </Link>

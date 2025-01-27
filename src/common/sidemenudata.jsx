@@ -135,8 +135,8 @@ export const MenuItems = [
 			{ id: 45, icon: IndustrialRelationshipSvg, title: "Industrial Relationship", type: "sub", active: false, selected: false, children: [
 
 					{ id: 46, path: `${import.meta.env.BASE_URL}industrials/misconducts`, type: "link", active: false, selected: false, title: "Misconducts" },
-					{ id: 47, path: `${import.meta.env.BASE_URL}industrials/performancereviews`, type: "link", active: false, selected: false, title: "Performance Reviews" },
-					{ id: 48, path: `${import.meta.env.BASE_URL}industrials/incapacities`, type: "link", active: false, selected: false, title: "Performance Capacity" },
+					{ id: 47, path: `${import.meta.env.BASE_URL}industrials/perfomance_reviews`, type: "link", active: false, selected: false, title: "Perfomance Reviews" },
+					{ id: 48, path: `${import.meta.env.BASE_URL}industrials/perfomance_capacity`, type: "link", active: false, selected: false, title: "Perfomance Capacity" },
 					{ id: 49, path: `${import.meta.env.BASE_URL}industrials/disciplinaries`, type: "link", active: false, selected: false, title: "Disciplinary" },
 					{ id: 50, path: `${import.meta.env.BASE_URL}industrials/grievances`, type: "link", active: false, selected: false, title: "Grievances" },
 				]

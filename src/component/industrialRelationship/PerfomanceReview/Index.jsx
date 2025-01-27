@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -10,62 +10,26 @@ const Index = () => {
 	
 	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 	
-	 const [sickLeave, setSickLeave] = useState([]);
+	const [perfomanceReview, setPerfomanceReview] = useState([]);
+	let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSickLeave = async () => {
+    const fetchPerfomanceReview = async () => {
       try {
-        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_sick_leave`);
-        setSickLeave(res.data.sick_leave);
+        const res = await axios.get(`${apiBaseUrl}/industrial_relationship/retrieve_perfomance_review`);
+        setPerfomanceReview(res.data.perfomance_review);
       } catch (error) {
-        throw new Error('Failed to fetch sick leave: ' + error.message);
+        throw new Error('Failed to fetch annual leave: ' + error.message);
       }
     };
 
-    fetchSickLeave();
+    fetchPerfomanceReview();
   }, []); // The empty dependency array ensures that the effect runs only once on component mount
 
 	
 	 
   /** ****************************************************************** */
-  //Block that Destroy data
-function Ajaxcalling(e, id) {
-  e.preventDefault();
-//   console.log("ID new", id);
-
-  Swal.fire({
-    title: 'Fill Deactivate Reason',
-    input: 'text',
-    inputAttributes: {
-      autocapitalize: 'off'
-    },
-    showCancelButton: true,
-    confirmButtonText: 'Confirm',
-    showLoaderOnConfirm: true,
-    preConfirm: (deactivate_reason) => {
-      return axios
-        .delete(`${apiBaseUrl}/annuals/delete_employer/${id}`, {
-          data: { deactivate_reason: deactivate_reason }
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          } else {
-            Style2();
-            // console.log('wazungu waitwe');
-          }
-        })
-        .catch(error => {
-          Style2();
-          Swal.showValidationMessage(
-            
-          );
-        });
-    },
-    allowOutsideClick: () => !Swal.isLoading()
-  });
-}
-
+ 
 function Style2() {
   Swal.fire({
     title: 'Are you sure?',
@@ -148,7 +112,7 @@ function Style1() {
         <div>
         			
 		<div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Leave Management</h1>
+				<h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Industrial Relashionship Management</h1>
 
 				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
 					<li className="text-sm">
@@ -158,8 +122,8 @@ function Style1() {
 					</a>
 					</li>
 					<li className="text-sm">
-					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employers/registrations/registrations`}>
-						Leave Management
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/perfomanace_review`}>
+						Industrial Relashionship Management
 						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
 					</a>
 					</li>
@@ -171,11 +135,11 @@ function Style1() {
 					<div className="box">
 						<div className="box-header">
 							<div className="flex">
-								<h5 className="box-title my-auto">Employees Sick Leave</h5>
+								<h5 className="box-title my-auto">Employees Perfomance Review</h5>
 								<div className="space-y-2">
-                                     	<Link to={`${import.meta.env.BASE_URL}leaves/sick/create-leave/`}>
+                                     	<Link to={`${import.meta.env.BASE_URL}industrials/perfomance_reviews/create`}>
 								    <button type="button" className="ti-btn ti-btn-primary ">
-									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Leave							
+									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Review							
 									</button>
 							   </Link>    
 									</div>
@@ -201,17 +165,16 @@ function Style1() {
 											<th scope="col" className="dark:text-white/80">EmployeeId</th>
 											<th scope="col" className="dark:text-white/80">Fullname</th>
 											<th scope="col" className="dark:text-white/80 min-w-[300px]">Employer</th>
-                                            <th scope="col" className="dark:text-white/80">Type</th>
-                                            <th scope="col" className="dark:text-white/80">Start</th>
-                                             <th scope="col" className="dark:text-white/80">End</th>
-                                            <th scope="col" className="dark:text-white/80">Balance</th>
+                                            <th scope="col" className="dark:text-white/80">Perfomance</th>
+                                            <th scope="col" className="dark:text-white/80">Review Date</th>
+                                             <th scope="col" className="dark:text-white/80">Department</th>
 											<th scope="col" className="dark:text-white/80">Status</th>
 									    	<th scope="col" className="dark:text-white/80">Action</th>
 										</tr>
 									</thead>
 									<tbody className="">
 										{
-											sickLeave?.map((annual, index) => (
+											perfomanceReview?.map((review, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -219,38 +182,35 @@ function Style1() {
 												<div className="flex space-x-3 rtl:space-x-reverse w-full">
 													<div className="block w-full my-auto">
 														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">{annual.employee_id}</span>
+															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">{review.employee_id}</span>
 															</div>
 												</div>
                                                     </td>
-                                                    <td>{annual.employee_name}</td>
-											<td className="!text-success font-semibold text-base">{annual.employer}</td>
+                                                    <td>{review.employee_name}</td>
+											<td>{review.employer}</td>
 											<td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
 													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{annual.leave_type}</p>
-														{/* <span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">socratesitumay@gmail.com</span> */}
-													</div>
+														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{review.criterial}</p>
+																																		</div>
 												</div>
                                                     </td>
-                                                    <td>{annual.start_date}</td>
-												<td>{annual.end_date}</td>                                                    
-											<td>{annual.all_balance}</td>
+                                                    <td>{review.review_date}</td>
+												<td>{review.departments}</td>                                       
 													<td>
-														{ annual.status === 1
+														{ review.status === 1
 														? (
 <span
 												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80">Submitted</span>)													
 												 : (<span
-															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{annual.status}</span>
+															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{review.status}</span>
 												 )}
 											</td>
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/${annual.id}`}
+													<Link to={`${import.meta.env.BASE_URL}industrials/show_perfomance_review/${review.id}`}
 														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 														<i className="ti ti-eye"></i>
 														<span
@@ -261,27 +221,25 @@ function Style1() {
 															</Link>
 															</div>
 															&nbsp;&nbsp;
-																									
 														<button 
                                                     aria-label="anchor"
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
                                                     onClick={() => {
-                                                   navigate(`${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/${annual.id}`);   
+                                                   navigate(`${import.meta.env.BASE_URL}industrials/perfomance_review/edit/${review.id}`);   
                                                     }}
                                                    >
                                                     <i className="ti ti-pencil"></i>
-                                                </button>	
-														
+														</button>
+																						
 															&nbsp;&nbsp;
-												
-														
-											{annual.status === null ? (
+													
+											{review.status === 'Active' ? (
 										<button
 											type="button"
 											className="ti-btn ti-btn-success show-example-btn"
 											aria-label="Deactivate! Example: End of contract"
 											id="ajax-btn"
-											onClick={(e) => Ajaxcalling(e, annual.id)}
+											onClick={(e) => Ajaxcalling(e, review.id)}
 										>
 											Initiate
 										</button>

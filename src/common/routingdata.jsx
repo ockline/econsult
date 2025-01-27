@@ -151,15 +151,43 @@ import EditCompassionateLeave from "../component/leaves/Compassionate/EditCompas
 import ShowCompassionateLeave from "../component/leaves/Compassionate/ShowCompassionate";
 import DownloadCompassionateLeave from "../component/leaves/Compassionate/Download"
 
-
 //attendances
 import Attendance from "../component/attendances/NormalWorking/Index";
 // import AddAttendance from "../component/attendances/NormalWorking/AddAttendance";
-// import EditAttendance from "../component/attendances/NormalWorking/EditAttendance";
+import EditAttendance from "../component/attendances/NormalWorking/Edit";
 // import ShowAttendance from "../component/attendances/NormalWorking/ShowAttendance";
-
 import OverTimeAttendance from "../component/attendances/OverTime/Index";
 
+//Industrial Relation 
+import Misconduct from "../component/industrialRelationship/Misconduct/Index";
+import AddMisconduct from "../component/industrialRelationship/Misconduct/Add";
+import EditMisconduct from "../component/industrialRelationship/Misconduct/Edit";
+import ShowMisconduct from "../component/industrialRelationship/Misconduct/Show";
+
+import PerfomanceReview from "../component/industrialRelationship/PerfomanceReview/Index";
+import AddPerfomanceReview from "../component/industrialRelationship/PerfomanceReview/Add";
+import EditPerfomanceReview from "../component/industrialRelationship/PerfomanceReview/Edit";
+import ShowPerfomanceReview from "../component/industrialRelationship/PerfomanceReview/Show";
+
+import PerfomanceCapacity from "../component/industrialRelationship/PerfomanceCapacity/Index";
+import AddPerfomanceCapacity from "../component/industrialRelationship/PerfomanceCapacity/Add";
+import EditPerfomanceCapacity from "../component/industrialRelationship/PerfomanceCapacity/Edit";
+import ShowPerfomanceCapacity from "../component/industrialRelationship/PerfomanceCapacity/Show";
+//assessment by Dr
+
+import AddPerformanceAssessment from "../component/industrialRelationship/PerfomanceCapacity/AddAssessment";
+import EditPerformanceAssessment from "../component/industrialRelationship/PerfomanceCapacity/EditAssessment";
+import ShowPerformanceAssessment from "../component/industrialRelationship/PerfomanceCapacity/ShowAssessment";
+
+import Disciplinary from "../component/industrialRelationship/Disciplinary/Index";
+// import AddDisciplinary from "../component/industrialRelationship/Disciplinary/Add";
+// import EditDisciplinary from "../component/industrialRelationship/Disciplinary/Edit";
+// import ShowDisciplinary from "../component/industrialRelationship/Disciplinary/Show";
+
+import Grievances from "../component/industrialRelationship/Grievances/Index";
+// import AddGrievances from "../component/industrialRelationship/Grievances/Add";
+// import EditGrievances from "../component/industrialRelationship/Grievances/Edit";
+// import ShowGrievances from "../component/industrialRelationship/Grievances/Show";
 
 
 
@@ -421,14 +449,49 @@ export const RouteData = [
 
     { path: `${import.meta.env.BASE_URL}attendances/normal_attendance`, element: <Attendance /> },
     // { path: `${import.meta.env.BASE_URL}attendances/normal/create_normal_attendance`, element: <AddAttendance /> },
-    // { path: `${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/:id`, element: <EditAttendance /> },
+    { path: `${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/:id`, element: <EditAttendance /> },
     // { path: `${import.meta.env.BASE_URL}attendances/normal/show_normal_attendance/:id`, element: <ShowAttendance /> },
-
-    
     { path: `${import.meta.env.BASE_URL}attendances/overtime`, element: <OverTimeAttendance /> },
 
 
+    //Industrial Relation
+     { path: `${import.meta.env.BASE_URL}industrials/misconducts`, element: <Misconduct /> },
+    { path: `${import.meta.env.BASE_URL}industrials/add_misconducts`, element: <AddMisconduct /> },
+    { path: `${import.meta.env.BASE_URL}industrials/edit_misconducts/:id`, element: <EditMisconduct /> },
+    { path: `${import.meta.env.BASE_URL}industrials/show_misconducts/:id`, element: <ShowMisconduct /> },
 
+    { path: `${import.meta.env.BASE_URL}industrials/perfomance_reviews`, element: <PerfomanceReview /> },
+    { path: `${import.meta.env.BASE_URL}industrials/perfomance_reviews/create`, element: <AddPerfomanceReview /> },
+    { path: `${import.meta.env.BASE_URL}industrials/perfomance_review/edit/:id`, element: <EditPerfomanceReview /> },
+    { path: `${import.meta.env.BASE_URL}industrials/show_perfomance_review/:id`, element: <ShowPerfomanceReview /> },
+
+    { path: `${import.meta.env.BASE_URL}industrials/perfomance_capacity`, element: <PerfomanceCapacity /> },
+    { path: `${import.meta.env.BASE_URL}industrials/performance_capacity/create-incapacity`, element: <AddPerfomanceCapacity /> },
+    { path: `${import.meta.env.BASE_URL}industrials/performance_capacity/edit/:id`, element: <EditPerfomanceCapacity /> },
+    { path: `${import.meta.env.BASE_URL}industrials/performance_capacity/show/:id`, element: <ShowPerfomanceCapacity /> },
+    //assessment
+    
+    { path: `${import.meta.env.BASE_URL}industrials/performance_capacity/create_assessment`, element: <AddPerformanceAssessment/> },
+    { path: `${import.meta.env.BASE_URL}industrials/performance_capacity/edit_assessment/:id`, element: <EditPerformanceAssessment /> },
+    { path: `${import.meta.env.BASE_URL}industrials/performance_capacity/show_assessment/:id`, element: <ShowPerformanceAssessment/> },
+    
+    
+    
+    
+    
+
+    { path: `${import.meta.env.BASE_URL}industrials/disciplinaries`, element: <Disciplinary /> },
+//     { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/add`, element: <AddDisciplinary /> },
+//     { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/edit`, element: <EditDisciplinary /> },
+//     { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/show`, element: <ShowDisciplinary /> },
+
+   { path: `${import.meta.env.BASE_URL}industrials/grievances`, element: <Grievances /> },
+//     { path: `${import.meta.env.BASE_URL}industrials/grievances/add`, element: <AddGrievances /> },
+//     { path: `${import.meta.env.BASE_URL}industrials/grievances/edit`, element: <EditGrievances /> },
+//     { path: `${import.meta.env.BASE_URL}industrials/grievances/show`, element: <ShowGrievances /> },
+
+
+   
 
 
 
