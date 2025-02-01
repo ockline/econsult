@@ -238,7 +238,8 @@ const AddInCapacity = () => {
           button: "OK",
           closeOnClickOutside: false,
         }).then(() => {
-          navigate("/industrials/performance_capacity/");
+            navigate("/industrials/perfomance_capacity/");
+            
         });
       }
     } catch (error) {

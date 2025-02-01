@@ -98,7 +98,7 @@ const AddAssessment = () => {
         suffering_period: '',
         investigation_time: '',
         employee_id: '',
-        capacity_type: '',
+        capacity_type_id: '',
         employee_name: '',
         daily_duties: '',
         subject_matter: '',
@@ -107,8 +107,16 @@ const AddAssessment = () => {
         alternative_task: '',
         investigator_name: '',
         investigator_designation: '',
-        investigation_date: '', 
-        investigation_report: '',
+        illness_cause : '',
+        illness_degree : '',
+        occupation_illness : '',
+        occupation_justification : '',
+        possible_nature_illness : '',
+        permanent_alternative_activity : '',
+        total_recovery_activity : '',
+        suggested_task : '',
+        measure_taken : '',
+        assessor_recommendation : '',        
         investigation_report_attachment: '',
         investigator_signature: '',
         error_list: [],
@@ -133,6 +141,7 @@ const AddAssessment = () => {
         } else {
             // Handle other input types
             setFormData((prevData) => ({
+
                 ...prevData,
                 [stepName]: value,
                 error_list: { ...prevData.error_list, [stepName]: null },
@@ -154,11 +163,22 @@ const AddAssessment = () => {
         // console.log('Form submitted:', formData);
         const DataToSend = {
             employee_id: formData.employee_id,
-            incapacity_type: formData.incapacity_type,
+            capacity_id: formData.performance_capacity_id,
+            capacity_type: formData.capacity_type_id,
             suffering_from: formData.suffering_from,
             suffering_period: formData.suffering_period,
             subject_matter: formData.subject_matter,
             daily_duties: formData.daily_duties,
+             illness_cause : formData.illness_cause,
+            illness_degree : formData.illness_degree,
+            occupation_illness : formData.occupation_illness,
+            occupation_justification : formData.occupation_justification,
+            possible_nature_illness : formData.possible_nature_illness,
+            permanent_alternative_activity : formData.permanent_alternative_activity,
+            total_recovery_activity : formData.total_recovery_activity,
+            suggested_task : formData.suggested_task,
+            measure_taken : formData.measure_taken,
+            assessor_recommendation : formData.assessor_recommendation,   
             challenge_daily_duties: formData.challenge_daily_duties,
             alternative_task: formData.alternative_task,
             investigator_name: formData.investigator_name,
@@ -171,12 +191,11 @@ const AddAssessment = () => {
             investigation_report_attachment: formData.investigation_report_attachment,
             investigator_signature: formData.investigator_signature
             
-           
-            
         };
-         setIsLoading(true);
+        setIsLoading(true);
+        console.log('ndugu', DataToSend);
     try {
-      const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/create_perfomance_capacity`, DataToSend, {
+      const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/create_perfomance_assessment`, DataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -214,7 +233,7 @@ const AddAssessment = () => {
           button: "OK",
           closeOnClickOutside: false,
         }).then(() => {
-          navigate("/industrials/performance_capacity/");
+          navigate("/industrials/perfomance_capacity/");
         });
       }
     } catch (error) {
