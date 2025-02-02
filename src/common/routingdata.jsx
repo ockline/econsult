@@ -155,8 +155,10 @@ import DownloadCompassionateLeave from "../component/leaves/Compassionate/Downlo
 import Attendance from "../component/attendances/NormalWorking/Index";
 // import AddAttendance from "../component/attendances/NormalWorking/AddAttendance";
 import EditAttendance from "../component/attendances/NormalWorking/Edit";
-// import ShowAttendance from "../component/attendances/NormalWorking/ShowAttendance";
+import ShowAttendance from "../component/attendances/NormalWorking/Show";
 import OverTimeAttendance from "../component/attendances/OverTime/Index";
+import EditOvertime from "../component/attendances/OverTime/Edit";
+import ShowOvertime from "../component/attendances/OverTime/Show";
 
 //Industrial Relation 
 import Misconduct from "../component/industrialRelationship/Misconduct/Index";
@@ -450,9 +452,11 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}attendances/normal_attendance`, element: <Attendance /> },
     // { path: `${import.meta.env.BASE_URL}attendances/normal/create_normal_attendance`, element: <AddAttendance /> },
     { path: `${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/:id`, element: <EditAttendance /> },
-    // { path: `${import.meta.env.BASE_URL}attendances/normal/show_normal_attendance/:id`, element: <ShowAttendance /> },
+    { path: `${import.meta.env.BASE_URL}attendances/normal/show_normal_attendance/:id`, element: <ShowAttendance /> },
     { path: `${import.meta.env.BASE_URL}attendances/overtime`, element: <OverTimeAttendance /> },
-
+    { path: `${import.meta.env.BASE_URL}attendances/overtime/edit_overtime/:id`, element: <EditOvertime /> },
+     { path: `${import.meta.env.BASE_URL}attendances/overtime/show_overtime/:id`, element: <ShowOvertime /> },
+    
 
     //Industrial Relation
      { path: `${import.meta.env.BASE_URL}industrials/misconducts`, element: <Misconduct /> },

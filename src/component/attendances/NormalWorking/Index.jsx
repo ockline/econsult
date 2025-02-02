@@ -459,17 +459,17 @@ const NormalAttendance = () => {
 												<td>{attend.date}</td>
 												<td className="font-medium space-x-2 rtl:space-x-reverse">
 													<div className="hs-tooltip ti-main-tooltip">
-														<Link to="#"
+														<Link to={`${import.meta.env.BASE_URL}attendances/normal/show_normal_attendance/${attend.id}`}
 															className="m-0 hs-tooltip-toggle relative  w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-															<i className="ti ti-send"></i>
+															<i className="ti ti-eye"></i>
 															<span className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
 																role="tooltip">
-																Send
+																view
 															</span>
 														</Link>
 													</div>
 													<div className="hs-tooltip ti-main-tooltip">
-														{/* <Link to="{`${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/{attend.id}`}" onClick="changeTheInfo('Edit Invoice','Socrates Itumay','P.O. Box 283 8562 Fusce Rd., 20620','socratesitumany@abc.com','#IN5252155','25-10-2022','25-11-2022')"
+														<Link to={`${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/${attend.id}`}onClick="changeTheInfo('Edit Invoice','Socrates Itumay','P.O. Box 283 8562 Fusce Rd., 20620','socratesitumany@abc.com','#IN5252155','25-10-2022','25-11-2022')"
 														data-hs-overlay="#invoice-modal" className="invoice-edit m-0 hs-tooltip-toggle relative  w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary">
 														<i className="ti ti-pencil"></i>
 														<span
@@ -477,16 +477,8 @@ const NormalAttendance = () => {
 															role="tooltip">
 															Edit
 														</span>
-														</Link> */}
-														<button
-															aria-label="anchor"
-															className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
-															onClick={() => {
-																navigate(`${import.meta.env.BASE_URL}attendances/normal/edit_normal_attendance/${attend.id}`);
-															}}
-														>
-															<i className="ti ti-pencil"></i>
-														</button>
+														</Link>
+														
 													</div>
 													{/* <div className="hs-tooltip ti-main-tooltip">
 													<Link to="#" onClick={() => handleRemove(idx.id)}

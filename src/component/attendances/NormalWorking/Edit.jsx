@@ -220,7 +220,7 @@ const Edit = () => {
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h1 className="box-title my-auto font-bold text-lg">Update employee Leave</h1>
+                    <h1 className="box-title my-auto font-bold text-lg">Update employee Attendance</h1>
                     <Link to={`${import.meta.env.BASE_URL}attendances/normal_attendance/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
