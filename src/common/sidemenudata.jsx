@@ -143,13 +143,21 @@ export const MenuItems = [
 			},
 			{ id: 51, icon: PayrollsSvg, title: "Payrolls", type: "sub", active: false, selected: false, children: [
 
-					{ id: 52, path: `${import.meta.env.BASE_URL}elements/navbar`, type: "link", active: false, selected: false, title: "Navbar" },
-					{ id: 53, path: `${import.meta.env.BASE_URL}elements/megaMenu`, type: "link", active: false, selected: false, title: "MegaMenu" },
-					{ id: 54, path: `${import.meta.env.BASE_URL}elements/nav&tabs`, type: "link", active: false, selected: false, title: "Nav & Tabs" },
-					{ id: 55, path: `${import.meta.env.BASE_URL}elements/breadcrumbs`, type: "link", active: false, selected: false, title: "BreadCrumb" },
-					{ id: 56, path: `${import.meta.env.BASE_URL}elements/paginations`, type: "link", active: false, selected: false, title: "Pagination" },
-					{ id: 57, path: `${import.meta.env.BASE_URL}elements/grids`, type: "link", active: false, selected: false, title: "Grids" },
-					{ id: 58, path: `${import.meta.env.BASE_URL}elements/columns`, type: "link", active: false, selected: false, title: "Columns" }
+					// { id: 52, path: `${import.meta.env.BASE_URL}elements/navbar`, type: "link", active: false, selected: false, title: "Navbar" },
+					// { id: 53, path: `${import.meta.env.BASE_URL}elements/megaMenu`, type: "link", active: false, selected: false, title: "MegaMenu" },
+					// { id: 54, path: `${import.meta.env.BASE_URL}elements/nav&tabs`, type: "link", active: false, selected: false, title: "Nav & Tabs" },
+					// { id: 55, path: `${import.meta.env.BASE_URL}elements/breadcrumbs`, type: "link", active: false, selected: false, title: "BreadCrumb" },
+					// { id: 56, path: `${import.meta.env.BASE_URL}elements/paginations`, type: "link", active: false, selected: false, title: "Pagination" },
+					// { id: 57, path: `${import.meta.env.BASE_URL}elements/grids`, type: "link", active: false, selected: false, title: "Grids" },
+				// { id: 58, path: `${import.meta.env.BASE_URL}elements/columns`, type: "link", active: false, selected: false, title: "Columns" }
+				
+					{ id: 60, path: `${import.meta.env.BASE_URL}systemreports/hirings`, type: "link", active: false, selected: false, title: "Hiring" },
+					{ id: 61, path: `${import.meta.env.BASE_URL}systemreports/employees`, type: "link", active: false, selected: false, title: "Employee Registration" },
+					{ id: 62, path: `${import.meta.env.BASE_URL}systemreports/clients`, type: "link", active: false, selected: false, title: "Employer or Clients" },
+					{ id: 63, path: `${import.meta.env.BASE_URL}systemreports/contracts`, type: "link", active: false, selected: false, title: "Contracts" },
+					{ id: 64, path: `${import.meta.env.BASE_URL}systemreports/industrials`, type: "link", active: false, selected: false, title: "Industrial Relation" },
+					{ id: 65, path: `${import.meta.env.BASE_URL}systemreports/payrolls`, type: "link", active: false, selected: false, title: "Payrolls" },
+					{ id: 66, path: `${import.meta.env.BASE_URL}systemreports/attendances`, type: "link", active: false, selected: false, title: "Attendances" }
 				]
 			},
 			
