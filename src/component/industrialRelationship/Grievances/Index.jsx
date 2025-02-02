@@ -176,7 +176,7 @@ function Style1() {
 								<div className="space-y-2">
                                      	<Link to={`${import.meta.env.BASE_URL}leaves/annual/create-leave/`}>
 								    <button type="button" className="ti-btn ti-btn-primary ">
-									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Grievance							
+									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	Create Grievance							
 									</button>
 							   </Link>    
 									</div>
@@ -225,7 +225,7 @@ function Style1() {
 												</div>
                                                     </td>
                                                     <td>{annual.employee_name}</td>
-											<td className="!text-success font-semibold text-base">{annual.employer}</td>
+											<td className="font-semibold text-base">{annual.employer}</td>
 											<td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													

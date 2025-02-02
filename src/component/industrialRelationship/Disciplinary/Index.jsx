@@ -35,7 +35,7 @@ function Ajaxcalling(e, id) {
 //   console.log("ID new", id);
 
   Swal.fire({
-    title: 'Fill Deactivate Reason',
+    title: 'Initiation Reason',
     input: 'text',
     inputAttributes: {
       autocapitalize: 'off'
@@ -174,9 +174,9 @@ function Style1() {
 							<div className="flex">
 								<h5 className="box-title my-auto">Employees Disciplinary Cases</h5>
 								<div className="space-y-2">
-                                     	<Link to={`${import.meta.env.BASE_URL}leaves/annual/create-leave/`}>
+                                     	<Link to={`${import.meta.env.BASE_URL}industrials/disciplinaries/create-disciplinary/`}>
 								    <button type="button" className="ti-btn ti-btn-primary ">
-									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Misconduct							
+									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	 Create Disciplinary							
 									</button>
 							   </Link>    
 									</div>
@@ -215,7 +215,7 @@ function Style1() {
 												</div>
                                                     </td>
                                                     <td>{annual.employee_name}</td>
-											<td className="!text-success font-semibold text-base">{annual.employer}</td>
+											<td className="font-semibold text-base">{annual.employer}</td>
 											<td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
@@ -241,7 +241,7 @@ function Style1() {
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}leaves/show_annual_leave/${annual.id}`}
+													<Link to={`${import.meta.env.BASE_URL}industrials/disciplinaries/show_annual_leave/${annual.id}`}
 														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 														<i className="ti ti-eye"></i>
 														<span
@@ -257,7 +257,7 @@ function Style1() {
                                                     aria-label="anchor"
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
                                                     onClick={() => {
-                                                   navigate(`${import.meta.env.BASE_URL}leaves/annual/editLeave/${annual.id}`);   
+                                                   navigate(`${import.meta.env.BASE_URL}industrials/disciplinaries/edit_disciplinary/${annual.id}`);   
                                                     }}
                                                    >
                                                     <i className="ti ti-pencil"></i>

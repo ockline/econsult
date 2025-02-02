@@ -555,7 +555,7 @@ const ShowCandidate = () => {
 
                                                     <td><input className='ti-form-input' type="text"
                                                         placeholder="Remark"
-                                                        name="practicl_test_remark" value={practical.practicl_test_remark}/>
+                                                        name="practicl_test_remark" value={formData.practicl_test_remark}/>
                                                         
                                                     </td>
 

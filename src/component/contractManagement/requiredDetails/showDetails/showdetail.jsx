@@ -111,7 +111,7 @@ const ShowContractDetails = () => {
 
     };
 
-    
+    console.log('welcomeememem', formData);
     return (
         <div>
             <Helmet>
@@ -128,11 +128,7 @@ const ShowContractDetails = () => {
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                    <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required/show_detail/${formData.id}`}>Show Contract Details
-
-                        </a>
-                    </li>
+                   
                 </ol>
             </div>
 
