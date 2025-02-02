@@ -266,7 +266,7 @@ const Assessment = () => {
                     // Additional logic or state updates after successful update
                 } else if (resp.data.status === 200) {
                     swal({
-                        title: 'HR Competency Interview Assessed successfully submitted',
+                        title: 'Success',
                         text: resp.data.message,
                         icon: 'success',
                         button: 'ok',
