@@ -36,6 +36,7 @@ const ShowApplication = () => {
 
     const { id } = useParams();
 
+    console.log(formData)
     useEffect(() => {
         axios.get(`${apiBaseUrl}/employees/application/show_application/${id}`)
             .then((res) => {
@@ -164,7 +165,7 @@ const handlePreviewClick = async (description) => {
     console.log('Document not found in employeeDocument.');
   }
 };
-
+    // console.log('datata', formData);
 
     return (
         <div>
@@ -182,11 +183,11 @@ const handlePreviewClick = async (description) => {
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                    <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/show_record/${formData.id}`}>Employee Social Record Details
+                    {/* <li className="text-sm">
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/show_record/${formData.employee_id}`}>Employee Social Record Details
 
                         </a>
-                    </li>
+                    </li> */}
                 </ol>
             </div>
 
@@ -210,7 +211,7 @@ const handlePreviewClick = async (description) => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black font-medium">
-                                                {formData.employee_name}
+                                                {formData?.employee_name}
                                             </td>
                                         </tr>
                                           <tr className="!border-0">
@@ -219,7 +220,7 @@ const handlePreviewClick = async (description) => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.employer}
+                                                {formData?.employer}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -228,7 +229,7 @@ const handlePreviewClick = async (description) => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.job_title}
+                                                {formData?.job_title}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -237,7 +238,7 @@ const handlePreviewClick = async (description) => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.department}
+                                                {formData?.department}
                                             </td>
                                         </tr>
                                         { formData.section !== '' && (

@@ -4,7 +4,7 @@ import { fetchEmployeeDetails } from '/src/common/leavedata';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Creatable from "react-select/creatable";
 import DatePicker from 'react-datepicker';
-import { LeaveType } from "/src/common/select2data";
+import { SickLeaveType } from "/src/common/select2data";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -214,7 +214,7 @@ const AddSickLeave = () => {
     return (
         <div>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Annual Leave</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Sick Leave</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
@@ -266,7 +266,7 @@ const AddSickLeave = () => {
 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Leave Type <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="leave_type" options={LeaveType} onChange={(selectedOption) => handleInputChange(["leave_type"], selectedOption ? selectedOption.value : null)} value={LeaveType.find((option) => option.value === formData.leave_id)} />
+                                    <Creatable classNamePrefix="react-select" name="leave_type" options={SickLeaveType} onChange={(selectedOption) => handleInputChange(["leave_type"], selectedOption ? selectedOption.value : null)} value={SickLeaveType.find((option) => option.value === formData.leave_id)} />
                                     <span className="text-danger">{formData.error_list.leave_id}</span>
                                 </div>
                                 <div className="space-y-2">
