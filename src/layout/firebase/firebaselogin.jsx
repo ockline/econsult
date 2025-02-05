@@ -132,7 +132,16 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
                 <div className="font-[sans-serif]  flex items-center justify-center min-h-[75vh] p-4">
 
              <div class="shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)] max-w-4xl max-md:max-w-lg rounded-md p-6">
-       <h1 className="text-lg"><b>SOCRATE MANAGEMENT SYSTEM (SOMS)</b></h1>
+       <h1 className="text-lg"><b>&nbsp;SOCRATE MANAGEMENT SYSTEM (SOMS)</b></h1>
+<hr 
+  style={{ 
+    height: '2px',       // Thickness of the line
+    width: '45%',        // Width of the line (50% of the container)
+    backgroundColor: '#000', // Line color (black)
+    border: 'none',      // Removes the default border
+    margin: '8px 0'     // Adds space above and below the line
+  }} 
+/>
 
         <div class="grid md:grid-cols-2 items-center gap-8">
           <div class="max-md:order-1 lg:min-w-[450px]">
