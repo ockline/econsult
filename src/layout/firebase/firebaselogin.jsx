@@ -135,11 +135,11 @@ const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
        <h1 className="text-lg"><b>&nbsp;SOCRATE MANAGEMENT SYSTEM (SOMS)</b></h1>
 <hr 
   style={{ 
-    height: '2px',       // Thickness of the line
-    width: '45%',        // Width of the line (50% of the container)
-    backgroundColor: '#000', // Line color (black)
-    border: 'none',      // Removes the default border
-    margin: '8px 0'     // Adds space above and below the line
+    height: '2px',       
+    width: '45%',       
+    backgroundColor: '#000', 
+    border: 'none',     
+    margin: '8px 0'     
   }} 
 />
 
