@@ -89,7 +89,7 @@ const SignInCover1 = () => {
                 <img src={ALLImages('dark')} alt="logo" className="mx-auto block"/>
             </Link> */}
               <h1 className=" header-logo block text-2xl font-bold text-gray-800 dark:text-white">
-                  Ellen & Ethan Consult Management System (ECMS)</h1>
+                  &nbsp;&nbsp;&nbsp;Socrate Management System</h1>
               <hr></hr>
             <div className="mt-7 bg-white rounded-sm shadow-sm dark:bg-bgdark">
                 <div className="p-4 sm:p-7">
