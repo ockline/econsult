@@ -220,7 +220,7 @@ function Style1() {
 															</div>
 												</div>
 											</td>
-											<td className="!text-success font-semibold text-base">{employer.reg_no}</td>
+											<td className=" font-semibold text-base">{employer.reg_no}</td>
 											<td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
@@ -255,9 +255,13 @@ function Style1() {
 															</Link>
 															</div>
 															&nbsp;&nbsp;
-														<Link to={`${import.meta.env.BASE_URL}employers/registrations/editClients/${employer.id}`} className="ti-btn ti-btn-primary me-1">
+														<Link to={`${import.meta.env.BASE_URL}employers/registrations/editClients/${employer.id}`} className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 													    <i className="ti ti-edit-circle"></i>
-														Edit
+														<span
+															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+															role="tooltip">
+                                Edit
+														</span>
 														</Link>
 															&nbsp;&nbsp;
 												

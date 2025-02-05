@@ -202,6 +202,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
         }
 
     }
+    
 
 
     //full screen
@@ -311,6 +312,17 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                             <Link className="responsive-logo-light" to={`${import.meta.env.BASE_URL}dashboards/normal`} aria-label="Brand">
                                 <img src={ALLImages('dark')} alt="logo" className="mx-auto" /></Link>
                         </div>
+                   
+                           
+                                <div 
+                                className="header-nav-center" 
+                                style={{ display: 'flex', flexDirection: 'column', marginLeft: '36%', alignItems: 'center' }}
+                                >
+                                <h1 className="header-title" style={{ fontSize: '40px' ,marginBottom: '3px'}}><b>SOMS</b></h1>
+                                <h5>SOCRATE MANAGEMENT SYSTEM</h5>
+                                </div>
+                            
+                            
 
                         <div className="header-right">
                             <div className="responsive-headernav">
