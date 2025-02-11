@@ -107,9 +107,12 @@ const AddEmployee = () => {
         setStep((prevStep) => prevStep - 1);
     };
 
+    
+    const [isLoading, setIsLoading] = useState(false);
     const handleSubmit = async (e) => {
         // Handle form submission logic here
         e.preventDefault();
+        setIsLoading(true); 
         // console.log('Form submitted:', formData);
         const DataToSend = {
             job_title_id: formData?.job_title_id,
@@ -188,14 +191,14 @@ const AddEmployee = () => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -203,23 +206,27 @@ const AddEmployee = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Employee Personnel Registered Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
                     closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
                 });
-                // .then(() => {
-
-                // This code will be executed after the "ok" button is clicked and the modal is closed
-                // navigate('/employees/personal/employee_list/'); // Call the navigate function to redirect to the specified route
-                // });
+              
             }
         }
-        catch (error) {
-            console.error("Unexpected error:", error.message);
-        };
-    };
+      catch (error) {
+        console.error("Unexpected error:", error.message);
+        swal({
+            title: 'Error',
+            text: 'Something went wrong. Please try again.',
+            icon: 'error',
+            button: 'OK',
+        });
+    } finally {
+        setIsLoading(false); // Stop loading after request finishes
+    }
+};
     // Job title  *********************
     const [job_titles, setJobTitles] = useState([]);
     useEffect(() => {
@@ -497,14 +504,14 @@ const AddEmployee = () => {
             }
             else if (res.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: res.data.message,
                     icon: 'warning',
                     button: 'ok',
                 });
             } else if (res.data.status === 200) {
                 swal({
-                    title: 'Education History added Successfully',
+                    title: 'Success',
                     text: res.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -852,7 +859,7 @@ const AddEmployee = () => {
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Department Name <span style={{ color: "red" }}> *</span></label>
                                     <Creatable classNamePrefix="react-select" name="department_id" options={departments} onChange={(selectedOption) => handleInputChange(["department_id"], selectedOption ? selectedOption.value : null)} value={departments.find((option) => option.value === formData.department_id)} />
-                                    <span className="text-danger">{formData.error_list.department_id}</span>
+                                    {/* <span className="text-danger">{formData.error_list.department_id}</span> */}
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Telephone home number <span style={{ color: "red" }}> *</span></label>
@@ -919,7 +926,9 @@ const AddEmployee = () => {
 
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Passport id <span style={{ color: "red" }}> *</span></label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Passport id
+                                        {/* <span style={{ color: "red" }}> *</span> */}
+</label> 
                                     <input type="number" name="passport_id" className="my-auto ti-form-input" value={formData.passport_id}
                                         onChange={(e) => handleInputChange('passport_id', e.target.value)} placeholder="passport id" required />
 
@@ -1222,8 +1231,11 @@ const AddEmployee = () => {
 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Department name </label>
-                                    <input type="text" name="former_department" className="my-auto ti-form-input" value={formData.former_department}
-                                        onChange={(e) => handleInputChange('former_department', e.target.value)} placeholder="Department name" required />
+                                    {/* <input type="text" name="former_department" className="my-auto ti-form-input" value={formData.former_department}
+                                        onChange={(e) => handleInputChange('former_department', e.target.value)} placeholder="Department name" required /> */}
+                                    
+                                     <Creatable classNamePrefix="react-select" name="former_department" options={departments} onChange={(selectedOption) => handleInputChange(["former_department"], selectedOption ? selectedOption.value : null)} value={departments.find((option) => option.value === formData.former_department)} />
+                                    {/* <span className="text-danger">{formData.error_list.former_department}</span> */}
 
                                 </div>
 
@@ -1276,17 +1288,17 @@ const AddEmployee = () => {
 
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Nssf Number<span style={{ color: "red" }}> *</span>  </label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Nssf Number  </label>
                                     <input type="number" name="nssf" className="my-auto ti-form-input" value={formData.nssf}
                                         onChange={(e) => handleInputChange('nssf', e.target.value)} placeholder="Nssf Number  " />
-                                    <span className="text-danger">{formData.error_list.nssf}</span>
+                                    {/* <span className="text-danger">{formData.error_list.nssf}</span> */}
 
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">WCF Number <span style={{ color: "red" }}> *</span> </label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">WCF Number </label>
                                     <input type="number" name="wcf" className="my-auto ti-form-input" value={formData.wcf}
                                         onChange={(e) => handleInputChange('wcf', e.target.value)} placeholder="WCF Number  " />
-                                    <span className="text-danger">{formData.error_list.wcf}</span>
+                                    {/* <span className="text-danger">{formData.error_list.wcf}</span> */}
 
                                 </div>
                                 <div className="space-y-2">
@@ -1300,7 +1312,7 @@ const AddEmployee = () => {
                                     <label className="ti-form-label mb-0 font-bold text-lg">Nhif Number<span style={{ color: "red" }}> *</span>  </label>
                                     <input type="number" name="nhif" className="my-auto ti-form-input" value={formData.nhif}
                                         onChange={(e) => handleInputChange('nhif', e.target.value)} placeholder="Nhif Number  " />
-                                    <span className="text-danger">{formData.error_list.nhif}</span>
+                                    {/* <span className="text-danger">{formData.error_list.nhif}</span> */}
 
                                 </div>
 
@@ -1343,9 +1355,22 @@ const AddEmployee = () => {
 
                             {step === 4 && (
                                 <div className="float-end">
-                                    <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-secondary  justify-center">
-                                        <i className="ti ti-layout-grid-add"></i>Add personal Detail
-                                    </button>
+                                   
+                                    <button onClick={handleSubmit} disabled={isLoading} className="ti-btn ti-btn-secondary  justify-center">
+                                        <i className="ti ti-layout-grid-add"></i>
+                                        {/* {isLoading ? "Submitting..." : "Add personal Detail"} */}
+                                        
+                                         {isLoading ? (
+                                                <>
+                                                    <span className="ti-spinner text-white" role="status" aria-label="loading">
+                                                        <span className="sr-only">Submitting...</span>
+                                                    </span>
+                                                    Loading...
+                                                </>
+                                            ) : (
+                                                'Add personal Detail'
+                                            )}
+                                </button>
                                     <Link to="#" className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-primary m-0 whitespace-nowrap" data-hs-overlay="#task-compose" style={{ backgroundColor: '#619162' }}>
                                         <i className="ti ti-database"></i>Add Education History
                                     </Link>&nbsp;

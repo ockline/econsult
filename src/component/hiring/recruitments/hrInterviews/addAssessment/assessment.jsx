@@ -427,7 +427,7 @@ const Assessment = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Cost Center Number </label>
-                                            <input type="number" name="tin" className="ti-form-input" placeholder="Cost Center Number"  value={formData.cost_number}
+                                            <input type="number" name="cost_number" className="ti-form-input" placeholder="Cost Center Number"  value={formData.cost_number}
                                                 onChange={(e) => handleInputChange('cost_number', e.target.value)} required />
                                               {/* <span className="text-danger">{formData.error_list.cost_number}</span> */}
                                         </div>

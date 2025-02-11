@@ -14,6 +14,7 @@ const AddClient = () => {
     // const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
         const [step, setStep] = useState(1);
         const [formData, setFormData] = useState({
             name: '',
@@ -76,6 +77,8 @@ const AddClient = () => {
         }));
     }
 };
+
+    
 
 
         // const handleInputChange = (stepName, value) => {
@@ -234,7 +237,7 @@ const AddClient = () => {
     }, []);
     
       // Region  *********************
-
+const [selectedRegion, setSelectedRegion] = useState(null);
     const [regions, setRegions] = useState([]);
 
     useEffect(() => {
@@ -252,23 +255,44 @@ const AddClient = () => {
       // District  *********************
 
     const [districts, setDistricts] = useState([]);
+    console.log('district',districts);
+    
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const district = await DistrictData();
+    //             setDistricts(district);
+    //         } catch (error) {
+    //             console.error("Error:", error.message);
+    //         }
+    //     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const district = await DistrictData();
-                setDistricts(district);
-            } catch (error) {
-                console.error("Error:", error.message);
-            }
-        };
+    //     fetchData();
+    // }, []);
+    
+    
+  useEffect(() => {
+    const fetchDistricts = async () => {
+        if (!selectedRegion) {
+            setDistricts([]); // Reset districts if no region is selected
+            return;
+        }
 
-        fetchData();
-    }, []);
+        try {
+            const districtData = await DistrictData(selectedRegion); // Fetch districts based on regionId
+            setDistricts(districtData);
+        } catch (error) {
+            console.error("Error fetching districts:", error.message);
+        }
+    };
+
+    fetchDistricts();
+}, [selectedRegion]);
      
     //postcode & ward
      const [wards, setWards] = useState([]);
 
+    console.log('kata', wards);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -330,7 +354,25 @@ const AddClient = () => {
         fetchData();
     }, []);
     
+   const handleRegionChange = (selectedOption) => {
+    const regionId = selectedOption ? selectedOption.value : null;
+    console.log("Selected Region ID:", regionId); // Debugging
+    setSelectedRegion(regionId);
+    handleInputChange(["region_id"], regionId);
+
+    setFormData((prevData) => ({
+        ...prevData,
+        district_id: null, // Reset district when region changes
+    }));
+};
+
+// Handle district selection
+const handleDistrictChange = (selectedOption) => {
+    handleInputChange(["district_id"], selectedOption ? selectedOption.value : null);
+};
     
+    
+    console.log("Fetching districts for region:", selectedRegion);
     return (
     <div>
       
@@ -508,18 +550,51 @@ const AddClient = () => {
                                                 onChange={(e) => handleInputChange('vrn', e.target.value)} placeholder="VNR number" required />
                                               <span className="text-danger">{formData.error_list.vrn}</span>
                                         </div>
-                                     <div className="space-y-2">
+                                     {/* <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md" name="name">Region Name <span style={{ color: "red" }}> *</span></label>                                     
                                             <Creatable classNamePrefix="react-select" name="region_id" options={regions} onChange={(selectedOption) => handleInputChange(["region_id"], selectedOption ? selectedOption.value : null)} value={regions.find((option) => option.value === formData.region_id)} />
                                               <span className="text-danger">{formData.error_list.region_id}</span>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">District name <span style={{ color: "red" }}> *</span></label>
-                                            {/* <input type="text" name="district_id" className="my-auto ti-form-input" placeholder="District name" value={formData.district_id}
-                                                onChange={(e) => handleInputChange('district_id', e.target.value)} required /> */}
                                             <Creatable classNamePrefix="react-select" name="district_id" options={districts} onChange={(selectedOption) => handleInputChange(["district_id"], selectedOption ? selectedOption.value : null)} value={districts.find((option) => option.value === formData.district_id)} />
                                               <span className="text-danger">{formData.error_list.district_id}</span>
-                                        </div>
+                                        </div> */}
+                                
+                                
+                                <div className="space-y-2">
+            <label className="ti-form-label mb-0 font-bold text-md">
+                Region Name <span style={{ color: "red" }}> *</span>
+            </label>
+            <Creatable
+                classNamePrefix="react-select"
+                name="region_id"
+                options={regions}
+                onChange={handleRegionChange}
+                value={regions.find((option) => option.value === formData.region_id)}
+            />
+            <span className="text-danger">{formData.error_list.region_id}</span>
+        </div>
+
+                                {/* District Dropdown */}
+                                              <div className="space-y-2">
+            <label className="ti-form-label mb-0 font-bold text-md">
+                District Name <span style={{ color: "red" }}> *</span>
+            </label>
+     <Creatable
+    classNamePrefix="react-select"
+    name="district_id"
+    options={
+        districts.length > 0 
+            ? districts[0].options.filter(district => district.regionId === selectedRegion) 
+            : []
+    }
+    onChange={handleDistrictChange}
+    value={districts.length > 0 ? districts[0].options.find((option) => option.value === formData.district_id) : null}
+    isDisabled={!selectedRegion}
+/>
+   </div>
+                                
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Ward name</label>
                                             
@@ -637,12 +712,14 @@ const AddClient = () => {
                                             <input type="file" name="vrn_doc" id="small-file-input" 
                                             onChange={(e) => handleFileInputChange('vrn_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           <span className="text-danger">{formData.error_list.vrn_doc}</span>
-                                        </div>
+                                </div>
+                                 
 
                                     {/* Rest of Step 3 form fields */}
-                                </div>
+                            </div>
+                            
                                 )}
-                              
+                              <br/>
                                 <div>
                                     {step > 1 && step < 3 && (
                              <button type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
@@ -662,9 +739,38 @@ const AddClient = () => {
                             )}
 
                             {step === 3 && (
-                                <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
-                                    <i className="ti ti-send"></i>Submit
+                               <div className="flex justify-end">
+                                <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-right">
+                                    <i className="ti ti-send"></i>
+                                     {isLoading ? (
+                <>
+                    <span className="ti-spinner text-white" role="status" aria-label="loading">
+                        <span className="sr-only">Loading...</span><i className="ti ti-send"></i>
+                    </span>
+                    Loading...
+                </>
+            ) : (
+                'Submit'
+            )}
                                 </button>
+                              </div>  
+                                
+        //          <button
+        //     type="submit" onClick={handleSubmit}
+        //     className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none ti-btn ti-btn-success  justify-center"
+        //     disabled={isLoading} // Disable the button when loading
+        // >
+        //     {isLoading ? (
+        //         <>
+        //             <span className="ti-spinner text-white" role="status" aria-label="loading">
+        //                 <span className="sr-only">Loading...</span><i className="ti ti-send"></i>
+        //             </span>
+        //             Loading...
+        //         </>
+        //     ) : (
+        //         'Submit'
+        //     )}
+        //           </button>
                             )}
                         </div>
                         </form>

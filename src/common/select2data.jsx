@@ -638,6 +638,7 @@ export const DistrictData = async () => {
 const fetchDistricts = async () => {
   try {
     const response = await fetch(`${apiBaseUrl}/districts/show_district`);
+   
     if (!response.ok) {
       throw new Error('Failed to fetch districts');
     }
@@ -648,6 +649,7 @@ const fetchDistricts = async () => {
     const formattedDistricts = result.districts.map(district => ({
       label: district.name, // replace with the actual property name in your district object
       value: district.id,   // replace with the actual property name in your district object
+      regionId: district.region_id
     }));
 
     return formattedDistricts;
@@ -659,7 +661,7 @@ const fetchDistricts = async () => {
 };
 // Call the fetchDistricts function to get the actual district data
 // const districtsData = await fetchDistricts();
-// console.log('welimba');
+// // console.log('welimba');
 // console.log(districtsData);
 
 // BankData, BankBranchData, LocationData, AllowanceData, ShiftData,WardData
@@ -819,6 +821,7 @@ const fetchWards = async () => {
     const formattedWards = result.wards.map(ward => ({
       label: ward.ward_name, // replace with the actual property name in your ward object
       value: ward.id,   // replace with the actual property name in your ward object
+      districtId: ward.district_id
     }));
 
     return formattedWards;
