@@ -191,8 +191,12 @@ const UserRoles = ({ local_varaiable, ThemeChanger }) => {
                     button: 'ok',
                     closeOnClickOutside: false,
                 }).then(() => {
-                    // fetchData();
-                    // Handle any post-success actions here
+                    refreshUserRoles();
+                    setFormData({
+                        user_id: '',
+                        role_id: [],
+                        error_list: [],
+                    });
                 });
             }
         } catch (error) {
@@ -218,6 +222,15 @@ const UserRoles = ({ local_varaiable, ThemeChanger }) => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    // Add this function to refresh the roles data
+    const refreshUserRoles = async () => {
+        try {
+            const userRoles = await fetchUserRolesData();
+            setUserRoles(userRoles);
+        } catch (error) {
+            console.error('Error fetching updated roles:', error.message);
+        }
+    };
 
     return (
         <div>

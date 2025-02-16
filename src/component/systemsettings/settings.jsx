@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
     Applicants,
     Bitcoins,
@@ -22,6 +22,8 @@ import '../../assets/css/RolesCheckboxGrid.css';
 import axios from "axios";
 
 const Settings = ({ local_varaiable, ThemeChanger }) => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (localStorage.Syntoverticalstyles == "doublemenu") {
             const theme = store.getState();
@@ -130,14 +132,14 @@ const Settings = ({ local_varaiable, ThemeChanger }) => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -150,13 +152,12 @@ const Settings = ({ local_varaiable, ThemeChanger }) => {
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
-                    closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
+                    closeOnClickOutside: false,
+                }).then(() => {
+                    navigate('/manage_roles/');
                 });
-                // .then(() => {
-                // navigate('/employees/personal/employee_list/'); 
-                // });
             }
-            setIsLoading(false)
+            setIsLoading(false);
         }
         catch (error) {
             console.error("Unexpected error:", error.message);

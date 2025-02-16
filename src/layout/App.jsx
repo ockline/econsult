@@ -26,10 +26,34 @@ const App = ({local_varaiable, UserChanger, RolesChanger}) => {
 		}
 	}
 	useEffect(() => {
+		// Initialize Preline
+		const initializePreline = async () => {
+			try {
+				const { initFlowbite } = await import('preline');
+				initFlowbite();
+			} catch (error) {
+				console.error('Error initializing Preline:', error);
+			}
+		};
 
-		// import("preline");
-		initialize()
+		// Call initialize functions
+		initialize();
+		initializePreline();
 
+		// Re-initialize Preline when route changes
+		const observer = new MutationObserver(() => {
+			initializePreline();
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+
+		// Cleanup
+		return () => {
+			observer.disconnect();
+		};
 	}, []);
 
 	 const csrfToken = async () => {

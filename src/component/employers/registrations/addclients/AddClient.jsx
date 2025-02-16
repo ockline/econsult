@@ -4,11 +4,45 @@ import React, { useState, useEffect } from 'react'
 import { BankData, BankBranchData, LocationData, RegionData, DistrictData, AllowanceData, ShiftData,WardData,CostCenterSelect} from '/src/common/select2data';
 import Creatable from "react-select/creatable";
 import Swal from "sweetalert2";
-import Select from 'react-dropdown-select';
+import Select, { components } from 'react-select';
+import { MultiSelect } from "react-multi-select-component";
 import { Link, useNavigate } from "react-router-dom";
 // import { MultiSelect } from "react-multi-select-component";
 import 'react-form-wizard-component/dist/style.css';
 import axios from "axios";
+import makeAnimated from 'react-select/animated';
+import DatePicker from 'react-datepicker';
+
+
+// Update the Option component to handle clicks correctly
+const Option = props => {
+    const { isSelected, label, innerProps, getValue } = props;
+    return (
+        <div
+            {...innerProps}
+            style={{ 
+                padding: '8px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer'
+            }}
+        >
+            <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => {}}
+                style={{ marginRight: '8px' }}
+            />
+            <label>{label}</label>
+        </div>
+    );
+};
+
+const MultiValue = props => (
+    <components.MultiValue {...props}>
+        <span>{props.data.label}</span>
+    </components.MultiValue>
+);
 
 const AddClient = () => {
     // const [startDate, setStartDate] = useState(new Date());
@@ -45,7 +79,7 @@ const AddClient = () => {
             plot_number: '',
             block_number: '',
             cost_center: '',
-            allowance_id: '',
+            allowance_id: [],
             shift_id: '',
             working_days: '',
             working_hours: '',
@@ -55,6 +89,8 @@ const AddClient = () => {
             nhif_doc: null,
             nssf_doc: null,
             vrn_doc: null,
+            start_time: '',
+            end_time: '',
             error_list: [],
         });
     const handleFileInputChange = (fieldName, files) => {
@@ -79,7 +115,12 @@ const AddClient = () => {
 };
 
     
+const [startDate, setStartDate] = useState(new Date());
 
+    //range data picker
+
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [startsDate, endDate] = dateRange;
 
         // const handleInputChange = (stepName, value) => {
         //     setFormData((prevData) => ({
@@ -130,10 +171,12 @@ const AddClient = () => {
                 plot_number: formData.plot_number,
                 block_number: formData.block_number,
                 cost_center: formData?.cost_center,
-                allowance_id: formData?.allowance_id,
+                allowance_id: formData.allowance_id.join(','),
                 shift_id: formData?.shift_id,
                 working_days: formData?.working_days,
                 working_hours: formData?.working_hours,
+                start_time: formData?.start_time,
+                end_time: formData?.end_time,
                 tin_doc: formData.tin_doc,
                 osha_doc: formData.osha_doc,
                 wcf_doc: formData.wcf_doc,
@@ -166,14 +209,14 @@ const AddClient = () => {
                     // text: " Welcome to Your Admin Page",
                     allowOutsideClick: false,
                     icon: 'error',
-                    title: 'Oops...',
+                    title: 'failed',
                     text: formattedErrors,
                     footer: 'Kindly Fill all part with red to Continue '
                     });              
                
                 }else if (resp.data.status === 404) {
             swal({
-              title: 'Sorry! Operation failed',
+              title: 'failed',
               text: resp.data.message,
               icon: 'warning',
               button: 'ok',
@@ -181,7 +224,7 @@ const AddClient = () => {
             
             } else if (resp.data.status === 500) {
             swal({
-              title: 'Sorry! Operation failed',
+              title: 'failed',
               text: resp.data.message,
               icon: 'warning',
               button: 'ok',
@@ -189,7 +232,7 @@ const AddClient = () => {
             // Additional logic or state updates after successful update
           } else if(resp.data.status === 200) {
                     swal({
-                        title: 'Employer Registered Successfully',
+                        title: 'Success',
                         text: resp.data.message,
                         icon: 'success',
                         button: 'ok',
@@ -237,7 +280,8 @@ const AddClient = () => {
     }, []);
     
       // Region  *********************
-const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [regions, setRegions] = useState([]);
 
     useEffect(() => {
@@ -325,6 +369,8 @@ const [selectedRegion, setSelectedRegion] = useState(null);
     // Allowances 
      const [allowances, setAllowances] = useState([]);
 
+   
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -372,7 +418,44 @@ const handleDistrictChange = (selectedOption) => {
 };
     
     
-    console.log("Fetching districts for region:", selectedRegion);
+    
+    
+const handleDistrictsChange = (selectedOption) => {
+    const districtId = selectedOption ? selectedOption.value : null;
+    console.log("Selected District ID:", districtId);
+
+    setSelectedDistrict(districtId);
+    handleInputChange("district_id", districtId);
+
+    // Reset ward when district changes
+    setFormData((prevData) => ({
+        ...prevData,
+        ward_id: null, 
+    }));
+};
+
+// Handle ward selection
+const handleWardChange = (selectedOption) => {
+    handleInputChange("ward_id", selectedOption ? selectedOption.value : null);
+};
+
+// Create animated components
+const animatedComponents = makeAnimated();
+
+   const handleAllowanceChange = (selectedOptions) => {
+    setFormData({
+        ...formData,
+        allowance_id: selectedOptions.map(option => option.value) // Extract values
+    });
+};
+    
+    
+    
+    
+    // Add these state variables at the top with other useState declarations
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
+
     return (
     <div>
       
@@ -539,67 +622,76 @@ const handleDistrictChange = (selectedOption) => {
                                               <span className="text-danger">{formData.error_list.osha}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">NHIF <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">NHIF </label>
                                             <input type="number" name="nhif" className="my-auto ti-form-input"  value={formData.nhif}
                                                 onChange={(e) => handleInputChange('nhif', e.target.value)} placeholder="NHIF Number" required />
-                                              <span className="text-danger">{formData.error_list.nhif}</span>
+                                              {/* <span className="text-danger">{formData.error_list.nhif}</span> */}
                                         </div>
                                          <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">VRN Number <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">VRN Number </label>
                                             <input type="number" name="vnr" className="my-auto ti-form-input"  value={formData.vrn}
                                                 onChange={(e) => handleInputChange('vrn', e.target.value)} placeholder="VNR number" required />
-                                              <span className="text-danger">{formData.error_list.vrn}</span>
+                                              {/* <span className="text-danger">{formData.error_list.vrn}</span> */}
                                         </div>
-                                     {/* <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md" name="name">Region Name <span style={{ color: "red" }}> *</span></label>                                     
-                                            <Creatable classNamePrefix="react-select" name="region_id" options={regions} onChange={(selectedOption) => handleInputChange(["region_id"], selectedOption ? selectedOption.value : null)} value={regions.find((option) => option.value === formData.region_id)} />
-                                              <span className="text-danger">{formData.error_list.region_id}</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">District name <span style={{ color: "red" }}> *</span></label>
-                                            <Creatable classNamePrefix="react-select" name="district_id" options={districts} onChange={(selectedOption) => handleInputChange(["district_id"], selectedOption ? selectedOption.value : null)} value={districts.find((option) => option.value === formData.district_id)} />
-                                              <span className="text-danger">{formData.error_list.district_id}</span>
-                                        </div> */}
+                                     
                                 
                                 
                                 <div className="space-y-2">
-            <label className="ti-form-label mb-0 font-bold text-md">
-                Region Name <span style={{ color: "red" }}> *</span>
-            </label>
-            <Creatable
-                classNamePrefix="react-select"
-                name="region_id"
-                options={regions}
-                onChange={handleRegionChange}
-                value={regions.find((option) => option.value === formData.region_id)}
-            />
-            <span className="text-danger">{formData.error_list.region_id}</span>
-        </div>
+                                <label className="ti-form-label mb-0 font-bold text-md">
+                                    Region Name <span style={{ color: "red" }}> *</span>
+                                </label>
+                                <Creatable
+                                    classNamePrefix="react-select"
+                                    name="region_id"
+                                    options={regions}
+                                    onChange={handleRegionChange}
+                                    value={regions.find((option) => option.value === formData.region_id)}
+                                />
+                                <span className="text-danger">{formData.error_list.region_id}</span>
+                            </div>
 
-                                {/* District Dropdown */}
-                                              <div className="space-y-2">
-            <label className="ti-form-label mb-0 font-bold text-md">
-                District Name <span style={{ color: "red" }}> *</span>
-            </label>
-     <Creatable
-    classNamePrefix="react-select"
-    name="district_id"
-    options={
-        districts.length > 0 
-            ? districts[0].options.filter(district => district.regionId === selectedRegion) 
-            : []
-    }
-    onChange={handleDistrictChange}
-    value={districts.length > 0 ? districts[0].options.find((option) => option.value === formData.district_id) : null}
-    isDisabled={!selectedRegion}
-/>
-   </div>
+                                                    {/* District Dropdown */}
+                         <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-md">
+                                    District Name <span style={{ color: "red" }}> *</span>
+                                </label>
+                        <Creatable
+                        classNamePrefix="react-select"
+                        name="district_id"
+                        options={
+                            districts.length > 0 
+                                ? districts[0].options.filter(district => district.regionId === selectedRegion) 
+                                : []
+                        }
+                        onChange={handleDistrictChange}
+                        value={districts.length > 0 ? districts[0].options.find((option) => option.value === formData.district_id) : null}
+                        isDisabled={!selectedRegion}
+                    />
+                    </div>
                                 
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">Ward name</label>
-                                            
-                                             <Creatable classNamePrefix="react-select" name="ward_id" options={wards} onChange={(selectedOption) => handleInputChange(["ward_id"], selectedOption ? selectedOption.value : null)} value={wards.find((option) => option.value === formData.ward_id)} />
-                                        </div>
+                                       
+                           <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-md">Ward Name</label>
+
+                                <Creatable
+                                    classNamePrefix="react-select"
+                                    name="ward_id"
+                                    options={
+                                        wards.length > 0 
+                                            ? wards[0].options.filter(ward => ward.districtId === formData.district_id) 
+                                            : []
+                                    }
+                                    onChange={handleWardChange}
+                                    value={wards.length > 0 
+                                        ? wards[0].options.find(option => option.value === formData.ward_id) 
+                                        : null
+                                    }
+                                    isDisabled={!formData.district_id}
+                                />
+                            </div>
+
+                                
+                                
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Location Type  <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="location_type_id" options={locations} onChange={(selectedOption) => handleInputChange(["location_type_id"], selectedOption ? selectedOption.value : null)} value={locations.find((option) => option.value === formData.location_type_id)} />
@@ -632,14 +724,23 @@ const handleDistrictChange = (selectedOption) => {
                                         </div>
                                         
                                       
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">Allowance <span style={{ color: "red" }}> *</span></label>
-                                            {/* <Select className="!p-0 place-holder" multi options={allowances} values={[]} onChange={(value) => console.log(value)} /> */}
-                                             {/* <MultiSelect classNamePrefix='react-select' options={allowances} value={allowances.find((option) => option.value === formData.allowance_id)} onChange={(selectedOption) => handleInputChange(["allowance_id"], selectedOption ? selectedOption.value : null)} labelledBy="Select" /> */}
-  
-                                            <Creatable classNamePrefix="react-select" name="allowance_id" options={allowances} onChange={(selectedOption) => handleInputChange(["allowance_id"], selectedOption ? selectedOption.value : null)} value={allowances.find((option) => option.value === formData.allowance_id)} />
-                                              <span className="text-danger">{formData.error_list.allowance_id}</span>
-                                        </div>
+                                       
+
+                                    <div className="space-y-2 multiple-select">
+                                        <label className="ti-form-select-label mt-2">Allowances<span style={{ color: "red" }}> *</span></label>
+                                        <MultiSelect
+                                            classNamePrefix="react-select"
+                                            name="allowance_id"
+                                            options={allowances.length > 0 ? allowances[0].options : []} // Ensure it's not empty
+                                            value={(allowances.length > 0 ? allowances[0].options : []).filter(option =>
+                                                formData.allowance_id.includes(option.value)
+                                            )}
+                                            onChange={handleAllowanceChange}
+                                            labelledBy="Select"
+                                    />
+                                    <span className="text-danger">{formData.error_list.shift_id}</span>
+                                    </div>
+                                
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Shift <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="shift_id" options={shifts} onChange={(selectedOption) => handleInputChange(["shift_id"], selectedOption ? selectedOption.value : null)} value={shifts.find((option) => option.value === formData.shift_id)} />
@@ -665,57 +766,106 @@ const handleDistrictChange = (selectedOption) => {
                                         <div className=" space-y-2">                                       
                                         </div> <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Working hours  <span style={{ color: "red" }}> *</span></label>
-                                            <input type="text" name="working_hours" className="my-auto ti-form-input" value={formData.working_hours}
+                                            <input type="number" name="working_hours" className="my-auto ti-form-input" value={formData.working_hours}
                                                 onChange={(e) => handleInputChange('working_hours', e.target.value)} placeholder="Working hour" required />
                                               <span className="text-danger">{formData.error_list.working_hours}</span>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Working Days <span style={{ color: "red" }}> *</span></label>
-                                            <input type="text" name="working_days" className="my-auto ti-form-input" value={formData.working_days}
+                                            <input type="number" name="working_days" className="my-auto ti-form-input" value={formData.working_days}
                                                 onChange={(e) => handleInputChange('working_days', e.target.value)} placeholder="Working Days" required />
                                               <span className="text-danger">{formData.error_list.working_days}</span>
+                                </div>
+ 
+
+                                  <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-md">Reporting Time <span style={{ color: "red" }}> *</span></label>
+                                    <div className="flex items-center gap-4">
+                                        <div className="relative flex-1">
+                                            <DatePicker
+                                                selected={startTime}
+                                                onChange={(time) => {
+                                                    setStartTime(time);
+                                                    handleInputChange('start_time', time);
+                                                }}
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeIntervals={15}
+                                                timeCaption="Time"
+                                                dateFormat="h:mm aa"
+                                                className="ti-form-input pl-10 w-full"
+                                                placeholderText="Start Time"
+                                            />
+                                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                                <i className="ti ti-clock text-gray-400"></i>
+                                            </div>
                                         </div>
                                         
-                                        <div className="space-y-3">
-                                            <label className="ti-form-label mb-0 font-bold text-md">TIN Attachment  <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="tin_doc" id="small-file-input" 
-                                                onChange={(e) => handleFileInputChange('tin_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
-                                            <span className="text-danger">{formData.error_list.tin_doc}</span>
-                                            {/* value={formData.tin_doc} accept=".pdf"  onChange={(e) => handleInputChange('tin_doc', e.target.files[0])}  */}
+                                        <span className="text-gray-500">to</span>
+                                        
+                                        <div className="relative flex-1">
+                                            <DatePicker
+                                                selected={endTime}
+                                                onChange={(time) => {
+                                                    setEndTime(time);
+                                                    handleInputChange('end_time', time);
+                                                }}
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeIntervals={15}
+                                                timeCaption="Time"
+                                                dateFormat="h:mm aa"
+                                                className="ti-form-input pl-10 w-full"
+                                                placeholderText="End Time"
+                                            />
+                                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                                <i className="ti ti-clock text-gray-400"></i>
+                                            </div>
                                         </div>
-                                        <div className="space-y-3">
-                                            <label className="ti-form-label mb-0 font-bold text-md">NSSF Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="nssf_doc" id="small-file-input"
-                                            onChange={(e) => handleFileInputChange('nssf_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
-                                          <span className="text-danger">{formData.error_list.nssf_doc}</span>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <label className="ti-form-label mb-0 font-bold text-md">OSHA Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="osha_doc" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('osha_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
-                                          <span className="text-danger">{formData.error_list.osha_doc}</span>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <label className="ti-form-label mb-0 font-bold text-md">WCF Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="wcf_doc" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('wcf_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
-                                          <span className="text-danger">{formData.error_list.wcf_doc}</span>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <label className="ti-form-label mb-0 font-bold text-md">NHIF Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="nhif_doc" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('nhif_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
-                                          <span className="text-danger">{formData.error_list.nhif_doc}</span>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <label className="ti-form-label mb-0 font-bold text-md">VRN Attachment <span style={{ color: "red" }}> *</span></label>
-                                            <input type="file" name="vrn_doc" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('vrn_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
-                                          <span className="text-danger">{formData.error_list.vrn_doc}</span>
+                                    </div>
+                                    <span className="text-danger">{formData.error_list.start_time || formData.error_list.end_time}</span>
                                 </div>
-                                 
+                                
+                                <div className="space-y-3">
+                                    <label className="ti-form-label mb-0 font-bold text-md">TIN Attachment  <span style={{ color: "red" }}> *</span></label>
+                                    <input type="file" name="tin_doc" id="small-file-input" 
+                                        onChange={(e) => handleFileInputChange('tin_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                    <span className="text-danger">{formData.error_list.tin_doc}</span>
+                                    {/* value={formData.tin_doc} accept=".pdf"  onChange={(e) => handleInputChange('tin_doc', e.target.files[0])}  */}
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="ti-form-label mb-0 font-bold text-md">NSSF Attachment <span style={{ color: "red" }}> *</span></label>
+                                    <input type="file" name="nssf_doc" id="small-file-input"
+                                    onChange={(e) => handleFileInputChange('nssf_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                  <span className="text-danger">{formData.error_list.nssf_doc}</span>
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="ti-form-label mb-0 font-bold text-md">OSHA Attachment <span style={{ color: "red" }}> *</span></label>
+                                    <input type="file" name="osha_doc" id="small-file-input" 
+                                    onChange={(e) => handleFileInputChange('osha_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                  <span className="text-danger">{formData.error_list.osha_doc}</span>
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="ti-form-label mb-0 font-bold text-md">WCF Attachment </label>
+                                    <input type="file" name="wcf_doc" id="small-file-input" 
+                                    onChange={(e) => handleFileInputChange('wcf_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                  {/* <span className="text-danger">{formData.error_list.wcf_doc}</span> */}
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="ti-form-label mb-0 font-bold text-md">NHIF Attachment </label>
+                                    <input type="file" name="nhif_doc" id="small-file-input" 
+                                    onChange={(e) => handleFileInputChange('nhif_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                  {/* <span className="text-danger">{formData.error_list.nhif_doc}</span> */}
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="ti-form-label mb-0 font-bold text-md">VRN Attachment </label>
+                                    <input type="file" name="vrn_doc" id="small-file-input" 
+                                    onChange={(e) => handleFileInputChange('vrn_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                  {/* <span className="text-danger">{formData.error_list.vrn_doc}</span> */}
+                            </div>
+                             
 
-                                    {/* Rest of Step 3 form fields */}
+                                {/* Rest of Step 3 form fields */}
                             </div>
                             
                                 )}

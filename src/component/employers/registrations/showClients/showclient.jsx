@@ -70,6 +70,7 @@ const ShowClient = () => {
     })
         }, [id])
 	
+    console.log('e',employer)
        
   const [employerDocument, setEmployerDocument] = useState([]);
   const [documentUrl, setDocumentUrl] = useState('');
@@ -234,7 +235,7 @@ const ShowClient = () => {
                                 <div className="space-y-3">
                                     <p>
                                        
-                                        Socrate Consulting{"(L)"} Ltd
+                                        {employer.employer_name}
                                     </p>
                                     <p>
                                        Our company dealing with software development
@@ -353,7 +354,7 @@ const ShowClient = () => {
                                         aria-controls="profile-1"
                                         role="tab"
                                     >
-                                     Employer Profile
+                                      Profile
                                     </button>
                                     <button
                                         type="button"
@@ -363,17 +364,17 @@ const ShowClient = () => {
                                         aria-controls="profile-2"
                                         role="tab"
                                     ><i className="ti ti-package"></i>
-                                        Employer Package
+                                         Package
                                     </button>
-                                    <button
+                                         <button
                                         type="button"
                                         className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                         id="profile-item-3"
                                         data-hs-tab="#profile-3"
                                         aria-controls="profile-3"
                                         role="tab"
-                                    ><i className="ti ti-folders"></i>
-                                        Document Center
+                                    ><i className="ti ti-package"></i>
+                                         Remunoration
                                     </button>
                                     <button
                                         type="button"
@@ -381,6 +382,16 @@ const ShowClient = () => {
                                         id="profile-item-4"
                                         data-hs-tab="#profile-4"
                                         aria-controls="profile-4"
+                                        role="tab"
+                                    ><i className="ti ti-folders"></i>
+                                        Document Center
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+                                        id="profile-item-5"
+                                        data-hs-tab="#profile-5"
+                                        aria-controls="profile-5"
                                         role="tab"
                                     >
                                         Projects
@@ -637,7 +648,16 @@ const ShowClient = () => {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <br/>
+                                    <br/>                                  
+                                </div>
+                                
+                                  <div
+                                    id="profile-3"
+                                    className="hidden"
+                                    role="tabpanel"
+                                    aria-labelledby="profile-item-3"
+                                >
+                                  
                                       <h5 className="box-title mb-3">
                                        Employer Package
                                     </h5>
@@ -691,13 +711,13 @@ const ShowClient = () => {
                                     </div>
                                 </div>
                                 <div
-                                    id="profile-3"
+                                    id="profile-4"
                                     className="hidden text-center"
                                     role="tabpanel"
-                                    aria-labelledby="profile-item-3"
+                                    aria-labelledby="profile-item-4"
                                 >
                                     
-                                             <div className="box">
+                       <div className="box">
 						<div className="box-header">
 							<h5 className="box-title">Recent Files</h5>
 						</div>
@@ -804,6 +824,8 @@ Preview
                            
                                     
                                 </div>
+                               
+                               
                                 {/* <div
                                     id="profile-4"
                                     className="hidden text-center"
