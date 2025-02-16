@@ -339,13 +339,13 @@ DataToSend,  {
                                               {/* <span className="text-danger">{formData.error_list.deadline_date}</span> */}
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">Interview date HR  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">HR Interview date <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="hr_interview_date" className="my-auto ti-form-input"  value={formData.hr_interview_date}
                                                 onChange={(e) => handleInputChange('hr_interview_date', e.target.value)} placeholder="Date Of Application " required />
                                               {/* <span className="text-danger">{formData.error_list.hr_interview_date}</span> */}
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">Interview date Technical  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Technical Interview date<span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="tech_interview_date"  value={formData.tech_interview_date}
                                                 onChange={(e) => handleInputChange('tech_interview_date', e.target.value)} className="ti-form-input" placeholder="Interview date Technical" required />
                                               {/* <span className="text-danger">{formData.error_list.tech_interview_date}</span> */}
@@ -369,7 +369,7 @@ DataToSend,  {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Age <span style={{ color: "red" }}> *</span></label>
-                                            <input type="number" name="age" className="my-auto ti-form-input"  value={formData.age}
+                                            <input type="text" name="age" className="my-auto ti-form-input"  value={formData.age}
                                                 onChange={(e) => handleInputChange('age', e.target.value)} placeholder="age" required />
                                               {/* <span className="text-danger">{formData.error_list.age}</span> */}
                                         </div>

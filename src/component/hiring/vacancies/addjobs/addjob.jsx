@@ -14,7 +14,7 @@ const AddJob = () => {
     const [startDate, setStartDate] = useState(new Date());
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     
-    let navigate = useNavigate();
+    const navigate = useNavigate();
         // const history = useHistory();
         const [value, setValue] = useState('');
         const [step, setStep] = useState(1);
@@ -137,52 +137,66 @@ const AddJob = () => {
             
     const SaveDescription = async (e) => {
         e.preventDefault();
-        // console.log('Job Data:', jobData);
-       const JobDesc = {
-           name: jobData.name,
-       }
-       
+        
         try {
-    const res = await axios.post(`${apiBaseUrl}/hiring/job/job_description`, JobDesc, {
-        headers: {
-            "Content-Type": "multipart/form-data"
+            const res = await axios.post(`${apiBaseUrl}/hiring/job/job_description`, 
+                { name: jobData.name },
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
+
+            if (res.data[0].status === 404) {
+                swal({
+                    title: 'Sorry! Operation failed',
+                    text: res.data[0].message,
+                    icon: 'warning',
+                    button: 'ok',
+                });
+            } else if (res.data[0].status === 200) {
+                // First, manually remove the modal backdrop and classes
+                document.body.classList.remove('overflow-hidden');
+                const backdrop = document.querySelector('.hs-overlay-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+
+                // Close the modal
+                const modal = document.querySelector('#hs-large-modal');
+                if (modal) {
+                    modal.classList.remove('show');
+                    modal.style.display = 'none';
+                }
+
+                // Show success message and handle navigation
+                await swal({
+                    title: 'Job Description added Successfully',
+                    text: res.data[0].message,
+                    icon: 'success',
+                    button: 'ok',
+                });
+
+                // Clear form data
+                setJobData({ name: '' });
+                setValue('');
+
+                // Navigate after a short delay
+                setTimeout(() => {
+                    navigate('/hiring/vacancies/jobs');
+                }, 100);
+            }
+        } catch (error) {
+            console.log('Error occurred:', error);
+            swal({
+                title: 'Error',
+                text: error.response?.data?.message || 'An unexpected error occurred',
+                icon: 'error',
+                button: 'ok',
+            });
         }
-    });
-
-  if (res.data[0].status === 404) {
-    swal({
-        title: 'Sorry! Operation failed',
-        text: res.data[0].message,
-        icon: 'warning',
-        button: 'ok',
-    });
-} else if (res.data[0].status === 200) {
-    swal({
-        title: 'Job Description added Successfully',
-        text: res.data[0].message,
-        icon: 'success',
-        button: 'ok',
-    }).then(() => {
-        navigate('/hiring/vacancies/jobs');
-    });
-   
-}
-} catch (error) {
-    console.log('Error occurred:', error);
-
-    if (error.response && error.response.status === 404) {
-        console.log('Handling 404 error in catch block');
-        swal({
-            title: 'Resource Not Found',
-            text: 'The requested resource was not found on the server.',
-            icon: 'error',
-            button: 'ok',
-        })
-    } else {
-        console.error("Unexpected error:", error.message);
-    }
-}
-}
+    };
     //Departments
     const [departments, setDepartments] = useState([]);
 
@@ -334,13 +348,13 @@ const AddJob = () => {
                                               <span className="text-danger">{formData.error_list.deadline_date}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">Interview date HR  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">HR Interview date <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="hr_interview_date" className="my-auto ti-form-input"  value={formData.hr_interview_date}
                                                 onChange={(e) => handleInputChange('hr_interview_date', e.target.value)} placeholder="Date Of Application " required />
                                               <span className="text-danger">{formData.error_list.hr_interview_date}</span>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-md">Interview date Technical  <span style={{ color: "red" }}> *</span></label>
+                                            <label className="ti-form-label mb-0 font-bold text-md">Technical Interview date <span style={{ color: "red" }}> *</span></label>
                                             <input type="date" name="tech_interview_date"  value={formData.tech_interview_date}
                                                 onChange={(e) => handleInputChange('tech_interview_date', e.target.value)} className="ti-form-input" placeholder="Interview date Technical" required />
                                               <span className="text-danger">{formData.error_list.tech_interview_date}</span>
@@ -364,7 +378,7 @@ const AddJob = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Age <span style={{ color: "red" }}> *</span></label>
-                                            <input type="number" name="age" className="my-auto ti-form-input"  value={formData.age}
+                                            <input type="text" name="age" className="my-auto ti-form-input"  value={formData.age}
                                                 onChange={(e) => handleInputChange('age', e.target.value)} placeholder="age" required />
                                               <span className="text-danger">{formData.error_list.age}</span>
                                         </div>
@@ -377,7 +391,7 @@ const AddJob = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Professional<span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="professional" className="my-auto ti-form-input"  value={formData.professional}
-                                                onChange={(e) => handleInputChange('professional', e.target.value)} placeholder="Contact person" required />
+                                                onChange={(e) => handleInputChange('professional', e.target.value)} placeholder="Professional " required />
                                               <span className="text-danger">{formData.error_list.professional}</span>
                                         </div>
                                         <div className="space-y-2">
