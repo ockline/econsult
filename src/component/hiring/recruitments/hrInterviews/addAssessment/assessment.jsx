@@ -2388,11 +2388,11 @@ const Assessment = () => {
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Residence Place  <span style={{ color: "red" }}> *</span></label>
                                             <input type="text" name="residence_place" className="my-auto ti-form-input"  value={formData.residence_place}
-                                                onChange={(e) => handleInputChange('residence_place', e.target.value)} placeholder="year of experience" required />
+                                                onChange={(e) => handleInputChange('residence_place', e.target.value)} placeholder="Residence Place" required />
                                               <span className="text-danger">{formData.error_list.residence_place}</span>
                                 </div>
                                    <div className="space-y-2">
-                                 <label className="ti-form-label mb-0 font-bold text-md">Relative inside (Client) <span style={{ color: "red" }}> *</span></label>
+                                 <label className="ti-form-label mb-0 font-bold text-md">Do you have relative inside (Client)? <span style={{ color: "red" }}> *</span></label>
                                         <div className = "grid sm:grid-cols-2 gap-2">
                                     <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
                                         <input type="radio" onChange={(e) => handleInputChange('relative_inside', e.target.value)} value="1" name="relative_inside" className = "ti-form-radio" id="relative_inside"/>

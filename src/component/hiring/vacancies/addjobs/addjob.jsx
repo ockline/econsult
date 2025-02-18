@@ -46,7 +46,8 @@ const AddJob = () => {
                 [stepName]: value,
                  error_list: { ...prevData.error_list, [stepName] : null },
             }));
-        };
+    };
+  
 
         const handleNextStep = () => {
             setStep((prevStep) => prevStep + 1);
@@ -78,7 +79,8 @@ const AddJob = () => {
             professional: formData.professional,
             salary_range: formData.salary_range,
             others: formData.others,
-            additional_comment: formData.additional_comment,
+                additional_comment: formData.additional_comment,
+            
                         
             };
             try {
@@ -132,15 +134,48 @@ const AddJob = () => {
     // Save Job Description 
     const [jobData, setJobData] = useState({
         name: '',
+        job_description_doc: null,
         
     });
+    
+    const handleFileInputChange = (fieldName, files) => {
+  //const file = files[0]; // Assuming single file selection, update accordingly for multiple files
+
+  setJobData((prevData) => ({
+    ...prevData,
+    [fieldName]: files,
+  }));
+};
+
+  
+    const handleJobInputChange = (stepName, value) => {
+    if (value instanceof File) {
+        // Handle file input change
+        handleFileInputChange(stepName, [value]);
+    } else {
+        // Handle other input types
+        setJobData((prevData) => ({
+            ...prevData,
+            [stepName]: value,
+            error_list: { ...prevData.error_list, [stepName]: null },
+        }));
+    }
+};
+    
+    
+  
             
     const SaveDescription = async (e) => {
         e.preventDefault();
         
+        const payLoad = {
+            name: jobData.name,
+            job_description_doc: jobData.job_description_doc
+        }
+        console.log('datat zenyewe',payLoad);
         try {
-            const res = await axios.post(`${apiBaseUrl}/hiring/job/job_description`, 
-                { name: jobData.name },
+            const res = await axios.post(`${apiBaseUrl}/hiring/job/job_description`, payLoad
+                ,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data"
@@ -179,7 +214,7 @@ const AddJob = () => {
                 });
 
                 // Clear form data
-                setJobData({ name: '' });
+                setJobData({ name: '' , job_description_doc: ''});
                 setValue('');
 
                 // Navigate after a short delay
@@ -484,7 +519,13 @@ const AddJob = () => {
                                                                                                     }
                                                                                                     }}
                                                                                                     />
-										</div>
+                                        </div>
+                                         <div className="space-y-3 col-span-4">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Job Description Attachment</label>
+                                            <input type="file" name="job_description_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('job_description_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                        </div>
 										<div className="ti-modal-footer">
 											<button type="button" className="hs-dropdown-toggle ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10" data-hs-overlay="#hs-large-modal">
                           Close
@@ -493,7 +534,7 @@ const AddJob = () => {
                                                
                                          <button
 											type="button"
-											className="ti-btn ti-btn-primary show-example-btn"
+											className="ti-btn-primary  btn-sm"
 											aria-label="Save Changes! Example: End of contract"
 											id="ajax-btn"
 											onClick={(e) => SaveDescription(e)}

@@ -157,42 +157,120 @@ DataToSend,  {
      // Save Job Description 
     const [jobData, setJobData] = useState({
         name: '',
+         job_description_doc: null,
         
     });
-       const updateJobDescription = async (e) => {
-            // Handle form submission logic here
-             e.preventDefault();
-            console.log('Form submitted:', jobData);
-           const JobDescSend = {
-               name: jobData.name,
-           };
     
-        try {
-        const resp = await axios.put(`${apiBaseUrl}/hiring/job/update_job_description/` + id, JobDescSend);
+        const handleJobFileInputChange = (fieldName, files) => {
+  //const file = files[0]; // Assuming single file selection, update accordingly for multiple files
 
-        // Handle validation errors            // Check response status and show SweetAlert
-            if (resp.data.status === 500) {
-                swal({
-                    title: 'Internal Server Error',
-                    text: resp.data.message,
-                    icon: 'warning',
-                    button: 'ok',
-                });
-            } else if (resp.data.status === 200) {
-                swal({
-                    title: 'Updated Successfully',
-                    text: resp.data.message,
-                    icon: 'success',
-                    button: 'ok',
-                }).then(() => {
-                    navigate('/hiring/vacancies/jobs');
-                });
-                
-        }
-    } catch (error) {
-        console.error("Unexpected error:", error.message);
+  setJobData((prevData) => ({
+    ...prevData,
+    [fieldName]: files,
+  }));
+};
+
+  
+    const handleJobInputChange = (stepName, value) => {
+    if (value instanceof File) {
+        // Handle file input change
+        handleJobFileInputChange(stepName, [value]);
+    } else {
+        // Handle other input types
+        setJobData((prevData) => ({
+            ...prevData,
+            [stepName]: value,
+            error_list: { ...prevData.error_list, [stepName]: null },
+        }));
     }
-    };
+};
+    
+    
+    
+       const updateJobDescription = async (e) => {
+            e.preventDefault();
+            
+            try {
+                // Create FormData object
+                const formData = new FormData();
+                formData.append('name', jobData.name || '');
+                if (jobData.job_description_doc && jobData.job_description_doc[0]) {
+                    formData.append('job_description_doc[]', jobData.job_description_doc[0]);
+                }
+                formData.append('_method', 'PUT');
+
+                console.log('Submitting data:', {
+                    name: jobData.name,
+                    hasFile: !!jobData.job_description_doc,
+                    id: id
+                });
+
+                const resp = await axios.post(
+                    `${apiBaseUrl}/hiring/job/update_job_description/${id}`, 
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                console.log('Response:', resp.data);
+
+                if (resp.data.status === 200) {
+                    // First close the modal
+                    const modal = document.querySelector('#hs-large-modal');
+                    if (modal) {
+                        modal.classList.remove('show');
+                        modal.style.display = 'none';
+                    }
+
+                    // Remove modal backdrop and cleanup
+                    document.body.classList.remove('overflow-hidden');
+                    const backdrop = document.querySelector('.hs-overlay-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+
+                    // Show success message
+                    await swal({
+                        title: 'Updated Successfully',
+                        text: resp.data.message,
+                        icon: 'success',
+                        button: 'OK',
+                        closeOnClickOutside: false,
+                    });
+
+                    // Reset form data
+                    setJobData({
+                        name: '',
+                        job_description_doc: null
+                    });
+                    setValue('');
+
+                    // Use timeout to ensure modal is fully closed
+                    setTimeout(() => {
+                        window.location.href = '/hiring/vacancies/jobs';
+                    }, 100);
+                } else {
+                    throw new Error(resp.data.message || 'Server returned an unsuccessful status');
+                }
+            } catch (error) {
+                console.error("Detailed error:", {
+                    message: error.message,
+                    response: error.response?.data,
+                    status: error.response?.status,
+                    stack: error.stack
+                });
+
+                swal({
+                    title: 'Error',
+                    text: error.response?.data?.message || 'An unexpected error occurred. Please check the console for details.',
+                    icon: 'error',
+                    button: 'OK',
+                });
+            }
+        };
     
     
       // Job title  *********************
@@ -485,7 +563,13 @@ DataToSend,  {
                                                                                                     }
                                                                                                     }}
                                                                                                     />
-										</div>
+                                        </div>
+                                            <div className="space-y-3 col-span-4">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Job Description Attachment</label>
+                                            <input type="file" name="job_description_doc" id="small-file-input" 
+                                            onChange={(e) => handleJobFileInputChange('job_description_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                        </div>
 										<div className="ti-modal-footer">
 											<button type="button" className="hs-dropdown-toggle ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10" data-hs-overlay="#hs-large-modal">
                           Close
@@ -494,7 +578,7 @@ DataToSend,  {
                                                
                                          <button
 											type="button"
-											className="ti-btn ti-btn-primary show-example-btn"
+											className="ti-btn-primary show-example-btn"
 											aria-label="Save Changes! Example: End of contract"
 											id="ajax-btn"
 											onClick={(e) => updateJobDescription(e)}

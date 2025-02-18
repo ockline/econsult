@@ -2386,7 +2386,7 @@ const EditAssessment = () => {
                                               {/* <span className="text-danger">{formData.error_list.residence_place}</span> */}
                                 </div>
                                    <div className="space-y-2">
-                                 <label className="ti-form-label mb-0">Relative inside (Client) <span style={{ color: "red" }}> *</span></label>
+                                 <label className="ti-form-label mb-0">Do you have elative inside (Client)? <span style={{ color: "red" }}> *</span></label>
                                         <div className = "grid sm:grid-cols-2 gap-2">
                                     <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
                                         <input type="radio" onChange={(e) => handleInputChange('relative_inside', e.target.value)} value="1" name="relative_inside" className = "ti-form-radio" id="relative_inside"/>
