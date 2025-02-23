@@ -294,14 +294,14 @@ const handlePracticalInputChange = (index, field, value) => {
                                         </button>
 
                                         <button
-            type="button"
-            className="ti-btn ti-btn-primary show-example-btn"
-            aria-label="Save Changes! Example: End of contract"
-            id="ajax-btn"
-            onClick={(e) => updatePracticalTest(e, practical)}
-          >
-            <i className="ti ti-send"></i> Save
-          </button>
+                                        type="button"
+                                        className="ti-btn ti-btn-primary show-example-btn"
+                                        aria-label="Save Changes! Example: End of contract"
+                                        id="ajax-btn"
+                                        onClick={(e) => updatePracticalTest(e, practical)}
+                                    >
+                                        <i className="ti ti-send"></i> Save
+                                    </button>
                                     </div>
 
                                 </div>
@@ -312,11 +312,7 @@ const handlePracticalInputChange = (index, field, value) => {
 
                         ))}
                         <div className="ti-modal-footer-1 sm:flex !block space-y-2 text-end">
-                            <button type="button"
-                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-danger text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
-                                data-hs-overlay="#task-compose">
-                                Close
-                            </button>
+                            
                             <button
                                 type="button"
                                 className="ti-btn ti-btn-success show-example-btn"
@@ -324,6 +320,11 @@ const handlePracticalInputChange = (index, field, value) => {
                                 id="ajax-btn-1"
                                 onClick={Style3}><i className="ri-save-line"></i>Submit to Complete
                             </button>
+                             <button type="button"
+                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-danger text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
+                                            data-hs-overlay="#task-compose">
+                                            Close
+                                        </button>
                         </div>
                     </form>
                 </div>

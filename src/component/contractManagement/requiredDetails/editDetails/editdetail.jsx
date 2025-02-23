@@ -47,6 +47,7 @@ const EditContractDetail = () => {
         relationship2: '',
         job_description_doc: null,
         contract_detail_signed: null,
+        passport_attachment: null,
         error_list: [],
     });
     //fetch contract_detail data'
@@ -138,6 +139,7 @@ const EditContractDetail = () => {
             employee_id: formData.id,
             job_description_doc: formData.job_description_doc,
             contract_detail_signed: formData.contract_detail_signed,
+            passport_attachment: formData.passport_attachment,
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/contracts/required/update_contract_detail/${id}`, DataToSend, {
@@ -160,14 +162,14 @@ const EditContractDetail = () => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -175,7 +177,7 @@ const EditContractDetail = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Social Record Created Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -514,6 +516,11 @@ const EditContractDetail = () => {
                                 <div className="space-y-2" id="attachment">
                                             <label className="ti-form-label mb-0 font-bold text-lg ">Signed Contract Details<span style={{ color: "red" }}> *</span> (max size 2MB)</label>
                                             <input type="file" name="contract_detail_signed" id="small-file-input" onChange={(e) => handleFileInputChange('contract_detail_signed', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                </div>
+                                
+                                <div className="space-y-2" id="attachment">
+                                            <label className="ti-form-label mb-0 font-bold text-lg ">Passport Attachment<span style={{ color: "red" }}> *</span> (max size 2MB)</label>
+                                            <input type="file" name="passport_attachment" id="small-file-input" onChange={(e) => handleFileInputChange('passport_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                         </div>
 
                             </div>

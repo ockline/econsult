@@ -228,7 +228,7 @@ const InductionTraining = () => {
                                             <td className="text-center font-bold">
                                                 {
                                                     employee.stage === 1 ? (<></>) :
-                                                        employee.stage === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={(e) => Style2(e, employee.id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}employees/applications/create_application/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-settings"></i>Add Induction</Link>
+                                                        employee.stage === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={(e) => Style2(e, employee.id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}employees/induction/add_induction_training/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-settings"></i>Add Induction</Link>
                                                         )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { JobTitleData, PackageData, RegionData, RankingCriterialData, UsersData, PracticalTest } from '/src/common/select2data';
 import { Link, useNavigate } from 'react-router-dom';
@@ -117,7 +116,7 @@ const AddCandidate = () => {
 
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -125,7 +124,7 @@ const AddCandidate = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Technical Interview Assessment is Assessed successfully',
+                    title: 'Successf',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -235,16 +234,42 @@ const AddCandidate = () => {
         test_marks: '',
         ranking_creterial_id: '',
         practicl_test_remark: '',
+        practical_test_doc: '',
         error_list: [],
     });
+    
+    
+     const handleFileInputChange = (fieldName, files) => {
+        // const file = files[0]; // Assuming single file selection, update accordingly for multiple files
 
-    const handlePracticalInputChange = (stepName, value) => {
         setPracticalData((prevData) => ({
             ...prevData,
-            [stepName]: value,
-            error_list: { ...prevData.error_list, [stepName]: null },
+            [fieldName]: files,
         }));
     };
+
+
+    const handlePracticalInputChange = (stepName, value) => {
+        if (value instanceof File) {
+            // Handle file input change
+            handleFileInputChange(stepName, [value]);
+        } else {
+            // Handle other input types
+            setPracticalData((prevData) => ({
+                ...prevData,
+                [stepName]: value,
+                error_list: { ...prevData.error_list, [stepName]: null },
+            }));
+        }
+    };
+
+    // const handlePracticalInputChange = (stepName, value) => {
+    //     setPracticalData((prevData) => ({
+    //         ...prevData,
+    //         [stepName]: value,
+    //         error_list: { ...prevData.error_list, [stepName]: null },
+    //     }));
+    // };
 
     const SavePracticalTest = async (e, practical) => {
         e.preventDefault();
@@ -252,7 +277,8 @@ const AddCandidate = () => {
             practical_test_id: practical?.practical_test_id,
             test_marks: practical?.test_marks,
             ranking_creterial_id: practical.ranking_creterial_id,
-            practicl_test_remark: practical.practicl_test_remark
+            practicl_test_remark: practical.practicl_test_remark,
+            practical_test_doc: practical.practical_test_doc
         }
 
         try {
@@ -273,14 +299,14 @@ const AddCandidate = () => {
             }
             else if (res.data.status === 404) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: res.data.message,
                     icon: 'warning',
                     button: 'ok',
                 });
             } else if (res.data.status === 200) {
                 swal({
-                    title: 'Practical Test added Successfully',
+                    title: 'Success',
                     text: res.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -288,7 +314,6 @@ const AddCandidate = () => {
 
                     clearPracticalData();
                 });
-
 
             }
         } catch (error) {
@@ -307,46 +332,6 @@ const AddCandidate = () => {
             }
         }
     }
-
-
-    //  function Style3() {
-    // 		const swalWithBootstrapButtons = Swal.mixin({
-    // 			customClass: {
-    // 			  confirmButton: 'ti-btn bg-secondary text-white hover:bg-secondary focus:ring-secondary dark:focus:ring-offset-secondary',
-    // 			  cancelButton: 'ti-btn bg-danger text-white hover:bg-danger focus:ring-danger dark:focus:ring-offset-danger'
-    // 			},
-    // 			buttonsStyling: false
-    // 		  })
-
-    // 		  swalWithBootstrapButtons.fire({
-    // 			title: 'Are you sure?',
-    // 			text: "You want to complete this interview?",
-    // 			icon: 'warning',
-    // 			showCancelButton: true,
-    // 			confirmButtonText: 'Yes, complete it!',
-    // 			cancelButtonText: 'No, cancel!',
-    // 			reverseButtons: true
-    // 		  }).then((result) => {
-    // 			if (result.isConfirmed) {
-    // 			  swalWithBootstrapButtons.fire(
-    // 				'Saved!',
-    // 				'Your Technical Interview Assessment is Assessed successfully.',
-    // 				'success'
-    // 			  ).then(() => {
-    //                     navigate('/hiring/recruitments/technical_interviewed');
-    //            });
-    // 			} else if (
-    // 			  /* Read more about handling dismissals below */
-    // 			  result.dismiss === Swal.DismissReason.cancel
-    // 			) {
-    // 			  swalWithBootstrapButtons.fire(
-    // 				'Cancelled',
-    // 				'Your imaginary file is safe :)',
-    // 				'error'
-    // 			  )
-    // 			}
-    // 		  })
-    // 	 }
     function Style3() {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -364,41 +349,50 @@ const AddCandidate = () => {
             confirmButtonText: 'Yes, complete it!',
             cancelButtonText: 'No, cancel!',
             reverseButtons: true
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                swalWithBootstrapButtons.fire(
-                    'Saved!',
-                    'Your Technical Interview Assessment is Assessed successfully.',
-                    'success'
-                ).then(() => {
-                    // Make an asynchronous request to your controller
-                    fetch(`${apiBaseUrl}/hiring/technical_interview/last_candidate`, {
-                        method: 'GET', // or 'GET' depending on your API
+                try {
+                    const response = await fetch(`${apiBaseUrl}/hiring/technical_interview/last_candidate`, {
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            // Add any additional headers if needed
                         },
-                        // Add any request body if needed
-                        // body: JSON.stringify({ key: 'value' })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Handle the response from your controller
-                            // console.log(data);
-                            navigate('/hiring/recruitments/technical_interviewed');
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    await response.json();
+                    
+                    // Close the current Swal dialog
+                    swalWithBootstrapButtons.close();
+                    
+                    // Show success message with willClose callback
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Saved!',
+                        text: 'Your Technical interview assessment successfully assessed.',
+                        willClose: () => {
+                            // Navigate after the success message is closed
+                            window.location.href = '/hiring/recruitments/technical_interviewed';
+                        }
+                    });
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Something went wrong while completing the interview.',
+                    });
+                }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    icon: 'error',
+                    title: 'Cancelled',
+                    text: 'Your imaginary file is safe :)',
                 });
-            } else if (
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelled',
-                    'Your imaginary file is safe :)',
-                    'error'
-                );
             }
         });
     }
@@ -653,15 +647,15 @@ const AddCandidate = () => {
                                                 <input type="text" className="my-auto ti-form-input" placeholder="Relevant Technical Experience  Comment" name="practicl_test_remark" value={practical.practicl_test_remark}
                                                     onChange={(e) => handlePracticalInputChange('practicl_test_remark', e.target.value)} />
                                             </div>
+                                            <div className="space-y-2" id="attachment">
+                                            <label className="ti-form-label mb-0 font-bold text-lg ">Practical Test Attachment<span style={{ color: "red" }}> *</span> (max size 2MB)</label>
+                                            <input type="file" name="practical_test_doc" id="small-file-input" onChange={(e) => handleFileInputChange('practical_test_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                        </div>
 
                                         </div>
                                     </div>
                                     <div className="ti-modal-footer">
-                                        <button type="button"
-                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-warning text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
-                                            data-hs-overlay="#task-compose">
-                                            Close
-                                        </button>
+                                       
 
                                         <button
                                             type="button"
@@ -677,6 +671,11 @@ const AddCandidate = () => {
                                             aria-label="Save Changes! Example: End of contract"
                                             id="ajax-btn-1"
                                             onClick={Style3}><i className="ti ti-send"></i>Submit to Complete
+                                        </button>
+                                         <button type="button"
+                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-danger text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
+                                            data-hs-overlay="#task-compose">
+                                            Close
                                         </button>
                                     </div>
                                 </div>

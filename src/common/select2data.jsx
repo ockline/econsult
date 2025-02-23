@@ -344,6 +344,14 @@ export const FollowUpSelectcomponent = [
    { value: 'Ask and answer questions', label: 'Ask and answer questions' }, 
 ];
 
+//Explain employee remuneration:
+export const TrainingSelectcomponent = [
+  { value: 'HSE Training', label: 'HSE Training' },
+  { value: 'HRR Training', label: 'HR Training' },
+   { value: 'Apropes Training', label: 'Apropes Training' },
+  { value: 'Policy Training', label: 'Policy Training' },
+ 
+];
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 //  /* starting of returning departments  */

@@ -688,10 +688,7 @@ const animatedComponents = makeAnimated();
                                     }
                                     isDisabled={!formData.district_id}
                                 />
-                            </div>
-
-                                
-                                
+                            </div>                                
                                         <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-md">Location Type  <span style={{ color: "red" }}> *</span></label>
                                             <Creatable classNamePrefix="react-select" name="location_type_id" options={locations} onChange={(selectedOption) => handleInputChange(["location_type_id"], selectedOption ? selectedOption.value : null)} value={locations.find((option) => option.value === formData.location_type_id)} />

@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { JobTitleData, PackageData, RegionData, EmployerData, UsersData, DepartmentData, NationalityData, RankingCriterialData, CollegesData, yearsData, EducationLevelData, ReferenceCheck, Multiselectcomponent, ExplanationSelectcomponent, FollowUpSelectcomponent, AproposSelectcomponent, EnvironmentSelectcomponent, HealthSelectcomponent, RemunerationSelectcomponent, EmploymentSelectcomponent, KeyPeoplaSelectcomponent } from '/src/common/select2data';
+import { JobTitleData, PackageData, RegionData, EmployerData, UsersData, DepartmentData, NationalityData, RankingCriterialData, CollegesData, yearsData, EducationLevelData, ReferenceCheck, Multiselectcomponent, ExplanationSelectcomponent, FollowUpSelectcomponent, AproposSelectcomponent, EnvironmentSelectcomponent, HealthSelectcomponent, RemunerationSelectcomponent, EmploymentSelectcomponent, KeyPeoplaSelectcomponent, TrainingSelectcomponent } from '/src/common/select2data';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Creatable from "react-select/creatable";
 import DatePicker from 'react-datepicker';
@@ -9,11 +8,14 @@ import { MultiSelect } from "react-multi-select-component";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-
-
 const AddTraining = () => {
-
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    // Now we can safely log these
+    console.log('Component rendered with id:', id);
+    console.log('apiBaseUrl:', apiBaseUrl);
 
     const [selected, setSelected] = useState([]);
     const [selectedBusiness, setSelectedBusiness] = useState([]);
@@ -24,11 +26,10 @@ const AddTraining = () => {
     const [selectedEnvironment, setSelectedEnvironment] = useState([]);
     const [selectedAproposTraining, setSelectedAproposTraining] = useState([]);
     const [selectedConductFollowUp, setSelectedConductFollowUp] = useState([]);
+     const [selectedTraining, setSelectedTraining] = useState([]);
 
     const [inputValue, setInputValue] = useState('');
     const [value, setValue] = useState([]);
-    const { id } = useParams();
-    let navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         social_record_id: '',
@@ -53,6 +54,7 @@ const AddTraining = () => {
         apropos_training: '',
         health_safety: '',
         conduct_follow_up: '',
+        trainings: '',
         comments: '',
         notes: '',
         conducted_date: '',
@@ -69,7 +71,22 @@ const AddTraining = () => {
         }));
     };
 
-
+  
+ 
+     
+    useEffect(() => {
+        axios.get(`${apiBaseUrl}/employees/induction/retrieve_social_record/${id}`).then((res) => {
+            // Convert date string to Date object
+            const data = res.data.social_records;
+            const updatedFormData = {
+                ...formData,
+                ...data,
+                employment_date: data.employment_date ? new Date(data.employment_date) : null,
+                conducted_date: data.conducted_date ? new Date(data.conducted_date) : null
+            };
+            setFormData(updatedFormData);
+        });
+    }, [id])
 
     const handleInputChange = (stepName, value) => {
         if (Array.isArray(value)) {
@@ -116,9 +133,8 @@ const AddTraining = () => {
     };
 
     const handleSubmit = async (e) => {
-        // Handle form submission logic here
         e.preventDefault();
-        // console.log('Form submitted:', formData);
+      
         const DataToSend = {
             social_record_id: id,
             employer_id: formData.employer_id,
@@ -135,6 +151,7 @@ const AddTraining = () => {
             business: formData.business,
             employment_date: formData.employment_date,
             establishment: formData.establishment,
+            trainings: formData.trainings,
             roles_key: formData.roles_key,
             employee_remuneration: formData.employee_remuneration,
             employment_condition: formData.employment_condition,
@@ -146,6 +163,7 @@ const AddTraining = () => {
             notes: formData.notes,
             conducted_date: formData.conducted_date,
             // military_attach: formData.military_attach,
+            
         };
         console.log('data zinazokwenda', DataToSend);
         try {
@@ -399,26 +417,27 @@ const AddTraining = () => {
                                 </div>
                                 <div className=" space-y-2">
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Employer / Company Name  <span style={{ color: "red" }}> *</span></label>
-
-                                    <Creatable classNamePrefix="react-select" name="employer_id" options={employers} onChange={(selectedOption) => handleInputChange(["employer_id"], selectedOption ? selectedOption.value : null)} value={employers.find((option) => option.value === formData.employer_id)} required />
-                                    <span className="text-danger">{formData.error_list.employer_id}</span>
-
+                                
+                                 <div className="space-y-2">
+                                  <label className="ti-form-label mb-0 font-bold text-lg">Employer / Company Name  <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="employer_id" className="my-auto ti-form-input text-black bg-gray-100 " placeholder="Employer" value={formData.employer}
+                                        onChange={(e) => handleInputChange('employer_id', e.target.value)} required  readOnly/>
+                                    <span className="text-danger">{formData.error_list.employer}</span>
                                 </div>
 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">Employer Address </label>
-                                    <input type="text" name="employer_address" className="my-auto ti-form-input" placeholder="employer address" value={formData.employer_address}
-                                        onChange={(e) => handleInputChange('employer_address', e.target.value)} required />
+                                    <input type="text" name="employer_address" className="my-auto ti-form-input text-black bg-gray-100 " placeholder="employer address" value={formData.employer_address}
+                                        onChange={(e) => handleInputChange('employer_address', e.target.value)} required readOnly />
                                     <span className="text-danger">{formData.error_list.employer_address}</span>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">Employer Contact Person </label>
-                                    <input type="text" name="contact_personal" className="my-auto ti-form-input" placeholder="employer contact Person" value={formData.contact_personal}
+                                    <input type="text" name="contact_personal" className="my-auto ti-form-input text-black bg-gray-100 " placeholder="employer contact Person" value={formData.contact_personal} readOnly
                                         onChange={(e) => handleInputChange('contact_personal', e.target.value)} required />
                                     <span className="text-danger">{formData.error_list.contact_personal}</span>
                                 </div>
+                                
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">Contact Person Designation  <span style={{ color: "red" }}> *</span></label>
                                     <Creatable classNamePrefix="react-select" name="personal_designation" options={job_titles} onChange={(selectedOption) => handleInputChange(["personal_designation"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.personal_designation)} />
@@ -427,24 +446,24 @@ const AddTraining = () => {
 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">Contact Person Contacts </label>
-                                    <input type="text" name="personal_contacts" className="my-auto ti-form-input" placeholder="employer contact Person" value={formData.personal_contacts}
-                                        onChange={(e) => handleInputChange('personal_contacts', e.target.value)} required />
+                                    <input type="text" name="personal_contacts" className="my-auto ti-form-input text-black bg-gray-100 " placeholder="employer contact Person" value={formData.personal_contacts}
+                                        onChange={(e) => handleInputChange('personal_contacts', e.target.value)} required  readOnly/>
                                     <span className="text-danger">{formData.error_list.personal_contacts}</span>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">FirstName <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="firstname" className="my-auto ti-form-input" placeholder="Employee firstname" value={formData.firstname}
+                                    <input type="text" name="firstname" className="my-auto ti-form-input text-black bg-gray-100 " placeholder="Employee firstname" value={formData.firstname} readOnly
                                         onChange={(e) => handleInputChange('firstname', e.target.value)} required />
                                     <span className="text-danger">{formData.error_list.firstname}</span>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">MiddleName <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="middlename" className="my-auto ti-form-input" placeholder="Middlename" value={formData.middlename}
+                                    <input type="text" name="middlename" className="my-auto ti-form-input text-black bg-gray-100 " placeholder="Middlename" value={formData.middlename} readOnly
                                         onChange={(e) => handleInputChange('middlename', e.target.value)} required />
                                     <span className="text-danger">{formData.error_list.middlename}</span>
                                 </div> <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">LastName <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="lastname" className="my-auto ti-form-input" value={formData.lastname} onChange={(e) => handleInputChange('lastname', e.target.value)} placeholder="Employee Lastname" required />
+                                    <input type="text" name="lastname" className="my-auto ti-form-input text-black bg-gray-100 " value={formData.lastname} onChange={(e) => handleInputChange('lastname', e.target.value)} placeholder="Employee Lastname" required readOnly/>
                                     <span className="text-danger">{formData.error_list.lastname}</span>
                                 </div>
                                 <div className="space-y-2">
@@ -460,20 +479,29 @@ const AddTraining = () => {
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-calendar-line"></i></span>
                                         </div>
-                                        <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
-                                            name="employment_date" selected={formData.employment_date} onChange={(employment_date) => handleInputChange('employment_date', employment_date)}
-                                            timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput
+                                        <DatePicker 
+                                            className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10 text-black bg-gray-100 " readOnly
+                                            name="employment_date" 
+                                            selected={formData.employment_date} 
+                                            onChange={(date) => handleInputChange('employment_date', date)}
+                                            timeInputLabel="Time:" 
+                                            dateFormat="dd/MM/yyyy h:mm aa" 
+                                            showTimeInput
+                                            isClearable
                                         />
                                         <span className="text-danger">{formData.error_list.employment_date}</span>
                                     </div>
                                 </div>
 
 
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-md">Position / job  <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="job_title_id" options={job_titles} onChange={(selectedOption) => handleInputChange(["job_title_id"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.job_title_id)} />
+                                
+                                  <div className="space-y-2">
+                                 <label className="ti-form-label mb-0 font-bold text-md">Position / job  <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="job_title_id" className="my-auto ti-form-input text-black bg-gray-100 " value={formData.job_title} readOnly
+                                        onChange={(e) => handleInputChange('job_title', e.target.value)} placeholder="Jon title" required />
                                     <span className="text-danger">{formData.error_list.job_title_id}</span>
                                 </div>
+                                
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-md">Manager / supervisor:   <span style={{ color: "red" }}> *</span></label>
                                     <input type="text" name="reporting_to" className="my-auto ti-form-input" value={formData.reporting_to}
@@ -603,12 +631,25 @@ const AddTraining = () => {
                                             <span className="text-sm text-gray-500 dark:text-white/70"><i
                                                 className="ri ri-calendar-line"></i></span>
                                         </div>
-                                        <DatePicker className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
-                                            name="conducted_date" selected={formData.conducted_date} onChange={(conducted_date) => handleInputChange('conducted_date', conducted_date)}
-                                            timeInputLabel="Time:" dateFormat="dd/MM/yyyy h:mm aa" showTimeInput
+                                        <DatePicker 
+                                            className="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10"
+                                            name="conducted_date" 
+                                            selected={formData.conducted_date} 
+                                            onChange={(date) => handleInputChange('conducted_date', date)}
+                                            timeInputLabel="Time:" 
+                                            dateFormat="dd/MM/yyyy h:mm aa" 
+                                            showTimeInput
+                                            isClearable
                                         />
                                         <span className="text-danger">{formData.error_list.conducted_date}</span>
                                     </div>
+                                </div>
+                                 <div className="space-y-2 multiple-select">
+                                    <label className="ti-form-select-label mt-2">Training Necessary</label>
+                                    <MultiSelect classNamePrefix='react-select' name="trainings" options={TrainingSelectcomponent} value={selectedTraining} onChange={(value) => {
+                                        setSelectedTraining(value);
+                                        handleInputChange("trainings", value);
+                                    }} labelledBy="Select" />
                                 </div>
                             </div>
                         )}

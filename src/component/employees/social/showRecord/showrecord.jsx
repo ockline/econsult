@@ -263,6 +263,15 @@ const ShowSocialRecord = () => {
                                                 {formData.remark}
                                             </td>
                                         </tr>
+                                        <tr className="!border-0">
+                                            <td className="font-medium !p-2 text-black">
+                                            Emergency Number
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2">
+                                                {formData.emergency_number}
+                                            </td>
+                                        </tr>
 
 
                                     </tbody>

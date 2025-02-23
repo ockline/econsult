@@ -279,14 +279,14 @@ const EditCandidate = () => {
  
 if (res.data.status === 404) {
     swal({
-        title: 'Sorry! Operation failed',
+        title: 'Failed',
         text: res.data.message,
         icon: 'warning',
         button: 'ok',
     });
 } else if (res.data.status === 200) {
      swal({
-         title: 'Practical Test added Successfully',
+         title: 'Success',
          text: res.data.message,
          icon: 'success',
          button: 'ok',

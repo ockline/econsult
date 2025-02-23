@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { JobTitleData, PackageData, RegionData,RankingCriterialData, UsersData} from '/src/common/select2data';
 import { Link, useNavigate } from 'react-router-dom';
@@ -45,7 +44,8 @@ const Assessment = () => {
                 relative_inside: '',
                 relative_name: '',
                 chronic_disease: '',
-                chronic_remarks: '',
+            chronic_remarks: '',
+                criminal_bureau: '',
                 pregnant: '',
                 pregnancy_months: '',
                 employed_before: '',
@@ -101,7 +101,7 @@ const Assessment = () => {
                 surgery_operation: '', 
                 surgery_operation_remark: '', 
                 military_doc: null,
-                // hr_attachment: null,            
+                police_doc: null,            
                 error_list: [],
         });
 
@@ -223,10 +223,12 @@ const Assessment = () => {
                 team_work_remark: formData?.team_work_remark,
                 adaptability_flexibility_remark: formData?.adaptability_flexibility_remark,
                 leadership_remark: formData?.leadership_remark,
+                criminal_bureau: formData.criminal_bureau,
                 delegating_managing_remark: formData?.delegating_managing_remark,
                 managing_change_remark: formData?.managing_change_remark,
                 strategic_conceptual_thinking_remark: formData?.strategic_conceptual_thinking_remark,    
                 military_doc: formData.military_doc,
+                police_doc: formData.police_doc,
                 // hr_attachment: formData.hr_attachment,  
                         
             };
@@ -251,14 +253,14 @@ const Assessment = () => {
                         )).join('\n');
 
                         swal({
-                            title: 'Sorry! Operation failed',
+                            title: 'Filed',
                             text: formattedErrors,
                             icon: 'error',
                             button: 'OK',
                         });
                 } else if (resp.data.status === 500) {
                     swal({
-                        title: 'Sorry! Operation failed',
+                        title: 'Failed',
                         text: resp.data.message,
                         icon: 'warning',
                         button: 'ok',
@@ -359,6 +361,8 @@ const Assessment = () => {
 
         fetchData();
     }, []);
+
+    const [showAttachment, setShowAttachment] = useState(false);
 
 	return (
 		<div>
@@ -2647,7 +2651,47 @@ const Assessment = () => {
                                             <label className="ti-form-label mb-0 font-bold text-md">Recommended Job Title  <span style={{ color: "red" }}> *</span></label>
                                            <Creatable classNamePrefix="react-select" name="recommended_title" options={job_titles} onChange={(selectedOption) => handleInputChange(["recommended_title"], selectedOption ? selectedOption.value : null)} value={job_titles.find((option) => option.value === formData.recommended_title)} /> 
                                               <span className="text-danger">{formData.error_list.recommended_title}</span>
-                                </div>                                                                          
+                                </div>    
+
+                                    <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-md">Do you have Criminal Bureau verification?<span style={{ color: "red" }}> *</span></label>
+                                               <div className = "grid sm:grid-cols-2 gap-2">
+                                    <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
+                                        <input 
+                                            type="radio" 
+                                            onChange={(e) => {
+                                                handleInputChange('criminal_bureau', e.target.value);
+                                                setShowAttachment(e.target.value === "1");
+                                            }} 
+                                            value="1" 
+                                            name="criminal_bureau" 
+                                            className="ti-form-radio" 
+                                            id="criminal_bureau"
+                                        />
+                                        <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">Yes</span>
+                                    </label>
+
+                                    <label className = "flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
+                                        <input 
+                                            type="radio" 
+                                            onChange={(e) => {
+                                                handleInputChange('criminal_bureau', e.target.value);
+                                                setShowAttachment(false);
+                                            }} 
+                                            value="2" 
+                                            name="criminal_bureau" 
+                                            className="ti-form-radio" 
+                                            id="criminal_bureau" 
+                                            defaultChecked
+                                        />
+                                        <span className = "text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">No</span>
+                                    </label>
+                                    </div>
+                                </div>                                
+                                          <div className="space-y-2" id="attachment">
+                                            <label className="ti-form-label mb-0 font-bold text-lg "> Criminal Bureau verification Attachment</label>
+                                            <input type="file" name="police_doc" id="small-file-input" onChange={(e) => handleFileInputChange('police_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                        </div>                                
                                     {/* Rest of Step 3 form fields */}
                                 </div>
                         )}

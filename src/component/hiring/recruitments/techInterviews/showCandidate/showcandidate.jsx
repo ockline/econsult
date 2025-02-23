@@ -256,7 +256,7 @@ const ShowCandidate = () => {
                                         <tbody>
                                             <tr className="">
                                                 <td className="!p-2 font-bold  dark:!text-white/70">
-                                                    Outstanding
+                                                    Outstanding (5)
 
                                                 </td>
                                                 <td className="!p-2">:</td>
@@ -266,7 +266,7 @@ const ShowCandidate = () => {
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 font-bold  dark:!text-black/70">
-                                                    V. Good
+                                                    V. Good (4)
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 !text-gray-500 dark:!text-white/70">
@@ -276,7 +276,7 @@ const ShowCandidate = () => {
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 font-bold  dark:!text-white/70">
-                                                    Good
+                                                    Good (3)
 
                                                 </td>
                                                 <td className="!p-2">:</td>
@@ -287,7 +287,7 @@ const ShowCandidate = () => {
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 font-medium  dark:!text-white/70">
-                                                    Average
+                                                    Average (2)
 
                                                 </td>
                                                 <td className="!p-2">:</td>
@@ -298,7 +298,7 @@ const ShowCandidate = () => {
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 font-medium  dark:!text-white/70">
-                                                    Below Average
+                                                    Below Average (1)
 
                                                 </td>
                                                 <td className="!p-2">:</td>

@@ -434,6 +434,7 @@ const EditSocialRecord = () => {
             other_relationship: relative.other_relationship,
             relative_name: relative.relative_name,
             relative_address: relative.relative_address,
+            emergency_number: relative.emergency_number,
             employee_id: id,
         }
 
@@ -951,6 +952,12 @@ const EditSocialRecord = () => {
                                                     <input type="text" name="relative_address" className="ti-form-input text-black " placeholder="p.o.box 2xxx" value={relativeData[index].relative_address}
                                                         onChange={(e) => handleRelativeInputChange(index,'relative_address', e.target.value)} required />
                                                     {/* <span className="text-danger">{relativeData.error_list.relative_address}</span> */}
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="ti-form-label mb-0 font-bold text-lg">Emergency Number<span style={{ color: "red" }}> *</span></label>
+                                                    <input type="text" name="emergency_number" className="ti-form-input text-black " placeholder="2xxx" value={relativeData[index].emergency_number}
+                                                        onChange={(e) => handleRelativeInputChange(index,'emergency_number', e.target.value)} required />
+                                                    {/* <span className="text-danger">{relativeData.error_list.emergency_number}</span> */}
                                                 </div>
 
                                                 <br />

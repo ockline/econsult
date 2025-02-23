@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { JobTitleData, RegionData, DistrictData, UsersData, WardData, DepartmentData, RankingCriterialData, EmployeeDependent, EmployeeRelative, DependantTypeData } from '/src/common/select2data';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -149,14 +148,14 @@ const AddSocialRecord = () => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -164,7 +163,7 @@ const AddSocialRecord = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Social Record Created Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -275,6 +274,48 @@ const AddSocialRecord = () => {
 
         fetchData();
     }, []);
+    
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+    
+    const handleRegionChange = (selectedOption) => {
+    const regionId = selectedOption ? selectedOption.value : null;
+    console.log("Selected Region ID:", regionId); // Debugging
+    setSelectedRegion(regionId);
+    handleInputChange(["region_id"], regionId);
+
+    setFormData((prevData) => ({
+        ...prevData,
+        district_id: null, // Reset district when region changes
+    }));
+};
+
+// Handle district selection
+const handleDistrictChange = (selectedOption) => {
+    handleInputChange(["district_id"], selectedOption ? selectedOption.value : null);
+};
+    
+    
+    
+    
+const handleDistrictsChange = (selectedOption) => {
+    const districtId = selectedOption ? selectedOption.value : null;
+    console.log("Selected District ID:", districtId);
+
+    setSelectedDistrict(districtId);
+    handleInputChange("district_id", districtId);
+
+    // Reset ward when district changes
+    setFormData((prevData) => ({
+        ...prevData,
+        ward_id: null, 
+    }));
+};
+
+// Handle ward selection
+const handleWardChange = (selectedOption) => {
+    handleInputChange("ward_id", selectedOption ? selectedOption.value : null);
+};
 
     //Departments  ******************************
     const [departments, setDepartments] = useState([]);
@@ -321,7 +362,7 @@ const AddSocialRecord = () => {
             if (result.isConfirmed) {
                 Swal.fire(
                     'Social Record Saved!',
-                    'Social Record completed Successfully.',
+                    'Social record Successfully completed.',
                     'success'
                 ).then(() => {
                     navigate('/employees/socialrecords/details/');
@@ -341,6 +382,7 @@ const AddSocialRecord = () => {
         relationship_id: '',
         other_relationship: '',
         relative_address: '',
+        emergency_number: '',
 
     });
     const clearRelativeData = () => {
@@ -351,6 +393,7 @@ const AddSocialRecord = () => {
             relationship_id: '',
             other_relationship: '',
             relative_address: '',
+            emergency_number: ''
         });
     };
 
@@ -388,13 +431,13 @@ const AddSocialRecord = () => {
 
         const relativeDetail = {
             employee_id: formData.id,
-
             relative_id: relativeData?.relative_id,
             relative_number: relativeData?.relative_number,
             relationship_id: relativeData?.relationship_id,
             other_relationship: relativeData.other_relationship,
             relative_name: relativeData?.relative_name,
             relative_address: relativeData?.relative_address,
+            emergency_number: relativeData.emergency_number,
 
         }
         console.log('dataaa', relativeDetail);
@@ -417,14 +460,14 @@ const AddSocialRecord = () => {
             }
             else if (res.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: res.data.message,
                     icon: 'warning',
                     button: 'ok',
                 });
             } else if (res.data.status === 200) {
                 swal({
-                    title: 'Relative details added Successfully',
+                    title: 'Success',
                     text: res.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -539,14 +582,14 @@ const AddSocialRecord = () => {
             }
             else if (res.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: res.data.message,
                     icon: 'warning',
                     button: 'ok',
                 });
             } else if (res.data.status === 200) {
                 swal({
-                    title: 'Dependant Detail added Successfully',
+                    title: 'Success',
                     text: res.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -780,23 +823,59 @@ const AddSocialRecord = () => {
                                         onChange={(e) => handleInputChange('telephone_home', e.target.value)} placeholder="Telephone home number" required />
                                     <span className="text-danger">{formData.error_list.telephone_home}</span>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">City <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="city_id" options={regions} onChange={(selectedOption) => handleInputChange(["city_id"], selectedOption ? selectedOption.value : null)} value={regions.find((option) => option.value === formData.city_id)} />
-                                    <span className="text-danger">{formData.error_list.city_id}</span>
+                            <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-md">
+                                    Region Name <span style={{ color: "red" }}> *</span>
+                                </label>
+                                <Creatable
+                                    classNamePrefix="react-select"
+                                    name="city_id"
+                                    options={regions}
+                                    onChange={handleRegionChange}
+                                    value={regions.find((option) => option.value === formData.city_id)}
+                                />
+                                <span className="text-danger">{formData.error_list.city_id}</span>
+                            </div>
 
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">District <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="district_id" options={districts} onChange={(selectedOption) => handleInputChange(["district_id"], selectedOption ? selectedOption.value : null)} value={districts.find((option) => option.value === formData.district_id)} />
-                                    <span className="text-danger">{formData.error_list.district_id}</span>
-                                </div>
+                                                    {/* District Dropdown */}
+                         <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-md">
+                                    District Name <span style={{ color: "red" }}> *</span>
+                                </label>
+                        <Creatable
+                        classNamePrefix="react-select"
+                        name="district_id"
+                        options={
+                            districts.length > 0 
+                                ? districts[0].options.filter(district => district.regionId === selectedRegion) 
+                                : []
+                        }
+                        onChange={handleDistrictChange}
+                        value={districts.length > 0 ? districts[0].options.find((option) => option.value === formData.district_id) : null}
+                        isDisabled={!selectedRegion}
+                    />
+                    </div>
+                                
+                                       
+                           <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-md">Ward Name</label>
 
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Ward Name</label>
-                                    <Creatable classNamePrefix="react-select" name="ward_id" options={wards} onChange={(selectedOption) => handleInputChange(["ward_id"], selectedOption ? selectedOption.value : null)} value={wards.find((option) => option.value === formData.ward_id)} />
-                                    <span className="text-danger">{formData.error_list.ward_id}</span>
-                                </div>
+                                <Creatable
+                                    classNamePrefix="react-select"
+                                    name="ward_id"
+                                    options={
+                                        wards.length > 0 
+                                            ? wards[0].options.filter(ward => ward.districtId === formData.district_id) 
+                                            : []
+                                    }
+                                    onChange={handleWardChange}
+                                    value={wards.length > 0 
+                                        ? wards[0].options.find(option => option.value === formData.ward_id) 
+                                        : null
+                                    }
+                                    isDisabled={!formData.district_id}
+                                />
+                            </div> 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Postal Address <span style={{ color: "red" }}> *</span></label>
                                     <input type="text" name="postal_address" className="my-auto ti-form-input" value={formData.postal_address}
@@ -809,11 +888,11 @@ const AddSocialRecord = () => {
                                         onChange={(e) => handleInputChange('employee_street', e.target.value)} placeholder="street name" required />
                                     <span className="text-danger">{formData.error_list.employee_street}</span>
                                 </div>
-                                <div className="space-y-2" id="attachment">
+                                {/* <div className="space-y-2" id="attachment">
                                     <label className="ti-form-label mb-0 font-bold text-lg ">Osha Report Attachment (max size 2MB)</label>
                                     <input type="file" name="osha_report_doc" id="small-file-input" onChange={(e) => handleFileInputChange('osha_report_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                     <span className="text-danger">{formData.error_list.osha_report_doc}</span>
-                                </div>
+                                </div> */}
 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Any Other Information for emergence </label>
@@ -911,17 +990,25 @@ const AddSocialRecord = () => {
                                                 onChange={(e) => handleRelativeInputChange('relative_address', e.target.value)} required />
                                             {/* <span className="text-danger">{relativeData.error_list.relative_address}</span> */}
                                         </div>
+                                      
+                                          <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Emergency Number<span style={{ color: "red" }}> *</span></label>
+                                            <input type="text" name="emergency_number" className="ti-form-input" placeholder="+2xxx" value={relativeData.emergency_number}
+                                                onChange={(e) => handleRelativeInputChange('emergency_number', e.target.value)} required />
+                                            {/* <span className="text-danger">{relativeData.error_list.emergency_number}</span> */}
+                                        </div>
 
                                         <br />
                                         <div className="ti-modal-footer">
-                                            <button type="button"
-                                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-warning text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-end"
-                                                data-hs-overlay="#task-compose">
-                                                Close
-                                            </button>
+                                          
                                             <Link className="ti-btn ti-btn-primary float-right" to="#" onClick={(e) => SaveRelativeDetail(e)}>
                                                 Create
                                             </Link>
+                                              <button type="button"
+                                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-danger text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-end"
+                                                data-hs-overlay="#task-compose">
+                                                Close
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -987,22 +1074,23 @@ const AddSocialRecord = () => {
                                         </div>
 
                                         <br />
-                                        <div className="ti-modal-footer">
-                                            <button type="button"
-                                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-warning text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
-                                                data-hs-overlay="#dependent-people">
-                                                Close
-                                            </button>
+                                        <div className="ti-modal-footer flex justify-center gap-2">
+                                            
                                             <Link className="ti-btn ti-btn-primary" to="#" onClick={(e) => saveDependantDetail(e)}>
                                                 Create
                                             </Link>
+                                            <button type="button"
+                                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-danger text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
+                                                data-hs-overlay="#dependent-people">
+                                                Close
+                                            </button>
                                         </div>
                                     </div>
 
 
-                                    <div className="ti-modal-footer-1 sm:flex !block space-y-2 text-end">
+                                    <div className="ti-modal-footer-1 flex justify-end mt-4">
                                         <button type="button"
-                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-success text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-left"
+                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-success text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10"
                                             data-hs-overlay="#dependent-people">
                                             Finish Dependent
                                         </button>

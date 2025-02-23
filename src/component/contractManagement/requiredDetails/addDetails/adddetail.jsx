@@ -46,6 +46,7 @@ const AddContractDetail = () => {
         phone_number2: '',
         relationship2: '',
         job_description_doc: null,
+        passport_attachment: null,
         error_list: [],
     });
     //fetch employee data'
@@ -128,6 +129,7 @@ const AddContractDetail = () => {
             relationship2: formData.relationship2,
             employee_id: formData.id,
             job_description_doc: formData.job_description_doc,
+            passport_attachment: formData.passport_attachment,
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/contracts/required/add_required_detail`, DataToSend, {
@@ -150,14 +152,14 @@ const AddContractDetail = () => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -165,7 +167,7 @@ const AddContractDetail = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Social Record Created Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -492,7 +494,10 @@ const AddContractDetail = () => {
                                     <Creatable classNamePrefix="react-select" name="relationship2" options={relationships} onChange={(selectedOption) => handleInputChange(["relationship2"], selectedOption ? selectedOption.value : null)} value={relationships.find((option) => option.value === formData.relationship2)} />
                                     <span className="text-danger">{formData.error_list.relationship2}</span>
                                 </div>
-
+                                  <div className="space-y-2" id="attachment">
+                                            <label className="ti-form-label mb-0 font-bold text-lg ">Passport Attachment<span style={{ color: "red" }}> *</span> (max size 2MB)</label>
+                                            <input type="file" name="passport_attachment" id="small-file-input" onChange={(e) => handleFileInputChange('passport_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                        </div>
 
                             </div>
                         )}

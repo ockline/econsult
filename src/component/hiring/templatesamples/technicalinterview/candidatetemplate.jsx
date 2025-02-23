@@ -65,7 +65,7 @@ const AssessedCandidate = () => {
                                             <img src={ALLImages('logo')} alt="logo" className="flex dark:hidden" />
                                             <img src={ALLImages('dark')} alt="logo" className="hidden dark:flex" />
                                         </div>
-                                        <h3 className="text-2xl text-primary uppercase font-semibold">Invoice</h3>
+                                        {/* <h3 className="text-2xl text-primary uppercase font-semibold">Invoice</h3> */}
                                     </div>
                                 </div>
                                 {/* <hr className="pb-5  font-semibold" /> */}

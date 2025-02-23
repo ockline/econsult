@@ -128,7 +128,11 @@ const ShowContractDetails = () => {
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                   
+                    <li className="text-sm">
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required_details/`}>
+                            Required Contract Details
+                        </a>
+                    </li>
                 </ol>
             </div>
 
@@ -152,7 +156,7 @@ const ShowContractDetails = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black font-medium">
-                                                {formData.employee_name}
+                                                {formData?.employee_name}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -161,7 +165,7 @@ const ShowContractDetails = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.employer}
+                                                {formData?.employer}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -170,7 +174,7 @@ const ShowContractDetails = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black text-secondary font-bold">
-                                                {formData.contract_type}
+                                                {formData?.contract_type}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -179,7 +183,7 @@ const ShowContractDetails = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.birth_place}
+                                                {formData?.birth_place}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -188,7 +192,7 @@ const ShowContractDetails = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.dob}
+                                                {formData?.dob}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -197,7 +201,7 @@ const ShowContractDetails = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.age}
+                                                {formData?.age}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -264,7 +268,7 @@ const ShowContractDetails = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black font-medium">
-                                                    {formData.residence_place}
+                                                    {formData?.residence_place}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -273,7 +277,7 @@ const ShowContractDetails = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.permanent_residence}
+                                                    {formData?.permanent_residence}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -282,7 +286,7 @@ const ShowContractDetails = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black text-info">
-                                                    {formData.email}
+                                                    {formData?.email}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -291,7 +295,7 @@ const ShowContractDetails = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.postal_address}
+                                                    {formData?.postal_address}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -300,7 +304,7 @@ const ShowContractDetails = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData.phone_number}
+                                                    {formData?.phone_number}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
