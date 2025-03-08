@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchPersonnelApplicationDetails } from "../../../../common/employeesdata";
+import { fetchPersonnelApplicationDetails, fetchAllIdApplicationDetails } from "../../../../common/employeesdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
@@ -103,6 +103,24 @@ const Application = () => {
             setShowToast(false);
         }, 5000); // Adjust the duration as needed
     };
+    
+    //block to return all application request
+    
+    const [allIdRequest, setAllIdRequestData] = useState();
+      useEffect(() => {
+        const fetchIdRequestData = async () => {
+            try {
+                const allIdApplicationDetails = await fetchAllIdApplicationDetails();
+                setAllIdRequestData(allIdApplicationDetails);
+                
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
+        };
+
+        fetchIdRequestData();
+    }, []);
+
 
     return (
         <div>
@@ -129,11 +147,58 @@ const Application = () => {
                 <div className="box-header lg:flex lg:justify-between">
                     <h5 className="box-title my-auto text-lg">Personnel ID Application List </h5>
                     {/* <Link to={`${import.meta.env.BASE_URL}employees/personal/add_employee`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-address-book"></i>Add Social Records</Link> */}
+                                            {/* <div className="flex w-full"> */}
+    <Link 
+        to={`${import.meta.env.BASE_URL}employees/applications/create_general_id`} 
+        className="ti-btn ti-btn-primary m-0 py-2 btn-sm ml-auto"
+    >
+        <i className="ti ti-credit-card"></i>New Request ID
+    </Link>
+{/* </div>                */}
                 </div>
-                <div className="box-body">
 
+                <div className="box-body">
+           
                     <div className="grid grid-cols-12 gap-6">
-                        <div className="col-span-12 lg:col-span-4">
+                        {/* <div className="col-span-12 lg:col-span-3">
+                            <Link 
+        to={`${import.meta.env.BASE_URL}employees/applications/create_general_id`} 
+        className="ti-btn ti-btn-secondary m-0 py-2 btn-sm ml-auto"
+    >
+        <i className="ti ti-credit-card"></i>View Application
+                            </Link></div> */}
+                         <div className="col-span-12 lg:col-span-4">
+                            <nav
+                                className="sm:flex sm:space-x-2 space-y-2 sm:space-y-0 rtl:space-x-reverse block"
+                                aria-label="Tabs"
+                                role="tablist"
+                            >
+                                <button
+                                    type="button"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300 active"
+                                    id="profile-item-1"
+                                    data-hs-tab="#profile-1"
+                                    aria-controls="profile-1"
+                                    role="tab"
+                                ><i className="ti ti-user-circle font-semibold"></i>
+                                    Personnel ID Details
+                                </button>
+                                <button
+                                    type="button"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+                                    id="profile-item-2"
+                                    data-hs-tab="#profile-2"
+                                    aria-controls="profile-2"
+                                    role="tab"
+                                ><i className="ti ti-urgent font-semibold"></i>
+                                    View All Application
+                                </button>
+                             
+
+                            </nav>
+                        </div>
+                        
+                        <div className="col-span-12 lg:col-span-2">
                             <div className="relative sm:max-w-xs max-w-[210px]">
                                 <label htmlFor="hs-table-search" className="sr-only">Search</label>
                                 <div className="absolute inset-y-0 ltr:right-0 rtl:left-0 flex items-center pointer-events-none ltr:pr-4 rtl:pl-4">
@@ -143,23 +208,19 @@ const Application = () => {
                                     placeholder="Search by employee name" />
                             </div>
                         </div>
-                        <div className="col-span-12 lg:col-span-8">
+                        <div className="col-span-12 lg:col-span-5">
                             <div className="sm:flex space-y-2 sm:space-y-0 sm:space-x-3 space-x-0 justify-end task-right rtl:space-x-reverse">
                                 <Select classNamePrefix='react-select' className="task-choice totdolist" options={SortBy} menuPlacement='auto' placeholder='sort By' />
 
                                 <Select classNamePrefix='react-select' className="task-choice totdolist" options={StatusTask} menuPlacement='auto' placeholder='Status' />
-                                <div className="hs-dropdown ti-dropdown">
-                                    <Link aria-label="anchor" to="#"
-                                        className="hs-dropdown-toggle ti-dropdown-toggle inline-flex !p-2 flex-shrink-0 justify-center items-center gap-2 w-full rounded-sm border font-medium bg-white text-gray-500 shadow-sm align-middle focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-white focus:ring-primary transition-all text-xs dark:bg-bgdark dark:border-white/10 dark:text-white/70 dark:focus:ring-offset-white/10">
-                                        <i className="ri ri-more-2-line text-lg leading-none"></i>
-                                    </Link>
-                                    <div className="hs-dropdown-menu ti-dropdown-menu">
-                                        <Link className="ti-dropdown-item" to="#">Select All</Link>
-                                        <Link className="ti-dropdown-item" to="#">Mark All</Link>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
+                       
+     
+
+
+                                   
                     </div>
                     <br />
                     
@@ -180,6 +241,16 @@ const Application = () => {
                         </div>
                         </div>
                      
+                    
+                    <div className="box-body">
+                            <div
+                                id="profile-1"
+                                className=""
+                                role="tabpanel"
+                                aria-labelledby="profile-item-1"
+                            >
+
+                                
                     <div className="table-bordered whitespace-nowrap rounded-sm overflow-auto">
                         <table className="ti-custom-table ti-custom-table-head edit-table">
                             <thead className="bg-gray-100 dark:bg-black/20">
@@ -251,7 +322,7 @@ const Application = () => {
                                             <td className="text-center font-bold">
                                                 {
                                                     employee.stage === 1 ? (<></>) :
-                                                        employee.stage === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}employees/applications/create_application/${employee.id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-credit-card"></i>Add Personnel ID</Link>
+                                                        employee.stage === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}employees/applications/create_application/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-credit-card"></i>Add Personnel ID</Link>
                                                         )}</td>
                                             <td className="text-end font-medium">
                                                 {/* Adjust the links according to your routes and logic */}
@@ -290,7 +361,104 @@ const Application = () => {
                                     ))}
                             </tbody>
                         </table>
-                    </div>
+                            </div>
+                        </div>
+                         <div
+                                id="profile-2"
+                                className="hidden"
+                                role="tabpanel"
+                                aria-labelledby="profile-item-2"
+                        >
+                        
+                         <div className="table-bordered whitespace-nowrap rounded-sm overflow-auto">
+                        <table className="ti-custom-table ti-custom-table-head edit-table">
+                            <thead className="bg-gray-100 dark:bg-black/20">
+                                <tr>
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        S/NO
+                                    </th>
+                                    <th scope="col" className="!text-center font-bold text-black ">
+                                        Fullname
+                                    </th>
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        Organization
+                                    </th>
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                       ID Type
+                                    </th>
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        Requested
+                                    </th>
+
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        Status
+                                    </th>
+                                    <th scope="col" className="!text-center font-bold text-black">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {allIdRequest && allIdRequest.length > 0 ? (
+    allIdRequest.map((requester, index) => (
+        <tr className="product-list" key={requester.id}>
+            <td>{index + 1 + indexOfFirstEntry}</td>
+            <td>{requester.applicant}</td>
+            <td className="font-semibold">{requester.organization || requester.employer ||requester.institution_name}</td>
+            <td>{requester.type}</td>
+            <td>{requester.requested}</td>
+
+            <td>
+                {requester.stage === 1 ? (
+                    <span className="badge bg-green-500 text-white" style={{ backgroundColor: '#08adf8' }}>Attended</span>
+                ) : requester.stage === 0 ? (
+                    <span className="badge bg-secondary text-white">Partial attended</span>
+                ) : (
+                    <span className="badge bg-warning text-white">Not Attended</span>
+                )}
+            </td>
+            <td className="text-end font-medium">
+                <Link
+                    aria-label="anchor"
+                    to={`${import.meta.env.BASE_URL}employees/applications/show_general_application/` + requester.id}
+                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
+                >
+                    <i className="ti ti-eye"></i>
+                </Link>
+
+                <button
+                    aria-label="anchor"
+                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+                    onClick={() => {
+                        if (requester.stage === 1) {
+                            handleCustomToast();
+                        } else {
+                            navigate(`${import.meta.env.BASE_URL}employees/applications/edit_application/` + requester.id);
+                        }
+                    }}
+                >
+                    <i className="ti ti-pencil"></i>
+                </button>
+            </td>
+        </tr>
+    ))
+) : (
+    <tr>
+        <td colSpan="7" className="text-center">No data available</td>
+    </tr>
+)}
+
+                                    
+                            </tbody>
+                        </table>
+                            </div>
+                        </div>
+                        
+                        </div>
+                        
+                        
+                        
+                        
                     <br />
                     <nav className="pagination-style-3 flex justify-end">
                         <ul className="ti-pagination">

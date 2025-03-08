@@ -192,7 +192,7 @@ const EditSpecifiTaskContract = () => {
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -200,7 +200,7 @@ const EditSpecifiTaskContract = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Specific Task Contract Updated Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -208,7 +208,7 @@ const EditSpecifiTaskContract = () => {
                 })
                     .then(() => {
                         // This code will be executed after the "ok" button is clicked and the modal is closed
-                        // navigate('/contracts/specific/specific_task_contracts/'); // Call the navigate function to redirect to the specified route
+                        navigate('/contracts/specific/specific_task/'); // Call the navigate function to redirect to the specified route
                     });
             }
         }
@@ -694,7 +694,7 @@ const EditSpecifiTaskContract = () => {
                             {step === 2 && (
                                 <div className="float-end">
                                     <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
-                                        <i className="ti ti-corner-up-right-double"></i>Update Specific Contract
+                                        <i className="ti ti-corner-up-right-double"></i>Update
                                     </button>
                                 </div>
                             )}

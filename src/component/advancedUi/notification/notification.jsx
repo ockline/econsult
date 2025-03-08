@@ -7,22 +7,22 @@ const Notification = () => {
 
 	//Basic Notification
 
-	const BasicNotify = () => toast.success('Welcome to ECMS Admin Dashboard!', {
+	const BasicNotify = () => toast.success('Welcome to SOMS Admin Dashboard!', {
 		position: 'top-left'
 	});
-	const BasicNotify2 = () => toast.success('Welcome to ECMS Admin Dashboard!', {
+	const BasicNotify2 = () => toast.success('Welcome to SOMS Admin Dashboard!', {
 		position: 'top-center'
 	});
-	const BasicNotify3 = () => toast.success('Welcome to ECMS Admin Dashboard!', {
+	const BasicNotify3 = () => toast.success('Welcome to SOMS Admin Dashboard!', {
 		position: 'top-right'
 	});
-	const BasicNotify4 = () => toast.success('Welcome to ECMS Admin Dashboard!', {
+	const BasicNotify4 = () => toast.success('Welcome to SOMS Admin Dashboard!', {
 		position: 'bottom-left'
 	});
-	const BasicNotify5 = () => toast.success('Welcome to ECMS Admin Dashboard!', {
+	const BasicNotify5 = () => toast.success('Welcome to SOMS Admin Dashboard!', {
 		position: 'bottom-center'
 	});
-	const BasicNotify6 = () => toast.success('Welcome to ECMS Admin Dashboard!', {
+	const BasicNotify6 = () => toast.success('Welcome to SOMS Admin Dashboard!', {
 		position: 'bottom-right'
 	});
 

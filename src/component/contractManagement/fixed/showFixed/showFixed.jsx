@@ -56,7 +56,28 @@ const ShowFixedContract = () => {
             });
     }, [id]);
 
+const [fixedContractDocument, setFixedContractDocument] = useState(null);
+    
+    console.log('haahahaha',fixedContractDocument);
+    useEffect(() => {
+        const getFixedContractDocument = async () => {
+            try {
+                const res = await axios.get(`${apiBaseUrl}/contracts/fixed/preview_fixed_contract/${id}`);
+                console.log('API Response:', res.data);
 
+                setFixedContractDocument(res.data.fixed);
+
+                if (res.data.status === 404) {
+                    Dangersweetalert();
+                    navigate('/contracts/required_details/');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getFixedContractDocument();
+    }, [id, apiBaseUrl]);
 
 
     // Dependant updateDependanHistory   **********************************************
@@ -429,16 +450,25 @@ const ShowFixedContract = () => {
                                                     </div>
                                                 </div>
 
+                                    {/* <iframe src={inspectionNoticeReport} style={{ width: '100%', height: '900px' }} /> */}
+                                
+                    {/* to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData.employee_id}                                                */}
+
                                                 <div className="md:ltr:ml-auto md:rtl:mr-auto">
 
-                                                    <Link
-                                                        aria-label="anchor"
-                                                        to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData.employee_id}
+                                                   <Link
+                                                        to={fixedContractDocument} // Ensure this is a valid route
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i>Download Fixed Contract
+                                                        <i className="ti ti-cloud-download"></i> Download Fixed Contract
                                                     </Link>
+
+                                                    <iframe
+                                                        src={fixedContractDocument}
+                                                        style={{ width: '100%', height: '900px' }}
+                                                        title="Fixed Contract Preview"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

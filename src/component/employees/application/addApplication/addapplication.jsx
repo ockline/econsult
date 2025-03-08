@@ -19,7 +19,7 @@ const AddApplication = () => {
     let navigate = useNavigate();
    
     
-       //Departments  ******************************
+    //Departments  ******************************
     const [departments, setDepartments] = useState([]);
 
     useEffect(() => {
@@ -36,17 +36,17 @@ const AddApplication = () => {
     }, []);
     
     
-  const [isDocumentChecked, setIsDocumentChecked] = useState({});
+    const [isDocumentChecked, setIsDocumentChecked] = useState({});
 
   
-// Function to handle checkbox changes
-const handleDocumentCheckboxChange = (documentId) => {
-  // Update the state with the new checked state for the specific documentId
-  setIsDocumentChecked(prevState => ({
-    ...prevState,
-    [documentId]: !prevState[documentId] // Toggle the checked state
-  }));
-};
+    // Function to handle checkbox changes
+    const handleDocumentCheckboxChange = (documentId) => {
+        // Update the state with the new checked state for the specific documentId
+        setIsDocumentChecked(prevState => ({
+            ...prevState,
+            [documentId]: !prevState[documentId] // Toggle the checked state
+        }));
+    };
     
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -67,17 +67,17 @@ const handleDocumentCheckboxChange = (documentId) => {
         birth_place: '',
         job_title_id: '',
         purpose: '',
-        supportiveDocumentAttached : '',
+        supportiveDocumentAttached: '',
         error_list: [],
     });
     //fetch employee data'
     const { id } = useParams();
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/application/show_application/${id}`).then((res) => {
+        axios.get(`${apiBaseUrl}/employees/social/get_social_record/${id}`).then((res) => {
             // Ensure that all properties are present in the API response
             const updatedFormData = {
                 ...formData,
-                ...res.data.personnel_application,
+                ...res.data.employee,
             };
             setFormData(updatedFormData);
             // console.log(updatedFormData);
@@ -178,11 +178,11 @@ const handleDocumentCheckboxChange = (documentId) => {
                     button: 'ok',
                     closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
                 })
-                .then(() => {
+                    .then(() => {
 
-                // This code will be executed after the "ok" button is clicked and the modal is closed
-                navigate('/employees/applications/all_id_application/'); // Call the navigate function to redirect to the specified route
-                });
+                        // This code will be executed after the "ok" button is clicked and the modal is closed
+                        navigate('/employees/applications/all_id_application/'); // Call the navigate function to redirect to the specified route
+                    });
             }
         }
         catch (error) {
@@ -204,8 +204,8 @@ const handleDocumentCheckboxChange = (documentId) => {
     }, []);
 
    
-       //  Employer
-      const [employers, setEmployers] = useState([]);
+    //  Employer
+    const [employers, setEmployers] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -228,7 +228,7 @@ const handleDocumentCheckboxChange = (documentId) => {
     
 
     useEffect(() => {
-       axios.get(`${apiBaseUrl}/employees/application/get_application_document/${id}`).then((res) => {
+        axios.get(`${apiBaseUrl}/employees/application/get_application_document/${id}`).then((res) => {
             // Ensure that all properties are present in the API response
             const updatePersonnelDocData = {
                 ...personnelDoc,
@@ -236,15 +236,15 @@ const handleDocumentCheckboxChange = (documentId) => {
             };
             setPersonnelData(updatePersonnelDocData);
             // console.log('agaaa', updatePersonnelDocData);
-                // console.log(res.data.employee_document);
-            })
+            // console.log(res.data.employee_document);
+        })
             .catch((error) => {
                 console.error('Error fetching candidate documents:', error);
             });
     }, [id]);
 
 
-     const handleFileDependantInputChange = (fieldName, files) => {
+    const handleFileDependantInputChange = (fieldName, files) => {
         setPersonnelData((prevData) => ({
             ...prevData,
             [fieldName]: files, // assuming you only want to handle single file inputs
@@ -335,7 +335,7 @@ const handleDocumentCheckboxChange = (documentId) => {
     //     }
     // }
 
-  // /**   Block for document preview  */
+    // /**   Block for document preview  */
    
 
 
@@ -350,7 +350,7 @@ const handleDocumentCheckboxChange = (documentId) => {
     const handlePreviewClick = (description) => {
         // Assuming the documents are stored in a specific folder on the server      
         const absoluteUrl = `${docBaseUrl}/employees/personal/${description}`;
-          console.log('absoluteUrl', absoluteUrl);
+        console.log('absoluteUrl', absoluteUrl);
         // Update the state with the document URL
         setDocumentUrl(absoluteUrl);
 
@@ -389,128 +389,13 @@ const handleDocumentCheckboxChange = (documentId) => {
 
                             <div className="grid lg:grid-cols-3 gap-6">
 
-
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Personnel Type<span style={{ color: "red" }}> *</span></label>
-                                    <div className="grid sm:grid-cols-2 gap-2">
-                                        <ul className="flex flex-col sm:flex-row">
-                                            <li
-                                                className="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                <div className="relative flex items-start w-full">
-                                                    <div className="flex items-center h-5">
-                                                        <input id="hs-horizontal-list-group-item-radio-1" name="personal_type" onChange={(e) => handleInputChange('personal_type', e.target.value)} value="1" type="radio"
-                                                            className="ti-form-radio" defaultChecked />
-                                                    </div>
-                                                    <label htmlFor="hs-horizontal-list-group-item-radio-1"
-                                                        className="ltr:ml-2 rtl:mr-2 block w-full text-sm text-black dark:text-white/70">
-                                                        New Comers
-                                                    </label>
-                                                </div>
-                                            </li>
-
-                                            <li
-                                                className="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                <div className="relative flex items-start w-full">
-                                                    <div className="flex items-center h-5">
-                                                        <input id="hs-horizontal-list-group-item-radio-2" name="personal_type" onChange={(e) => handleInputChange('personal_type', e.target.value)} value="2" type="radio"
-                                                            className="ti-form-radio" />
-                                                    </div>
-                                                    <label htmlFor="hs-horizontal-list-group-item-radio-2"
-                                                        className="ltr:ml-2 rtl:mr-2 block w-full text-sm text-black dark:text-white/70">
-                                                        Change Job
-                                                    </label>
-                                                </div>
-                                            </li>
-
-                                            <li
-                                                className="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                <div className="relative flex items-start w-full">
-                                                    <div className="flex items-center h-5">
-                                                        <input id="hs-horizontal-list-group-item-radio-3" name="personal_type" onChange={(e) => handleInputChange('personal_type', e.target.value)} value="3" type="radio"
-                                                            className="ti-form-radio" />
-                                                    </div>
-                                                    <label htmlFor="hs-horizontal-list-group-item-radio-3"
-                                                        className="ltr:ml-2 rtl:mr-2 block w-full text-sm text-black dark:text-white/70">
-                                                        Visitor
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li
-                                                className="ti-list-group gap-x-2.5 bg-white border text-gray-800 ltr:sm:-ml-px rtl:sm:-mr-px sm:mt-0 ltr:sm:first:rounded-tr-none rtl:sm:first:rounded-tl-none ltr:sm:first:rounded-bl-sm rtl:sm:first:rounded-br-sm ltr:sm:last:rounded-bl-none rtl:sm:last:rounded-br-none ltr:sm:last:rounded-tr-sm rtl:sm:last:rounded-tl-sm dark:bg-bgdark dark:border-white/10 dark:text-white">
-                                                <div className="relative flex items-start w-full">
-                                                    <div className="flex items-center h-5">
-                                                        <input id="hs-horizontal-list-group-item-radio-4" name="personal_type" onChange={(e) => handleInputChange('personal_type', e.target.value)} value="4" type="radio"
-                                                            className="ti-form-radio" />
-                                                    </div>
-                                                    <label htmlFor="hs-horizontal-list-group-item-radio-3"
-                                                        className="ltr:ml-2 rtl:mr-2 block w-full text-sm text-black dark:text-white/70">
-                                                        Transfer
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">ID Tpye</label>
+                                    <input type="text" className="my-auto ti-form-input" placeholder="Employee" name="id_type" value="Employee"
+                                        onChange={(e) => handleInputChange('id_type', e.target.value)} readOnly />
                                 </div>
-                                {formData.personal_type === '4' && (
-                                    <>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">From Company</label>
-                                            <input type="text" className="my-auto ti-form-input" placeholder="Name of Company" name="transfer_from" value={formData.transfer_from}
-                                                onChange={(e) => handleInputChange('transfer_from', e.target.value)} />
-                                        </div>
-                                    </>
-                                )}
-
-
-                                <div className="space-y-2" id="military-sevice">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Site Pass Type<span style={{ color: "red" }}> *</span></label>
-                                    <div className="grid sm:grid-cols-2 gap-2">
-                                        <label className="flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
-                                            <input type="radio" name="site_pass_type" onChange={(e) => handleInputChange('site_pass_type', e.target.value)} value="1" className="ti-form-radio" id="site_pass_type" />
-                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70" >Permanent</span>
-                                        </label>
-
-                                        <label className="flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
-                                            <input type="radio" name="site_pass_type" onChange={(e) => handleInputChange('site_pass_type', e.target.value)} value="2" className="ti-form-radio" id="site_pass_type-1"  />
-                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">Temporary</span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                {formData.site_pass_type === '2' && (
-                                    <>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">From Date</label>
-                                            <div className="flex rounded-sm overflow-auto">
-                                                <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                                    <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                        className="ri ri-calendar-line"></i></span>
-                                                </div>
-                                                <input
-                                                    type="date" name="from_date" className="my-auto ti-form-input text-black"
-                                                    placeholder="" value={new Date(formData.from_date).toLocaleDateString('en-CA')} // Format the date
-                                                    onChange={(e) => handleInputChange('from_date', e.target.value)} required
-                                                />
-                                                <span className="text-danger">{formData.error_list.from_date}</span>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">End Date</label>
-                                            <div className="flex rounded-sm overflow-auto">
-                                                <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                                    <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                        className="ri ri-calendar-line"></i></span>
-                                                </div>
-                                                <input
-                                                    type="date" name="end_date" className="my-auto ti-form-input text-black"
-                                                    placeholder="" value={new Date(formData.end_date).toLocaleDateString('en-CA')} // Format the date
-                                                    onChange={(e) => handleInputChange('end_date', e.target.value)} required
-                                                />
-                                                <span className="text-danger">{formData.error_list.end_date}</span>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
+                                
+ 
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">FirstName <span style={{ color: "red" }}> *</span></label>
                                     <input type="text" name="firstname" className="my-auto ti-form-input text-medium text-black" placeholder="Employee firstname" value={formData.firstname}
@@ -533,45 +418,91 @@ const handleDocumentCheckboxChange = (documentId) => {
                                     <span className="text-danger">{formData.error_list.job_title_id}</span>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Birth Place <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="birth_place" className="my-auto ti-form-input  text-black" value={formData.birth_place}
-                                        onChange={(e) => handleInputChange('birth_place', e.target.value)} placeholder="Birth place" required />
-                                    <span className="text-danger">{formData.error_list.birth_place}</span>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Phone Number <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="phone_number" className="my-auto ti-form-input  text-black" value={formData.phone_number}
+                                        onChange={(e) => handleInputChange('phone_number', e.target.value)} placeholder="Birth place" required />
+                                    <span className="text-danger">{formData.error_list.phone_number}</span>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Email Address <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="email_address" className="my-auto ti-form-input  text-black" value={formData.email_address}
+                                        onChange={(e) => handleInputChange('email_address', e.target.value)} placeholder="Birth place" required />
+                                    <span className="text-danger">{formData.error_list.email_address}</span>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Department Name <span style={{ color: "red" }}> *</span></label>
                                     <Creatable classNamePrefix="react-select" name="department_id" options={departments} onChange={(selectedOption) => handleInputChange(["department_id"], selectedOption ? selectedOption.value : null)} value={departments.find((option) => option.value === formData.department_id)} required />
                                     <span className="text-danger">{formData.error_list.department_id}</span>
                                 </div>
+                                
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Section Name </label>
-                                    <input type="text" name="section" className="my-auto ti-form-input text-black" value={formData.section}
-                                        onChange={(e) => handleInputChange('section', e.target.value)} placeholder="Section name" required />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">National id number(NIDA)  <span style={{ color: "red" }}> *</span></label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">National id number(NIDA)/Passport<span style={{ color: "red" }}> *</span></label>
                                     <input type="number" name="national_id" className="my-auto ti-form-input text-black" value={formData.national_id}
-                                        onChange={(e) => handleInputChange('national_id', e.target.value)} placeholder="nida" required />
+                                        onChange={(e) => handleInputChange('national_id', e.target.value)} placeholder="nida or passport" required />
                                     <span className="text-danger">{formData.error_list.national_id}</span>
+                                </div>
+                                <div className="space-y-2" id="attachment">
+                                    <label className="ti-form-label mb-0 font-bold text-lg ">NIDA or Passport Attachment <span style={{ color: "red" }}></span> (if didn`t upload)</label>
+                                    <input type="file" name="nida_passport_doc" id="small-file-input" onChange={(e) => handleFileInputChange('nida_passport_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Employer / Company name  <span style={{ color: "red" }}> *</span></label>
                                    
-                                     <Creatable classNamePrefix="react-select" name="employer_id" options={employers} onChange={(selectedOption) => handleInputChange(["employer_id"], selectedOption ? selectedOption.value : null)} value={employers.find((option) => option.value === formData.employer_id)} required />
+                                    <Creatable classNamePrefix="react-select" name="employer_id" options={employers} onChange={(selectedOption) => handleInputChange(["employer_id"], selectedOption ? selectedOption.value : null)} value={employers.find((option) => option.value === formData.employer_id)} required />
                                     <span className="text-danger">{formData.error_list.employer_id}</span>
 
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Duration of Deployment <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="duration_deployment" className="my-auto ti-form-input text-black" value={formData.duration_deployment}
-                                        onChange={(e) => handleInputChange('duration_deployment', e.target.value)} placeholder="Duration of deployment" required />
-                                    <span className="text-danger">{formData.error_list.duration_deployment}</span>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Employment Start Date:</label>
+                                    <div className="flex rounded-sm overflow-auto">
+                                        <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
+                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
+                                                className="ri ri-calendar-line"></i></span>
+                                        </div>
+                                        <input
+                                            type="date" name="duration_deployment" className="my-auto ti-form-input text-black"
+                                            placeholder="" value={new Date(formData.duration_deployment).toLocaleDateString('en-CA')} // Format the date
+                                            onChange={(e) => handleInputChange('duration_deployment', e.target.value)} required
+                                        />
+                                        <span className="text-danger">{formData.error_list.duration_deployment}</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-2" id="safety-induction">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Site Pass TypeHave you attended site safety induction? <span style={{ color: "red" }}> *</span></label>
+                                    <div className="grid sm:grid-cols-2 gap-2">
+                                        <label className="flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
+                                            <input type="radio" name="safety_induction" onChange={(e) => handleInputChange('safety_induction', e.target.value)} value="1" className="ti-form-radio" id="safety_induction" />
+                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70" >Yes</span>
+                                        </label>
+
+                                        <label className="flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
+                                            <input type="radio" name="safety_induction" onChange={(e) => handleInputChange('safety_induction', e.target.value)} value="2" className="ti-form-radio" id="safety_induction-1" />
+                                            <span className="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Emergency Contact Name <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="emergency_contact_name" className="my-auto ti-form-input text-black" value={formData.emergency_contact_name}
+                                        onChange={(e) => handleInputChange('emergency_contact_name', e.target.value)} placeholder="Emergency contact name" required />
+                                    <span className="text-danger">{formData.error_list.emergency_contact_name}</span>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Emergency Contact Number  <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="emergency_contact_number" className="my-auto ti-form-input text-black" value={formData.emergency_contact_number}
+                                        onChange={(e) => handleInputChange('emergency_contact_number', e.target.value)} placeholder="Emergency contact number" required />
+                                    <span className="text-danger">{formData.error_list.emergency_contact_number}</span>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Purpose  <span style={{ color: "red" }}> *</span></label>
                                     <input type="text" name="purpose" className="my-auto ti-form-input text-black" value={formData.purpose}
                                         onChange={(e) => handleInputChange('purpose', e.target.value)} placeholder="Purpose of this application" required />
                                     <span className="text-danger">{formData.error_list.purpose}</span>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Supervisor Name </label>
+                                    <input type="text" name="supervisor_name" className="my-auto ti-form-input text-black" value={formData.supervisor_name}
+                                        onChange={(e) => handleInputChange('section', e.target.value)} placeholder="Section name" required />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Check if supportive document attached <span style={{ color: "red" }}> *</span></label>
@@ -587,28 +518,29 @@ const handleDocumentCheckboxChange = (documentId) => {
 
                             {step === 1 && (
                                 <div className="float-end">
-                                    <Link to={`${import.meta.env.BASE_URL}employees/applications/all_id_application/`} className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-warning m-0 whitespace-nowrap" data-hs-overlay="#task-compose" >
+                                    <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
+                                        <i className="ti ti-layout-grid-add"></i>Submit Request
+                                    </button>
+                                    <Link to={`${import.meta.env.BASE_URL}employees/applications/all_id_application/`} className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-danger m-0 whitespace-nowrap" data-hs-overlay="#task-compose" >
                                         <i className="ti ti-x"></i>Cancel
                                     </Link>&nbsp;
-                                    <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
-                                        <i className="ti ti-layout-grid-add"></i>Submit Personnel Application
-                                    </button>
+                                   
                                   
                                 </div>
                             )}
                         </div>
                         <div id="supportive-document" className="hs-overlay hidden ti-modal">
-                        <div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out sm:!max-w-6xl">
-                            <div className="ti-modal-content">
-                                <div className="ti-modal-header">
-                                    <h3 className="ti-modal-title  mb-0 font-bold text-lg justify-center" >Check all  supportive document Details</h3>
-                                    <button type="button" className="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#supportive-document">
-                                        <span className="sr-only">Close</span>
-                                        <i className="ri-close-line"></i>
-                                    </button>
-                                </div>
-                                <div className="ti-modal-body">
-                                      <div className="overflow-auto">
+                            <div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out sm:!max-w-6xl">
+                                <div className="ti-modal-content">
+                                    <div className="ti-modal-header">
+                                        <h3 className="ti-modal-title  mb-0 font-bold text-lg justify-center" >Check all  supportive document Details</h3>
+                                        <button type="button" className="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#supportive-document">
+                                            <span className="sr-only">Close</span>
+                                            <i className="ri-close-line"></i>
+                                        </button>
+                                    </div>
+                                    <div className="ti-modal-body">
+                                        <div className="overflow-auto">
                                             <table className="ti-custom-table  table-bordered ti-custom-table-head">
                                                 <thead className="bg-gray-50 dark:bg-black/20">
                                                     <tr>
@@ -633,18 +565,18 @@ const handleDocumentCheckboxChange = (documentId) => {
                                                                 <td>{document.doc_modified}</td>
                                                                 <td>
                                                                     <td className="text-center">
-                                                                  <div className="flex items-center h-5 invoice-checkbox justify-center" key={document.id}>
-                                                                <input
-                                                                    id={`supportive-document-${document.document_id}`}
-                                                                    type="checkbox"
-                                                                    className="border-gray-500 ti-form-checkbox"
-                                                                    checked={isDocumentChecked[document.document_id] || false}
-                                                                    onChange={() => handleDocumentCheckboxChange(document.document_id)}
-                                                                />
-                                                                <label htmlFor={`supportive-document-${document.document_id}`} className="sr-only">
-                                                                    Checkbox
-                                                                </label>
-                                                                </div>
+                                                                        <div className="flex items-center h-5 invoice-checkbox justify-center" key={document.id}>
+                                                                            <input
+                                                                                id={`supportive-document-${document.document_id}`}
+                                                                                type="checkbox"
+                                                                                className="border-gray-500 ti-form-checkbox"
+                                                                                checked={isDocumentChecked[document.document_id] || false}
+                                                                                onChange={() => handleDocumentCheckboxChange(document.document_id)}
+                                                                            />
+                                                                            <label htmlFor={`supportive-document-${document.document_id}`} className="sr-only">
+                                                                                Checkbox
+                                                                            </label>
+                                                                        </div>
                                                                     </td>
                                                                                                                                                             
                                                                 </td>
@@ -657,26 +589,25 @@ const handleDocumentCheckboxChange = (documentId) => {
                                             </table>
                                         </div>
                                     
-                                    <div className="ti-modal-footer-1 sm:flex !block space-y-2 text-end float-end">
-                                        <button type="button"
-                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-warning text-gray-600 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-left"
-                                            data-hs-overlay="#supportive-document">
-                                           Cancel
-                                        </button>
-                                        <button type="button"
-                                            className="hs-dropdown-toggle ti-btn ti-border font-medium bg-success text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-left"
-                                            data-hs-overlay="#supportive-document">
-                                            Update Document
-                                        </button>
+                                        <div className="ti-modal-footer-1 sm:flex !block space-y-2 text-end float-end">
+                                            <button type="button"
+                                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-warning text-gray-600 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-left"
+                                                data-hs-overlay="#supportive-document">
+                                                Cancel
+                                            </button>
+                                            <button type="button"
+                                                className="hs-dropdown-toggle ti-btn ti-border font-medium bg-success text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10 float-left"
+                                                data-hs-overlay="#supportive-document">
+                                                Update Document
+                                            </button>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </form>
                     {/* block to cross check Document uploaded   */}
-                    
                 </div>
             </div>
         </div>

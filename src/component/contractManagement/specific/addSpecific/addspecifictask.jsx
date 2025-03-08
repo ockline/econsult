@@ -169,14 +169,14 @@ const AddSpecifiTaskContract = () => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Filed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -184,7 +184,7 @@ const AddSpecifiTaskContract = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Specific Task Contract Created Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -193,7 +193,7 @@ const AddSpecifiTaskContract = () => {
                     .then(() => {
 
                         // This code will be executed after the "ok" button is clicked and the modal is closed
-                        navigate('/contracts/specific/specific_task_contracts/'); // Call the navigate function to redirect to the specified route
+                        navigate('/contracts/specific/specific_task/'); // Call the navigate function to redirect to the specified route
                     });
             }
         }

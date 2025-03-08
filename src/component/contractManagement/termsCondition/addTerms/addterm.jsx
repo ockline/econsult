@@ -25,6 +25,7 @@ const AddTermCondition = () => {
         reg_number: '',
         date_contracted: '',
         job_description_doc: null,
+        supportive_attachment: null,
         error_list: [],
     });
     //fetch contract details data'
@@ -78,6 +79,7 @@ const AddTermCondition = () => {
             reg_number: formData.reg_number,
             date_contracted: formData.date_contracted,
             job_description_doc: formData.job_description_doc,
+            supportive_attachment: formData.supportive_attachment
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/contracts/terms/add_term_condition`, DataToSend, {
@@ -100,14 +102,14 @@ const AddTermCondition = () => {
                 )).join('\n');
 
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: formattedErrors,
                     icon: 'error',
                     button: 'OK',
                 });
             } else if (resp.data.status === 500) {
                 swal({
-                    title: 'Sorry! Operation failed',
+                    title: 'Failed',
                     text: resp.data.message,
                     icon: 'warning',
                     button: 'ok',
@@ -115,7 +117,7 @@ const AddTermCondition = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'Term Condition Contract Created Successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
@@ -247,7 +249,11 @@ const AddTermCondition = () => {
                                         />
                                         <span className="text-danger">{formData.error_list.date_contracted}</span>
                                     </div>
-                                </div>                       
+                                </div>   
+                                <div className="space-y-2" id="attachment">
+                                    <label className="ti-form-label mb-0 font-bold text-lg ">Supportive Attachment <span style={{ color: "red" }}></span> </label>
+                                    <input type="file" name="supportive_attachment" id="small-file-input" onChange={(e) => handleFileInputChange('supportive_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                </div>                                
 
                                 {/* Rest of Step 1 form fields */}
                             </div>
@@ -259,7 +265,7 @@ const AddTermCondition = () => {
                             {step === 1 && (
                                 <div className="float-end">
                                     <button type="button" onClick={handleSubmit} className="ti-btn ti-btn-success  justify-center">
-                                        <i className="ti ti-corner-up-right-double"></i>Submit Terms and Condition
+                                        <i className="ti ti-corner-up-right-double"></i>Submit Terms
                                     </button>
                                 </div>
                             )}

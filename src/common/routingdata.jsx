@@ -82,6 +82,12 @@ import EditApplication from "../component/employees/application/editApplication/
 import ShowApplication from "../component/employees/application/showApplication/showapplication";
 import DownloadApplication from "../component/employees/templateDocument/application/personnelapplication";
 
+//Genral Id Application  this is for external. trainnee, subcontractor
+import AddGeneralId from "../component/employees/application/general/addgeneralId";
+import EditGeneralApplication from "../component/employees/application/general/editapplication";
+import ShowGeneralApplication from "../component/employees/application/general/showapplication";
+import DownloadGeneralApplication from "../component/employees/application/general/idpreview";
+
 /** *******  End of Employee Registration Block *********************************************************************** */
 
 
@@ -369,6 +375,12 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/applications/edit_application/:id`, element: <EditApplication /> },
     { path: `${import.meta.env.BASE_URL}employees/applications/show_application/:id`, element: <ShowApplication /> },
     { path: `${import.meta.env.BASE_URL}employees/applications/download_application/:id`, element: < DownloadApplication /> },
+    
+    //General Person Id application    create_general_id
+    { path: `${import.meta.env.BASE_URL}employees/applications/create_general_id`, element: <AddGeneralId /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/edit_general_application/:id`, element: <EditGeneralApplication /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/show_general_application/:id`, element: <ShowGeneralApplication /> },
+    { path: `${import.meta.env.BASE_URL}employees/applications/download_general_application/:id`, element: < DownloadGeneralApplication /> },
 
 /** ************ End of Employee block ********************************************************************************** */
 

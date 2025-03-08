@@ -366,6 +366,17 @@ export const Banking = [
   { value: 'NBC', label: 'NBC' }
 ]
 
+// ID aPPLICATION   IDTYPe
+export const TypeOfID = [
+  { value: '1', label: 'Employee' },
+  { value: '2', label: 'Job Title / Department Change' },
+  { value: '3', label: 'Subcontractor' },
+  { value: '4', label: 'Temporary Site Entry' },
+  { value: '5', label: 'Vistor Application' },
+  { value: '6', label: 'Trainee Application' },
+ 
+]
+
 //leave type
 
 export const LeaveType = [

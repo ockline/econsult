@@ -42,11 +42,22 @@ export const fetchSocialRecordDetails = async () => {
 };
 
 // ****************************************************************************************
-      //Social Record  Details
+      //Person ID application  Details
 export const fetchPersonnelApplicationDetails = async () => {
   try {
     const res = await axios.get(`${apiBaseUrl}/employees/application/show_application_details`);
     return res.data.personnel_application;
+  } catch (error) {
+    throw new Error('Failed to fetch Social record: ' + error.message);
+  }
+};
+
+// ******************************************
+
+export const fetchAllIdApplicationDetails = async () => {
+  try {
+    const res = await axios.get(`${apiBaseUrl}/application/show_general_id_requests`);
+    return res.data.general_id_requests;
   } catch (error) {
     throw new Error('Failed to fetch Social record: ' + error.message);
   }

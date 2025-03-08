@@ -477,7 +477,7 @@ const FixedContract = () => {
                                 <button
                                     type="button"
                                     className="w-20 !p-1 ti-btn ti-btn-danger"
-                                ><a className="flex items-center text-white hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required/show_detail/${formData.id}`}> Cancel
+                                ><a className="flex items-center text-white hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required/show_detail/${formData.employee_id}`}> Cancel
 
                                     </a>
 
