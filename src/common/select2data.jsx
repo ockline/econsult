@@ -381,7 +381,8 @@ export const TypeOfID = [
 
 export const LeaveType = [
   { value: '1', label: 'Paid Leave' },
-  { value: '2', label: 'Un Paid Leave'}
+  { value: '2', label: 'Un Paid Leave' },
+  // { value: '9', label: 'Emergency Leave'},
  
 ]
 

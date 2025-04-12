@@ -9,7 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-const ShowMisconduct = () => {
+const ShowEmergencyLeave = () => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
@@ -38,17 +38,14 @@ const ShowMisconduct = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/industrial_relationship/show_misconduct/${id}`)
+        axios.get(`${apiBaseUrl}/leaves/retrieve_annual_emergency_leave/${id}`)
             .then((res) => {
                 // console.log('API Response:', res.data);  // Log the entire response
-                setEmployeeData(res.data.misconduct);
+                setEmployeeData(res.data.leave_detail);
                 // console.log('data', res.data.fixed_contract);
                 if (res.data.status === 404) {
                     Dangersweetalert()
-
-                    // This code will be executed after the "ok" button is clicked and the modal is closed
-                    navigate('/industrials/misconducts/'); // Call the navigate function to redirect to the specified route
-
+                    navigate('/leaves/annual/'); // Call the navigate 
                 }
             })
             .catch((error) => {
@@ -56,24 +53,6 @@ const ShowMisconduct = () => {
             });
     }, [id]);
 
-
-
-
-    // Dependant updateDependanHistory   **********************************************
-
-
-    const [dependantData, setDependantDetailData] = useState([])
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/social/edit_dependant_detail/${id}`)
-            .then((res) => {
-
-                setDependantDetailData(res.data.dependant_detail); // Assuming "education_history" is correct
-                // console.log("dataa", ' ', res.data.dependant_detail);
-            })
-            .catch((error) => {
-                console.error('Error fetching practical data:', error);
-            });
-    }, [id]);
 
     function Dangersweetalert() {
         Swal.fire({
@@ -119,20 +98,20 @@ const ShowMisconduct = () => {
             </Helmet>
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Misconduct </h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Annual Leave</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/misconducts/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/annual/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                    <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/show_misconducts/${formData?.id}`}  >Show Misconduct
+                    {/* <li className="text-sm">
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/annual/show_annual_leave/${formData.id}`}>Show Annual Leave
 
                         </a>
-                    </li>
+                    </li> */}
                 </ol>
             </div>
 
@@ -153,30 +132,83 @@ const ShowMisconduct = () => {
 
                                         <tr className="border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Employee Name
+                                                Employer Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData?.employee_name}
+                                                {formData.employer}
                                             </td>
                                         </tr>
                                         <tr className="">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Employer Name
+                                                Employee Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black font-medium">
-                                                {formData?.employer}
+                                                {formData.employee_name}
                                             </td>
                                         </tr>
-                                       
+                                        <tr className="">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                                Employee Number
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black font-medium">
+                                                {formData.employee_id}
+                                            </td>
+                                        </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Misconduct Date
+                                                Leave Type
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black text-secondary font-bold">
+                                                {formData.leave_type}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                              Start  Date 
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData?.misconduct_date}
+                                                {formData.start_date}
+                                            </td>
+                                        </tr>
+                                          <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                              End  Date 
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.end_date}
+                                            </td>
+                                        </tr>
+                                         <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                              All  Balance 
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.all_balance}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                                Balance Days
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.balance_days}
+                                            </td>
+                                        </tr>
+                                         <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                               Financial Year
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.financial_year}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -185,7 +217,7 @@ const ShowMisconduct = () => {
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData?.mobile_number}
+                                                {formData.phone_number}
                                             </td>
                                         </tr>
 
@@ -215,7 +247,7 @@ const ShowMisconduct = () => {
                                 ><i className="ti ti-user-circle font-semibold"></i>
                                     Employment Particulars
                                 </button>
-                                {/* <button
+                                <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                     id="profile-item-2"
@@ -223,8 +255,8 @@ const ShowMisconduct = () => {
                                     aria-controls="profile-2"
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
-                                    Remuneration & Hours
-                                </button> */}
+                                    Workflow Histories
+                                </button>
                                 <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
@@ -254,43 +286,43 @@ const ShowMisconduct = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black font-medium">
-                                                    {formData?.job_title}
+                                                    {formData.job_title}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Misconduct Number
+                                                    Job profile
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData?.misconduct_number}
+                                                    {formData.job_profile}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Department
+                                                    Reporting To
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black text-info">
-                                                    {formData?.departments}
+                                                    {formData.reporting_to}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Investigation Report
+                                                    Staff Classification
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData?.investigation_report}
+                                                    {formData.staff_classfication}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="!p-2 !text-lg font-bold text-black">
-                                                    Show Cause Letter
+                                                    Place of Work
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData?.show_cause == 1 ? 'Yes' : 'No'}
+                                                    {formData.work_station}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -299,27 +331,105 @@ const ShowMisconduct = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2 text-black">
-                                                    {formData?.place_recruitment}
+                                                    {formData.place_recruitment}
                                                 </td>
                                             </tr>
 
-                                          
+                                            <tr className="!border-0">
+                                                <td className="!p-2 !text-lg font-bold text-black">
+                                                    Commencement Date
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 text-black">
+                                                    {formData.commencement_date}
+                                                </td>
+                                            </tr>
+                                            <tr className="!border-0">
+                                                <td className="!p-2 !text-lg font-bold text-black">
+                                                    Expire Commencement Date
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 text-black">
+                                                    {formData.end_commencement_date}
+                                                </td>
+                                            </tr>
+                                            <tr className="!border-0">
+                                                <td className="!p-2 !text-lg font-bold text-black">
+                                                    Probation Period
+                                                </td>
+                                                <td className="!p-2">:</td>
+                                                <td className="!p-2 text-black">
+                                                    {formData.probation_period}
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
-                                      <tr className="!border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Misconduct Cause
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black  font-bold">
-                                                {formData?.misconduct}
-                                            </td>
-                                        </tr>
                                 </div>
                                 <br />
 
                             </div>
-                          
+                            <div
+                                id="profile-2"
+                                className="hidden"
+                                role="tabpanel"
+                                aria-labelledby="profile-item-2"
+                            >
+                                <div className="grid lg:grid-cols-1 gap-6 second-page none" id="new_page">
+
+                                    <div className=" space-y-2">
+
+                                    </div>
+
+                                    {/* Workflow History */}
+                                    <h3 className="text-black front-medium font-bold ">Remuneration</h3>
+                                    <div className="table-bordered rounded-md overflow-auto">
+
+                                        <table className="ti-custom-table ti-custom-table-head" >
+                                            <thead className="bg-gray-50 dark:bg-black/20">
+                                                <tr>
+                                                    <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>Name</th>
+                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Description</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td>1</td>
+                                                    <td colSpan={1} className="">Remuneration before <br />Tax and statutory</td>
+                                                    <td colSpan={1} className="">{formData.remuneration}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} >2</td>
+                                                    <td colSpan={1} >Basic Salary</td>
+                                                    <td colSpan={1} className="">{formData.basic_salary}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">3</td>
+                                                    <td colSpan={1} >Housing Allowance</td>
+                                                    <td colSpan={1} >{formData.house_allowance}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">4</td>
+                                                    <td colSpan={1} >Meal Allowance</td>
+                                                    <td colSpan={1} >{formData.meal_allowance}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">5</td>
+                                                    <td colSpan={1} >Transport Allowance</td>
+                                                    <td colSpan={1} >{formData.transport_allowance}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={1} className="">6</td>
+                                                    <td colSpan={1} >Risk/Bush Allowance</td>
+                                                    <td colSpan={1} >{formData.risk_bush_allowance}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {/* Employment Reference check */}
+                                </div>
+                            </div>
                             <div
                                 id="profile-3"
                                 className="hidden text-center"
@@ -347,11 +457,11 @@ const ShowMisconduct = () => {
 
                                                     <Link
                                                         aria-label="anchor"
-                                                        to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData?.employee_id}
+                                                        to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData.employee_id}
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i>Download Fixed Contract
+                                                        <i className="ti ti-cloud-download"></i>Preview Annual Leave
                                                     </Link>
                                                 </div>
                                             </div>
@@ -418,4 +528,4 @@ const ShowMisconduct = () => {
     );
 };
 
-export default ShowMisconduct;
+export default ShowEmergencyLeave;

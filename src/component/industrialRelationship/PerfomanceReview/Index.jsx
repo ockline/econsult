@@ -192,7 +192,7 @@ function Style1() {
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
 													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{review.criterial}</p>
+														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{review.overall_rating}</p>
 																																		</div>
 												</div>
                                                     </td>
@@ -233,7 +233,7 @@ function Style1() {
 																						
 															&nbsp;&nbsp;
 													
-											{review.status === 'Active' ? (
+											{(review.status === 'Not Initiated' || review.status === 'Returned' ) ? (
 										<button
 											type="button"
 											className="ti-btn ti-btn-success show-example-btn"

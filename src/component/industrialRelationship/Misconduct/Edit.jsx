@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { EmployerData, JobTitleData, ContractType,DependantTypeData } from '/src/common/select2data';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +6,7 @@ import DatePicker from 'react-datepicker';
 // import { RecruitmentData,DataToSubmit } from "/src/common/recruitmentdata";
 import axios from "axios";
 import Swal from "sweetalert2";
+import CreatableSelect from 'react-select/creatable';
 
 
 
@@ -27,6 +27,9 @@ const Edit = () => {
         misconduct_date: '', 
         dismiss_date: '',
         dismiss_remarks: '',
+        incidence_remarks: '',
+        incidence_reported_by: '',
+        incidence_reported_date: '',
         show_cause_letter_attachment: null,
         investigation_report_attachment: null,
         error_list: [],
@@ -94,6 +97,9 @@ const Edit = () => {
             misconduct_date: formData.misconduct_date,
             dismiss_date: formData.dismiss_date,
             dismiss_remarks: formData.dismiss_remarks,
+             incidence_remarks: formData.incidence_remarks,
+            incidence_reported_by: formData.incidence_reported_by,
+            incidence_reported_date: formData.incidence_reported_date,
             show_cause_letter_attachment: formData.show_cause_letter_attachment,
             investigation_report_attachment: formData.investigation_report_attachment,
         };
@@ -219,6 +225,13 @@ const Edit = () => {
         })
     }
 
+    // Define options for the select input
+    const misconductOptions = [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+        { value: 'option3', label: 'Option 3' },
+        // Add more options as needed
+    ];
 
     return (
         <div>
@@ -243,7 +256,7 @@ const Edit = () => {
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
                     <h1 className="box-title my-auto font-bold text-lg">Update Employee Misconduct</h1>
-                    <Link to={`${import.meta.env.BASE_URL}employees/socialrecords/details/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
+                    <Link to={`${import.meta.env.BASE_URL}industrials/misconducts/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
                     <form className="ti-validation" noValidate onSubmit={handleSubmit}>
@@ -273,24 +286,80 @@ const Edit = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Misconduct Cause <span style={{ color: "red" }}> *</span></label>
-                                   <input type="text" name="misconduct" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.misconduct} onChange={(e) => handleInputChange('misconduct', e.target.value)} placeholder="Misconduct Cause" required readOnly />
+                                    <CreatableSelect
+                                        isMulti
+                                        name="misconduct"
+                                        options={misconductOptions}
+                                        className="basic-multi-select"
+                                        classNamePrefix="select"
+                                        value={formData.misconduct}
+                                        onChange={(selectedOptions) => {
+                                            handleInputChange('misconduct', selectedOptions);
+                                        }}
+                                        placeholder="Select Misconduct Causes"
+                                        required
+                                        isDisabled={false}
+                                    />
                                 </div>
-                               
-                              <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Misconduct Date<span style={{ color: "red" }}> *</span></label>
-                                    <div className="flex rounded-sm overflow-auto">
-                                        <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                className="ri ri-calendar-line"></i></span>
-                                        </div>
-                                        <input
-                                            type="date" name="misconduct_date" className="my-auto ti-form-input text-black  border-red-500 text-lg"
-                                            placeholder="" value={new Date(formData.misconduct_date).toLocaleDateString('en-CA')} // Format the date
-                                            onChange={(e) => handleInputChange('start_date', e.target.value)} required
-                                        />
-                                        <span className="text-danger">{formData.error_list.misconduct_date}</span>
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Incident Reported By </label>
+                                    <input type="text" name="incidence_reported_by" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.incidence_reported_by}
+                                        onChange={(e) => handleInputChange('incidence_reported_by', e.target.value)} placeholder="Reported by"  />
+
+                                </div>
+                               <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">Incident Reported Date <span style={{ color: "red" }}> *</span></label>
+                                <div className="flex rounded-sm overflow-auto">
+                                    <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
+                                        <span className="text-sm text-gray-500 dark:text-white/70">
+                                            <i className="ri ri-calendar-line"></i>
+                                        </span>
                                     </div>
+                                    <input
+                                        type="date" 
+                                        name="incidence_reported_date" 
+                                        className="my-auto ti-form-input text-black text-lg"
+                                        value={new Date(formData.incidence_reported_date).toLocaleDateString('en-CA')} // Format the date
+                                        min="1970-01-01" // Set a minimum date (you can adjust this as needed)
+                                        max={new Date().toISOString().split('T')[0]} // Set today's date as the maximum
+                                        onChange={(e) => handleInputChange('incidence_reported_date', e.target.value)} 
+                                        required
+                                    />
+                                    <span className="text-danger">{formData.error_list.incidence_reported_date}</span>
                                 </div>
+                            </div>  
+                            <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">Misconduct Date <span style={{ color: "red" }}> *</span></label>
+                                <div className="flex rounded-sm overflow-auto">
+                                    <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
+                                        <span className="text-sm text-gray-500 dark:text-white/70"><i
+                                            className="ri ri-calendar-line"></i></span>
+                                    </div>
+                                    <input
+                                        type="date" 
+                                        name="misconduct_date" 
+                                        className="my-auto ti-form-input text-black border-red-500 text-lg"
+                                        placeholder="" 
+                                        value={new Date(formData.misconduct_date).toLocaleDateString('en-CA')} // Format the date
+                                        min="1970-01-01" // Set a minimum date (you can adjust this as needed)
+                                        max={new Date().toISOString().split('T')[0]} // Set today's date as the maximum
+                                        onChange={(e) => handleInputChange('misconduct_date', e.target.value)} // Corrected the field name
+                                        required
+                                    />
+                                    <span className="text-danger">{formData.error_list.misconduct_date}</span>
+                                </div>
+                            </div>
+                                 <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Incident Remarks</label>
+                                    <textarea 
+                                        type="text" 
+                                        name="incidence_remarks" 
+                                        className="my-auto ti-form-input text-black border-red-500 text-md" 
+                                        value={formData.incidence_remarks} 
+                                        onChange={(e) => handleInputChange('incidence_remarks', e.target.value)} 
+                                        placeholder="Write Comment if any" 
+                                    />
+                                </div> 
                                   <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Dismiss Remarks</label>
                                    <input type="textarea" name="dismiss_remarks" className="my-auto ti-form-input text-black  border-red-500 text-lg" value={formData.dismiss_remarks} onChange={(e) => handleInputChange('dismiss_remarks', e.target.value)} placeholder="Dismis Remarks"   />

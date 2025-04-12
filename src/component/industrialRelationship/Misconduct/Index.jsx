@@ -202,7 +202,7 @@ function Style1() {
 											<th scope="col" className="dark:text-white/80">EmployeeId</th>
 											<th scope="col" className="dark:text-white/80">Fullname</th>
 											<th scope="col" className="dark:text-white/80 min-w-[300px]">Employer</th>
-                                            <th scope="col" className="dark:text-white/80">Misconduct Type</th>
+                                            {/* <th scope="col" className="dark:text-white/80">Misconduct Type</th> */}
                                             <th scope="col" className="dark:text-white/80">Misconduct Date</th>
                                              {/* <th scope="col" className="dark:text-white/80">Department</th>
                                             <th scope="col" className="dark:text-white/80">Job title</th> */}
@@ -226,14 +226,14 @@ function Style1() {
                                                     </td>
                                                     <td>{misconduct.employee_name}</td>
 											<td className="font-semibold text-base">{misconduct.employer}</td>
-											<td>
+											{/* <td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
 													<div className="block my-auto">
 														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{misconduct.misconduct}</p>
 														</div>
 												</div>
-                                                    </td>
+                                                    </td> */}
                                                     <td>{misconduct.misconduct_date}</td>
 												{/* <td>{misconduct.departments}</td>                                                    
 											<td>{misconduct.job_title}</td> */}

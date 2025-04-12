@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -34,7 +34,7 @@ function Ajaxcalling(e, id) {
 //   console.log("ID new", id);
 
   Swal.fire({
-    title: 'Fill Deactivate Reason',
+    title: 'Initiation  Reason',
     input: 'text',
     inputAttributes: {
       autocapitalize: 'off'
@@ -42,10 +42,10 @@ function Ajaxcalling(e, id) {
     showCancelButton: true,
     confirmButtonText: 'Confirm',
     showLoaderOnConfirm: true,
-    preConfirm: (deactivate_reason) => {
+    preConfirm: (reason) => {
       return axios
-        .delete(`${apiBaseUrl}/annuals/delete_employer/${id}`, {
-          data: { deactivate_reason: deactivate_reason }
+        .delete(`${apiBaseUrl}/leaves/initiate_sick_leave/${id}`, {
+          data: { reason: reason }
         })
         .then(response => {
           if (!response.ok) {
@@ -211,7 +211,7 @@ function Style1() {
 									</thead>
 									<tbody className="">
 										{
-											sickLeave?.map((annual, index) => (
+											sickLeave?.map((sick, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -219,38 +219,38 @@ function Style1() {
 												<div className="flex space-x-3 rtl:space-x-reverse w-full">
 													<div className="block w-full my-auto">
 														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">{annual.employee_id}</span>
+															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">{sick.employee_id}</span>
 															</div>
 												</div>
                                                     </td>
-                                                    <td>{annual.employee_name}</td>
-											<td className="!text-success font-semibold text-base">{annual.employer}</td>
+                                                    <td>{sick.employee_name}</td>
+											<td className="!text-success font-semibold text-base">{sick.employer}</td>
 											<td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
 													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{annual.leave_type}</p>
+														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{sick.leave_type}</p>
 														{/* <span
 															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">socratesitumay@gmail.com</span> */}
 													</div>
 												</div>
                                                     </td>
-                                                    <td>{annual.start_date}</td>
-												<td>{annual.end_date}</td>                                                    
-											<td>{annual.all_balance}</td>
+                                                    <td>{sick.start_date}</td>
+												<td>{sick.end_date}</td>                                                    
+											<td>{sick.all_balance}</td>
 													<td>
-														{ annual.status === 1
+														{ sick.status === 1
 														? (
 <span
 												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80">Submitted</span>)													
 												 : (<span
-															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{annual.status}</span>
+															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{sick.status}</span>
 												 )}
 											</td>
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/${annual.id}`}
+													<Link to={`${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/${sick.id}`}
 														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 														<i className="ti ti-eye"></i>
 														<span
@@ -262,26 +262,25 @@ function Style1() {
 															</div>
 															&nbsp;&nbsp;
 																									
-														<button 
-                                                    aria-label="anchor"
-                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
-                                                    onClick={() => {
-                                                   navigate(`${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/${annual.id}`);   
-                                                    }}
+														<Link 
+															aria-label="anchor"
+															className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+															to={`${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/${sick.id}`}   
+                                            
                                                    >
                                                     <i className="ti ti-pencil"></i>
-                                                </button>	
+                                                </Link>	
 														
 															&nbsp;&nbsp;
 												
 														
-											{annual.status === null ? (
+											{sick.status === null ? (
 										<button
 											type="button"
 											className="ti-btn ti-btn-success show-example-btn"
 											aria-label="Deactivate! Example: End of contract"
 											id="ajax-btn"
-											onClick={(e) => Ajaxcalling(e, annual.id)}
+											onClick={(e) => Ajaxcalling(e, sick.id)}
 										>
 											Initiate
 										</button>

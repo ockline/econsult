@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 
 
-const EditAnnualLeave = () => {
+const EditEmergencyLeave = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -31,15 +31,15 @@ const EditAnnualLeave = () => {
         error_list: [],
     });
     
-   
+    console.log('waleteee',formData );
     //fetch employee data'
     const { id } = useParams();
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/leaves/retrieve_annual_emergency_leave/${id}`).then((res) => {
+        axios.get(`${apiBaseUrl}/leaves/retrieve_sick_detail/${id}`).then((res) => {
             // Ensure that all properties are present in the API response
             const updatedFormData = {
                 ...formData,
-                ...res.data.leave_detail,
+                ...res.data.employee,
             };
             setFormData(updatedFormData);
             // console.log(updatedFormData);
@@ -96,7 +96,7 @@ const EditAnnualLeave = () => {
             leave_attachment: formData.leave_attachment,
         };
         try {
-            const resp = await axios.post(`${apiBaseUrl}/leaves/update_annual_leave/${id}`, DataToSend, {
+            const resp = await axios.post(`${apiBaseUrl}/leaves/update_emergency_leave/${id}`, DataToSend, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -210,7 +210,7 @@ const EditAnnualLeave = () => {
                     'Social Record completed Successfully.',
                     'success'
                 ).then(() => {
-                    navigate('/leaves/annual');
+                    navigate('/employees/socialrecords/details/');
                 })
 
             }
@@ -271,7 +271,7 @@ const EditAnnualLeave = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Leave Type <span style={{ color: "red" }}> *</span></label>
-                                   <input type="text" name="leave" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.leave_type} onChange={(e) => handleInputChange('leave', e.target.value)} placeholder="Employee leave" required readOnly />
+                                   <input type="text" name="leave" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.leave} onChange={(e) => handleInputChange('leave', e.target.value)} placeholder="Employee leave" required readOnly />
                                 </div>
                                
                               <div className="space-y-2">
@@ -356,4 +356,4 @@ const EditAnnualLeave = () => {
         </div>
     );
 };
-export default EditAnnualLeave;
+export default EditEmergencyLeave;

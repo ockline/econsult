@@ -28,6 +28,7 @@ const EditSick = () => {
         end_date: '',
         remarks: '',
         leave_attachment: null,
+        sick_attachment: null,
         error_list: [],
     });
     
@@ -94,6 +95,7 @@ const EditSick = () => {
             end_date: formData.end_date,
             remarks: formData.remarks,
             leave_attachment: formData.leave_attachment,
+            sick_attachment: formData.sick_attachment
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/leaves/update_sick_leave/${id}`, DataToSend, {
@@ -206,8 +208,8 @@ const EditSick = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
-                    'Social Record Saved!',
-                    'Social Record completed Successfully.',
+                    'Saved!',
+                    'completed Successfully.',
                     'success'
                 ).then(() => {
                     navigate('/employees/socialrecords/details/');
@@ -225,14 +227,14 @@ const EditSick = () => {
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/details/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/sick-leave/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employees/socialrecords/add_record/${formData.id}`}>
-                            Add Contact Details
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/sick-leave/create_leave/${formData.id}`}>
+                            Add Sick leave
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
                     </li>
@@ -241,7 +243,7 @@ const EditSick = () => {
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
                     <h1 className="box-title my-auto font-bold text-lg">Update employee Leave</h1>
-                    <Link to={`${import.meta.env.BASE_URL}employees/socialrecords/details/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
+                    <Link to={`${import.meta.env.BASE_URL}leaves/sick-leave/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
                     <form className="ti-validation" noValidate onSubmit={handleSubmit}>
@@ -273,7 +275,24 @@ const EditSick = () => {
                                     <label className="ti-form-label mb-0 font-bold text-lg">Leave Type <span style={{ color: "red" }}> *</span></label>
                                    <input type="text" name="leave" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.leave} onChange={(e) => handleInputChange('leave', e.target.value)} placeholder="Employee leave" required readOnly />
                                 </div>
-                               
+                                 <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Hospital Name</label>
+                                    <input type="text" name="hospital_name" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.hospital_name}
+                                        onChange={(e) => handleInputChange('hospital_name', e.target.value)} placeholder="Hospital Name"  />
+
+                                </div>
+                                 <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Age</label>
+                                    <input type="text" name="age" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.age}
+                                        onChange={(e) => handleInputChange('age', e.target.value)} placeholder="Age of Applicant"  />
+
+                                </div>
+                                 <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Refferal To</label>
+                                    <input type="text" name="refferal_to" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.refferal_to}
+                                        onChange={(e) => handleInputChange('refferal_to', e.target.value)} placeholder="Refferal To"  />
+
+                                </div>
                               <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Start Date<span style={{ color: "red" }}> *</span></label>
                                     <div className="flex rounded-sm overflow-auto">
@@ -304,6 +323,12 @@ const EditSick = () => {
                                         <span className="text-danger">{formData.error_list.end_date}</span>
                                     </div>
                                 </div>
+                                 <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Sick Attachment</label>
+                                            <input type="file" accept=".pdf" name="sick_attachment" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('sick_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                        </div>
                             </div>
                         )}
                     

@@ -127,7 +127,13 @@ import DownloadTermConditions from "../component/contractManagement/templateCont
 import AnnualLeave from "../component/leaves/AnnualLeave/index";
 import AddAnnualLeave from "../component/leaves/AnnualLeave/AddAnnual";
 import EditAnnualLeave from "../component/leaves/AnnualLeave/EditAnnual";
-import ShowLeave from "../component/leaves/AnnualLeave/ShowLeave";
+import ShowAnnualLeave from "../component/leaves/AnnualLeave/ShowLeave";
+// import DownloadAnnualLeave  from "../component/leaves/AnnualLeave/annualLeave";
+//Emergency 
+
+import AddEmergencyLeave from "../component/leaves/EmergencyLeave/AddEmergencyLeave";
+import EditEmergencyLeave from "../component/leaves/EmergencyLeave/EditEmergencyLeave";
+import ShowEmergencyLeave from "../component/leaves/EmergencyLeave/ShowEmergencyLeave";
 
  //Sick
 import SickLeave from "../component/leaves/SickLeave/Index";
@@ -426,9 +432,16 @@ export const RouteData = [
     //   annual and emergenece leave
     { path: `${import.meta.env.BASE_URL}leaves/annual`, element: <AnnualLeave /> },
     { path: `${import.meta.env.BASE_URL}leaves/annual/create-leave`, element: <AddAnnualLeave /> },
-    { path: `${import.meta.env.BASE_URL}leaves/annual/edit_term_condition/:id`, element: <EditTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/annual/show_term_condition/:id`, element: <ShowTermConditions /> },
-    { path: `${import.meta.env.BASE_URL}leaves/annual/download_term_condition/:id`, element: <DownloadTermConditions /> },
+    { path: `${import.meta.env.BASE_URL}leaves/annual/edit_leave/:id`, element: <EditAnnualLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/annual/show_annual_leave/:id`, element: <ShowAnnualLeave /> },
+    // { path: `${import.meta.env.BASE_URL}leaves/annual/download_leave/:id`, element: <DownloadAnnualLeave /> },
+    
+    //Emergency Leave
+    
+     { path: `${import.meta.env.BASE_URL}leaves/emergency/create-emergency-leave`, element: <AddEmergencyLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/emergency/edit_emergency_leave/:id`, element: <EditEmergencyLeave /> },
+    { path: `${import.meta.env.BASE_URL}leaves/emergency/show_emergency_leave/:id`, element: <ShowEmergencyLeave /> },
+    // { path: `${import.meta.env.BASE_URL}leaves/emergency/download_emergency_leave/:id`, element: <DownloadEmergencyLeave /> },
     
     // sick leave 
     { path: `${import.meta.env.BASE_URL}leaves/sick-leave`, element: <SickLeave /> },
@@ -436,6 +449,8 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}leaves/sick/edit_sick_leave/:id`, element: <EditSickLeave /> },
     { path: `${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/:id`, element: <ShowSickLeave /> },
     { path: `${import.meta.env.BASE_URL}leaves/sick/download_sick_leave/:id`, element: <DownloadSickLeave /> },
+   
+
     
     // maternity
     { path: `${import.meta.env.BASE_URL}leaves/maternity`, element: <MaternityLeave /> },

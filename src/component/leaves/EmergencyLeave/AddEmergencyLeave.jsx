@@ -4,13 +4,13 @@ import { fetchEmployeeDetails } from '/src/common/leavedata';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Creatable from "react-select/creatable";
 import DatePicker from 'react-datepicker';
-import { SickLeaveType } from "/src/common/select2data";
+import { LeaveType } from "/src/common/select2data";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 
 
-const AddSickLeave = () => {
+const AddEmergencyLeave = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -106,10 +106,6 @@ const AddSickLeave = () => {
         start_date: '', 
         end_date: '',
         remarks: '',
-        refferal_to: '',
-        hospital_name: '',
-        age: '',
-        sick_attachment: '',
         error_list: [],
     });
     
@@ -153,25 +149,21 @@ const AddSickLeave = () => {
         // console.log('Form submitted:', formData);
         const DataToSend = {
             employee_id: formData.employee_id,
-            leave_type: formData.leave_type,
+            leave_type: 9,
             employer_id: formData.employer_id,
             firstname: formData.firstname,
             middlename: formData.middlename,
             lastname: formData.lastname,
             location: formData.location,
-            refferal_to: formData.refferal_to,
-            hospital_name: formData.hospital_name,
-            age: formData.hospital_name,
             start_date: formData.start_date,
             end_date: formData.end_date,
-            remarks: formData.remarks,
-            sick_attachment: formData.sick_attachment
+            remarks: formData.remarks
            
             
         };
          setIsLoading(true);
     try {
-      const resp = await axios.post(`${apiBaseUrl}/leaves/create_sick_leave`, DataToSend, {
+      const resp = await axios.post(`${apiBaseUrl}/leaves/create_annual_leave`, DataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -209,7 +201,7 @@ const AddSickLeave = () => {
           button: "OK",
           closeOnClickOutside: false,
         }).then(() => {
-          navigate("/leaves/sick-leave");
+          navigate("/leaves/annual/");
         });
       }
     } catch (error) {
@@ -222,7 +214,7 @@ const AddSickLeave = () => {
     return (
         <div>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Sick Leave</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Emergency Leave</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
@@ -232,7 +224,7 @@ const AddSickLeave = () => {
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/annual/create-leave`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/annual/create-emergency-leave`}>
                             Add Leave Details
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
@@ -241,16 +233,14 @@ const AddSickLeave = () => {
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h1 className="box-title my-auto font-bold text-lg">Create Leave</h1>
-                    <Link to={`${import.meta.env.BASE_URL}leaves/sick-leave/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
+                    <h1 className="box-title my-auto font-bold text-lg">Create Emergency Leave</h1>
+                    <Link to={`${import.meta.env.BASE_URL}leaves/annual/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
                     <form className="ti-validation" noValidate onSubmit={handleSubmit}>
                         {step === 1 && (
 
                             <div className="grid lg:grid-cols-3 gap-6">
-
-                               
                                  <div className="space-y-2">
                                 <div className="relative sm:max-w-xs max-w-[210px]">
                                     <label className="ti-form-label mb-0 font-bold text-lg">
@@ -272,9 +262,10 @@ const AddSickLeave = () => {
                                 </div>
                             </div>
 
-                                <div className="space-y-2">
+                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">Leave Type <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="leave_type" options={SickLeaveType} onChange={(selectedOption) => handleInputChange(["leave_type"], selectedOption ? selectedOption.value : null)} value={SickLeaveType.find((option) => option.value === formData.leave_id)} />
+                                    <input type="text" name="leave_type" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" placeholder="Emergency Leave" value="Emergency Leave" readOnly
+                                        onChange={(e) => handleInputChange('9', e.target.value)} required />
                                     <span className="text-danger">{formData.error_list.leave_id}</span>
                                 </div>
                                 <div className="space-y-2">
@@ -309,24 +300,12 @@ const AddSickLeave = () => {
                                     {/* <span className="text-danger">{formData.error_list.employer}</span> */}
                                 </div>
                                                        
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Hospital Name</label>
-                                    <input type="text" name="hospital_name" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.hospital_name}
-                                        onChange={(e) => handleInputChange('hospital_name', e.target.value)} placeholder="Hospital Name"  />
+                                {/* <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Location </label>
+                                    <input type="text" name="birth_place" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.department}
+                                        onChange={(e) => handleInputChange('birth_place', e.target.value)} placeholder="Present address" readOnly />
 
-                                </div>
-                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Age</label>
-                                    <input type="text" name="age" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.age}
-                                        onChange={(e) => handleInputChange('age', e.target.value)} placeholder="Age of Applicant"  />
-
-                                </div>
-                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Refferal To</label>
-                                    <input type="text" name="refferal_to" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.refferal_to}
-                                        onChange={(e) => handleInputChange('refferal_to', e.target.value)} placeholder="Refferal to which hospital"  />
-
-                                </div>
+                                </div> */}
                                <div className="space-y-2">
                                 <label className="ti-form-label mb-0 font-bold text-lg">Start Date <span style={{ color: "red" }}> *</span></label>
                                 <div className="flex rounded-sm overflow-auto">
@@ -376,8 +355,8 @@ const AddSickLeave = () => {
                                 </div>                                
                                  <div className="space-y-2">
                                             <label className="ti-form-label mb-0 font-bold text-lg">Leave Attachment</label>
-                                            <input type="file" accept=".pdf" name="sick_attachment" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('sick_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <input type="file" accept=".pdf" name="military_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('military_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           
                                         </div>
                             </div>
@@ -424,4 +403,4 @@ const AddSickLeave = () => {
         </div>
     );
 };
-export default AddSickLeave;
+export default AddEmergencyLeave;

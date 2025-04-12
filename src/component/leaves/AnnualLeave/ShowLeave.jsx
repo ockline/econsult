@@ -38,17 +38,14 @@ const ShowAnnual = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/contracts/fixed/show_fixed_contract/${id}`)
+        axios.get(`${apiBaseUrl}/leaves/retrieve_annual_emergency_leave/${id}`)
             .then((res) => {
                 // console.log('API Response:', res.data);  // Log the entire response
-                setEmployeeData(res.data.fixed_contract);
+                setEmployeeData(res.data.leave_detail);
                 // console.log('data', res.data.fixed_contract);
                 if (res.data.status === 404) {
                     Dangersweetalert()
-
-                    // This code will be executed after the "ok" button is clicked and the modal is closed
-                    navigate('/contracts/required_details/'); // Call the navigate function to redirect to the specified route
-
+                    navigate('/leaves/annual/'); // Call the navigate 
                 }
             })
             .catch((error) => {
@@ -56,24 +53,6 @@ const ShowAnnual = () => {
             });
     }, [id]);
 
-
-
-
-    // Dependant updateDependanHistory   **********************************************
-
-
-    const [dependantData, setDependantDetailData] = useState([])
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/social/edit_dependant_detail/${id}`)
-            .then((res) => {
-
-                setDependantDetailData(res.data.dependant_detail); // Assuming "education_history" is correct
-                // console.log("dataa", ' ', res.data.dependant_detail);
-            })
-            .catch((error) => {
-                console.error('Error fetching practical data:', error);
-            });
-    }, [id]);
 
     function Dangersweetalert() {
         Swal.fire({
@@ -119,20 +98,20 @@ const ShowAnnual = () => {
             </Helmet>
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Fixed Contract</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Annual Leave</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/annual/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                    <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/show_fixed/${formData.employee_id}`}>Show Fixed Contract
+                    {/* <li className="text-sm">
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/annual/show_annual_leave/${formData.id}`}>Show Annual Leave
 
                         </a>
-                    </li>
+                    </li> */}
                 </ol>
             </div>
 
@@ -153,38 +132,83 @@ const ShowAnnual = () => {
 
                                         <tr className="border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                BETWEEN (EmployerName)
+                                                Employer Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.employer_name}
+                                                {formData.employer}
                                             </td>
                                         </tr>
                                         <tr className="">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                AND (Employee Name )
+                                                Employee Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black font-medium">
                                                 {formData.employee_name}
                                             </td>
                                         </tr>
-                                        <tr className="!border-0">
+                                        <tr className="">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Contract Type
+                                                Employee Number
                                             </td>
                                             <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black text-secondary font-bold">
-                                                {formData.name}
+                                            <td className="!p-2 text-black font-medium">
+                                                {formData.employee_id}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Date of birth
+                                                Leave Type
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black text-secondary font-bold">
+                                                {formData.leave_type}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                              Start  Date 
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.dob}
+                                                {formData.start_date}
+                                            </td>
+                                        </tr>
+                                          <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                              End  Date 
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.end_date}
+                                            </td>
+                                        </tr>
+                                         <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                              All  Balance 
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.all_balance}
+                                            </td>
+                                        </tr>
+                                        <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                                Balance Days
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.balance_days}
+                                            </td>
+                                        </tr>
+                                         <tr className="!border-0">
+                                            <td className="!p-2 !text-lg font-bold text-black">
+                                               Financial Year
+                                            </td>
+                                            <td className="!p-2">:</td>
+                                            <td className="!p-2 text-black">
+                                                {formData.financial_year}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
@@ -231,7 +255,7 @@ const ShowAnnual = () => {
                                     aria-controls="profile-2"
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
-                                    Remuneration & Hours
+                                    Workflow Histories
                                 </button>
                                 <button
                                     type="button"
@@ -437,7 +461,7 @@ const ShowAnnual = () => {
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i>Download Fixed Contract
+                                                        <i className="ti ti-cloud-download"></i>Preview Annual Leave
                                                     </Link>
                                                 </div>
                                             </div>

@@ -423,11 +423,11 @@ const ShowSick = () => {
 
                                                     <Link
                                                         aria-label="anchor"
-                                                        to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData.employee_id}
+                                                        to={`${import.meta.env.BASE_URL}leaves/sick/download_sick_leave/` + formData.id}
                                                         className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
                                                         style={{ backgroundColor: '#7800ff' }}
                                                     >
-                                                        <i className="ti ti-cloud-download"></i>Download Fixed Contract
+                                                        <i className="ti ti-cloud-download"></i>Download Sick Leave
                                                     </Link>
                                                 </div>
                                             </div>

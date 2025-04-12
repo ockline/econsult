@@ -1,311 +1,496 @@
-
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import { fetchRequiredContractDetails } from "../../../common/contractsdata";
-import Select from 'react-select';
-import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from "react";
+import "../../../../src/assets/css/print-style.css";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 const Download = () => {
-
-
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-
-    let navigate = useNavigate();
-    const [allData, setAllData] = useState([]);
-    const [searchQuery, setSearchQuery] = useState(''); // for Searching
-    const [currentPage, setCurrentPage] = useState(1);
-    const entriesPerPage = 10;
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const ContractDetails = await fetchRequiredContractDetails();
-                setAllData(ContractDetails);
-                console.log(ContractDetails);
-            } catch (error) {
-                console.error('Error fetching data:', error.message);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    function handleRemove(id) {
-        const newList = allData.filter((employee) => employee.id !== id);
-        setAllData(newList);
-    }
-
-    // Filter data based on search query
-    const filteredData = allData.filter((employee) =>
-        employee.employee_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    //*********************Pagination */
-    const indexOfLastEntry = currentPage * entriesPerPage;
-    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
-
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    // console.log('apiBaseUrl:', apiBaseUrl);
-    function Style2(employee_id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to edit this file again!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#5e76a6',
-            cancelButtonColor: '#edcb63',
-            confirmButtonText: 'Yes, Complete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios.post(
-                    `${apiBaseUrl}/contracts/required/complete_contract_detail/${employee_id}`,
-                    {},
-                    {
-                        headers: {
-                            'X-CSRF-TOKEN': 'form/multi-part',
-                        },
-                    }
-                )
-                    .then(response => {
-                        // Handle the response if needed
-                        Swal.fire(
-                            'Completed',
-                            'Your file has been Completed.',
-                            'success'
-                        );
-                    })
-                    .catch(error => {
-                        // Handle errors if necessary
-                        console.error('Error completing file:', error);
-                        Swal.fire(
-                            'Error',
-                            'An error occurred while completing the file.',
-                            'error'
-                        );
-                    });
-            }
-        });
-    }
-
-
-    const [showToast, setShowToast] = useState(false);
-
-    const handleCustomToast = () => {
-        setShowToast(true);
-
-        // Set a timer to hide the toast after a certain duration
-        setTimeout(() => {
-            setShowToast(false);
-        }, 5000); // Adjust the duration as needed
+    const print = () => {
+        window.print();
     };
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const [formData, setEmployeeData] = useState([]);
+
+    const { id } = useParams();
+    useEffect(() => {
+        const res = axios
+            .get(`${apiBaseUrl}/contracts/fixed/show_fixed_contract/${id}`)
+            .then(
+                (res) => {
+                    setEmployeeData(res.data.fixed_contract);
+                    // console.log(res.data.fixed_contract)
+                },
+                [id]
+            );
+    });
 
     return (
         <div>
-
-
+            {/* <PageHeader
+                currentpage="Download Details"
+                activepage="Pages"
+                mainpage="Download Details"
+            /> */}
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Employee Details For Contract</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Print Fixed Contract</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}dashboards/normal`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
-                    <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required_details/`}>
-                            Required Contract Details
+                    {/* <li className="text-sm">
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}leaves/sick/show_sick_leave/${formData.id}`}>Print Leave
+
                         </a>
-                    </li>
+                    </li> */}
                 </ol>
             </div>
-            <div className="box">
-                <div className="box-header lg:flex lg:justify-between">
-                    <h5 className="box-title my-auto text-lg">Required Contaract Details List </h5>
-                    {/* <Link to={`${import.meta.env.BASE_URL}employees/personal/add_employee`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-address-book"></i>Add Social Records</Link> */}
-                </div>
-                <div className="box-body">
+            <div className="grid grid-cols-12 gap-6 lg:max-w-4xl mx-auto">
+                <div className="col-span-12">
+                    <div className="box">
+                        <div className="box-body">
+                            <form className="printable-content">
 
-                    <div className="grid grid-cols-12 gap-6">
-                        <div className="col-span-12 lg:col-span-4">
-                            <div className="relative sm:max-w-xs max-w-[210px]">
-                                <label htmlFor="hs-table-search" className="sr-only">Search</label>
-                                <div className="absolute inset-y-0 ltr:right-0 rtl:left-0 flex items-center pointer-events-none ltr:pr-4 rtl:pl-4">
-                                    <i className="ti ti-search"></i>
-                                </div>
-                                <input type="text" name="hs-table-search" id="hs-table-search" className="p-2 ltr:pr-10 rtl:pl-10 ti-form-input" value={searchQuery} onChange={(ele) => setSearchQuery(ele.target.value)}
-                                    placeholder="Search by employee name" />
-                            </div>
-                        </div>
-                        <div className="col-span-12 lg:col-span-8">
-                            <div className="sm:flex space-y-2 sm:space-y-0 sm:space-x-3 space-x-0 justify-end task-right rtl:space-x-reverse">
-                                <Select classNamePrefix='react-select' className="task-choice totdolist" options={SortBy} menuPlacement='auto' placeholder='sort By' />
 
-                                <Select classNamePrefix='react-select' className="task-choice totdolist" options={StatusTask} menuPlacement='auto' placeholder='Status' />
-                                <div className="hs-dropdown ti-dropdown">
-                                    <Link aria-label="anchor" to="#"
-                                        className="hs-dropdown-toggle ti-dropdown-toggle inline-flex !p-2 flex-shrink-0 justify-center items-center gap-2 w-full rounded-sm border font-medium bg-white text-gray-500 shadow-sm align-middle focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-white focus:ring-primary transition-all text-xs dark:bg-bgdark dark:border-white/10 dark:text-white/70 dark:focus:ring-offset-white/10">
-                                        <i className="ri ri-more-2-line text-lg leading-none"></i>
-                                    </Link>
-                                    <div className="hs-dropdown-menu ti-dropdown-menu">
-                                        <Link className="ti-dropdown-item" to="#">Select All</Link>
-                                        <Link className="ti-dropdown-item" to="#">Mark All</Link>
+                                <div className="flex flex-col lg:flex-row justify-between mb-5 space-y-4">
+                                    {/* <div className="text-end"></div> */}
+                                    <div className="text-center">
+                                        <h1 className="text-2xl text-black uppercase font-semibold" >Employment Contract – Staff Grade</h1>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    
-                    <div className={`ti-toast ${showToast ? '' : 'hidden'} bg-red-500/30 border-red-200 text-sm text-red-500 shadow-md `} role="alert" >
-                        <div className="flex p-3">
-                            Hello, You cannot do this action because it is not in the appropriate stage.
-                            <div className="ltr:ml-auto rtl:mr-auto">
-                                <button type="button"
-                                    className="inline-flex flex-shrink-0 justify-center items-center h-4 w-4 rounded-sm text-red-400 hover:text-red-600 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-offset-red-100 focus:ring-red-400 transition-all text-sm"
-                                    onClick={() => setShowToast(false)}
-                                >
-                                    <span className="sr-only">Close</span>
-                                    <svg className="w-3.5 h-3.5" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.92524 0.687069C1.126 0.486219 1.39823 0.373377 1.68209 0.373377C1.96597 0.373377 2.2382 0.486219 2.43894 0.687069L8.10514 6.35813L13.7714 0.687069C13.8701 0.584748 13.9882 0.503105 14.1188 0.446962C14.2494 0.39082 14.3899 0.361248 14.5321 0.360026C14.6742 0.358783 14.8151 0.38589 14.9468 0.439762C15.0782 0.493633 15.1977 0.573197 15.2983 0.673783C15.3987 0.774389 15.4784 0.894026 15.5321 1.02568C15.5859 1.15736 15.6131 1.29845 15.6118 1.44071C15.6105 1.58297 15.5809 1.72357 15.5248 1.85428C15.4688 1.98499 15.3872 2.10324 15.2851 2.20206L9.61883 7.87312L15.2851 13.5441C15.4801 13.7462 15.588 14.0168 15.5854 14.2977C15.5831 14.5787 15.4705 14.8474 15.272 15.046C15.0735 15.2449 14.805 15.3574 14.5244 15.3599C14.2437 15.3623 13.9733 15.2543 13.7714 15.0591L8.10514 9.38812L2.43894 15.0591C2.23704 15.2543 1.96663 15.3623 1.68594 15.3599C1.40526 15.3574 1.13677 15.2449 0.938279 15.046C0.739807 14.8474 0.627232 14.5787 0.624791 14.2977C0.62235 14.0168 0.730236 13.7462 0.92524 13.5441L6.59144 7.87312L0.92524 2.20206C0.724562 2.00115 0.611816 1.72867 0.611816 1.44457C0.611816 1.16047 0.724562 0.887983 0.92524 0.687069Z" fill="currentColor" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        </div>
-                     
-                    <div className="table-bordered whitespace-nowrap rounded-sm overflow-auto">
-                        <table className="ti-custom-table ti-custom-table-head edit-table">
-                            <thead className="bg-gray-100 dark:bg-black/20">
-                                <tr>
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                        S/NO
-                                    </th>
-                                    <th scope="col" className="!text-center font-bold text-black ">
-                                        Employee No
-                                    </th>
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                        Employee Name
-                                    </th>
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                       employer Name
-                                    </th><th scope="col" className="!text-center font-bold text-black">
-                                        Date Registered
-                                    </th>
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                        Stage
-                                    </th>
 
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                        Status
-                                    </th>
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                        Contract Detail
-                                    </th>
-                                    <th scope="col" className="!text-center font-bold text-black">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    currentEntries.map((employee, index) => (
-                                        <tr className="product-list" key={employee.id}>
-                                            <td>{index + 1 + indexOfFirstEntry}</td>
-                                            <td>{employee.employee}</td>
-                                            <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employee_name}
-                                            </td>
-                                            <td>{employee.employer}</td>
-                                            <td>{employee.stages === 1 ? (<>{employee.contract_created}</>) : employee.created_at} </td>
-                                            <td className="text-center font-bold">
-                                                {employee.progressive_stage === 1 ? (
-                                                    <span className="badge bg-warning text-white">Employee Details</span>
-                                                ) : employee.progressive_stage === 2 ? (
-                                                    <span className="badge bg-info text-white">Supportive Document</span>
-                                                ) : employee.progressive_stage === 3 ? (
-                                                    <span className="badge bg-secondary text-white">Social Record</span>
-                                                ) : employee.progressive_stage === 4 ? (
-                                                    <span className="badge bg-primary text-white">Induction Training</span>
-                                                ) : employee.progressive_stage === 5 ? (
-                                                    <span className="badge bg-purple-500 text-white">Contract</span>
-                                                ) : employee.progressive_stage === 6 ? (
-                                                    <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span>
-                                                ) : (<span className="badge bg-success text-white">Registration Completed</span>)
 
-                                                }
-                                            </td>
+                                <div className="sm:grid grid-cols-12 gap-12 pb-5 space-y-5">
+                                    <div className="md:col-span-12 col-span-9  my-auto">
 
-                                            <td>
-                                                {
-                                                    employee.stages === 1 ? (
-                                                        <span className="badge bg-green-500 text-white" style={{ backgroundColor: '#08adf8' }}>Attended</span>
-                                                    ) : employee.stages === 0 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
-                                                }
-                                            </td>
-                                            <td className="text-center font-bold">
-                                                {
-                                                    employee.stages === 1 ? (<></>) :
-                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/required/add_contract_details/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Details </Link>
-                                                        )}</td>
-                                            <td className="text-end font-medium">
-                                                {/* Adjust the links according to your routes and logic */}
-                                                <Link
-                                                    aria-label="anchor"
-                                                    to={`${import.meta.env.BASE_URL}contracts/required/show_detail/` + employee.employee_id}
-                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
-                                                > <i className="ti ti-eye"></i>
-                                                </Link>
+                                        <table className="w-full border-collaps">
+                                            <tbody>
+                                                <tr>
+                                                    <td colSpan={2} className="p-4 " style={{ lineHeight: '1.0' }}>
+                                                        <h4 className="text-xl text-black font-semibold flex text-center">
+                                                            The present Employment Contract has today been concluded and agreed
+
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4" >
+                                                        <h4 className="text-xl text-black font-semibold flex items-center" style={{ lineHeight: '1.0' }} >
+                                                            BETWEEN:
+                                                            <span className="text-md text-black font-semibold" >
+                                                                &nbsp;&nbsp;&nbsp;{formData?.employer_name}&nbsp;&nbsp;&nbsp;
+                                                                </span>
+                                                      
+                                                        </h4>
+                                                        <p className=" text-md font-medium text-black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hereinafter referred to as the <label className="text-black font-bold">"Employer"</label>)</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4" >
+                                                        <h4 className="text-xl text-black font-semibold flex items-center" style={{ lineHeight: '1.0' }} >
+                                                             AND:
+                                                            <span className="text-md text-black font-semibold" >
+                                                                &nbsp;&nbsp;&nbsp;{formData?.employee_name}&nbsp;&nbsp;&nbsp;
+                                                                </span>
+                                                      
+                                                        </h4>
+                                                        <p className="text-md font-medium text-black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hereinafter referred to as the <label className="text-black font-bold">"Employee"</label>)</p>
+                                                    </td>
+                                                </tr>
                                               
-                                                <button
-                                                    aria-label="anchor"
-                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
-                                                    onClick={() => {
-                                                        if (employee.stages === 1) {
-                                                            // Show custom toast if employee.stage is 1
-                                                            handleCustomToast();
-                                                        } else {
-                                                            // Navigate to the edit link
-                                                            navigate(`${import.meta.env.BASE_URL}contracts/required/edit_details/` + employee.employee_id);
-                                                        }
-                                                    }}
-                                                >
-                                                    <i className="ti ti-pencil"></i>
-                                                </button>
+                                                <tr>
+                                                    <td className="p-4" >
+                                                        <h4 className="text-xl text-black font-semibold flex items-center" style={{ lineHeight: '1.0' }} >
+                                                            Date of Birth:
+                                                            <span className="text-md text-black font-semibold" >
+                                                                &nbsp;&nbsp;&nbsp;{formData?.dob}&nbsp;&nbsp;&nbsp;
+
+                                                            </span>
+
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4" >
+                                                        <h4 className="text-xl text-black font-semibold flex items-center" style={{ lineHeight: '1.0' }} >
+                                                            Mobile Number:
+                                                            <span className="text-md text-black font-semibold" >
+                                                                &nbsp;&nbsp;&nbsp;{formData?.phone_number}&nbsp;&nbsp;&nbsp;
+
+                                                            </span>
+
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4" >
+                                                        <h4 className="text-xl text-black font-bold " style={{ lineHeight: '1.0' }} >
+                                                            WHEREAS
+                                                            <span className="text-md text-black font-medium" >&nbsp;
+                                                                the Employer desires to engage the services of the Employee <label className="text-black font-bold">AND </label> the Employee is ready and willing to accept the engagement;
+
+                                                            </span>
+
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4 " style={{ lineHeight: '1.0' }}>
+                                                        <h4 className="text-xl text-black font-bold flex items-center">
+                                                            NOW THEREFORE THE EMPLOYER AND EMPLOYEE HAVE AGREED AS FOLLOWS:
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="p-4 ">
+                                                        <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                            1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EMPLOYMENT & RECRUITMENT PARTICULARS
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div className="table-bordered rounded-md overflow-auto">
+
+                                            <table className="ti-custom-table ti-custom-table-head" >
+                                                <thead className="bg-gray-50 dark:bg-black/20">
+                                                    {/* <tr>
+                                                    
+                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4"></th>
+                                                    <th scope="col" colSpan={1} className="!text-center"></th>
+
+                                                </tr> */}
+                                                </thead>
+                                                <tbody>
+                                                    <tr >
+
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                Job Title
+                                                            </h4></td>
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.job_title}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colSpan={1} style={{ border: '2px solid black' }}><h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                            Job Profile
+                                                        </h4></td>
+                                                        <td colSpan={2} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.job_profile}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr >
+
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                Reporting to
+                                                            </h4></td>
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.reporting_to}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colSpan={1} style={{ border: '2px solid black' }}><h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                            Staff Classification
+                                                        </h4></td>
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.staff_classfication}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colSpan={1} style={{ border: '2px solid black' }}><h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                            Type Of Contract
+                                                        </h4></td>
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.name}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colSpan={1} style={{ border: '2px solid black' }}><h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                            Place of Work
+                                                        </h4></td>
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.work_station}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colSpan={1} style={{ border: '2px solid black' }}><h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                            Place of Recruitment
+                                                        </h4></td>
+                                                        <td colSpan={1} className="" style={{ border: '2px solid black' }}>
+                                                            <h4 className="text-xl text-black font-medium flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                {formData?.place_recruitment}
+                                                            </h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr className="!border-0">
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <br />
+                                        <div>
+                                            <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMMENCEMENT AND DURATION
+                                            </h4>
+                                            <br />
+                                            <h4 className="text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                This employment shall commence on
+                                                <span className="text-md text-black font-bold" >&nbsp;{formData?.commencement_date}
+                                                    <label className="text-black font-medium">and shall expire without notice on </label>{formData?.end_commencement_date}<label className="text-black font-medium"> unless extended by mutual agreement before expiry</label>
+                                                </span>
+                                            </h4>
+                                            <></>
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	PROBATION PERIOD
+                                            </h4>
+                                            {/* <br/> */}
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                Employee will undergo <label>{formData?.probation_period}</label> probationary period during which either party may terminate the employment contract by giving one month written notice.
+                                            </span>
+                                            <br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REMUNERATION
+                                            </h4>
+
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                The agreed gross monthly remuneration before tax and statutory deductions is  <label className="p-4 text-xl text-black font-bold" >TZS {formData?.remuneration}/=</label> payables on the last day of the month and made up as follows:
+                                            </span>
+                                            <br />
+                                            <br />
+                                            <div className="table-bordered rounded-md overflow-auto">
+                                                <table className="ti-custom-table ti-custom-table-head" >
+                                                    <thead className="bg-gray-50 dark:bg-black/20">
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr className="border-0">
+                                                            <td colSpan={1} className="" >
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    Basic Salary:
+                                                                </h4></td>
+                                                            <td colSpan={1} className="" >
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    {formData?.basic_salary}
+                                                                </h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={1} ><h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                Housing Allowance
+                                                            </h4></td>
+                                                            <td colSpan={2} className="" >
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    {formData?.house_allowance}
+                                                                </h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={1} className="" >
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    Meal Allowance
+                                                                </h4></td>
+                                                            <td colSpan={1} className="" >
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    {formData?.meal_allowance}
+                                                                </h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={1} ><h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                Transport Allowance
+                                                            </h4></td>
+                                                            <td colSpan={1} className="">
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    {formData?.transport_allowance}
+                                                                </h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colSpan={1}><h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                Risk / Bush Allowance
+                                                            </h4></td>
+                                                            <td colSpan={1} className="">
+                                                                <h4 className="text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                                    {formData?.risk_bush_allowance}
+                                                                </h4>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <br />
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                The Employee agrees to all statutory deductions from the salary and is aware that contribution towards the Employee’s National Social Security Fund (NSSF) which will be equally shared between the Employee and the Employer at a rate of 20% of the gross salary.
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	WORKING HOURS
+                                            </h4>
+                                            {/* <br /> */}
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                Normal working hours per week are 45 as stipulated in the Employment and Labour Relation Act 2004. The Employer's ordinary working week is Monday to Friday from 08:00hrs to 17:00hrs and on Saturday from 08:00hrs to 13hrs which includes a one-hour unpaid lunch break. Where a full hour’s lunch break is taken, the Employer may opt to perform the balance of ½ hour before or after official working hours.
+                                                <br /><br />
+                                                The nature of the work and responsibilities entrusted to the Employee may from time to time require overtime to meet deadlines or to speed up the project operation, in view of your position which fall in supervisory role, Overtime will be paid to cover extra hours worked as per Tanzania Labour Law.
+
+                                            </span>
+                                            <br /><br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	ANNUAL LEAVE
+                                            </h4>
+                                            {/* <br /> */}
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                The Employee is entitled to 28 calendar days paid leave for each year of completed service. The timing and length of the leave periods shall be in accordance with the job requirements and as agreed with the Project Management.
+                                            </span>
+                                            <br /><br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	BENEFITS
+                                            </h4>
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                The Employee is covered by statutory workmen's compensation –WCF
+                                            </span>
+                                            <br /><br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ETHICS
+                                            </h4>
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                The Employee is to devote all his working time to the service of the company. Without written consent of the Project Manager, employee may not engage in any outside duties including salaried or contracted work that could in any way be inconsistent with his employment with the company
+                                            </span>
+                                            <br /><br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CONFIDENTIALITY
+                                            </h4>
+                                            <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.1&nbsp;&nbsp;&nbsp;&nbsp;The Employee agrees to maintain full confidentiality during his employment and after the termination thereof, the Employee may not disclose to any third party any information on the business affairs of the Employer, including Client’s and business associates, etc., unless such information has been released to the public domain by the Employer or for some other reason may naturally be disclosed to a third party.
+                                            </label>
+                                            <p className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.2&nbsp;&nbsp;&nbsp;&nbsp;The duty of confidentiality shall apply to all material, including but not limited to information relating to know-how, software, strategies and concepts, technical designs, descriptions, formulas and models, notwithstanding the form or medium in which they exist.
+                                            </p>
+                                            <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.3&nbsp;&nbsp;&nbsp;&nbsp;Any breach of the duty of confidentiality shall be deemed a material breach of this Agreement with ensuing severe disciplinary sanctions for the Employee, including but not limited to termination of employment.
+                                            </label>
+                                            <br /><br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TERMINATION OF EMPLOYMENT
+                                            </h4>
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                Upon completion of probationary period, either party may terminate the employment by giving one calendar months' notice in writing.
+                                                However, the Employer may terminate the Employee without notice for cause. For the purpose of this contract, "cause" shall mean:<br/>
+                                                <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }}>	(a)	Gross misconduct or any serious breach or continued breach after a written warning has been issued on duties and responsibilities;</label><br/>
+                                                <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }}>	(b)	Any unauthorized disclosure of breach of confidentiality on any matter relating to the Company, its customers or staff not so required by law;</label>
+                                                <br/>
+                                                <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }}>	(c)	Refusal to carry out the lawful instructions of a superior;</label>
+                                                <br/>
+                                                <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }}>	(d)	Un-notified absence from duties</label>
+                                                <br/>
+                                                <label className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }}>	(e)	If you are discovered to have made or given any false statement or document testifying to your ability or competence or relating to your state of health knowing such statement or documents is false</label>
+                                                <br/><br/>
+                                                <p>
+                                              The exercise by the Company of its right of contract termination under this clause shall not debar it from exercising such other rights or remedies as may be available to it by law or otherwise by reason of any of the matters set out in employee’s conditions and terms of employment contract which form part of this employment contract.
+                                                </p>
+                                            </span>
+                                              <br />
+                                            <h4 className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; APPLICATION OF THE LAW
+                                            </h4>
+                                            <span className="p-4 text-xl text-black font-medium" style={{ lineHeight: '1.0' }} >
+                                                This Agreement shall be interpreted and applied in accordance with the prevailing Laws of the United Republic of Tanzania. Where any conflict arises between this Agreement and the Laws, the provisions of the Laws shall apply as if they are terms of this Agreement. 
+                                                <br />
+                                            	The Employee is required to refer to the condition of his/her employment contract and/or prevailing management notices for issues not specifically addressed in the contract. Such terms and conditions may change from time to time and the latest version will always be available within the Human Resources Department.	The employee shall be entitled to any other benefits stipulated by the Laws even if not stated in this Agreement or as agreed between the parties.
+                                               </span>
+                                                 <span className="p-4 text-xl text-black font-bold flex items-center">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; APPENDICES:
+                                                   </span>
+                                                    <label  className="p-4 text-xl text-black font-medium">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  A:	Personal Particulars
+                                                    <br/>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  B:	Job Description
+                                                        </label>
+                                                
+                                           <br /><br />
+                                            <span className="p-4 text-xl text-black font-bold flex items-center" style={{ lineHeight: '1.0' }}>
+                                                &nbsp; 	SIGNATURES<br/>
+                                               
+                                                </span>
+                                            <label className="p-4 text-xl text-black font-medium">	On behalf of the Employer</label>
+                                            <br/>  <br/>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="p-4 text-xl text-black font-medium" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '360px' }}>
+                                            {/* Content */}
+                                            </span>
+                                            <br/>  <br/>
+                                           <label className="p-4 text-xl text-black font-bold">Date:</label> <span className="p-4 text-xl text-black font-medium" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '300px' }}></span>
+                                            <br/><br/>
+                                             <label className="p-4 text-xl text-black font-medium">		The Employee (Read, Understood & Agreed)</label>
+                                            <br/> <br/>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="p-4 text-xl text-black font-medium" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '360px' }}>
+                                            {/* Content */}
+                                            </span>
+                                            <br/><br/>
+                                           <label className="p-4 text-xl text-black font-bold">Date:</label>  <span className="p-4 text-xl text-black font-medium" style={{ borderBottom: '2px solid black', display: 'inline-block', width: '300px' }}></span>                                       
+                                        
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </form>
+                            <div className="flex justify-end">
+                                <button
+                                    type="button"
+                                    className="w-20 !p-1 ti-btn ti-btn-primary"
+                                    onClick={print}
+                                >
+                                    {" "}
+                                    Print
+                                </button>
+
+                                <Link
+                                    to={
+                                        `${import.meta.env.BASE_URL
+                                        }hiring/hrinterview/show_assessment/` +
+                                        id
+                                    }
+                                ></Link>
+                                <button
+                                    type="button"
+                                    className="w-20 !p-1 ti-btn ti-btn-danger"
+                                ><a className="flex items-center text-white hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/required/show_detail/${formData?.id}`}> Cancel
+
+                                    </a>
+
+                                </button>
+
+                            </div>
 
 
-                                            </td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
+
+                        </div>
                     </div>
-                    <br />
-                    <nav className="pagination-style-3 flex justify-end">
-                        <ul className="ti-pagination">
-                            <li><Link className="page-link" to="#" onClick={() => paginate(currentPage - 1)}>
-                                Prev
-                            </Link></li>
-                            {[...Array(Math.ceil(filteredData.length / entriesPerPage)).keys()].map(number => (
-                                <li key={number + 1}>
-                                    <Link className={`page-link ${currentPage === number + 1 ? 'active' : ''}`} to="#" onClick={() => paginate(number + 1)}>
-                                        {number + 1}
-                                    </Link>
-                                </li>
-                            ))}
-                            <li><Link className="page-link" to="#" onClick={() => paginate(currentPage + 1)}>
-                                Next
-                            </Link></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
-        </div>
+        </div >
+
     );
 };
 export default Download;
