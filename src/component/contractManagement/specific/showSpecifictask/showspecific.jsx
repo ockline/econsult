@@ -7,6 +7,8 @@ import { TagsInput } from "react-tag-input-component";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import Swal from "sweetalert2";
+import SpecificTaskModal from "../Modals/SpecificTaskModal";
+
 
 
 const ShowSpecificContract = () => {
@@ -19,7 +21,6 @@ const ShowSpecificContract = () => {
     //toggle button for image
 
     const [ClassName, setClassName] = useState();
-
     useEffect(() => {
         if (ProfileService.returnImage() != undefined) {
             setImage(ProfileService.returnImage());
@@ -34,7 +35,6 @@ const ShowSpecificContract = () => {
 
 
     const [formData, setEmployeeData] = useState([])
-
     const { id } = useParams();
 
     useEffect(() => {
@@ -55,10 +55,25 @@ const ShowSpecificContract = () => {
     }, [id]);
 
 
+     const [specificTaskContract, setSpecificTaskContract] = useState([]);
+        
+     useEffect(() => {
+        axios.get(`${apiBaseUrl}/contracts/specific/specific_task_contract_preview/${id}`)
+            .then((res) => {
+                setSpecificTaskContract(res.data.specific_contract);
+                
+                if (res.data.status === 404) {
+                    Dangersweetalert()
+                    navigate('/contracts/specific/'); 
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, [id]);
 
 
     // Dependant updateDependanHistory   **********************************************
-
 
     const [dependantData, setDependantDetailData] = useState([])
     useEffect(() => {
@@ -88,6 +103,7 @@ const ShowSpecificContract = () => {
     // /**   Block for document preview  */
     const [employeeDocument, setEmployeeDocument] = useState([]);
     const [documentUrl, setDocumentUrl] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         axios.get(`${apiBaseUrl}/contracts/specific/get_specific_document/${id}`)
@@ -480,17 +496,24 @@ const ShowSpecificContract = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="md:ltr:ml-auto md:rtl:mr-auto">
+                                                                            
+                                            <div className="md:ltr:ml-auto md:rtl:mr-auto">
+                                                <button 
+                                                    type="button" 
+                                                    className="ti-btn ti-btn-success text-black" 
+                                                    onClick={() => setShowModal(true)}
+                                                >
+                                                    <i className="ti ti-cloud-download !text-white"></i> Download Specific Task Contract
+                                                </button>
 
-                                                    <Link
-                                                        aria-label="anchor"
-                                                        to={`${import.meta.env.BASE_URL}contracts/specific/download_specific_task/` + formData.employee_id}
-                                                        className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
-                                                        style={{ backgroundColor: '#7800ff' }}
-                                                    >
-                                                        <i className="ti ti-cloud-download"></i>Download Specific Task Contract
-                                                    </Link>
-                                                </div>
+                                                <SpecificTaskModal 
+                                                    showModal={showModal} 
+                                                    onClose={() => setShowModal(false)} 
+                                                    specificTaskContract={specificTaskContract} 
+                                                />
+                                            </div>
+                                                
+                                                
                                             </div>
                                         </div>
                                         <div className="overflow-auto">
