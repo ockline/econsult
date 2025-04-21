@@ -29,8 +29,13 @@ const App = ({local_varaiable, UserChanger, RolesChanger}) => {
 		// Initialize Preline
 		const initializePreline = async () => {
 			try {
+				// Import Preline dynamically
 				const { initFlowbite } = await import('preline');
-				initFlowbite();
+				if (typeof initFlowbite === 'function') {
+					initFlowbite();
+				} else {
+					console.warn('Preline initialization function not found');
+				}
 			} catch (error) {
 				console.error('Error initializing Preline:', error);
 			}

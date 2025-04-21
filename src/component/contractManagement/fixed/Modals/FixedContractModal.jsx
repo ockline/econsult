@@ -1,14 +1,14 @@
 
-const FixedContractModal = ({ showModal, onClose, performanceReviewReport }) => {
+const FixedContractModal = ({ showModal, onClose,fixedContractPreview }) => {
     if (!showModal) return null;
-	console.log('hahah doc', performanceReviewReport);
+	
     return (
        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white dark:bg-bgdark rounded-lg w-full max-w-7xl p-6 relative h-[90vh]">
-        <h3 className="text-xl font-semibold mb-4">Performance Review Report</h3>
+        <h3 className="text-xl font-semibold mb-4">Fixed Term Contract</h3>
         
         <iframe 
-             src={`data:application/pdf;base64,${performanceReviewReport}`} 
+             src={`data:application/pdf;base64,${fixedContractPreview}`} 
             className="border w-full h-[75vh]" 
         />
 
@@ -20,6 +20,7 @@ const FixedContractModal = ({ showModal, onClose, performanceReviewReport }) => 
                 Close
             </button>
         </div>
+
         <button
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-700 hover:text-black dark:text-white"

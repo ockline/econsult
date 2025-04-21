@@ -7,18 +7,14 @@ import { TagsInput } from "react-tag-input-component";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import FixedContractModal  from "../Modals/FixedContractModal";
 
 const ShowFixedContract = () => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
-    //URl image
-
-
-    //toggle button for image
-
     const [ClassName, setClassName] = useState();
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         if (ProfileService.returnImage() != undefined) {
@@ -56,16 +52,15 @@ const ShowFixedContract = () => {
             });
     }, [id]);
 
-const [fixedContractDocument, setFixedContractDocument] = useState(null);
+const [fixedContractPreview, setFixedContractDocument] = useState(null);
     
-    console.log('haahahaha',fixedContractDocument);
     useEffect(() => {
         const getFixedContractDocument = async () => {
             try {
                 const res = await axios.get(`${apiBaseUrl}/contracts/fixed/preview_fixed_contract/${id}`);
                 console.log('API Response:', res.data);
 
-                setFixedContractDocument(res.data.fixed);
+                setFixedContractDocument(res.data.fixed_term);
 
                 if (res.data.status === 404) {
                     Dangersweetalert();
@@ -448,28 +443,23 @@ const [fixedContractDocument, setFixedContractDocument] = useState(null);
                                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
                                                         </svg>
                                                     </div>
-                                                </div>
+                                                </div>                                               
+                                              <div className="md:ltr:ml-auto md:rtl:mr-auto">
+                                                <button 
+                                                    type="button" 
+                                                    className="ti-btn ti-btn-success text-black" 
+                                                    onClick={() => setShowModal(true)}
+                                                >
+                                                    <i className="ti ti-cloud-download !text-white"></i> Download Fixed Contract
+                                                </button>
 
-                                    {/* <iframe src={inspectionNoticeReport} style={{ width: '100%', height: '900px' }} /> */}
-                                
-                    {/* to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData.employee_id}                                                */}
-
-                                                <div className="md:ltr:ml-auto md:rtl:mr-auto">
-
-                                                   <Link
-                                                        to={fixedContractDocument} // Ensure this is a valid route
-                                                        className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
-                                                        style={{ backgroundColor: '#7800ff' }}
-                                                    >
-                                                        <i className="ti ti-cloud-download"></i> Download Fixed Contract
-                                                    </Link>
-
-                                                    <iframe
-                                                        src={fixedContractDocument}
-                                                        style={{ width: '100%', height: '900px' }}
-                                                        title="Fixed Contract Preview"
-                                                    />
-                                                </div>
+                                                <FixedContractModal 
+                                                    showModal={showModal} 
+                                                    onClose={() => setShowModal(false)} 
+                                                    fixedContractPreview={fixedContractPreview} 
+                                                />
+                                            </div>
+                                                
                                             </div>
                                         </div>
                                         <div className="overflow-auto">
