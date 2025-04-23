@@ -34,18 +34,21 @@ const ShowGrievance = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/contracts/fixed/show_fixed_contract/${id}`)
+        const token = sessionStorage.getItem('token');
+        axios.get(`${apiBaseUrl}/industrial_relationship/grievances/show_grievances/${id}`,
+			 {
+          headers: {
+             'Authorization': `Bearer ${token}`
+        },
+      })
             .then((res) => {
                 // console.log('API Response:', res.data);  // Log the entire response
-                setEmployeeData(res.data.fixed_contract);
-                // console.log('data', res.data.fixed_contract);
+                setEmployeeData(res.data.grievance);
+                
                 if (res.data.status === 404) {
                     Dangersweetalert()
-
-                    // This code will be executed after the "ok" button is clicked and the modal is closed
-                    navigate('/contracts/required_details/'); // Call the navigate function to redirect to the specified route
-
-                }
+                    navigate('/industrials/grievances/'); 
+                  }
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -78,18 +81,7 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
     // Dependant updateDependanHistory   **********************************************
 
 
-    const [dependantData, setDependantDetailData] = useState([])
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/social/edit_dependant_detail/${id}`)
-            .then((res) => {
-
-                setDependantDetailData(res.data.dependant_detail); // Assuming "education_history" is correct
-                // console.log("dataa", ' ', res.data.dependant_detail);
-            })
-            .catch((error) => {
-                console.error('Error fetching practical data:', error);
-            });
-    }, [id]);
+ 
 
     function Dangersweetalert() {
         Swal.fire({
@@ -135,17 +127,17 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
             </Helmet>
 
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Fixed Contract</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Show Grievance</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/fixed_contracts/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/grievances/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}contracts/fixed/show_fixed/${formData.employee_id}`}>Show Fixed Contract
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/grievances/show_grievance/${formData.id}`}>Show Grievance
 
                         </a>
                     </li>
@@ -169,16 +161,16 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
 
                                         <tr className="border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                BETWEEN (EmployerName)
+                                                Employer Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.employer_name}
+                                                {formData.employer}
                                             </td>
                                         </tr>
                                         <tr className="">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                AND (Employee Name )
+                                                Employee Name
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black font-medium">
@@ -187,29 +179,29 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Contract Type
+                                                Position
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black text-secondary font-bold">
-                                                {formData.name}
+                                                {formData.job_title}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Date of birth
+                                                Department
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.dob}
+                                                {formData.departments}
                                             </td>
                                         </tr>
                                         <tr className="!border-0">
                                             <td className="!p-2 !text-lg font-bold text-black">
-                                                Mobile Number
+                                                Grievance Date
                                             </td>
                                             <td className="!p-2">:</td>
                                             <td className="!p-2 text-black">
-                                                {formData.phone_number}
+                                                {formData.grievance_date}
                                             </td>
                                         </tr>
 
@@ -237,9 +229,9 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                     aria-controls="profile-1"
                                     role="tab"
                                 ><i className="ti ti-user-circle font-semibold"></i>
-                                    Employment Particulars
+                                    Grievance Workflow
                                 </button>
-                                <button
+                                {/* <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                     id="profile-item-2"
@@ -248,7 +240,7 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
                                     Remuneration & Hours
-                                </button>
+                                </button> */}
                                 <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
@@ -360,68 +352,7 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                 <br />
 
                             </div>
-                            <div
-                                id="profile-2"
-                                className="hidden"
-                                role="tabpanel"
-                                aria-labelledby="profile-item-2"
-                            >
-                                <div className="grid lg:grid-cols-1 gap-6 second-page none" id="new_page">
-
-                                    <div className=" space-y-2">
-
-                                    </div>
-
-                                    {/* Workflow History */}
-                                    <h3 className="text-black front-medium font-bold ">Remuneration</h3>
-                                    <div className="table-bordered rounded-md overflow-auto">
-
-                                        <table className="ti-custom-table ti-custom-table-head" >
-                                            <thead className="bg-gray-50 dark:bg-black/20">
-                                                <tr>
-                                                    <th style={{ backgroundColor: '#ddbff0' }}>S/No</th>
-                                                    <th scope="col" colSpan={1} className="py-3 ltr:pl-4 rtl:pr-4" style={{ backgroundColor: '#ddbff0' }}>Name</th>
-                                                    <th scope="col" colSpan={1} className="!text-center" style={{ backgroundColor: '#ddbff0' }}>Description</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr >
-                                                    <td>1</td>
-                                                    <td colSpan={1} className="">Remuneration before <br />Tax and statutory</td>
-                                                    <td colSpan={1} className="">{formData.remuneration}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} >2</td>
-                                                    <td colSpan={1} >Basic Salary</td>
-                                                    <td colSpan={1} className="">{formData.basic_salary}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">3</td>
-                                                    <td colSpan={1} >Housing Allowance</td>
-                                                    <td colSpan={1} >{formData.house_allowance}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">4</td>
-                                                    <td colSpan={1} >Meal Allowance</td>
-                                                    <td colSpan={1} >{formData.meal_allowance}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">5</td>
-                                                    <td colSpan={1} >Transport Allowance</td>
-                                                    <td colSpan={1} >{formData.transport_allowance}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={1} className="">6</td>
-                                                    <td colSpan={1} >Risk/Bush Allowance</td>
-                                                    <td colSpan={1} >{formData.risk_bush_allowance}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    {/* Employment Reference check */}
-                                </div>
-                            </div>
+                         
                             <div
                                 id="profile-3"
                                 className="hidden text-center"

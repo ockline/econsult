@@ -30,7 +30,7 @@ const AddGrivance = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
+            console.log('token res', resp);
 			// set user and roles to redux
 			
 			UserChanger(resp.data.user);
@@ -138,11 +138,12 @@ const AddGrivance = () => {
            
             
         };
+        const token = sessionStorage.getItem('token');
          setIsLoading(true);
     try {
       const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/grievances/initiate_grievance`, DataToSend, {
           headers: {
-             'Authorization': `Bearer ${yourToken}`,
+             'Authorization': `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
@@ -179,7 +180,7 @@ const AddGrivance = () => {
           button: "OK",
           closeOnClickOutside: false,
         }).then(() => {
-          navigate("/leaves/annual/");
+          navigate("/industrials/grievances/");
         });
       }
     } catch (error) {
@@ -297,26 +298,29 @@ const AddGrivance = () => {
                                     />
                                 </div>                                 
                                 
-                               <div className="space-y-2">
-                                <label className="ti-form-label mb-0 font-bold text-lg">Start Date <span style={{ color: "red" }}> *</span></label>
+                              <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">
+                                    Grievance Date <span style={{ color: "red" }}> *</span>
+                                </label>
                                 <div className="flex rounded-sm overflow-auto">
                                     <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                        <span className="text-sm text-gray-500 dark:text-white/70">
-                                            <i className="ri ri-calendar-line"></i>
-                                        </span>
+                                    <span className="text-sm text-gray-500 dark:text-white/70">
+                                        <i className="ri ri-calendar-line"></i>
+                                    </span>
                                     </div>
                                     <input
-                                        type="date" 
-                                        name="grievance_date" 
-                                        className="my-auto ti-form-input text-black text-lg"
-                                        value={new Date(formData.grievance_date).toLocaleDateString('en-CA')} // Format the date
-                                        min={new Date().toISOString().split('T')[0]} // Set today's date as the minimum
-                                        onChange={(e) => handleInputChange('grievance_date', e.target.value)} 
-                                        required
+                                    type="date"
+                                    name="grievance_date"
+                                    className="my-auto ti-form-input text-black text-lg"
+                                    value={new Date(formData.grievance_date).toLocaleDateString('en-CA')}
+                                    max={new Date().toISOString().split('T')[0]} // ✅ Only today or past
+                                    onChange={(e) => handleInputChange('grievance_date', e.target.value)}
+                                    required
                                     />
                                     <span className="text-danger">{formData.error_list.grievance_date}</span>
                                 </div>
-                            </div>
+                                </div>
+
 
                                                          
                                  <div className="space-y-2">

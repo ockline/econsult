@@ -10,140 +10,36 @@ const Index = () => {
 	
 	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 	
-	const [annualLeave, setAnnualLeave] = useState([]);
+	const [allGriavences, setAllGrievance] = useState([]);
 	let navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAnnualLeave = async () => {
-      try {
-        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_annual_leave`);
-        setAnnualLeave(res.data.annual_leave);
+    const fetchAllGrievance= async () => {
+		try {
+		  const token = sessionStorage.getItem('token');
+			const res = await axios.get(`${apiBaseUrl}/industrial_relationship/grievances/retrieve_all_grievances`,
+			 {
+          headers: {
+             'Authorization': `Bearer ${token}`
+        },
+      });
+        setAllGrievance(res.data.grievance);
       } catch (error) {
-        throw new Error('Failed to fetch annual leave: ' + error.message);
+        throw new Error('Failed to fetch grievances: ' + error.message);
       }
     };
 
-    fetchAnnualLeave();
+    fetchAllGrievance();
   }, []); // The empty dependency array ensures that the effect runs only once on component mount
 
 	
 	 
-  /** ****************************************************************** */
-  //Block that Destroy data
-function Ajaxcalling(e, id) {
-  e.preventDefault();
-//   console.log("ID new", id);
+ 
 
-  Swal.fire({
-    title: 'Fill Deactivate Reason',
-    input: 'text',
-    inputAttributes: {
-      autocapitalize: 'off'
-    },
-    showCancelButton: true,
-    confirmButtonText: 'Confirm',
-    showLoaderOnConfirm: true,
-    preConfirm: (deactivate_reason) => {
-      return axios
-        .delete(`${apiBaseUrl}/annuals/delete_employer/${id}`, {
-          data: { deactivate_reason: deactivate_reason }
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          } else {
-            Style2();
-            // console.log('wazungu waitwe');
-          }
-        })
-        .catch(error => {
-          Style2();
-          Swal.showValidationMessage(
-            
-          );
-        });
-    },
-    allowOutsideClick: () => !Swal.isLoading()
-  });
-}
 
-function Style2() {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#5e76a6',
-   
 
-		  }).then((result) => {
-			if (result.isConfirmed) {
-			  Swal.fire(
-				'Deleted!',
-				'Your employer has been deleted.',
-				'success'
-			  )
-			}
-		  })
-	 }
-	// ***************  Activation block for Employer ***************************
-	  
-	function ActivateClient(e, id) {
-  e.preventDefault();
-//   console.log("ID new", id);
 
-  Swal.fire({
-    title: 'Fill employer activation Reason',
-    input: 'text',
-    inputAttributes: {
-      autocapitalize: 'off'
-    },
-    showCancelButton: true,
-    confirmButtonText: 'Confirm',
-    showLoaderOnConfirm: true,
-    preConfirm: (activate_reason) => {
-      return axios
-        .delete(`${apiBaseUrl}/employers/delete_employer/${id}`, {
-          data: { activate_reason: activate_reason }
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          } else {
-            Style1();
-            console.log('wazungu waitwe');
-          }
-        })
-        .catch(error => {
-          Style1();
-          Swal.showValidationMessage(
-            
-          );
-        });
-    },
-    allowOutsideClick: () => !Swal.isLoading()
-  });
-}
 
-function Style1() {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#5e76a6',
-   
-
-		  }).then((result) => {
-			if (result.isConfirmed) {
-			  Swal.fire(
-				'Activated!',
-				'Your employer has been Activated.',
-				'success'
-			  )
-			}
-		  })
-	 }
 
     return (
         <div>
@@ -202,17 +98,16 @@ function Style1() {
 											<th scope="col" className="dark:text-white/80">EmployeeId</th>
 											<th scope="col" className="dark:text-white/80">Fullname</th>
 											<th scope="col" className="dark:text-white/80 min-w-[300px]">Employer</th>
-                                            <th scope="col" className="dark:text-white/80">Type</th>
-                                            <th scope="col" className="dark:text-white/80">Start</th>
-                                             <th scope="col" className="dark:text-white/80">End</th>
-                                            <th scope="col" className="dark:text-white/80">Balance</th>
+                                            <th scope="col" className="dark:text-white/80">Department</th>
+                                            <th scope="col" className="dark:text-white/80">Position</th>
+                                             <th scope="col" className="dark:text-white/80">Grievance</th>
 											<th scope="col" className="dark:text-white/80">Status</th>
 									    	<th scope="col" className="dark:text-white/80">Action</th>
 										</tr>
 									</thead>
 									<tbody className="">
 										{
-											annualLeave?.map((annual, index) => (
+											allGriavences?.map((grievance, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -220,38 +115,38 @@ function Style1() {
 												<div className="flex space-x-3 rtl:space-x-reverse w-full">
 													<div className="block w-full my-auto">
 														<span
-															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">{annual.employee_id}</span>
+															className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">{grievance.employee_id}</span>
 															</div>
 												</div>
                                                     </td>
-                                                    <td>{annual.employee_name}</td>
-											<td className="font-semibold text-base">{annual.employer}</td>
+                                                    <td>{grievance.employee_name}</td>
+											<td className="font-semibold text-base">{grievance.employer}</td>
 											<td>
 												<div className="flex space-x-3 rtl:space-x-reverse text-start">
 													
 													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{annual.leave_type}</p>
+														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{grievance.departments}</p>
 														{/* <span
 															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">socratesitumay@gmail.com</span> */}
 													</div>
 												</div>
                                                     </td>
-                                                    <td>{annual.start_date}</td>
-												<td>{annual.end_date}</td>                                                    
-											<td>{annual.all_balance}</td>
+                                                    <td>{grievance.job_title}</td>
+												<td>{grievance.grievance_date}</td>                                                    
+
 													<td>
-														{ annual.status === 1
+														{ grievance.status === 1
 														? (
 <span
 												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80">Submitted</span>)													
 												 : (<span
-															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{annual.status}</span>
+															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{grievance.status}</span>
 												 )}
 											</td>
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}leaves/show_annual_leave/${annual.id}`}
+													<Link to={`${import.meta.env.BASE_URL}industrials/grievances/show_grievances/${grievance.id}`}
 														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
 														<i className="ti ti-eye"></i>
 														<span
@@ -267,7 +162,7 @@ function Style1() {
                                                     aria-label="anchor"
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
                                                     onClick={() => {
-                                                   navigate(`${import.meta.env.BASE_URL}leaves/annual/editLeave/${annual.id}`);   
+                                                   navigate(`${import.meta.env.BASE_URL}industrials/grievances/edit_grievance/${grievance.id}`);   
                                                     }}
                                                    >
                                                     <i className="ti ti-pencil"></i>
@@ -279,13 +174,13 @@ function Style1() {
 															&nbsp;&nbsp;
 												
 														
-											{annual.status === 'Active' ? (
+											{grievance.status === 'Active' ? (
 										<button
 											type="button"
 											className="ti-btn ti-btn-success show-example-btn"
 											aria-label="Deactivate! Example: End of contract"
 											id="ajax-btn"
-											onClick={(e) => Ajaxcalling(e, annual.id)}
+											onClick={(e) => Ajaxcalling(e, grievance.id)}
 										>
 											Initiate
 										</button>

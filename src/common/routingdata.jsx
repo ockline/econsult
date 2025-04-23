@@ -518,8 +518,8 @@ export const RouteData = [
 
    { path: `${import.meta.env.BASE_URL}industrials/grievances`, element: <Grievances /> },
     { path: `${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`, element: <AddGrievances /> },
-    { path: `${import.meta.env.BASE_URL}industrials/grievances/edit-grievance`, element: <EditGrievances /> },
-    { path: `${import.meta.env.BASE_URL}industrials/grievances/show`, element: <ShowGrievances /> },
+    { path: `${import.meta.env.BASE_URL}industrials/grievances/edit_grievance/:id`, element: <EditGrievances /> },
+    { path: `${import.meta.env.BASE_URL}industrials/grievances/show_grievances/:id`, element: <ShowGrievances /> },
 
 
    
