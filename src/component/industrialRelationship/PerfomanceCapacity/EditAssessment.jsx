@@ -100,7 +100,6 @@ const EditAssessment = () => {
             challenge_daily_duties: formData.challenge_daily_duties,
             alternative_task: formData.alternative_task,
             partient_suggestion: formData.partient_suggestion,
-            investigation_report: formData.investigation_report,
             investigation_date: formData.investigation_date,
             investigation_report: formData.investigation_report,
             perfomance_capacity_attachment: formData.perfomance_capacity_attachment,

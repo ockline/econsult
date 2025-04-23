@@ -159,7 +159,7 @@ function Style1() {
 					</a>
 					</li>
 					<li className="text-sm">
-					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}employers/registrations/registrations`}>
+					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`}>
 						Industrial Relashionship Management
 						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
 					</a>
@@ -174,7 +174,7 @@ function Style1() {
 							<div className="flex">
 								<h5 className="box-title my-auto">Employees Grievances</h5>
 								<div className="space-y-2">
-                                     	<Link to={`${import.meta.env.BASE_URL}leaves/annual/create-leave/`}>
+                                     	<Link to={`${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`}>
 								    <button type="button" className="ti-btn ti-btn-primary ">
 									<i className="ti ti-user-plus w-3.5 h-3.5"></i>	Create Grievance							
 									</button>

@@ -102,7 +102,6 @@ const EditDisciplinary = () => {
             partient_suggestion: formData.partient_suggestion,
             investigation_report: formData.investigation_report,
             investigation_date: formData.investigation_date,
-            investigation_report: formData.investigation_report,
             perfomance_capacity_attachment: formData.perfomance_capacity_attachment,
            
         };
