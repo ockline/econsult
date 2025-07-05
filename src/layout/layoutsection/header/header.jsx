@@ -316,10 +316,10 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                            
                                 <div 
                                 className="header-nav-center" 
-                                style={{ display: 'flex', flexDirection: 'column', marginLeft: '36%', alignItems: 'center' }}
+                                style={{ display: 'flex', flexDirection: 'column', marginLeft: '18%', alignItems: 'center' }}
                                 >
-                                <h1 className="header-title" style={{ fontSize: '40px' ,marginBottom: '3px'}}><b>SOMS</b></h1>
-                                <h5>SOCRATE MANAGEMENT SYSTEM</h5>
+                            <h1 className="header-title" style={{ fontSize: '30px', color: '#b2000a', marginBottom: '12px'}}><b>SOCRATE MANAGEMENT SYSTEM (SOMS)</b></h1>
+                                
                                 </div>
                             
                             

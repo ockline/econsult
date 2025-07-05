@@ -13,12 +13,12 @@ import CreatableSelect from 'react-select/creatable';
 const Edit = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const token = sessionStorage.getItem('token');
 
 
     let navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
-        
         employee_id: '',
         employer_id: '',
         firstname: '',
@@ -32,6 +32,7 @@ const Edit = () => {
         incidence_reported_date: '',
         show_cause_letter_attachment: null,
         investigation_report_attachment: null,
+        notice_appear_attachment: null,
         error_list: [],
     });
     
@@ -102,12 +103,14 @@ const Edit = () => {
             incidence_reported_date: formData.incidence_reported_date,
             show_cause_letter_attachment: formData.show_cause_letter_attachment,
             investigation_report_attachment: formData.investigation_report_attachment,
+            notice_appear_attachment: formData.notice_appear_attachment,
         };
         try {
-            const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/update_misconduct/${id}`, DataToSend, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
+            const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/update_misconduct/${id}`,DataToSend, {
+          headers: {
+                    'Authorization': `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+                },
             });
             if (resp.data.validator_err) {
                 // Handle validation errors
@@ -186,21 +189,7 @@ const Edit = () => {
         fetchData();
     }, []);
 
-    //Dependanttpye or relativeness  ******************************
-    const [relationships, setDependantType] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const relative = await DependantTypeData();
-                setDependantType(relative);
-            } catch (error) {
-                console.error("Error:", error.message);
-            }
-        };
-
-        fetchData();
-    }, []);
 
     function Style2() {
         Swal.fire({
@@ -214,8 +203,8 @@ const Edit = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
-                    'Social Record Saved!',
-                    'Social Record completed Successfully.',
+                    'Disciplinary Saved!',
+                    'Disciplinary  completed Successfully.',
                     'success'
                 ).then(() => {
                     navigate('/industrials/misconducts/');
@@ -389,6 +378,12 @@ const Edit = () => {
                                             <label className="ti-form-label mb-0 font-bold text-lg">Show Cause Letter (pdf)</label>
                                             <input type="file" accept=".pdf" name="show_cause_letter_attachment" id="small-file-input" 
                                             onChange={(e) => handleFileInputChange('show_cause_letter_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                          
+                                </div>
+                                  <div className="space-y-2">
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Notice to Appear (pdf)</label>
+                                            <input type="file" accept=".pdf" name="notice_appear_attachment" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('notice_appear_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           
                                 </div>
                                 

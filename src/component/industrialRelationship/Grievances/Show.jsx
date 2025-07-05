@@ -1,85 +1,144 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ALLImages from "/src/common/imagesdata";
+import { Card, Tag, Timeline, Form, Select, Input, Col,Row } from 'antd';
 import ProfileService from "/src/common/profileservices";
 import { HomeGallery } from "/src/component/advancedUi/filemanager/filedetails/filedetailscarcousel";
 import { TagsInput } from "react-tag-input-component";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet";// adjust the path as needed
+import dayjs from 'dayjs';
 import axios from "axios";
 import Swal from "sweetalert2";
-import GrievanceModal  from "../Grievances/Modals/GrievanceModal"
+import store from "../../../redux/store";
+import { connect } from "react-redux";
+import { UserChanger, RolesChanger, ThemeChanger } from "../../../redux/Action";
+import { GetRoles } from "../../../utility/ReusableFunctions";
+import GrievanceModal from "../Grievances/Modals/GrievanceModal";
+import WorkFlowModal from "../Grievances/Modals/WorkFlowModal";
+import ReviewalWorkFlowModal from "../Grievances/Modals/ReviewalWorkflowModal";
+import ApprovalWorkFlowModal from "../Grievances/Modals/ApprovalWorkflowModal";
 
-const ShowGrievance = () => {
+const { Option } = Select;
+const ShowGrievance = ({ local_varaiable}) => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     const [ClassName, setClassName] = useState();
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        if (ProfileService.returnImage() != undefined) {
-            setImage(ProfileService.returnImage());
-        }
-        let contactItem = document.querySelectorAll(".main-contact-item");
-        contactItem.forEach((ele) => {
-            ele.addEventListener("click", () => {
-                setClassName("main-content-body-show");
-            })
-        });
-    }, [location]);
+      const [visible, setVisible] = useState(false);
+    const onClose = () => {
+        setVisible(false);  // Close the modal by setting visible to false
+    };
 
+    const roles = local_varaiable.roles;
+    
+   
+    function toTitleCase(str) {
+  return str
+    ?.toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
 
+     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
+    const [loadingReturn, setLoadingReturn] = useState(false);
     const [formData, setEmployeeData] = useState([])
+    const [workflows, setGrievanceWorkflow] = useState([])
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        axios.get(`${apiBaseUrl}/industrial_relationship/grievances/show_grievances/${id}`,
-			 {
+        const fetchData = async () => {
+            const token = sessionStorage.getItem('token');
+            try {
+                const res = await axios.get(`${apiBaseUrl}/industrial_relationship/grievances/show_grievances/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (res.data.status === 404) {
+                    Dangersweetalert();
+                    navigate('/industrials/grievances/');
+                } else {
+                    setEmployeeData(res.data.grievance);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
+    const [grievancePreview, setGrievanceDocument] = useState(null);
+  
+    
+    useEffect(() => {
+        const getGRievancesDocuments = async () => {
+             const token = sessionStorage.getItem('token');
+            try {
+                const res = await axios.get(`${apiBaseUrl}/industrial_relationship/grievances/preview_grievance/${id}`,  {
           headers: {
              'Authorization': `Bearer ${token}`
         },
       })
-            .then((res) => {
-                // console.log('API Response:', res.data);  // Log the entire response
-                setEmployeeData(res.data.grievance);
-                
-                if (res.data.status === 404) {
-                    Dangersweetalert()
-                    navigate('/industrials/grievances/'); 
-                  }
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            });
-    }, [id]);
-
-const [fixedContractPreview, setFixedContractDocument] = useState(null);
-    
-    useEffect(() => {
-        const getFixedContractDocument = async () => {
-            try {
-                const res = await axios.get(`${apiBaseUrl}/contracts/fixed/preview_fixed_contract/${id}`);
-                console.log('API Response:', res.data);
-
-                setFixedContractDocument(res.data.fixed_term);
+                setGrievanceDocument(res.data.grievance);
 
                 if (res.data.status === 404) {
                     Dangersweetalert();
-                    navigate('/contracts/required_details/');
+                    navigate('/industrials/grievances/');
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
-        getFixedContractDocument();
+        getGRievancesDocuments();
     }, [id, apiBaseUrl]);
 
 
-    // Dependant updateDependanHistory   **********************************************
+    //workflow preview
+      useEffect(() => {
+    const fetchGrievanceAndWorkflow = async () => {
+      const token = sessionStorage.getItem('token');
+      try {
+        const grievanceRes = await axios.get(`${apiBaseUrl}/industrial_relationship/grievances/show_grievances/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
 
+        if (grievanceRes.data.status === 404) {
+          Dangersweetalert();
+          navigate('/industrials/grievances/');
+          return;
+        }
+
+        setEmployeeData(grievanceRes.data.grievance);
+
+        const workflowRes = await axios.get(`${apiBaseUrl}/industrial_relationship/grievances/retrieve_workflow_grievances/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (workflowRes.data.status === 404) {
+          Dangersweetalert();
+          navigate('/industrials/grievances/');
+          return;
+        }
+        setGrievanceWorkflow(workflowRes.data.grievance);
+
+      } catch (error) {
+        console.error('Error fetching grievance or workflow:', error);
+      } finally {
+        setIsLoading(false); // loading false after everything
+      }
+    };
+    fetchGrievanceAndWorkflow();
+  }, [id, navigate]);
 
  
 
@@ -106,13 +165,13 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                 console.log(res.data.contract_document);
             })
             .catch((error) => {
-                console.error('Error fetching personnel application  documents:', error);
+                console.error('Error fetching grievances Documents:', error);
             });
     }, [id]);
 
     const handlePreviewClick = (description) => {
         // Assuming the documents are stored in a specific folder on the server      
-        const absoluteUrl = `${docBaseUrl}/contracts/fixed/${id}/${description}`;
+        const absoluteUrl = `${docBaseUrl}/industrial/grievance/${id}/${description}`;
         console.log('absoluteUrl', absoluteUrl);
         // Update the state with the document URL
         setDocumentUrl(absoluteUrl);
@@ -154,62 +213,46 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                 <h5 className="box-title justify-center font-bold text-black !text-lg">Basic Information</h5>
                             </div>
                         </div>
-                        <div className="box-body py-3">
-                            <div className="xl:overflow-hidden overflow-x-auto">
-                                <table className="ti-custom-table border-0">
-                                    <tbody>
+          <div className="box-body py-3">
+                <div className="xl:overflow-hidden overflow-x-auto">
+                    {isLoading ? (
+                    <div className="flex justify-center items-center h-40">
+                        <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-primary"></div>
+                    </div>
+                    ) : (
+                    <table className="ti-custom-table border-0">
+                        <tbody>
+                        <tr className="border-0">
+                            <td className="!p-2 !text-lg font-bold text-black">Employer Name</td>
+                            <td className="!p-2">:</td>
+                            <td className="!p-2 text-black">{formData.employer}</td>
+                        </tr>
+                        <tr>
+                            <td className="!p-2 !text-lg font-bold text-black">Employee Name</td>
+                            <td className="!p-2">:</td>
+                            <td className="!p-2 text-black font-medium">{formData.employee_name}</td>
+                        </tr>
+                        <tr className="!border-0">
+                            <td className="!p-2 !text-lg font-bold text-black">Position</td>
+                            <td className="!p-2">:</td>
+                            <td className="!p-2 text-black text-secondary font-bold">{formData.job_title}</td>
+                        </tr>
+                        <tr className="!border-0">
+                            <td className="!p-2 !text-lg font-bold text-black">Department</td>
+                            <td className="!p-2">:</td>
+                            <td className="!p-2 text-black">{formData.departments}</td>
+                        </tr>
+                        <tr className="!border-0">
+                            <td className="!p-2 !text-lg font-bold text-black">Grievance Date</td>
+                            <td className="!p-2">:</td>
+                            <td className="!p-2 text-black">{formData.grievance_date}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    )}
+                </div>
+                </div>
 
-                                        <tr className="border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Employer Name
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black">
-                                                {formData.employer}
-                                            </td>
-                                        </tr>
-                                        <tr className="">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Employee Name
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black font-medium">
-                                                {formData.employee_name}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Position
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black text-secondary font-bold">
-                                                {formData.job_title}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Department
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black">
-                                                {formData.departments}
-                                            </td>
-                                        </tr>
-                                        <tr className="!border-0">
-                                            <td className="!p-2 !text-lg font-bold text-black">
-                                                Grievance Date
-                                            </td>
-                                            <td className="!p-2">:</td>
-                                            <td className="!p-2 text-black">
-                                                {formData.grievance_date}
-                                            </td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
@@ -231,16 +274,8 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                 ><i className="ti ti-user-circle font-semibold"></i>
                                     Grievance Workflow
                                 </button>
-                                {/* <button
-                                    type="button"
-                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
-                                    id="profile-item-2"
-                                    data-hs-tab="#profile-2"
-                                    aria-controls="profile-2"
-                                    role="tab"
-                                ><i className="ti ti-urgent font-semibold"></i>
-                                    Remuneration & Hours
-                                </button> */}
+                               
+                          
                                 <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
@@ -257,100 +292,27 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                         <div className="box-body">
                             <div
                                 id="profile-1"
-                                className=""
                                 role="tabpanel"
                                 aria-labelledby="profile-item-1"
-                            >
-                                <div className="xl:overflow-hidden overflow-x-auto">
-                                    <table className="ti-custom-table border-0">
-                                        <tbody>
-                                            <tr className="">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Job Title
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black font-medium">
-                                                    {formData.job_title}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Job profile
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.job_profile}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Reporting To
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black text-info">
-                                                    {formData.reporting_to}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Staff Classification
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.staff_classfication}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Place of Work
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.work_station}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Place of Recruitment
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.place_recruitment}
-                                                </td>
-                                            </tr>
-
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Commencement Date
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.commencement_date}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Expire Commencement Date
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.end_commencement_date}
-                                                </td>
-                                            </tr>
-                                            <tr className="!border-0">
-                                                <td className="!p-2 !text-lg font-bold text-black">
-                                                    Probation Period
-                                                </td>
-                                                <td className="!p-2">:</td>
-                                                <td className="!p-2 text-black">
-                                                    {formData.probation_period}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <br />
-
+                                >
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center h-40">
+                                    <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-primary"></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                    {roles.includes('IRGI') && (
+                                        <WorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                    )}
+                                    {roles.length > 0 && roles.includes('IRGR') && (
+                                        <ReviewalWorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                    )}
+                                    {roles.includes('IRGA') && (
+                                        <ApprovalWorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                    )}
+                                    <br />
+                                    </>
+                                )}
                             </div>
                          
                             <div
@@ -381,13 +343,13 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
                                                     className="ti-btn ti-btn-success text-black" 
                                                     onClick={() => setShowModal(true)}
                                                 >
-                                                    <i className="ti ti-cloud-download !text-white"></i> Download Fixed Contract
+                                                    <i className="ti ti-cloud-download !text-white"></i> Download Grievance Document
                                                 </button>
 
                                                 <GrievanceModal 
                                                     showModal={showModal} 
                                                     onClose={() => setShowModal(false)} 
-                                                    fixedContractPreview={fixedContractPreview} 
+                                                    grievancePreview={grievancePreview} 
                                                 />
                                             </div>
                                                 
@@ -455,4 +417,10 @@ const [fixedContractPreview, setFixedContractDocument] = useState(null);
     );
 };
 
-export default ShowGrievance;
+
+
+const mapStateToProps = (state) => ({
+    local_varaiable: state,
+});
+
+export default connect(mapStateToProps, { ThemeChanger })(ShowGrievance);

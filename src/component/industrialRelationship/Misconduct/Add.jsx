@@ -12,6 +12,7 @@ import CreatableSelect from 'react-select/creatable';
 const AddMisconduct = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const token = sessionStorage.getItem('token');
 
 
     let navigate = useNavigate();
@@ -193,7 +194,8 @@ const AddMisconduct = () => {
          setIsLoading(true);
     try {
       const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/create_misconduct`, DataToSend, {
-        headers: {
+          headers: {
+            'Authorization': `Bearer ${token}` ,
           "Content-Type": "multipart/form-data",
         },
       });

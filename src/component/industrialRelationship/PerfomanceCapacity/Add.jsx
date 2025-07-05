@@ -92,20 +92,28 @@ const AddInCapacity = () => {
     
      const [isLoading, setIsLoading] = useState(false);
      const [searchQuery, setSearchQuery] = useState(''); // For employee number search
-
+     const [step, setStep] = useState(1);
   // Function to fetch employee data based on the employee number (searchQuery)
-  const getEmployeeDetail = async (id) => {
-    try {
-      const res = await axios.get(`${apiBaseUrl}/industrial_relationship/retrieve_employee_details/${id}`);
-      const updatedFormData = {
-        ...formData,
-        ...res.data.employee, // Assuming the response has 'employee' object
-      };
-      setFormData(updatedFormData);
-    } catch (error) {
-      console.error('Error fetching employee data:', error.message);
-    }
-  };
+    const getEmployeeDetail = async (id) => {
+        try {
+            const res = await axios.get(
+            `${apiBaseUrl}/industrial_relationship/retrieve_employee_details/${id}`,
+            {
+                headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+                },
+            }
+            );
+            const updatedFormData = {
+            ...formData,
+            ...res.data.employee, // Assuming response includes 'employee' object
+            };
+            setFormData(updatedFormData);
+        } catch (error) {
+            console.error('Error fetching employee data:', error.message);
+        }
+        };
 
   // Trigger the fetch when search query changes
   useEffect(() => {
@@ -117,7 +125,7 @@ const AddInCapacity = () => {
   // Handle changes in form input
   
     
-     const [step, setStep] = useState(1);
+    
     const [formData, setFormData] = useState({
         suffering_from: '',
         suffering_period: '',

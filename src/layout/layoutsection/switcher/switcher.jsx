@@ -12,6 +12,9 @@ const Switcher = ({local_varaiable,ThemeChanger}) => {
     //     switcherdata.LocalStorageBackup(ThemeChanger)
     // },[])
 
+    const sidebarBackground =
+    local_varaiable.dataVerticalStyle === "default" ? "#b2000a" : "";
+    
     return (
         <Fragment>
             <Helmet>
@@ -254,7 +257,7 @@ const Switcher = ({local_varaiable,ThemeChanger}) => {
                         <div className="space-y-6 sidemenu-layout-styles">
                             <p className="switcher-style-head">Sidemenu Layout Syles:</p>
                             <div className="grid grid-cols-2 gap-6 switcher-style">
-                                <div className="flex">
+                                {/* <div className="flex">
                                     <input type="radio" name="sidemenu-layout-styles" className="ti-form-radio" id="switcher-default-menu"
                                      checked={local_varaiable.dataVerticalStyle == 'default' || local_varaiable.dataVerticalStyle == 'overlay'} onChange={e => {}}
                                      onClick={() => switcherdata.Defaultmenu(ThemeChanger)} 
@@ -262,7 +265,17 @@ const Switcher = ({local_varaiable,ThemeChanger}) => {
                                     <label htmlFor="switcher-default-menu"
                                         className="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70 ">Default
                                         Menu</label>
-                                </div>
+                                </div> */}
+                                <div className="flex">
+                                    <input type="radio" name="sidemenu-layout-styles" className="ti-form-radio" id="switcher-default-menu"
+                                     checked={ local_varaiable.dataVerticalStyle === "default" ? "#b2000a" : "" || local_varaiable.dataVerticalStyle == 'overlay'} onChange={e => {}}
+                                     onClick={() => switcherdata.Defaultmenu(ThemeChanger)} 
+                                      />
+                                    <label htmlFor="switcher-default-menu"
+                                        className="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70 ">Default
+                                        Menu</label>
+                                </div> 
+                                
                                 <div className="flex">
                                     <input type="radio" name="sidemenu-layout-styles" className="ti-form-radio" id="switcher-closed-menu"
                                     checked={local_varaiable.toggled == 'close-menu-close'} onChange={e => {}}

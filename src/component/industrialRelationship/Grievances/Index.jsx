@@ -126,8 +126,6 @@ const Index = () => {
 													
 													<div className="block my-auto">
 														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{grievance.departments}</p>
-														{/* <span
-															className="block text-xs text-gray-400 dark:text-white/80 !font-normal my-auto">socratesitumay@gmail.com</span> */}
 													</div>
 												</div>
                                                     </td>
@@ -135,38 +133,67 @@ const Index = () => {
 												<td>{grievance.grievance_date}</td>                                                    
 
 													<td>
-														{ grievance.status === 1
-														? (
-<span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80">Submitted</span>)													
-												 : (<span
-															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{grievance.status}</span>
-												 )}
-											</td>
-					
+													{grievance.status && (
+														<span
+														className={`truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium 
+															${
+															grievance.status === 'Initiated' ? 'bg-orange-500/20 text-orange-600'
+															: grievance.status === 'Reviewed' ? 'bg-blue-500/20 text-blue-600'
+															: grievance.status === 'Approved' ? 'bg-green-500/20 text-green-600'
+															: 'bg-yellow-400/20 text-yellow-600'
+															}`
+														}
+														>
+														{grievance.status}
+														</span>
+													)}
+													</td>
+
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">
-													<Link to={`${import.meta.env.BASE_URL}industrials/grievances/show_grievances/${grievance.id}`}
-														className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
-														<i className="ti ti-eye"></i>
-														<span
-															className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
-															role="tooltip">
-                                View
-														</span>
-															</Link>
-															</div>
+												<Link
+													to={`${import.meta.env.BASE_URL}industrials/grievances/show_grievances/${grievance.id}`}
+													className="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary"
+												>
+													<i className="ti ti-eye"></i>
+													<span
+													className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-green-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+													role="tooltip"
+													>
+													View
+													</span>
+												</Link>
+												</div>
 															&nbsp;&nbsp;
 											
-														<button 
-                                                    aria-label="anchor"
-                                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
-                                                    onClick={() => {
-                                                   navigate(`${import.meta.env.BASE_URL}industrials/grievances/edit_grievance/${grievance.id}`);   
-                                                    }}
-                                                   >
-                                                    <i className="ti ti-pencil"></i>
-														</button>
+														<div className="hs-tooltip ti-main-tooltip">
+															<button
+																aria-label="anchor"
+																className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary hs-tooltip-toggle relative"
+																onClick={() => {
+																if (grievance.status === 'Reviewed' || grievance.status === 'Approved') {
+																	Swal.fire({
+																	icon: 'warning',
+																	title: 'Sorry!',
+																	text: 'You cannot edit at this stage.',
+																	confirmButtonColor: '#3085d6',
+																	confirmButtonText: 'OK'
+																	});
+																} else {
+																	navigate(`${import.meta.env.BASE_URL}industrials/grievances/edit_grievance/${grievance.id}`);
+																}
+																}}
+															>
+																<i className="ti ti-pencil"></i>
+																<span
+																className="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-green-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+																role="tooltip"
+																>
+																Edit
+																</span>
+															</button>
+															</div>
+
 														
 														
 														

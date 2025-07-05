@@ -196,7 +196,11 @@ import ShowPerformanceAssessment from "../component/industrialRelationship/Perfo
 import Disciplinary from "../component/industrialRelationship/Disciplinary/Index";
 import AddDisciplinary from "../component/industrialRelationship/Disciplinary/Add";
 import EditDisciplinary from "../component/industrialRelationship/Disciplinary/Edit";
-import ShowDisciplinary from "../component/industrialRelationship/Disciplinary/Show";
+import ShowDisciplinary from "../component/industrialRelationship/Disciplinary/ShowDisciplinary";
+
+
+
+
 
 import Grievances from "../component/industrialRelationship/Grievances/Index";
 import AddGrievances from "../component/industrialRelationship/Grievances/Add";
@@ -513,8 +517,8 @@ export const RouteData = [
 
     { path: `${import.meta.env.BASE_URL}industrials/disciplinaries`, element: <Disciplinary /> },
     { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/create_disciplinary`, element: <AddDisciplinary /> },
-    { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/edit_disciplinary`, element: <EditDisciplinary /> },
-    { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/show_disciplinary`, element: <ShowDisciplinary /> },
+    { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/edit_disciplinary/:id`, element: <EditDisciplinary /> },
+    { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/show_disciplinary/:id`, element: <ShowDisciplinary /> },
 
    { path: `${import.meta.env.BASE_URL}industrials/grievances`, element: <Grievances /> },
     { path: `${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`, element: <AddGrievances /> },

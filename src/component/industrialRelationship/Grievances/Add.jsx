@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 
 
-const AddGrivance = () => {
+const AddGrievance = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -83,11 +83,11 @@ const AddGrivance = () => {
         middlename: '',
         lastname: '',
         grievance_date: '', 
+        resolution: '',
         grievance_supportive_doc: '',
         error_list: [],
     });
-    
-    
+        
 
     const handleFileInputChange = (fieldName, files) => {
         // const file = files[0]; // Assuming single file selection, update accordingly for multiple files
@@ -134,6 +134,7 @@ const AddGrivance = () => {
             lastname: formData.lastname,
             grievance_reason: formData.grievance_reason,
             grievance_date: formData.grievance_date,
+            resolution: formData.resolution,
             grievance_supportive_doc: formData.grievance_supportive_doc
            
             
@@ -193,7 +194,7 @@ const AddGrivance = () => {
     return (
         <div>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Disciplinary</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Grievance</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
@@ -204,7 +205,7 @@ const AddGrivance = () => {
                     </li>
                     <li className="text-sm">
                         <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`}>
-                            Add Leave Details
+                            Add Grievance Details
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
                     </li>
@@ -321,6 +322,22 @@ const AddGrivance = () => {
                                 </div>
                                 </div>
 
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">
+                                        Issue Resolved? <span style={{ color: "red" }}>*</span>
+                                    </label>
+                                    <select
+                                        name="resolution"
+                                        className="my-auto ti-form-input text-black  border-red-500 text-md"
+                                        value={formData.resolution}
+                                        onChange={(e) => handleInputChange('resolution', e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select Option</option> {/* Placeholder option */}
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
 
                                                          
                                  <div className="space-y-2">
@@ -373,4 +390,4 @@ const AddGrivance = () => {
         </div>
     );
 };
-export default AddGrivance;
+export default AddGrievance;

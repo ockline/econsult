@@ -1,5 +1,5 @@
 
-const GrievanceModal = ({ showModal, onClose,grievancePreview }) => {
+const MisconductModal = ({ showModal, onClose,grievancePreview }) => {
     if (!showModal) return null;
 	
     return (
@@ -33,5 +33,5 @@ const GrievanceModal = ({ showModal, onClose,grievancePreview }) => {
     );
 };
 
-export default GrievanceModal;
+export default MisconductModal;
 

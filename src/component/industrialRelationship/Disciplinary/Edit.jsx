@@ -13,9 +13,13 @@ import Swal from "sweetalert2";
 const EditDisciplinary = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const token = sessionStorage.getItem('token');
 
 
     let navigate = useNavigate();
+    
+     
+    
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         
@@ -24,32 +28,35 @@ const EditDisciplinary = () => {
         firstname: '',
         middlename: '',
         lastname: '',
-        investigation_date: '', 
-        suffering_from: '',
-        incapacity_type: '',
-        suffering_period: '',
-        daily_duties: '',
-        challenge_daily_duties: '',
-        alternative_task: '',
-        partient_suggestion: '',
-        investigation_report: '',
-        perfomance_capacity_attachment: null,
+        disciplinary_remark: '',
+        disciplinary_date: '',
+        disciplinary_comment: '',
+        charge_sheet_doc: null,
         error_list: [],
     });
-    
-    
-    //fetch employee data'
-    const { id } = useParams();
+        const { id } = useParams();
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/industrial_relationship/show_performance_capacity/${id}`).then((res) => {
-            // Ensure that all properties are present in the API response
+    axios.get(`${apiBaseUrl}/industrial_relationship/disciplinary/show_disciplinary_details/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+    .then((res) => {
+        if (res.data.status === 404) {
+            Dangersweetalert();
+            navigate('/industrials/disciplinaries/');
+        } else {
             const updatedFormData = {
                 ...formData,
-                ...res.data.show_capacity,
+                ...res.data.disciplinary,
             };
             setFormData(updatedFormData);
-        });
-    }, [id])
+        }
+    })
+    .catch((error) => {
+        console.error('Error fetching data:', error);
+    });
+}, [id]);
 
     const handleFileInputChange = (fieldName, files) => {
         // const file = files[0]; // Assuming single file selection, update accordingly for multiple files
@@ -88,26 +95,23 @@ const EditDisciplinary = () => {
         e.preventDefault();
         // console.log('Form submitted:', formData);
         const DataToSend = {
+            disciplinary_id: id,
             employee_id: formData.employee_id,
             rate_creterial: formData.rate_creterial,
             employer_id: formData.employer_id,
             firstname: formData.firstname,
             middlename: formData.middlename,
             lastname: formData.lastname,
-            suffering_from:  formData.suffering_from,
-            departments: formData.departments,
-            daily_duties:  formData.daily_duties,
-            challenge_daily_duties: formData.challenge_daily_duties,
-            alternative_task: formData.alternative_task,
-            partient_suggestion: formData.partient_suggestion,
-            investigation_report: formData.investigation_report,
-            investigation_date: formData.investigation_date,
-            perfomance_capacity_attachment: formData.perfomance_capacity_attachment,
+            disciplinary_remark:  formData.disciplinary_remark,
+            disciplinary_date: formData.initiated_date,
+            disciplinary_comment: formData.disciplinary_comment,
+            charge_sheet_doc: formData.charge_sheet_doc,
            
         };
         try {
-            const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/update_performance_capacity/${id}`, DataToSend, {
+            const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/disciplinary/update_disciplinary`, DataToSend, {
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     "Content-Type": "multipart/form-data"
                 }
             });
@@ -148,7 +152,7 @@ const EditDisciplinary = () => {
                     closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
                 })
                 .then(() => {
-                navigate('/industrials/perfomance_capacity/'); 
+                navigate('/industrials/disciplinaries/'); 
                 });
             }
         }
@@ -158,52 +162,14 @@ const EditDisciplinary = () => {
     };
 
 
-    // employers  *********************
- const [employers, setEmployers] = useState([]);
+   const [searchQuery, setSearchQuery] = useState('');
+   useEffect(() => {
+        if (searchQuery !== '') {
+          getEmployeeDetail(searchQuery); // Pass employee number to the function
+        }
+     }, [searchQuery]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const employer = await EmployerData();
-                setEmployers(employer);
-            } catch (error) {
-                console.error("Error:", error.message);
-            }
-        };
-        fetchData();
-    }, []);
-
-
-    // Job title  *********************
-    const [job_titles, setJobTitles] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const job_title = await JobTitleData();
-                setJobTitles(job_title);
-            } catch (error) {
-                console.error("Error:", error.message);
-            }
-        };
-        fetchData();
-    }, []);
-
-    //Dependanttpye or relativeness  ******************************
-    const [relationships, setDependantType] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const relative = await DependantTypeData();
-                setDependantType(relative);
-            } catch (error) {
-                console.error("Error:", error.message);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+ 
     function Style2() {
         Swal.fire({
             title: 'Are you sure?',
@@ -235,14 +201,14 @@ const EditDisciplinary = () => {
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/perfomance_capacity/`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/disciplinaries/`}>
                             Home
                             <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/performance_capacity/edit/${formData.id}`}>
-                            Update Perfomance Capacity
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/disciplinaries/edit_disciplinary/${formData.id}`}>
+                           Update Disciplinary Details
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
                     </li>
@@ -250,145 +216,126 @@ const EditDisciplinary = () => {
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h1 className="box-title my-auto font-bold text-lg">Update Perfomance Capacity</h1>
-                    <Link to={`${import.meta.env.BASE_URL}industrials/performance_capacity/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
+                    <h1 className="box-title my-auto font-bold text-lg">Update Disciplinary Details</h1>
+                    <Link to={`${import.meta.env.BASE_URL}industrials/disciplinaries/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
                     <form className="ti-validation" noValidate onSubmit={handleSubmit}>
                         {step === 1 && (
 
                             <div className="grid lg:grid-cols-3 gap-6">
+
+                               
+                                <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Employee Number<span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="employer" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.employee_id} readOnly onChange={(e) => handleInputChange('employee_id', e.target.value)} placeholder="Employer"  />
+                                    {/* <span className="text-danger">{formData.error_list.employer}</span> */}
+                                </div>
+
+                              
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">FirstName <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="firstname" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" placeholder="Employee firstname" value={formData.firstname} readOnly
+                                    <input type="text" name="firstname" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" placeholder="Employee firstname"  readOnly value={formData.firstname}
                                         onChange={(e) => handleInputChange('firstname', e.target.value)} required />
-                                    <span className="text-danger">{formData.error_list.firstname}</span>
+                                    {/* <span className="text-danger">{formData.error_list.firstname}</span> */}
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">MiddleName <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="middlename" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" placeholder="Middlename" value={formData.middlename}
-                                        onChange={(e) => handleInputChange('middlename', e.target.value)} required readOnly  />
+                                    <label className="ti-form-label mb-0 font-bold text-lg">MiddleName </label>
+                                    <input type="text" name="middlename" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" placeholder="Middlename" value={formData.middlename} readOnly
+                                        onChange={(e) => handleInputChange('middlename', e.target.value)} required />
                                     <span className="text-danger">{formData.error_list.middlename}</span>
-                                </div> <div className="space-y-2">
+                                </div>
+                                <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">LastName <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="lastname" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.lastname} onChange={(e) => handleInputChange('lastname', e.target.value)} placeholder="Employee Lastname" required readOnly />
-                                    <span className="text-danger">{formData.error_list.lastname}</span>
+                                    <input 
+                                        type="text" 
+                                        name="lastname" 
+                                        className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" 
+                                        value={formData.lastname} 
+                                        readOnly 
+                                        onChange={(e) => handleInputChange('lastname', e.target.value)} 
+                                        placeholder="Employee Lastname" 
+                                        required 
+                                    />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Employer Name <span style={{ color: "red" }}> *</span></label>
-                                     <input type="text" name="employer" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.employer} onChange={(e) => handleInputChange('employer', e.target.value)} placeholder="Employee employer" required readOnly />
-                                    
+
+                                 <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Employer <span style={{ color: "red" }}> *</span></label>
+                                    <input type="text" name="employer" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.employer} readOnly onChange={(e) => handleInputChange('employer', e.target.value)} placeholder="Employer" required />
+                                    {/* <span className="text-danger">{formData.error_list.employer}</span> */}
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Capacity Type <span style={{ color: "red" }}> *</span></label>
-                                   <input type="text" name="capacity_type" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.capacity_type} onChange={(e) => handleInputChange('capacity_type', e.target.value)} placeholder="Capacity Type" required readOnly />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Department Name <span style={{ color: "red" }}> *</span></label>
-                                     <input type="text" name="departments" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-lg" value={formData.departments} onChange={(e) => handleInputChange('departments', e.target.value)} placeholder="Employee department" required readOnly />
-                                    
-                                </div>
-                              <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Investigation Date<span style={{ color: "red" }}> *</span></label>
-                                    <div className="flex rounded-sm overflow-auto">
-                                        <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                className="ri ri-calendar-line"></i></span>
-                                        </div>
-                                        <input
-                                            type="date" name="investigation_date" className="my-auto ti-form-input text-black  border-red-500 text-lg"
-                                            placeholder="" value={new Date(formData.investigation_date).toLocaleDateString('en-CA')} // Format the date
-                                            onChange={(e) => handleInputChange('investigation_date', e.target.value)} required
-                                        />
-                                        <span className="text-danger">{formData.error_list.investigation_date}</span>
-                                    </div>
-                                </div>
-                                  <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Investigation Report</label>
-                                   <input type="textarea" name="investigation_report" className="my-auto ti-form-input text-black  border-red-500 text-lg" value={formData.investigation_report} onChange={(e) => handleInputChange('investigation_report', e.target.value)} placeholder="Review Description "   />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Subject Matter </label>
-                                    <input type="text" name="subject_matter" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.subject_matter}
-                                        onChange={(e) => handleInputChange('subject_matter', e.target.value)} placeholder="subject matter" />
-                                </div> 
-                                
-                            <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">What are you suffering? </label>
-                                    <input type="text" name="suffering_from" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.suffering_from}
-                                        onChange={(e) => handleInputChange('suffering_from', e.target.value)} placeholder="what are you suffering from" />
+                                       <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Case Decision </label>
+                                    <input 
+                                        type="text" 
+                                        name="case_decision" 
+                                        className="my-auto ti-form-input text-black bg-gray-100 border-red-500  text-md" 
+                                        value={formData.case_decision} 
+                                        onChange={(e) => handleInputChange('case_decision', e.target.value)} 
+                                        placeholder="Sababu ya malalamiko" readOnly
+                                    />
+                                </div>    
+                                    <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Disciplinary Reason</label>
+                                    <textarea 
+                                        type="text" 
+                                        name="disciplinary_comment" 
+                                        className="my-auto ti-form-input text-black  bg-gray-100 border-red-500 text-md" 
+                                        value={formData.disciplinary_comment} 
+                                        onChange={(e) => handleInputChange('disciplinary_comment', e.target.value)} 
+                                        placeholder="Suluhisho lililotafutwa" readOnly
+                                    />
                                 </div>  
                                 <div className="space-y-2">
-                                <label className="ti-form-label mb-0 font-bold text-lg">For how long you have been suffering?   <span style={{ color: "red" }}> *</span></label>
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Disciplinary Comment</label>
+                                    <textarea 
+                                        type="text" 
+                                        name="disciplinary_remark" 
+                                        className="my-auto ti-form-input text-black border-red-500 text-md" 
+                                        value={formData.disciplinary_remark} 
+                                        onChange={(e) => handleInputChange('disciplinary_remark', e.target.value)} 
+                                        placeholder="Reason for Disciplinary" 
+                                    />
+                                </div>                                 
+                                
+                              <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">
+                                    Disciplinary Date <span style={{ color: "red" }}> *</span>
+                                </label>
                                 <div className="flex rounded-sm overflow-auto">
                                     <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                        <span className="text-sm text-gray-500 dark:text-white/70">
-                                            <i className="ri ri-calendar-line"></i>
-                                        </span>
+                                    <span className="text-sm text-gray-500 dark:text-white/70">
+                                        <i className="ri ri-calendar-line"></i>
+                                    </span>
                                     </div>
-                                    <input
-                                        type="date" 
-                                        name="suffering_period" 
-                                        className="my-auto ti-form-input text-black text-lg"
-                                        value={new Date(formData.suffering_period).toLocaleDateString('en-CA')} // Format the date
-                                        max={new Date().toISOString().split('T')[0]} // Set today's date as the minimum
-                                        onChange={(e) => handleInputChange('suffering_period', e.target.value)} 
-                                        required
+                                    <input 
+                                    type="date"
+                                    name="initiated_date"
+                                    className="my-auto ti-form-input text-black text-lg"
+                                    value={new Date(formData.initiated_date).toLocaleDateString('en-CA')}
+                                    max={new Date().toISOString().split('T')[0]} 
+                                    onChange={(e) => handleInputChange('initiated_date', e.target.value)}
+                                    required
                                     />
-                                    <span className="text-danger">{formData.error_list.suffering_period}</span>
+                                    <span className="text-danger">{formData.error_list.initiated_date}</span>
                                 </div>
-                                </div>                                 
+                                </div>
+                                                         
                                  <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">What are your daily duties at working station  </label>
-                                    <input type="text" name="daily_duties" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.daily_duties}
-                                        onChange={(e) => handleInputChange('daily_duties', e.target.value)} placeholder="What are your daily duties at working station" />
-                                </div>  
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">what are the challenges on attending your daily duties  </label>
-                                    <input type="text" name="challenge_daily_duties" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.challenge_daily_duties}
-                                        onChange={(e) => handleInputChange('challenge_daily_duties', e.target.value)} placeholder="challenges on attending your daily duties" />
-                                </div>    
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">What are the alternative task </label>
-                                    <input type="text" name="alternative_task" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.alternative_task}
-                                        onChange={(e) => handleInputChange('alternative_task', e.target.value)} placeholder="What are the alternative task" />
-                                </div> 
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Patient suggestions on his/her illness</label>
-                                    <input type="text" name="partient_suggestion" className="my-auto ti-form-input text-black border-red-500 text-md" value={formData.partient_suggestion}
-                                        onChange={(e) => handleInputChange('partient_suggestion', e.target.value)} placeholder="partient suggestion" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Investigator Name </label>
-                                    <input type="text" name="investigator_name" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" placeholder="investigator name" value={formData.investigator_name} readOnly
-                                        onChange={(e) => handleInputChange('investigator_name', e.target.value)} required />
-                                    <span className="text-danger">{formData.error_list.investigator_name}</span>
-                                </div>
-                               
-                                 <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Investigator Designation <span style={{ color: "red" }}> *</span></label>
-                                    <input type="text" name="employer" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.employer} readOnly onChange={(e) => handleInputChange('employer', e.target.value)} placeholder="Designantion" required />
-                                    {/* <span className="text-danger">{formData.error_list.employer}</span> */}
-                                </div> 
-                                <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg">Perfomance Review Attachment (pdf)</label>
-                                            <input type="file" accept=".pdf" name="perfomance_review_attachment" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('perfomance_review_attachment', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Charge Sheet Attachment <span style={{ color: "red" }}> *</span></label>
+                                            <input type="file" accept=".pdf" name="charge_sheet_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('charge_sheet_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" required/>
                                           
-                                </div>
-                                
+                                  </div>
                             </div>
                         )}
-                    
-
                         <br />
-                     <div>
+                        <div>
                             {step > 1 && step < 2 && (
                                 <button type="button" onClick={handlePreviousStep} className="ti-btn ti-btn-warning first_page justify-center">
                                     <i className="ti ti-arrow-narrow-left"></i>Previous
                                 </button>
                             )}
-                          
                             {step === 1 && (
                                 <div className="float-end">
                                   <button
@@ -407,7 +354,7 @@ const EditDisciplinary = () => {
                                 ) : (
                                     <>
                                     <i className="ti ti-corner-up-right-double"></i>
-                                    Update
+                                    Update Disciplinary
                                     </>
                                 )}
                                 </button>

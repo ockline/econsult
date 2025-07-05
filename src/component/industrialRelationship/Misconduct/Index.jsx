@@ -226,26 +226,24 @@ function Style1() {
                                                     </td>
                                                     <td>{misconduct.employee_name}</td>
 											<td className="font-semibold text-base">{misconduct.employer}</td>
-											{/* <td>
-												<div className="flex space-x-3 rtl:space-x-reverse text-start">
-													
-													<div className="block my-auto">
-														<p className="block text-sm font-semibold my-auto text-gray-800 dark:text-white">{misconduct.misconduct}</p>
-														</div>
-												</div>
-                                                    </td> */}
-                                                    <td>{misconduct.misconduct_date}</td>
-												{/* <td>{misconduct.departments}</td>                                                    
-											<td>{misconduct.job_title}</td> */}
-													<td>
-														{ misconduct.status === 1
-														? (
-<span
-												className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80">Submitted</span>)													
-												 : (<span
-															className="truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-info/80">{misconduct.status}</span>
-												 )}
-											</td>
+                                            <td>{misconduct.misconduct_date}</td>                                     
+											<td>{misconduct.job_title}</td>
+											<td>
+													{misconduct.status && (
+														<span
+														className={`truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium 
+															${
+															misconduct.status === 'Initiated' ? 'bg-orange-500/20 text-orange-600'
+															: misconduct.status === 'Reviewed' ? 'bg-blue-500/20 text-blue-600'
+															: misconduct.status === 'Approved' ? 'bg-green-500/20 text-green-600'
+															: 'bg-yellow-400/20 text-yellow-600'
+															}`
+														}
+														>
+														{misconduct.status}
+														</span>
+													)}
+													</td>
 					
 											<td className="font-medium space-x-2 rtl:space-x-reverse">
 												<div className="hs-tooltip ti-main-tooltip">

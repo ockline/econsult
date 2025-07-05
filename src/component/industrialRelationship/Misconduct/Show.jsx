@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ALLImages from "/src/common/imagesdata";
 import ProfileService from "/src/common/profileservices";
 import { HomeGallery } from "/src/component/advancedUi/filemanager/filedetails/filedetailscarcousel";
 import { TagsInput } from "react-tag-input-component";
 import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import { UserChanger, RolesChanger, ThemeChanger } from "../../../redux/Action";
 import axios from "axios";
 import Swal from "sweetalert2";
+import MisconductModal from "./Modals/MisconductModal";
+import WorkFlowModal from "./Modals/WorkFlowModal";
+import ApprovalWorkFlowModal from "./Modals/ApprovalWorkflowModal";
+import ReviewalWorkFlowModal from "../Misconduct/Modals/ReviewalWorkflowModal";
 
 
-const ShowMisconduct = () => {
+
+const ShowMisconduct = ({local_varaiable}) => {
     // react-tag-input-component
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
-    //URl image
-
-
-    //toggle button for image
-
+    const roles = local_varaiable.roles;
+    
+    const navigate = useNavigate();
     const [ClassName, setClassName] = useState();
+    const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+     const [workflows, setMisconductWorkflow] = useState([])
 
     useEffect(() => {
         if (ProfileService.returnImage() != undefined) {
@@ -57,23 +65,67 @@ const ShowMisconduct = () => {
     }, [id]);
 
 
-
-
-    // Dependant updateDependanHistory   **********************************************
-
-
-    const [dependantData, setDependantDetailData] = useState([])
+    //Misconduct document preview  
+    const [misconductPreview, setMisconductDocument] = useState(null);
+  
     useEffect(() => {
-        axios.get(`${apiBaseUrl}/employees/social/edit_dependant_detail/${id}`)
-            .then((res) => {
+        const getMisconductDocument = async () => {
+             const token = sessionStorage.getItem('token');
+            try {
+                const res = await axios.get(`${apiBaseUrl}/industrial_relationship/grievances/preview_grievance/${id}`,  {
+          headers: {
+             'Authorization': `Bearer ${token}`
+            },
+        })
+        setMisconductDocument(res.data.grievance);
+        if (res.data.status === 404) {
+            Dangersweetalert();
+            navigate('/industrials/grievances/');
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
+getMisconductDocument();
+}, [id, apiBaseUrl]);
 
-                setDependantDetailData(res.data.dependant_detail); // Assuming "education_history" is correct
-                // console.log("dataa", ' ', res.data.dependant_detail);
-            })
-            .catch((error) => {
-                console.error('Error fetching practical data:', error);
-            });
-    }, [id]);
+   
+    //workflow preview
+      useEffect(() => {
+    const fetchMisconductAndWorkflow = async () => {
+      const token = sessionStorage.getItem('token');
+      try {
+        const res = await axios.get(`${apiBaseUrl}/industrial_relationship/show_misconduct/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.data.status === 404) {
+          Dangersweetalert();
+          navigate('/industrials/misconducts/');
+          return;
+        }
+        setEmployeeData(res.data.misconduct);
+
+        const workflowRes = await axios.get(`${apiBaseUrl}/industrial_relationship/misconducts/retrieve_misconduct_workflow/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (workflowRes.data.status === 404) {
+          Dangersweetalert();
+          navigate('/industrials/misconducts/');
+          return;
+        }
+        setMisconductWorkflow(workflowRes.data.misconduct);
+
+      } catch (error) {
+        console.error('Error fetching misconduct or workflow:', error);
+      } finally {
+        setIsLoading(false); // loading false after everything
+      }
+    };
+    fetchMisconductAndWorkflow();
+  }, [id, navigate]);
+
+
+    
 
     function Dangersweetalert() {
         Swal.fire({
@@ -215,7 +267,7 @@ const ShowMisconduct = () => {
                                 ><i className="ti ti-user-circle font-semibold"></i>
                                     Employment Particulars
                                 </button>
-                                {/* <button
+                                <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                     id="profile-item-2"
@@ -223,8 +275,8 @@ const ShowMisconduct = () => {
                                     aria-controls="profile-2"
                                     role="tab"
                                 ><i className="ti ti-urgent font-semibold"></i>
-                                    Remuneration & Hours
-                                </button> */}
+                                   Misconduct Workflow 
+                                </button>
                                 <button
                                     type="button"
                                     className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
@@ -319,7 +371,31 @@ const ShowMisconduct = () => {
                                 <br />
 
                             </div>
-                          
+                             <div
+                                id="profile-2"
+                                className="hidden text-center"
+                                role="tabpanel"
+                                aria-labelledby="profile-item-2"
+                                >
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center h-40">
+                                    <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-primary"></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                    {roles.includes('IRMI') && (
+                                        <WorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                    )}
+                                    {roles.length > 0 && roles.includes('IRMR') && (
+                                        <ReviewalWorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                    )}
+                                    {roles.includes('IRMA') && (
+                                        <ApprovalWorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                    )}
+                                    <br />
+                                    </>
+                                )}
+                            </div>
                             <div
                                 id="profile-3"
                                 className="hidden text-center"
@@ -344,16 +420,20 @@ const ShowMisconduct = () => {
                                                 </div>
 
                                                 <div className="md:ltr:ml-auto md:rtl:mr-auto">
+                                                <button 
+                                                    type="button" 
+                                                    className="ti-btn ti-btn-success text-black" 
+                                                    onClick={() => setShowModal(true)}
+                                                >
+                                                    <i className="ti ti-cloud-download !text-white"></i> Download Misconduct Document
+                                                </button>
 
-                                                    <Link
-                                                        aria-label="anchor"
-                                                        to={`${import.meta.env.BASE_URL}contracts/fixed/download_fixed_contract/` + formData?.employee_id}
-                                                        className="hs-dropdown-toggle py-2 px-3 ti-btn ti-btn-success w-full"
-                                                        style={{ backgroundColor: '#7800ff' }}
-                                                    >
-                                                        <i className="ti ti-cloud-download"></i>Download Fixed Contract
-                                                    </Link>
-                                                </div>
+                                                <MisconductModal 
+                                                    showModal={showModal} 
+                                                    onClose={() => setShowModal(false)} 
+                                                    misconductPreview={misconductPreview} 
+                                                />
+                                            </div>
                                             </div>
                                         </div>
                                         <div className="overflow-auto">
@@ -418,4 +498,10 @@ const ShowMisconduct = () => {
     );
 };
 
-export default ShowMisconduct;
+
+const mapStateToProps = (state) => ({
+    local_varaiable: state,
+});
+
+export default connect(mapStateToProps, { ThemeChanger })(ShowMisconduct);
+

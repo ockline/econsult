@@ -581,27 +581,12 @@ const ShowSocialRecord = () => {
                                                                 </td>
                                                             </tr>
                                                         ))) : (
-                                                        // Handle non-array case (e.g., show an error message)
                                                         <p>No assessed documents available.</p>
                                                     )}
                                                 </tbody>
                                             </table>
                                         </div>
-                                        {/* <div className="py-1 ltr:float-right rtl:float-left">
-                                            <nav className="flex items-center space-x-2 rtl:space-x-reverse">
-                                                <Link className="text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" to="#">
-                                                    <span aria-hidden="true">«</span>
-                                                    <span className="sr-only">Previous</span>
-                                                </Link>
-                                                <Link className="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium rounded-full" to="#" aria-current="page">1</Link>
-                                                <Link className="w-10 h-10 text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" to="#">2</Link>
-                                                <Link className="w-10 h-10 text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" to="#">3</Link>
-                                                <Link className="text-gray-500 dark:text-white/70 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" to="#">
-                                                    <span className="sr-only">Next</span>
-                                                    <span aria-hidden="true">»</span>
-                                                </Link>
-                                            </nav>
-                                        </div> */}
+                                       
                                     </div>
                                 </div>
                             </div>

@@ -30,7 +30,7 @@ const AddDisciplinary = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
+            console.log('token res', resp);
 			// set user and roles to redux
 			
 			UserChanger(resp.data.user);
@@ -44,28 +44,7 @@ const AddDisciplinary = () => {
 	}
     
    
-    function Style2() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You want to Complete this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#5e76a6',
-            cancelButtonColor: '#ef4444',
-            confirmButtonText: 'Yes, Save it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Social Record Saved!',
-                    'Social Record completed Successfully.',
-                    'success'
-                ).then(() => {
-                    navigate('/employees/socialrecords/details/');
-                })
-
-            }
-        })
-    }
+    
     
      const [isLoading, setIsLoading] = useState(false);
      const [searchQuery, setSearchQuery] = useState(''); // For employee number search
@@ -96,16 +75,15 @@ const AddDisciplinary = () => {
     
      const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
-        leave_id: '',
-        location: '',
+        grievance_resolution: '',
+        grievance_reason: '',
         employee_id: '',
         employer_id: '',
         firstname: '',
         middlename: '',
         lastname: '',
-        start_date: '', 
-        end_date: '',
-        remarks: '',
+        grievance_date: '', 
+        grievance_supportive_doc: '',
         error_list: [],
     });
     
@@ -149,22 +127,23 @@ const AddDisciplinary = () => {
         // console.log('Form submitted:', formData);
         const DataToSend = {
             employee_id: formData.employee_id,
-            leave_type: formData.leave_type,
+            grievance_resolution: formData.grievance_resolution,
             employer_id: formData.employer_id,
             firstname: formData.firstname,
             middlename: formData.middlename,
             lastname: formData.lastname,
-            location: formData.location,
-            start_date: formData.start_date,
-            end_date: formData.end_date,
-            remarks: formData.remarks
+            grievance_reason: formData.grievance_reason,
+            grievance_date: formData.grievance_date,
+            grievance_supportive_doc: formData.grievance_supportive_doc
            
             
         };
+        const token = sessionStorage.getItem('token');
          setIsLoading(true);
     try {
-      const resp = await axios.post(`${apiBaseUrl}/leaves/create_annual_leave`, DataToSend, {
-        headers: {
+      const resp = await axios.post(`${apiBaseUrl}/industrial_relationship/grievances/initiate_grievance`, DataToSend, {
+          headers: {
+             'Authorization': `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
@@ -201,7 +180,7 @@ const AddDisciplinary = () => {
           button: "OK",
           closeOnClickOutside: false,
         }).then(() => {
-          navigate("/leaves/annual/");
+          navigate("/industrials/grievances/");
         });
       }
     } catch (error) {
@@ -214,7 +193,7 @@ const AddDisciplinary = () => {
     return (
         <div>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Disciplinary</h1>
+                <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>Create Grievance</h1>
 
                 <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
                     <li className="text-sm">
@@ -224,7 +203,7 @@ const AddDisciplinary = () => {
                         </a>
                     </li>
                     <li className="text-sm">
-                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/disciplinaries/create_disciplinary`}>
+                        <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`}>
                             Add Leave Details
                             {/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
                         </a>
@@ -233,8 +212,8 @@ const AddDisciplinary = () => {
             </div>
             <div className="box">
                 <div className="box-header lg:flex lg:justify-between">
-                    <h1 className="box-title my-auto font-bold text-lg">Create Disciplinary</h1>
-                    <Link to={`${import.meta.env.BASE_URL}industrials/disciplinaries/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
+                    <h1 className="box-title my-auto font-bold text-lg">Inititiate Grievance</h1>
+                    <Link to={`${import.meta.env.BASE_URL}industrials/grievances/`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-arrow-left"></i>Back</Link>
                 </div>
                 <div className="box-body">
                     <form className="ti-validation" noValidate onSubmit={handleSubmit}>
@@ -264,11 +243,7 @@ const AddDisciplinary = () => {
                                 </div>
                             </div>
 
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Leave Type <span style={{ color: "red" }}> *</span></label>
-                                    <Creatable classNamePrefix="react-select" name="leave_type" options={LeaveType} onChange={(selectedOption) => handleInputChange(["leave_type"], selectedOption ? selectedOption.value : null)} value={LeaveType.find((option) => option.value === formData.leave_id)} />
-                                    <span className="text-danger">{formData.error_list.leave_id}</span>
-                                </div>
+                              
                                 <div className="space-y-2">
                                     <label className="ti-form-label mb-0 font-bold text-lg">FirstName <span style={{ color: "red" }}> *</span></label>
                                     <input type="text" name="firstname" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" placeholder="Employee firstname"  readOnly value={formData.firstname}
@@ -300,64 +275,58 @@ const AddDisciplinary = () => {
                                     <input type="text" name="employer" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.employer} readOnly onChange={(e) => handleInputChange('employer', e.target.value)} placeholder="Employer" required />
                                     {/* <span className="text-danger">{formData.error_list.employer}</span> */}
                                 </div>
-                                                       
-                                <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Location </label>
-                                    <input type="text" name="birth_place" className="my-auto ti-form-input text-black bg-gray-100 border-red-500 text-md" value={formData.department}
-                                        onChange={(e) => handleInputChange('birth_place', e.target.value)} placeholder="Present address" readOnly />
-
-                                </div>
-                               <div className="space-y-2">
-                                <label className="ti-form-label mb-0 font-bold text-lg">Start Date <span style={{ color: "red" }}> *</span></label>
-                                <div className="flex rounded-sm overflow-auto">
-                                    <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                        <span className="text-sm text-gray-500 dark:text-white/70">
-                                            <i className="ri ri-calendar-line"></i>
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="date" 
-                                        name="start_date" 
-                                        className="my-auto ti-form-input text-black text-lg"
-                                        value={new Date(formData.start_date).toLocaleDateString('en-CA')} // Format the date
-                                        min={new Date().toISOString().split('T')[0]} // Set today's date as the minimum
-                                        onChange={(e) => handleInputChange('start_date', e.target.value)} 
-                                        required
-                                    />
-                                    <span className="text-danger">{formData.error_list.start_date}</span>
-                                </div>
-                            </div>
-
-                           <div className="space-y-2">
-                              <label className="ti-form-label mb-0 font-bold text-lg">End Date <span style={{ color: "red" }}> *</span></label>
-                                    <div className="flex rounded-sm overflow-auto">
-                                        <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                            <span className="text-sm text-gray-500 dark:text-white/70"><i
-                                                className="ri ri-calendar-line"></i></span>
-                                        </div>
-                                        <input
-                                            type="date" name="end_date" className="my-auto ti-form-input text-black text-md"
-                                            placeholder="" value={new Date(formData.end_date).toLocaleDateString('en-CA')} // Format the date
-                                            onChange={(e) => handleInputChange('end_date', e.target.value)} required
-                                        />
-                                        <span className="text-danger">{formData.error_list.end_date}</span>
-                                    </div>
-                                </div>  
-                                    <div className="space-y-2">
-                                    <label className="ti-form-label mb-0 font-bold text-lg">Remarks</label>
+                                       <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Grievance Reason</label>
                                     <textarea 
                                         type="text" 
-                                        name="remarks" 
+                                        name="grievance_reason" 
                                         className="my-auto ti-form-input text-black border-red-500 text-md" 
-                                        value={formData.remarks} 
-                                        onChange={(e) => handleInputChange('remarks', e.target.value)} 
-                                        placeholder="Write Comment if any" 
+                                        value={formData.grievance_reason} 
+                                        onChange={(e) => handleInputChange('grievance_reason', e.target.value)} 
+                                        placeholder="Sababu ya malalamiko" 
                                     />
-                                </div>                                
+                                </div>    
+                                    <div className="space-y-2">
+                                    <label className="ti-form-label mb-0 font-bold text-lg">Grievance Resolution</label>
+                                    <textarea 
+                                        type="text" 
+                                        name="grievance_resolution" 
+                                        className="my-auto ti-form-input text-black border-red-500 text-md" 
+                                        value={formData.grievance_resolution} 
+                                        onChange={(e) => handleInputChange('grievance_resolution', e.target.value)} 
+                                        placeholder="Suluhisho lililotafutwa" 
+                                    />
+                                </div>                                 
+                                
+                              <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">
+                                    Grievance Date <span style={{ color: "red" }}> *</span>
+                                </label>
+                                <div className="flex rounded-sm overflow-auto">
+                                    <div className="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
+                                    <span className="text-sm text-gray-500 dark:text-white/70">
+                                        <i className="ri ri-calendar-line"></i>
+                                    </span>
+                                    </div>
+                                    <input
+                                    type="date"
+                                    name="grievance_date"
+                                    className="my-auto ti-form-input text-black text-lg"
+                                    value={new Date(formData.grievance_date).toLocaleDateString('en-CA')}
+                                    max={new Date().toISOString().split('T')[0]} // ✅ Only today or past
+                                    onChange={(e) => handleInputChange('grievance_date', e.target.value)}
+                                    required
+                                    />
+                                    <span className="text-danger">{formData.error_list.grievance_date}</span>
+                                </div>
+                                </div>
+
+
+                                                         
                                  <div className="space-y-2">
-                                            <label className="ti-form-label mb-0 font-bold text-lg"> supportive Attachment</label>
-                                            <input type="file" accept=".pdf" name="military_doc" id="small-file-input" 
-                                            onChange={(e) => handleFileInputChange('military_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                            <label className="ti-form-label mb-0 font-bold text-lg">Grievance  Supportive Attachment</label>
+                                            <input type="file" accept=".pdf" name="grievance_supportive_doc" id="small-file-input" 
+                                            onChange={(e) => handleFileInputChange('grievance_supportive_doc', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                           
                                         </div>
                             </div>
@@ -388,7 +357,7 @@ const AddDisciplinary = () => {
                                 ) : (
                                     <>
                                     <i className="ti ti-corner-up-right-double"></i>
-                                    Submit Disciplinary
+                                    Initiate Grievance
                                     </>
                                 )}
                                 </button>

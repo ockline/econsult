@@ -22,23 +22,29 @@ export const ROLES = {
   "RA": "Registration Approver",
   "VI": "Vacancy Initiator",
   "VA": "Vacancy Approval",
-  "II": "Interview Initiator",
+  "II": "Interview Initiator", //I 
   "IC": "Interview Cordinator",
   "IA": "Interview Assessor",
   "INA": "Interview Approver",
-  "HI": "Hiring Initiator",
+  "HI": "Hiring Initiator", // Hiring
   "HC": "Hiring Checker",
   "HA": "Hiring Approver",
-  "SI": "Social Initiator",
+  "SI": "Social Initiator", //Social
   "SR": "Social Reviewer",
-  "ITI": "Induction Initiator",
+  "ITI": "Induction Initiator", // Induction 
   "ITR": "Induction Reviewer",
   "ITAr": "Induction Approver",
-  "CI": "Contact Initiator",
+  "CI": "Contact Initiator", //C Contract
   "CR": "Contract Reviewer",
   "CA": "Contract Approver",
-  "IDIN": "Id initiator",
+  "IDIN": "Id initiator", // ID identification  card
   "IDI": "Id Issuer",
+  "IRDI": "Disciplinary Initiator", //IR  industrial Relationship
+  "IRDR": "Disciplinary Reviewer",
+  "IRDA": "Disciplinary Approver",
+  "IRGI": "Grievance Initiator",
+  "IRGR": "Grievance Reviewer",
+  "IRGA": "Grievance Approver",
   "VO": "View Only",
   "ALL":  "All User"
 }
