@@ -32,6 +32,8 @@ const EmployeeContracts = () => {
         fetchData();
     }, []);
 
+    
+    console.log('mleteee dataaa',allData);
     function handleRemove(id) {
         const newList = allData.filter((employee) => employee.id !== id);
         setAllData(newList);
