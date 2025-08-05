@@ -98,18 +98,25 @@ export const MenuItems = [
 			{
 				id: 25, icon: AttendancesSvg, title: "Attendances", type: "sub", active: false, selected: false,roles: [ 'DEV', 'SA','MD','AF' ], children: [
 
-					{ id: 26, path: `${import.meta.env.BASE_URL}attendances/normal_attendance`, type: "link", active: false, selected: false, title: "Normal Working Hours", roles: [ 'DEV', 'SA','MD','AF' ] },
-					{ id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing", roles: [ 'DEV', 'SA','MD','AF' ] },
+					{
+						id: 26, path: `${import.meta.env.BASE_URL}attendances/normal_attendance`, type: "link", active: false, selected: false, title: "Normal Working Hours",
+						roles: ['DEV', 'SA', 'MD', 'AF']
+					},
+					{
+						id: 27, path: `${import.meta.env.BASE_URL}attendances/overtime`, type: "link", active: false, selected: false, title: "Overtime Processing",
+						roles: ['DEV', 'SA', 'MD', 'AF']
+					},
 				]
 			},
 			{
-				id: 28, icon: LeavesSvg, title: "Leaves", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','MD','AF' ], children: [
+				id: 28, icon: LeavesSvg, title: "Leaves", type: "sub", active: false, selected: false, roles: ['DEV', 'SA', 'MD', 'AF'],
+				children: [
 
-					{ id: 29, path: `${import.meta.env.BASE_URL}leaves/annual`, type: "link", active: false, selected: false, title: "Annual", roles: [ 'DEV', 'SA','AF' ] },
-					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sick-leave`, type: "link", active: false, selected: false, title: "Sick Leave", roles: ['DEV', 'SA', 'AF'] },
-						{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/paternity`, type: "link", active: false, selected: false, title: "Partenity", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionate`, type: "link", active: false, selected: false, title: "Compasionate", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 29, path: `${import.meta.env.BASE_URL}leaves/annual`, type: "link", active: false, selected: false, title: "Annual",  },
+					{ id: 34, path: `${import.meta.env.BASE_URL}leaves/sick-leave`, type: "link", active: false, selected: false, title: "Sick Leave", roles: ['DEV', 'SA', 'MD', 'AF'] },
+						{ id: 32, path: `${import.meta.env.BASE_URL}leaves/maternity`, type: "link", active: false, selected: false, title: "Maternity", roles: ['DEV', 'SA', 'MD', 'AF']  },
+					{ id: 33, path: `${import.meta.env.BASE_URL}leaves/paternity`, type: "link", active: false, selected: false, title: "Partenity", roles: ['DEV', 'SA', 'MD', 'AF']  },
+					{ id: 31, path: `${import.meta.env.BASE_URL}leaves/compassionate`, type: "link", active: false, selected: false, title: "Compasionate", roles: ['DEV', 'SA', 'MD', 'AF']  },
 				
 					
 					// { id: 35, path: `${import.meta.env.BASE_URL}leaves/sickhalfpaid`, type: "link", active: false, selected: false, title: "Sick Half Paid", roles: [ 'DEV', 'SA','AF' ]  },
@@ -123,7 +130,7 @@ export const MenuItems = [
 				,
 			]
 			},
-			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF' ], children: [
+			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF', 'MD', 'IR' ], children: [
 
 					{ id: 40, path: `${import.meta.env.BASE_URL}exits/resignations`, type: "link", active: false, selected: false, title: "Resignations", roles: [ 'DEV', 'SA','AF' ]  },
 					{ id: 41, path: `${import.meta.env.BASE_URL}exits/endcontracts`, type: "link", active: false, selected: false, title: "End of Contract", roles: [ 'DEV', 'SA','AF' ]  },

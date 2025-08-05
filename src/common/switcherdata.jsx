@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import store from '../redux/store';
 
-
 const applyCustomDark = (actionfunction) => {
   if (typeof actionfunction === "function") {
     actionfunction({
@@ -18,7 +17,8 @@ export function Dark(actionfunction) {
     actionfunction({...theme,
         "class":"dark",
         "dataHeaderStyles":"dark",
-        "dataMenuStyles":"dark"
+        "dataMenuStyles":"color",
+        "darkBg":"#b2000a"
     })
     localStorage.setItem("Syntodarktheme", "dark");
     localStorage.removeItem("Syntolighttheme");
@@ -28,7 +28,7 @@ export function Light(actionfunction) {
     actionfunction({...theme,
         "class":"light",
         "dataHeaderStyles":"light",
-        "dataMenuStyles": theme.dataNavLayout == 'horizontal' ? 'light': "dark"})
+        "dataMenuStyles": theme.dataNavLayout == 'horizontal' ? 'light': "color"})
     localStorage.setItem("Syntolighttheme", "light");
     localStorage.removeItem("Syntodarktheme")
 }
@@ -55,7 +55,7 @@ export const Vertical = (actionfunction) => {
     const theme = store.getState()
     actionfunction({...theme,
         "dataNavLayout":"vertical",
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
         "dataVerticalStyle":"overlay",
         "toggled":""
     })
@@ -246,9 +246,9 @@ export const lightMenu = (actionfunction) => {
 export const darkMenu = (actionfunction) => {
     const theme = store.getState()
     actionfunction({...theme,
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
     })
-    localStorage.setItem("SyntoMenu", "dark");
+    localStorage.setItem("SyntoMenu", "color");
     localStorage.removeItem("light");
 };
 
@@ -362,7 +362,7 @@ export const backgroundColor1 = (actionfunction) => {
         "bodyBg":"50 62 93",
         "darkBg":"64 76 107",
         "class":"dark",
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
         "dataHeaderStyles":"dark"
     })
     localStorage.setItem('darkBgRGB', "50 62 93");
@@ -374,7 +374,7 @@ export const backgroundColor2 = (actionfunction) => {
         "bodyBg":"81 93 50",
         "darkBg":"95 107 64",
         "class":"dark",
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
         "dataHeaderStyles":"dark"
     })
     localStorage.setItem('darkBgRGB', "81 93 50");
@@ -386,7 +386,7 @@ export const backgroundColor3 = (actionfunction) => {
         "bodyBg":"93 64 107",
         "darkBg":"79 50 93",
         "class":"dark",
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
         "dataHeaderStyles":"dark"
     })
     localStorage.setItem('darkBgRGB', "93 64 107");
@@ -397,7 +397,7 @@ export const backgroundColor4 = (actionfunction) => {
         "bodyBg":"64 101 107",
         "darkBg":"50 87 93",
         "class":"dark",
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
         "dataHeaderStyles":"dark"
     })
     localStorage.setItem('darkBgRGB', "64 101 107");
@@ -408,7 +408,7 @@ export const backgroundColor5 = (actionfunction) => {
         "bodyBg":"107 64 64",
         "darkBg":"93 50 50",
         "class":"dark",
-        "dataMenuStyles":"dark",
+        "dataMenuStyles":"color",
         "dataHeaderStyles":"dark"
     })
     localStorage.setItem('darkBgRGB', "107 64 64");
@@ -430,10 +430,11 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16)
     } : null;
 }
+
 //themeprimarycolor
 const Themeprimarycolor = ({actionfunction}) => {
     const theme = store.getState()
-    const [state, updateState] = useState("#FFFFFF");
+    const [state, updateState] = useState("#b2000a"); // ✅ Default red
     const handleInput = (e) => {
         let { r, g, b } = hexToRgb(e.target.value)
         updateState(e.target.value);
@@ -455,7 +456,7 @@ export default Themeprimarycolor;
 //themeBackground
 export const Themebackgroundcolor = ({actionfunction}) => {
     const theme = store.getState()
-    const [state, updateState] = useState("#FFFFFF");
+    const [state, updateState] = useState("#b2000a"); // ✅ Default red
     const handleInput = (e) => {
         let { r, g, b } = hexToRgb(e.target.value)
         updateState(e.target.value);
@@ -516,7 +517,7 @@ export const Reset = (actionfunction) => {
         lang: "en",
         dir: "ltr",
         class: "light",
-        dataMenuStyles: "dark",
+        dataMenuStyles: "color",
         dataNavLayout: "vertical",
         dataHeaderStyles: "light",
         dataVerticalStyle: "overlay",
@@ -606,7 +607,8 @@ export const LocalStorageBackup = (actionfunction) => {
       transparentMenu(actionfunction);
       break;
     default:
-      // console.warn("Unknown menu color:", localStorage.SyntoMenu);
+      // Default to color menu style
+      colorMenu(actionfunction);
       break;
   }
 
@@ -725,4 +727,20 @@ export const LocalStorageBackup = (actionfunction) => {
     });
     Dark(actionfunction);
   }
+};
+
+// Force menu style to color and clear conflicting localStorage
+export const forceColorMenu = (actionfunction) => {
+    const theme = store.getState()
+    // Clear any conflicting localStorage values
+    localStorage.removeItem("SyntoMenu");
+    localStorage.removeItem("Syntodarktheme");
+    localStorage.removeItem("Syntolighttheme");
+    
+    actionfunction({...theme,
+        "dataMenuStyles":"color",
+        "class":"light",
+        "dataHeaderStyles":"light"
+    })
+    localStorage.setItem("SyntoMenu", "color");
 };
