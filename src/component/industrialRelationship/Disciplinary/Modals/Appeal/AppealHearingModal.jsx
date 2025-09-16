@@ -21,7 +21,7 @@ function toTitleCase(str) {
 export  function AppealHearingModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
-     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     
     const [form] = Form.useForm();

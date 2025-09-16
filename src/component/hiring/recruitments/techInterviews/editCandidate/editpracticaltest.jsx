@@ -14,7 +14,7 @@ const EditPracticalTest = () => {
 
 
 
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
     let navigate = useNavigate();
     const { id } = useParams();

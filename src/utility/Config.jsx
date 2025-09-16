@@ -5,7 +5,7 @@ export const Config = {
     // 'intranet': 'https://intranetpre.econsult.co.tz/',
     
     
-     'apiBaseUrl': 'process.env.REACT_APP_API_BASE_URL',
+     'apiBaseUrl': 'import.meta.env.VITE_API_BASE_URL',
      'docBaseUrl':  'import.meta.env.VITE_REACT_APP_DOC_BASE_URL',
 }
  

@@ -7,7 +7,7 @@ import {ThemeChanger} from "../../../redux/Action"
 import store from "../../../redux/store";
 
 const Newjob = ({local_varaiable, ThemeChanger}) => {
-	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 	const [vacancies, setVacancies] = useState([]);
 	console.log('wazunguuuu', local_varaiable.roles)
 	

@@ -353,7 +353,7 @@ export const TrainingSelectcomponent = [
  
 ];
 
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 //  /* starting of returning departments  */
 export const CostCenterSelect = [
   { value: '1', label: 'Yes' },

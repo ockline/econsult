@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 
 const NormalAttendance = () => {
-	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	let navigate = useNavigate();
 
 

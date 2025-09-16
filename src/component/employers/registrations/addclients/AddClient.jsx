@@ -46,7 +46,7 @@ const MultiValue = props => (
 
 const AddClient = () => {
     // const [startDate, setStartDate] = useState(new Date());
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
         const [step, setStep] = useState(1);

@@ -21,7 +21,7 @@ import ApprovalWorkFlowModal from "../Grievances/Modals/ApprovalWorkflowModal";
 const { Option } = Select;
 const ShowGrievance = ({ local_varaiable}) => {
     // react-tag-input-component
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     const [ClassName, setClassName] = useState();
     const [showModal, setShowModal] = useState(false);

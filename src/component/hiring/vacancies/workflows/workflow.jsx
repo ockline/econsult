@@ -17,7 +17,7 @@ import { connect } from "react-redux"
 
 const Workflow = ({ local_varaiable, ThemeChanger }) => {
 	const [startDate, setStartDate] = useState(new Date());
-	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
 	const roles = local_varaiable.roles
 	const user = local_varaiable.user

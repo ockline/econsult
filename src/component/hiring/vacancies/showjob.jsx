@@ -13,7 +13,7 @@ import axios from "axios";
 
 const ShowJob = () => {
       const [startDate, setStartDate] = useState(new Date());
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     
         // const history = useHistory();

@@ -16,7 +16,7 @@ const str = showSecond ? 'HH:mm:ss' : 'HH:mm';
 
 const EditSpecifiTaskContract = () => {
 
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 
     const formatTime = (dateString) => {

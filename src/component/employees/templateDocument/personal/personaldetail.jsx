@@ -9,7 +9,7 @@ const PersonalDetail = () => {
     const print = () => {
         window.print();
     };
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const [formData, setEmployeeData] = useState([]);
 
     const { id } = useParams();

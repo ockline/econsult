@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //universal attribute;
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 // ****************************************************************************************
    // Fetch all contracte  employee
 export const fetchemployeeContract = async () => {

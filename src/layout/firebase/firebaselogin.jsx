@@ -7,7 +7,7 @@ import { connect } from "react-redux"
 import axios from 'axios';
 
 const Firebaselogin = ({local_varaiable, UserChanger, RolesChanger}) => {
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
   
     
     const navigate = useNavigate();    

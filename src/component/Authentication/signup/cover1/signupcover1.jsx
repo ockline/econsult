@@ -10,7 +10,7 @@ import swal from 'sweetalert';
 
 
 const SignUpCover1 = (props) => {
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
   const [state, setState] = useState(() => ({
     firstname: '',

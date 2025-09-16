@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 //universal attribute;
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
 // ****************************************************************************************
       //Employee Personal Details

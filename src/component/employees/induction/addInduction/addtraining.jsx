@@ -9,7 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const AddTraining = () => {
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const { id } = useParams();
     const navigate = useNavigate();
 

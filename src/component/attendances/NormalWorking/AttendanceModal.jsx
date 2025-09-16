@@ -8,7 +8,7 @@ import DatePicker from 'react-datepicker';
 
 const Index = () => {
 	
-	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
     const [annualLeave, setAnnualLeave] = useState([]);
     let navigate = useNavigate();

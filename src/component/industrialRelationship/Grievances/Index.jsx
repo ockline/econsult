@@ -8,7 +8,7 @@ import axios from "axios";
 
 const Index = () => {
 	
-	const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
 	const [allGriavences, setAllGrievance] = useState([]);
 	let navigate = useNavigate();

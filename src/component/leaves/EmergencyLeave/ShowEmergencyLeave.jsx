@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 
 const ShowEmergencyLeave = () => {
     // react-tag-input-component
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
     //URl image
 

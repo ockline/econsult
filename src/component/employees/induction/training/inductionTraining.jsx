@@ -9,7 +9,7 @@ import axios from "axios";
 
 const InductionTraining = () => {
 
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const [allData, setAllData] = useState([]);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
