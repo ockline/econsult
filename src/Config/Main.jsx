@@ -1,5 +1,6 @@
-export const config = {
-  // ROOT: "https://socratepre-api.socrate.co.tz/api/",
-  ROOT: ["http://127.0.0.1:8000/api", "https://socratepre-api.socrate.co.tz/api"],
-  intranetUrl: "https://intranetdev.esocrate.co.tz/",
+const Config = {
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+  docBaseUrl: import.meta.env.VITE_DOC_BASE_URL,
 };
+
+export default Config;
