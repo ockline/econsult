@@ -4015,39 +4015,54 @@ textarea, select {
 /*End  Header Styles */
 /* Start Vertical Styles */
 .app-sidebar {
-  @apply z-[50] font-normal h-full w-64 transition-all ease-out transform fixed top-0 ltr:left-0 rtl:right-0 bottom-0 bg-white ltr:border-r rtl:border-l border-gray-200 lg:ltr:right-auto lg:rtl:left-auto lg:bottom-0 dark:bg-bgdark dark:border-white/10;
+  @apply z-[50] font-normal h-full w-64 transition-all ease-out transform fixed top-0 ltr:left-0 rtl:right-0 bottom-0 ltr:border-r rtl:border-l border-gray-200 lg:ltr:right-auto lg:rtl:left-auto lg:bottom-0 dark:bg-bgdark dark:border-white/10;
+  background-color: #b2000a !important;
 }
 .app-sidebar.sticky {
   @apply fixed;
 }
 
 .main-sidebar-header {
-  @apply px-6 py-5 border-b  h-[71px] my-auto dark:border-white/10 fixed w-full bg-white dark:bg-bgdark z-[1];
+  @apply px-6 py-5 border-b my-auto dark:border-white/10 fixed w-full dark:bg-bgdark z-[1];
+  background-color: white !important;
+  min-height: 80px !important;
+  height: auto !important;
+  margin-bottom: 40px !important;
 }
 .main-sidebar-header .main-logo {
-  @apply flex-none text-xl font-semibold dark:text-white justify-center align-middle mx-auto my-auto;
+  @apply flex-none text-xl font-semibold justify-center align-middle mx-auto my-auto;
+  color: #b2000a !important;
+  display: block !important;
+  max-width: 100% !important;
+  max-height: 60px !important;
+  object-fit: contain !important;
+  filter: brightness(1.1) contrast(1.1) !important;
 }
 .main-sidebar-header .main-logo.desktop-logo {
-  @apply lg:block lg:dark:hidden;
+  @apply block;
 }
 .main-sidebar-header .main-logo.toggle-logo, .main-sidebar-header .main-logo.toggle-dark {
-  @apply lg:hidden;
+  @apply hidden;
 }
 .main-sidebar-header .main-logo.desktop-dark {
-  @apply lg:hidden lg:dark:block;
+  @apply hidden;
 }
 
 .main-menu {
   @apply space-y-1.5 px-6 py-6;
+  padding-top: 60px !important;
 }
 
 .slide__category {
-  @apply text-menuprime/[0.8] dark:text-white/[0.8] whitespace-nowrap pt-3 first:pt-0 uppercase text-xs relative p-1 font-semibold;
+  @apply whitespace-nowrap pt-3 first:pt-0 uppercase text-xs relative p-1 font-semibold;
+  color: white !important;
 }
 
 .side-menu__item {
-  @apply flex items-center gap-x-3 py-2 px-0 font-normal text-menuprime rounded-md dark:text-white active:text-white;
+  @apply flex items-center gap-x-3 py-2 px-0 font-normal rounded-md active:text-white;
   @apply truncate max-w-[250px];
+  color: white !important;
+  font-size: 16px !important;
 }
 .side-menu__item.active, .side-menu__item:active {
   @apply text-white !important;
@@ -4063,6 +4078,8 @@ textarea, select {
 }
 .side-menu__item .side-menu__label {
   @apply font-medium;
+  color: white !important;
+  font-size: 16px !important;
 }
 
 .slide.side-menu__label1 {
@@ -4070,8 +4087,11 @@ textarea, select {
 }
 
 .app-sidebar .slide-menu.child1 .side-menu__item, .app-sidebar .slide-menu.child2 .side-menu__item, .app-sidebar .slide-menu.child3 .side-menu__item {
-  @apply relative text-menuprime/[0.8] dark:text-white/[0.8] text-xs flex items-center cursor-pointer rounded-md py-2 ltr:pl-8 ltr:pr-2 rtl:pr-8 rtl:pl-2 font-normal duration-300 gap-x-0 hover:bg-transparent active:bg-transparent active:text-white before:absolute before:w-[0.375rem] before:h-[0.375rem] before:border before:border-menuprime/[0.8] dark:before:border-white/[0.8] before:rounded-full before:ltr:left-2 before:rtl:right-2 before:bg-transparent;
+  @apply relative flex items-center cursor-pointer rounded-md py-2 ltr:pl-8 ltr:pr-2 rtl:pr-8 rtl:pl-2 font-normal duration-300 gap-x-0 hover:bg-transparent active:bg-transparent active:text-white before:absolute before:w-[0.375rem] before:h-[0.375rem] before:border before:rounded-full before:ltr:left-2 before:rtl:right-2 before:bg-transparent;
   @apply hover:text-white hover:before:border-white !important;
+  color: white !important;
+  border-color: white !important;
+  font-size: 15px !important;
 }
 .app-sidebar .slide-menu.child1 .side-menu__item.hover, .app-sidebar .slide-menu.child1 .side-menu__item:hover, .app-sidebar .slide-menu.child2 .side-menu__item.hover, .app-sidebar .slide-menu.child2 .side-menu__item:hover, .app-sidebar .slide-menu.child3 .side-menu__item.hover, .app-sidebar .slide-menu.child3 .side-menu__item:hover {
   @apply bg-transparent !important;
@@ -4086,6 +4106,7 @@ textarea, select {
 
 .has-sub .side-menu__angle {
   @apply ltr:ml-auto rtl:mr-auto rtl:rotate-180;
+  color: white !important;
 }
 .has-sub .side-menu__angle::before {
   @apply text-[12px];
@@ -4097,13 +4118,16 @@ textarea, select {
 
 .side-menu__icon {
   @apply text-lg leading-none;
+  color: white !important;
+  fill: white !important;
 }
 
 [data-nav-layout=vertical] .main-menu {
   @apply block !important;
 }
 [data-nav-layout=vertical] #sidebar-scroll {
-  @apply overflow-y-auto h-screen mt-[4.45rem] pb-20;
+  @apply overflow-y-auto h-screen pb-20;
+  margin-top: 6rem !important;
 }
 [data-nav-layout=vertical]:not([data-nav-layout=horizontal]) #slide-left,
 [data-nav-layout=vertical]:not([data-nav-layout=horizontal]) #slide-right {

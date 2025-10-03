@@ -53,6 +53,12 @@ import EditEmployee from "../component/employees/personal/editEmployee/editemplo
 import ShowEmployee from "../component/employees/personal/showEmployee/showemployee";
 import DownloadEmployee from "../component/employees/templateDocument/personal/personaldetail";
 
+// Exit Management (Resignations)
+import ResignationList from "../component/exits/resignation/ResignationList";
+import AddResignation from "../component/exits/resignation/AddResignation";
+import EditResignation from "../component/exits/resignation/EditResignation";
+import ViewResignation from "../component/exits/resignation/ViewResignation";
+
 //Reduired Documentation step 2
 import DocumentDetails from "../component/employees/documentRequired/uploaded/uploaded";
 import UploadDocument from "../component/employees/documentRequired/uploadDocument/uploaddocument";
@@ -363,6 +369,12 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}employees/document/upload_document/:id`, element: <UploadDocument /> },
     { path: `${import.meta.env.BASE_URL}employees/document/file_manager_list/:id`, element: <FileManagerList /> },
     { path: `${import.meta.env.BASE_URL}employees/document/file_details/:id/:file_id`, element: <FileDetail /> },
+
+    // Exit Management (Resignations)
+    { path: `${import.meta.env.BASE_URL}exits/resignations`, element: <ResignationList />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/resignations/add`, element: <AddResignation />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/resignations/edit/:id`, element: <EditResignation />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/resignations/view/:id`, element: <ViewResignation />, roles: ['ALL'] },
 
     //Social Record 
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/details`, element: <SocialRecords /> },
