@@ -95,7 +95,7 @@ const AddResignation = () => {
         
         // Auto-fill form fields with correct mapping from API response
         form.setFieldsValue({
-          employee_id: employee.employee_id, // Display value for user
+          employee_id: employee.employee_id, // Display value for user (this is the employee number)
           employee_name: fullName,
           department_name: employee.departments || '',
           job_title: employee.job_title || '',
@@ -190,7 +190,7 @@ const AddResignation = () => {
 
     setLoading(true);
     try {
-      const token = sessionStorage.getItem('token');
+      // No need for token validation - using session-based authentication
       const formData = new FormData();
 
       // Add employee_id from selected employee
@@ -200,11 +200,23 @@ const AddResignation = () => {
         formData.append('employee_id', employeeId);
         console.log('Sending employee_id (database ID):', employeeId, 'Type:', typeof employeeId);
         console.log('Selected employee data:', selectedEmployee);
+        console.log('Available employee fields:', Object.keys(selectedEmployee));
+      } else {
+        console.error('No selected employee found!');
+        Swal.fire({
+          title: 'Error',
+          text: 'No employee selected. Please search and select an employee first.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+        setLoading(false);
+        return;
       }
 
-      // Add form fields
+      // Add form fields (exclude employee_id as it's handled separately)
       Object.keys(values).forEach(key => {
-        if (values[key] !== undefined && values[key] !== null) {
+        if (key !== 'employee_id' && values[key] !== undefined && values[key] !== null) {
           if (key === 'resignation_date') {
             formData.append(key, dayjs(values[key]).format('YYYY-MM-DD'));
           } else {
@@ -235,9 +247,8 @@ const AddResignation = () => {
         formData,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
+            "Content-Type": "multipart/form-data"
+          }
         }
       );
 
@@ -301,11 +312,23 @@ const AddResignation = () => {
         formData.append('employee_id', employeeId);
         console.log('Sending employee_id (database ID):', employeeId, 'Type:', typeof employeeId);
         console.log('Selected employee data:', selectedEmployee);
+        console.log('Available employee fields:', Object.keys(selectedEmployee));
+      } else {
+        console.error('No selected employee found!');
+        Swal.fire({
+          title: 'Error',
+          text: 'No employee selected. Please search and select an employee first.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+        setLoading(false);
+        return;
       }
 
-      // Add form fields
+      // Add form fields (exclude employee_id as it's handled separately)
       Object.keys(values).forEach(key => {
-        if (values[key] !== undefined && values[key] !== null) {
+        if (key !== 'employee_id' && values[key] !== undefined && values[key] !== null) {
           if (key === 'resignation_date') {
             formData.append(key, dayjs(values[key]).format('YYYY-MM-DD'));
           } else {
@@ -336,9 +359,8 @@ const AddResignation = () => {
         formData,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
+            "Content-Type": "multipart/form-data"
+          }
         }
       );
 

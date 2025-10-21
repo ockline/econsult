@@ -4,6 +4,7 @@ import { Row, Col, Card, Descriptions, Tag, Button, Space, Timeline, Modal, Form
 import { EditOutlined, EyeOutlined, FileTextOutlined, DownloadOutlined, SendOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
+import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 const { TextArea } = Input;
 
@@ -13,6 +14,8 @@ const ViewResignation = () => {
   const [resignation, setResignation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [acceptanceModalVisible, setAcceptanceModalVisible] = useState(false);
+  const [previewModalVisible, setPreviewModalVisible] = useState(false);
+  const [previewFile, setPreviewFile] = useState(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -118,6 +121,17 @@ const ViewResignation = () => {
     }
   };
 
+  const handlePreviewFile = (fileName, fileType) => {
+    if (fileName) {
+      setPreviewFile({
+        name: fileName,
+        type: fileType,
+        url: `${apiBaseUrl}/resignations/${resignation.id}/${fileName}`
+      });
+      setPreviewModalVisible(true);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -128,6 +142,8 @@ const ViewResignation = () => {
 
   return (
     <div>
+      <PageHeader currentpage="View Resignation" activepage="Exit Management" mainpage="View Resignation" />
+      
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card
@@ -199,51 +215,99 @@ const ViewResignation = () => {
           <Card title="Attached Documents">
             <Space direction="vertical" style={{ width: '100%' }}>
               {resignation.resignation_notice_file && (
-                <div>
-                  <FileTextOutlined /> Resignation Notice
-                  <Button
-                    type="link"
-                    icon={<DownloadOutlined />}
-                    onClick={() => downloadFile(resignation.resignation_notice_file, 'Resignation Notice')}
-                  >
-                    Download
-                  </Button>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FileTextOutlined style={{ marginRight: '8px' }} />
+                    <span>Resignation Notice</span>
+                  </div>
+                  <Space>
+                    <Button
+                      type="link"
+                      icon={<EyeOutlined />}
+                      onClick={() => handlePreviewFile(resignation.resignation_notice_file, 'Resignation Notice')}
+                    >
+                      Preview
+                    </Button>
+                    <Button
+                      type="link"
+                      icon={<DownloadOutlined />}
+                      onClick={() => downloadFile(resignation.resignation_notice_file, 'Resignation Notice')}
+                    >
+                      Download
+                    </Button>
+                  </Space>
                 </div>
               )}
               {resignation.resignation_form_file && (
-                <div>
-                  <FileTextOutlined /> Resignation Form
-                  <Button
-                    type="link"
-                    icon={<DownloadOutlined />}
-                    onClick={() => downloadFile(resignation.resignation_form_file, 'Resignation Form')}
-                  >
-                    Download
-                  </Button>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FileTextOutlined style={{ marginRight: '8px' }} />
+                    <span>Resignation Form</span>
+                  </div>
+                  <Space>
+                    <Button
+                      type="link"
+                      icon={<EyeOutlined />}
+                      onClick={() => handlePreviewFile(resignation.resignation_form_file, 'Resignation Form')}
+                    >
+                      Preview
+                    </Button>
+                    <Button
+                      type="link"
+                      icon={<DownloadOutlined />}
+                      onClick={() => downloadFile(resignation.resignation_form_file, 'Resignation Form')}
+                    >
+                      Download
+                    </Button>
+                  </Space>
                 </div>
               )}
               {resignation.resignation_letter_file && (
-                <div>
-                  <FileTextOutlined /> Resignation Letter
-                  <Button
-                    type="link"
-                    icon={<DownloadOutlined />}
-                    onClick={() => downloadFile(resignation.resignation_letter_file, 'Resignation Letter')}
-                  >
-                    Download
-                  </Button>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FileTextOutlined style={{ marginRight: '8px' }} />
+                    <span>Resignation Letter</span>
+                  </div>
+                  <Space>
+                    <Button
+                      type="link"
+                      icon={<EyeOutlined />}
+                      onClick={() => handlePreviewFile(resignation.resignation_letter_file, 'Resignation Letter')}
+                    >
+                      Preview
+                    </Button>
+                    <Button
+                      type="link"
+                      icon={<DownloadOutlined />}
+                      onClick={() => downloadFile(resignation.resignation_letter_file, 'Resignation Letter')}
+                    >
+                      Download
+                    </Button>
+                  </Space>
                 </div>
               )}
               {resignation.certificate_of_service_file && (
-                <div>
-                  <FileTextOutlined /> Certificate of Service
-                  <Button
-                    type="link"
-                    icon={<DownloadOutlined />}
-                    onClick={() => downloadFile(resignation.certificate_of_service_file, 'Certificate of Service')}
-                  >
-                    Download
-                  </Button>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FileTextOutlined style={{ marginRight: '8px' }} />
+                    <span>Certificate of Service</span>
+                  </div>
+                  <Space>
+                    <Button
+                      type="link"
+                      icon={<EyeOutlined />}
+                      onClick={() => handlePreviewFile(resignation.certificate_of_service_file, 'Certificate of Service')}
+                    >
+                      Preview
+                    </Button>
+                    <Button
+                      type="link"
+                      icon={<DownloadOutlined />}
+                      onClick={() => downloadFile(resignation.certificate_of_service_file, 'Certificate of Service')}
+                    >
+                      Download
+                    </Button>
+                  </Space>
                 </div>
               )}
             </Space>
@@ -464,6 +528,52 @@ const ViewResignation = () => {
             </Space>
           </Form.Item>
         </Form>
+      </Modal>
+
+      {/* Document Preview Modal */}
+      <Modal
+        title={`Preview: ${previewFile?.type || 'Document'}`}
+        open={previewModalVisible}
+        onCancel={() => {
+          setPreviewModalVisible(false);
+          setPreviewFile(null);
+        }}
+        footer={[
+          <Button key="close" onClick={() => {
+            setPreviewModalVisible(false);
+            setPreviewFile(null);
+          }}>
+            Close
+          </Button>,
+          <Button 
+            key="download" 
+            type="primary" 
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              if (previewFile) {
+                downloadFile(previewFile.name, previewFile.type);
+              }
+            }}
+            style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
+          >
+            Download
+          </Button>
+        ]}
+        width="90%"
+        style={{ top: 20 }}
+        bodyStyle={{ height: '80vh', padding: 0 }}
+      >
+        {previewFile && (
+          <iframe
+            src={previewFile.url}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none'
+            }}
+            title={`Preview of ${previewFile.type}`}
+          />
+        )}
       </Modal>
     </div>
   );
