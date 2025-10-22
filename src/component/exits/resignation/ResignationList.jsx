@@ -4,13 +4,17 @@ import { Tag, Button, Space, Modal, message } from "antd";
 import { PlusOutlined, EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
+import { connect } from "react-redux";
+import Swal from "sweetalert2";
 
-const ResignationList = () => {
+const ResignationList = ({ local_varaiable }) => {
+  const userRoles = local_varaiable?.roles || [];
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [resignations, setResignations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedResignation, setSelectedResignation] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchResignations();
@@ -40,7 +44,53 @@ const ResignationList = () => {
     }
   };
 
+  const canDelete = (resignation) => {
+    // Check if user has required role (IR or Developer)
+    const hasPermission = userRoles.includes('IR') || userRoles.includes('Developer') || userRoles.includes('DEV');
+    
+    console.log('User roles:', userRoles);
+    console.log('Has permission:', hasPermission);
+    console.log('Resignation status:', resignation.status);
+    
+    if (!hasPermission) {
+      return {
+        allowed: false,
+        message: 'You have no permission to perform this action'
+      };
+    }
+
+    // Check if resignation status is Draft
+    if (resignation.status !== 'Draft') {
+      return {
+        allowed: false,
+        message: 'Deletion is not appropriate at this level. Only Draft resignations can be deleted.'
+      };
+    }
+
+    return { allowed: true };
+  };
+
+  const handleDeleteClick = (resignation) => {
+    const deleteCheck = canDelete(resignation);
+    
+    if (!deleteCheck.allowed) {
+      Swal.fire({
+        title: 'Action Not Allowed',
+        text: deleteCheck.message,
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#b2000a'
+      });
+      return;
+    }
+
+    // Show confirmation modal
+    setSelectedResignation(resignation);
+    setDeleteModalVisible(true);
+  };
+
   const handleDelete = async (id) => {
+    setDeleting(true);
     try {
       const token = sessionStorage.getItem('token');
       const response = await axios.delete(
@@ -53,14 +103,28 @@ const ResignationList = () => {
       );
 
       if (response.data.status === 200) {
-        message.success('Resignation deleted successfully');
+        Swal.fire({
+          title: 'Success',
+          text: 'Resignation deleted successfully',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
         fetchResignations();
         setDeleteModalVisible(false);
         setSelectedResignation(null);
       }
     } catch (error) {
       console.error('Error deleting resignation:', error);
-      message.error('Failed to delete resignation');
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to delete resignation',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#b2000a'
+      });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -224,7 +288,7 @@ const ResignationList = () => {
                             <button
                               type="button"
                               className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
-                              onClick={() => showDeleteModal(resignation)}
+                              onClick={() => handleDeleteClick(resignation)}
                             >
                               <i className="ti ti-trash"></i>
                             </button>
@@ -245,20 +309,42 @@ const ResignationList = () => {
         open={deleteModalVisible}
         onOk={() => handleDelete(selectedResignation?.id)}
         onCancel={() => {
-          setDeleteModalVisible(false);
-          setSelectedResignation(null);
+          if (!deleting) {
+            setDeleteModalVisible(false);
+            setSelectedResignation(null);
+          }
         }}
-        okText="Delete"
+        okText={deleting ? "Deleting..." : "Delete"}
         cancelText="Cancel"
-        okButtonProps={{ danger: true }}
+        okButtonProps={{ 
+          danger: true, 
+          loading: deleting,
+          disabled: deleting 
+        }}
+        cancelButtonProps={{
+          disabled: deleting
+        }}
+        closable={!deleting}
+        maskClosable={!deleting}
       >
         <p>
           Are you sure you want to delete the resignation for{" "}
           <strong>{selectedResignation?.employee_name}</strong>?
         </p>
+        {deleting && (
+          <div style={{ marginTop: 16, textAlign: 'center' }}>
+            <div className="ti-spinner text-primary" role="status" aria-label="loading">
+              <span className="sr-only">Deleting...</span>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
 };
 
-export default ResignationList;
+const mapStateToProps = (state) => ({
+  local_varaiable: state
+});
+
+export default connect(mapStateToProps)(ResignationList);

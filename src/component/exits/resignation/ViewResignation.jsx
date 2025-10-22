@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Row, Col, Card, Descriptions, Tag, Button, Space, Timeline, Modal, Form, Input, DatePicker, Upload } from "antd";
-import { EditOutlined, EyeOutlined, FileTextOutlined, DownloadOutlined, SendOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined, FileTextOutlined, DownloadOutlined, SendOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
@@ -10,6 +10,7 @@ const { TextArea } = Input;
 
 const ViewResignation = () => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const navigate = useNavigate();
   const { id } = useParams();
   const [resignation, setResignation] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -149,25 +150,14 @@ const ViewResignation = () => {
           <Card
             title="Resignation Details"
             extra={
-              <Space>
-                <Link to={`/exits/resignations/edit/${id}`}>
-                  <Button type="primary" icon={<EditOutlined />} style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}>
-                    Edit
-                  </Button>
-                </Link>
-                {resignation.status === 'Draft' && (
-                  <Button
-                    type="primary"
-                    icon={<SendOutlined />}
-                    onClick={() => {
-                      // Handle submit logic
-                    }}
-                    style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
-                  >
-                    Submit
-                  </Button>
-                )}
-              </Space>
+              <Button 
+                type="primary" 
+                icon={<ArrowLeftOutlined />} 
+                onClick={() => navigate('/exits/resignations')}
+                style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
+              >
+                Back
+              </Button>
             }
           >
             <Descriptions bordered column={2}>

@@ -39,7 +39,7 @@ const EditResignation = () => {
         const data = response.data.data;
         setResignation(data);
         form.setFieldsValue({
-          employee_id: data.employee_id,
+          employee_no: data.employee_no || data.employee?.employee_no || 'N/A',
           employee_name: data.employee_name,
           department_name: data.department_name,
           job_title: data.job_title,
@@ -244,24 +244,10 @@ const EditResignation = () => {
               <Row gutter={[16, 16]}>
                 <Col span={12}>
                   <Form.Item
-                    label="Employee"
-                    name="employee_id"
-                    rules={[{ required: true, message: 'Please select an employee' }]}
+                    label="Employee Number"
+                    name="employee_no"
                   >
-                    <Select
-                      placeholder="Select Employee"
-                      showSearch
-                      optionFilterProp="children"
-                      onChange={handleEmployeeChange}
-                    >
-                      {employees && employees.length > 0 ? employees.map(employee => (
-                        <Option key={employee.id} value={employee.id}>
-                          {employee.employee_name} - {employee.employee_no}
-                        </Option>
-                      )) : (
-                        <Option disabled>No employees available</Option>
-                      )}
-                    </Select>
+                    <Input placeholder="Employee Number" readOnly className="bg-gray-100" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -270,7 +256,7 @@ const EditResignation = () => {
                     name="employee_name"
                     rules={[{ required: true, message: 'Please enter employee name' }]}
                   >
-                    <Input placeholder="Employee Name" />
+                    <Input placeholder="Employee Name" readOnly className="bg-gray-100" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -282,7 +268,7 @@ const EditResignation = () => {
                     name="department_name"
                     rules={[{ required: true, message: 'Please enter department name' }]}
                   >
-                    <Input placeholder="Department Name" />
+                    <Input placeholder="Department Name" readOnly className="bg-gray-100" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -291,7 +277,7 @@ const EditResignation = () => {
                     name="job_title"
                     rules={[{ required: true, message: 'Please enter job title' }]}
                   >
-                    <Input placeholder="Job Title" />
+                    <Input placeholder="Job Title" readOnly className="bg-gray-100" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -392,28 +378,24 @@ const EditResignation = () => {
               <Row gutter={[16, 16]}>
                 <Col span={24}>
                   <Form.Item>
-                    <Space>
-                      <Button
-                        type="primary"
-                        style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
-                        htmlType="submit"
-                        icon={<SaveOutlined />}
-                        loading={loading}
-                      >
-                        Update
-                      </Button>
-                      {resignation?.status === 'Draft' && (
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Space>
+                        <Button
+                          onClick={() => navigate('/exits/resignations')}
+                        >
+                          Cancel
+                        </Button>
                         <Button
                           type="primary"
-                          onClick={() => form.validateFields().then(handleSubmit)}
-                          icon={<SendOutlined />}
-                          loading={loading}
                           style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
+                          htmlType="submit"
+                          icon={<SaveOutlined />}
+                          loading={loading}
                         >
-                          Update & Submit
+                          Update
                         </Button>
-                      )}
-                    </Space>
+                      </Space>
+                    </div>
                   </Form.Item>
                 </Col>
               </Row>
