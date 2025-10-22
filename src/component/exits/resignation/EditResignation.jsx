@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Row, Col, Card, Form, Input, DatePicker, Upload, Button, message, Select } from "antd";
+import { Row, Col, Card, Form, Input, DatePicker, Upload, Button, message, Select, Space } from "antd";
 import { UploadOutlined, SaveOutlined, SendOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -70,21 +70,27 @@ const EditResignation = () => {
       );
 
       if (response.data.status === 200) {
-        setEmployees(response.data.data);
+        setEmployees(response.data.data || []);
+      } else {
+        console.error('Failed to fetch employees:', response.data.message);
+        setEmployees([]);
       }
     } catch (error) {
       console.error('Error fetching employees:', error);
+      setEmployees([]);
     }
   };
 
   const handleEmployeeChange = (employeeId) => {
-    const employee = employees.find(emp => emp.id === employeeId);
-    if (employee) {
-      form.setFieldsValue({
-        employee_name: employee.employee_name,
-        department_name: employee.department?.name || '',
-        job_title: employee.job_title?.name || '',
-      });
+    if (employees && Array.isArray(employees)) {
+      const employee = employees.find(emp => emp.id === employeeId);
+      if (employee) {
+        form.setFieldsValue({
+          employee_name: employee.employee_name,
+          department_name: employee.department?.name || '',
+          job_title: employee.job_title?.name || '',
+        });
+      }
     }
   };
 
@@ -248,11 +254,13 @@ const EditResignation = () => {
                       optionFilterProp="children"
                       onChange={handleEmployeeChange}
                     >
-                      {employees.map(employee => (
+                      {employees && employees.length > 0 ? employees.map(employee => (
                         <Option key={employee.id} value={employee.id}>
                           {employee.employee_name} - {employee.employee_no}
                         </Option>
-                      ))}
+                      )) : (
+                        <Option disabled>No employees available</Option>
+                      )}
                     </Select>
                   </Form.Item>
                 </Col>

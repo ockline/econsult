@@ -184,7 +184,7 @@ const ViewResignation = () => {
                 {resignation.phone_number}
               </Descriptions.Item>
               <Descriptions.Item label="Resignation Date" span={1}>
-                {dayjs(resignation.resignation_date).format('DD/MM/YYYY')}
+                {dayjs(resignation.resignation_date).format('DD MMM YYYY')}
               </Descriptions.Item>
               <Descriptions.Item label="Status" span={1}>
                 <Tag color={getStatusColor(resignation.status)}>
@@ -197,7 +197,7 @@ const ViewResignation = () => {
                 </Tag>
               </Descriptions.Item>
               <Descriptions.Item label="Created Date" span={1}>
-                {dayjs(resignation.created_at).format('DD/MM/YYYY HH:mm')}
+                {dayjs(resignation.created_at).format('DD MMM YYYY HH:mm')}
               </Descriptions.Item>
               <Descriptions.Item label="Postal Address" span={2}>
                 {resignation.postal_address}
@@ -321,7 +321,7 @@ const ViewResignation = () => {
                   <div>
                     <strong>{workflow.function_name}</strong>
                     <br />
-                    <small>{dayjs(workflow.created_at).format('DD/MM/YYYY HH:mm')}</small>
+                    <small>{dayjs(workflow.created_at).format('DD MMM YYYY HH:mm')}</small>
                     {workflow.comments && (
                       <div style={{ marginTop: 8 }}>
                         <strong>Comments:</strong> {workflow.comments}
@@ -346,19 +346,19 @@ const ViewResignation = () => {
             <Card title="Resignation Acceptance Details">
               <Descriptions bordered column={2}>
                 <Descriptions.Item label="Acceptance Date" span={1}>
-                  {dayjs(resignation.acceptance.acceptance_date).format('DD/MM/YYYY')}
+                  {dayjs(resignation.acceptance.acceptance_date).format('DD MMM YYYY')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Letter Dated" span={1}>
-                  {dayjs(resignation.acceptance.letter_dated).format('DD/MM/YYYY')}
+                  {dayjs(resignation.acceptance.letter_dated).format('DD MMM YYYY')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Service Of" span={1}>
                   {resignation.acceptance.service_of}
                 </Descriptions.Item>
                 <Descriptions.Item label="Effective From" span={1}>
-                  {dayjs(resignation.acceptance.effective_from).format('DD/MM/YYYY')}
+                  {dayjs(resignation.acceptance.effective_from).format('DD MMM YYYY')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Started Work" span={1}>
-                  {dayjs(resignation.acceptance.started_work).format('DD/MM/YYYY')}
+                  {dayjs(resignation.acceptance.started_work).format('DD MMM YYYY')}
                 </Descriptions.Item>
                 <Descriptions.Item label="HR Name" span={1}>
                   {resignation.acceptance.hr_name}

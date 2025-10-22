@@ -169,7 +169,7 @@ const ResignationList = () => {
                             <div className="flex space-x-3 rtl:space-x-reverse w-full">
                               <div className="block w-full my-auto">
                                 <span className="block text-sm font-semibold text-gray-800 dark:text-gray-300 min-w-[180px] truncate">
-                                  {resignation.employee_id || 'N/A'}
+                                  {resignation.employee_no || 'N/A'}
                                 </span>
                               </div>
                             </div>
@@ -185,7 +185,7 @@ const ResignationList = () => {
                               </div>
                             </div>
                           </td>
-                          <td>{dayjs(resignation.resignation_date).format('DD/MM/YYYY')}</td>
+                          <td>{dayjs(resignation.resignation_date).format('DD MMM YYYY')}</td>
                           <td>
                             <span className={getStatusColor(resignation.status)}>
                               {resignation.status}
@@ -196,7 +196,7 @@ const ResignationList = () => {
                               {resignation.stage}
                             </span>
                           </td>
-                          <td>{dayjs(resignation.created_at).format('DD/MM/YYYY')}</td>
+                          <td>{dayjs(resignation.created_at).format('DD MMM YYYY')}</td>
                           <td className="font-medium space-x-2 rtl:space-x-reverse">
                             <div className="hs-tooltip ti-main-tooltip">
                               <Link 
