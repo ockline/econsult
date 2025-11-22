@@ -1,13 +1,20 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ALLImages from "../../../common/imagesData";
 import Modalsearch from "../modalsearch/modalsearch";
 import { connect } from "react-redux"
 import {ThemeChanger} from "../../../redux/Action"
 import store from "../../../redux/store";
 import { Closedmenu, Defaultmenu, DetachedFn, DoubletFn, iconOverayFn, iconText } from "../../../common/switcherdata";
+import RolePanel from "../../../component/common/RolePanel";
+import axios from "axios";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const Header = ({local_varaiable,ThemeChanger})=>{
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const navigate = useNavigate();
     // window screen resize
     useEffect(() => {
         function debounce(func, delay) {
@@ -227,42 +234,78 @@ const Header = ({local_varaiable,ThemeChanger})=>{
         }
     }
 
-    const cartProduct = [
-        {
-            id: 1,
-            src: ALLImages('png25'),
-            name: 'Black Heals For Women',
-            newpr: '$699',
-            oldpr: '$999'
-        },
-        {
-            id: 2,
-            src: ALLImages('png26'),
-            name: 'Tshirt For Men',
-            newpr: '$245',
-            oldpr: '$599'
-        },
-        {
-            id: 3,
-            src: ALLImages('png33'),
-            name: 'Travel Bag For Womens',
-            newpr: '$299',
-            oldpr: '$399'
-        },
-        {
-            id: 4,
-            src: ALLImages('png34'),
-            name: 'Leather Wallet For Grils',
-            newpr: '$100',
-            oldpr: '$150'
-        },
-    ]
+    const [pendingWorkflows, setPendingWorkflows] = useState([]);
+    const [pendingLoading, setPendingLoading] = useState(false);
 
-    const [allData, setAllData] = useState(cartProduct)
     function handleRemove(id) {
-        const newList = allData.filter((idx) => idx.id !== id);
-        setAllData(newList);
+        setPendingWorkflows((prev) => prev.filter((item) => item.id !== id));
     }
+
+    function handleNavigate(link) {
+        if (!link || link === '#') {
+            return;
+        }
+
+        if (/^https?:\/\//i.test(link)) {
+            window.location.href = link;
+            return;
+        }
+
+        navigate(link);
+    }
+
+    function getWorkflowMeta(workflowParam) {
+        var workflow = workflowParam || {};
+        var normalizedLink = '#';
+
+        if (workflow.link) {
+            var cleanedLink = workflow.link.replace(/^\/+/, '');
+            var baseUrl = import.meta.env.BASE_URL || '/';
+            normalizedLink = baseUrl + cleanedLink;
+        }
+
+        var fallbackStage = '';
+        if (workflow.current_stage) {
+            fallbackStage = 'Stage ' + workflow.current_stage;
+        }
+
+        return {
+            title: workflow.title || workflow.module || 'Workflow',
+            link: normalizedLink,
+            description: workflow.description || workflow.comments || workflow.employee || fallbackStage,
+            timestamp: workflow.timestamp || workflow.attended_date || workflow.created_at || workflow.received_date
+        };
+    }
+
+    useEffect(() => {
+        const fetchPendingWorkflows = async () => {
+            try {
+                const token = sessionStorage.getItem('token');
+                if (!token || !apiBaseUrl) {
+                    return;
+                }
+                setPendingLoading(true);
+                const response = await axios.get(`${apiBaseUrl}/workflows/pending`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.data?.status === 200) {
+                    setPendingWorkflows(response.data.pending_workflows || []);
+                } else {
+                    setPendingWorkflows([]);
+                }
+            } catch (error) {
+                console.error('Error fetching pending workflows:', error);
+                setPendingWorkflows([]);
+            } finally {
+                setPendingLoading(false);
+            }
+        };
+
+        fetchPendingWorkflows();
+    }, [apiBaseUrl]);
 
     useEffect(() => {
         const navbar = document.querySelector(".header");
@@ -318,7 +361,12 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                 className="header-nav-center" 
                                 style={{ display: 'flex', flexDirection: 'column', marginLeft: '18%', alignItems: 'center' }}
                                 >
-                            <h1 className="header-title" style={{ fontSize: '30px', color: '#b2000a', marginBottom: '12px'}}><b>SOCRATE MANAGEMENT SYSTEM (SOMS)</b></h1>
+                            <h1 className="header-title" style={{ fontSize: '30px', color: '#b2000a', marginBottom: '12px'}}>
+                                <b>
+                                    <span className="hidden sm:inline">SOCRATE MANAGEMENT SYSTEM (SOMS)</span>
+                                    <span className="sm:hidden">SOMS</span>
+                                </b>
+                            </h1>
                                 
                                 </div>
                             
@@ -364,10 +412,15 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="header-search" >
-                                        <button aria-label="button" type="button" data-hs-overlay="#search-modal"
-                                            className="inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10">
-                                            <i className="ri-search-2-line header-icon"></i>
+                                    {/* Role Panel Trigger */}
+                                    <div className="header-role-panel">
+                                        <button 
+                                            aria-label="button" 
+                                            type="button" 
+                                            data-hs-overlay="#role-panel"
+                                            className="inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
+                                        >
+                                            <i className="ri-user-settings-line header-icon"></i>
                                         </button>
                                     </div>
 
@@ -381,58 +434,72 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                             <i className="ri-sun-line header-icon"></i>
                                         </Link>
                                     </div>
-                                    <div className="header-fullscreen hidden lg:block" onClick={() => Fullscreen(i)}>
-                                        <Link aria-label="anchor" to="#" className="inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10">
-                                            <i className="ri-fullscreen-line header-icon full-screen-open"></i>
-                                            <i className="ri-fullscreen-line header-icon fullscreen-exit-line hidden"></i>
-                                        </Link>
-                                    </div>
                                     <div className="header-cart hs-dropdown ti-dropdown hidden lg:block" data-hs-dropdown-placement="bottom-right">
                                         <button id="dropdown-cart" type="button" className="hs-dropdown-toggle ti-dropdown-toggle p-0 border-0 flex-shrink-0 h-[2.375rem] w-[2.375rem] rounded-full shadow-none focus:ring-gray-400 text-xs dark:focus:ring-white/10">
                                             <i className="ti ti-file-analytics header-icon " style={{ color: 'blue' }}></i>
                                             <span className="flex absolute h-5 w-5 top-0 ltr:right-0 rtl:left-0 -mt-1 ltr:-mr-1 rtl:-ml-1">
-                                                <span className="relative inline-flex rounded-full h-5 w-5 bg-danger text-white justify-center items-center" id="cart-data2">4</span>
+                                            <span className="relative inline-flex rounded-full h-5 w-5 bg-danger text-white justify-center items-center" id="cart-data2">{pendingWorkflows.length}</span>
                                             </span>
                                         </button>
                                         <div className="hs-dropdown-menu ti-dropdown-menu w-[20rem] border-0" aria-labelledby="dropdown-cart">
                                             <div className="ti-dropdown-header !bg-primary border-b dark:border-white/10 flex justify-between items-center">
                                                 <p className="ti-dropdown-header-title !text-white font-semibold">Assigned Workflow</p>
-                                                <Link to="#" className="badge bg-black/20 text-white rounded-sm" id="cart-data">4 Items</Link>
+                                                <span className="badge bg-black/20 text-white rounded-sm" id="cart-data">{pendingWorkflows.length} Items</span>
                                             </div>
                                             <div className="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
                                                 <div className="py-2 first:pt-0 last:pb-0" id="allCartsContainer">
-                                                    {allData.map((idx) => (
-                                                        <div className="ti-dropdown-item relative header-box" key={Math.random()}>
-                                                            <Link to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/cart/`} className="flex items-center space-x-3 rtl:space-x-reverse w-full">
-                                                                <img src={idx.src} alt="product-img" className="avatar p-2 shadow-none  shrink-0 items-center justify-center rounded-sm bg-gray-100 dark:bg-black/20 !ring-transparent" />
-                                                                <div>
-                                                                    <p className="text-sm font-medium text-gray-800 dark:text-white">{idx.name}</p>
-                                                                    <div className="flex space-x-2 rtl:space-x-reverse">
-                                                                        <h5 className="text-xs">{idx.newpr}</h5>
-                                                                        <span className="my-auto line-through text-xs text-gray-400 dark:text-white/70">{idx.oldpr}</span>
+                                                    {pendingLoading ? (
+                                                        <div className="text-center text-xs text-gray-500 dark:text-white/60 py-4">Loading pending workflows...</div>
+                                                    ) : pendingWorkflows.length > 0 ? (
+                                                        pendingWorkflows.map((workflow) => {
+                                                            const meta = getWorkflowMeta(workflow);
+                                                            return (
+                                                                <div
+                                                                    className="ti-dropdown-item relative header-box cursor-pointer"
+                                                                    key={workflow.id}
+                                                                    onClick={() => handleNavigate(meta.link)}
+                                                                >
+                                                                    <div className="flex items-center space-x-3 rtl:space-x-reverse w-full">
+                                                                        <img src={ALLImages('png25')} alt="workflow-img" className="avatar p-2 shadow-none  shrink-0 items-center justify-center rounded-sm bg-gray-100 dark:bg-black/20 !ring-transparent" />
+                                                                        <div>
+                                                                            <p className="text-sm font-medium text-gray-800 dark:text-white">{meta.title}</p>
+                                                                            <div className="flex flex-col">
+                                                                                <span className="text-xs text-gray-600 dark:text-white/70">{meta.description}</span>
+                                                                                <span className="text-[10px] text-gray-400 dark:text-white/60">{meta.timestamp ? dayjs(meta.timestamp).format('DD MMM YYYY, HH:mm') : ''}</span>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={(event) => {
+                                                                            event.stopPropagation();
+                                                                            handleRemove(workflow.id);
+                                                                        }}
+                                                                        className="header-remove-btn ltr:ml-auto rtl:mr-auto flex-shrink-0 inline-flex items-center justify-center text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white"
+                                                                    >
+                                                                        <i className="ri-close-circle-line"></i>
+                                                                    </button>
                                                                 </div>
-                                                            </Link>
-                                                            <Link aria-label="anchor" to="#" onClick={() => handleRemove(idx.id)} className="header-remove-btn ltr:ml-auto rtl:mr-auto flex-shrink-0 inline-flex items-center justify-center text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
-                                                                <i className="ri-close-circle-line"></i>
-                                                            </Link>
-                                                        </div>
-                                                    ))}
+                                                            );
+                                                        })
+                                                    ) : (
+                                                        <div className="text-center text-xs text-gray-500 dark:text-white/60 py-4">No pending workflows</div>
+                                                    )}
                                                 </div>
                                                 <div className="py-2 first:pt-0 last:pb-0 px-5">
                                                     <div className="flex justify-between">
                                                         <div>
-                                                            <span className="text-xs font-semibold text-gray-800 dark:text-white">Total</span>
+                                                            <span className="text-xs font-semibold text-gray-800 dark:text-white">Total Pending</span>
                                                         </div>
                                                         <div className="text-end font-medium">
-                                                            <span className="text-xs font-semibold text-gray-800 dark:text-white">$40,020</span>
+                                                            <span className="text-xs font-semibold text-gray-800 dark:text-white">{pendingWorkflows.length}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="py-2 first:pt-0 px-5">
-                                                    <Link className="w-full ti-btn ti-btn-primary p-2" to={`${import.meta.env.BASE_URL}pagecomponent/Ecommerce/checkout/`}>
+                                                    <button className="w-full ti-btn ti-btn-primary p-2 disabled:opacity-60 disabled:cursor-not-allowed" type="button" disabled={!pendingWorkflows.length}>
                                                         Proceed to Attend
-                                                    </Link>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -445,7 +512,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                 <span
                                                     className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success/80 opacity-75"></span>
                                                 <span
-                                                    className="relative inline-flex rounded-full h-5 w-5 bg-success text-white justify-center items-center" id="notify-data">4</span>
+                                                    className="relative inline-flex rounded-full h-5 w-5 bg-success text-white justify-center items-center" id="notify-data">{pendingWorkflows.length}</span>
                                             </span>
                                         </button>
                                         <div className="hs-dropdown-menu ti-dropdown-menu w-[20rem] border-0" aria-labelledby="dropdown-notification">
@@ -455,72 +522,33 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                             </div>
                                             <div className="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
                                                 <div className="py-2 first:pt-0 last:pb-0" id="allNotifyContainer">
-                                                    <div className="ti-dropdown-item relative header-box">
-                                                        <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="flex space-x-3 rtl:space-x-reverse">
-                                                            <div className="ltr:mr-2 rtl:ml-2 avatar rounded-full ring-0">
-                                                                <img src={ALLImages('jpg73')} alt="img" className="rounded-sm" />
-                                                            </div>
-                                                            <div className="relative w-full">
-                                                                <h5 className="text-sm text-gray-800 dark:text-white font-semibold mb-1">Elon Isk</h5>
-                                                                <p className="text-xs mb-1 max-w-[200px] truncate">Hello there! How are you doing? Call me when...</p>
-                                                                <p className="text-xs text-gray-400 dark:text-white/70">2 min</p>
-                                                            </div>
-                                                        </Link>
-                                                        <Link aria-label="anchor" to="#" className="header-remove-btn ltr:ml-auto rtl:mr-auto text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
-                                                            <i className="ri-close-circle-line"></i>
-                                                        </Link>
-                                                    </div>
-                                                    <div className="ti-dropdown-item relative header-box">
-                                                        <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="flex items-center space-x-3 rtl:space-x-reverse">
-                                                            <div className="ltr:mr-2 rtl:ml-2 avatar rounded-full ring-0">
-                                                                <img src={ALLImages('jpg58')} alt="img" className="rounded-sm" />
-                                                            </div>
-                                                            <div className="relative w-full">
-                                                                <h5 className="text-sm text-gray-800 dark:text-white font-semibold mb-1">Shakira Sen</h5>
-                                                                <p className="text-xs mb-1 max-w-[200px] truncate">I would like to discuss about that assets...</p>
-                                                                <p className="text-xs text-gray-400 dark:text-white/70">09:43</p>
-                                                            </div>
-                                                        </Link>
-                                                        <Link aria-label="anchor" to="#" className="header-remove-btn ltr:ml-auto rtl:mr-auto text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
-                                                            <i className="ri-close-circle-line"></i>
-                                                        </Link>
-                                                    </div>
-                                                    <div className="ti-dropdown-item relative header-box">
-                                                        <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="flex items-center space-x-3 rtl:space-x-reverse">
-                                                            <div className="ltr:mr-2 rtl:ml-2 avatar rounded-full ring-0">
-                                                                <img src={ALLImages('jpg77')} alt="img" className="rounded-sm" />
-                                                            </div>
-                                                            <div className="relative w-full">
-                                                                <h5 className="text-sm text-gray-800 dark:text-white font-semibold mb-1">Sebastian</h5>
-                                                                <p className="text-xs mb-1 max-w-[200px] truncate">Shall we go to the cafe at downtown...</p>
-                                                                <p className="text-xs text-gray-400 dark:text-white/70">yesterday</p>
-                                                            </div>
-                                                        </Link>
-                                                        <Link aria-label="anchor" to="#" className="header-remove-btn ltr:ml-auto rtl:mr-auto text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
-                                                            <i className="ri-close-circle-line"></i>
-                                                        </Link>
-                                                    </div>
-                                                    <div className="ti-dropdown-item relative header-box">
-                                                        <Link to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`} className="flex items-center space-x-3 rtl:space-x-reverse">
-                                                            <div className="ltr:mr-2 rtl:ml-2 avatar rounded-full ring-0">
-                                                                <img src={ALLImages('jpg67')} alt="img" className="rounded-sm" />
-                                                            </div>
-                                                            <div className="relative w-full">
-                                                                <h5 className="text-sm text-gray-800 dark:text-white font-semibold mb-1">Charlie Davieson</h5>
-                                                                <p className="text-xs mb-1 max-w-[200px] truncate">Lorem ipsum dolor sit amet, consectetur</p>
-                                                                <p className="text-xs text-gray-400 dark:text-white/70">yesterday</p>
-                                                            </div>
-                                                        </Link>
-                                                        <Link aria-label="anchor" to="#" className="header-remove-btn ltr:ml-auto rtl:mr-auto text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
-                                                            <i className="ri-close-circle-line"></i>
-                                                        </Link>
-                                                    </div>
+                                                    {pendingLoading ? (
+                                                        <div className="text-center text-xs text-gray-500 dark:text-white/60 py-4">Loading pending workflows...</div>
+                                                    ) : pendingWorkflows.length > 0 ? (
+                                                        pendingWorkflows.map((workflow) => {
+                                                            const meta = getWorkflowMeta(workflow);
+                                                            return (
+                                                                <div className="ti-dropdown-item relative header-box" key={`notify-${workflow.id}`}>
+                                                                    <Link to={meta.link} className="flex space-x-3 rtl:space-x-reverse">
+                                                                        <div className="ltr:mr-2 rtl:ml-2 avatar rounded-full ring-0">
+                                                                            <img src={ALLImages('jpg73')} alt="workflow" className="rounded-sm" />
+                                                                        </div>
+                                                                        <div className="relative w-full">
+                                                                            <h5 className="text-sm text-gray-800 dark:text-white font-semibold mb-1">{meta.title}</h5>
+                                                                            <p className="text-xs mb-1 max-w-[200px] truncate">{meta.description}</p>
+                                                                            <p className="text-xs text-gray-400 dark:text-white/70">{meta.timestamp ? dayjs(meta.timestamp).fromNow() : ''}</p>
+                                                                        </div>
+                                                                    </Link>
+                                                                    <button type="button" onClick={() => handleRemove(workflow.id)} className="header-remove-btn ltr:ml-auto rtl:mr-auto text-lg text-gray-500/20 dark:text-white/20 hover:text-gray-800 dark:hover:text-white">
+                                                                        <i className="ri-close-circle-line"></i>
+                                                                    </button>
+                                                                </div>
+                                                            );
+                                                        })
+                                                    ) : (
+                                                        <div className="text-center text-xs text-gray-500 dark:text-white/60 py-4">No pending workflows</div>
+                                                    )}
                                                 </div>
-                                                {/* <div className="py-2 first:pt-0 px-5">
-                                                    <Link className="w-full ti-btn ti-btn-primary p-2" to={`${import.meta.env.BASE_URL}pagecomponent/mail/mainMail/`}>
-                                                        View All
-                                                    </Link>
-                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -624,6 +652,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                 </nav>
             </header>
             <Modalsearch />
+            <RolePanel />
         </Fragment>
     );
 };

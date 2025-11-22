@@ -1,24 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import ALLImages from "/src/common/imagesdata";
 import ProfileService from "/src/common/profileservices";
 import { HomeGallery } from "/src/component/advancedUi/filemanager/filedetails/filedetailscarcousel";
 import { TagsInput } from "react-tag-input-component";
 import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import { UserChanger, RolesChanger, ThemeChanger } from "../../../redux/Action";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ReviewAttachmentModal from "/src/component/industrialRelationship/PerfomanceReview/Modal/ReviewAttachmentModal";
+import PerformanceWorkflowModal from "/src/component/industrialRelationship/PerfomanceReview/Modal/PerformanceWorkFlowModal";
+import PerformanceReviewalWorkFlowModal from "/src/component/industrialRelationship/PerfomanceReview/Modal/PerformanceReviewalWorkflowModal";
+import PerformanceApprovalWorkflowModal from "/src/component/industrialRelationship/PerfomanceReview/Modal/PerformanceApprovalWorkflowModal";
 
-const ShowReview = () => {
+const ShowReview = ({local_varaiable = {}}) => {
     // react-tag-input-component
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
+    const roles = local_varaiable?.roles || [];
+    const INITIATOR_ROLE_ALIASES = ['PRMI'];
+    const REVIEWER_ROLE_ALIASES = ['PRMR', 'ITR'];
+    const APPROVER_ROLE_ALIASES = ['PRMA', 'ITAr'];
+    const hasRole = (allowedRoles = []) => {
+        if (!roles || roles.length === 0) {
+            return false;
+        }
+        return roles.some((role) => allowedRoles.includes(role));
+    };
+    const hasInitiatorAccess = hasRole(INITIATOR_ROLE_ALIASES);
+    const hasReviewerAccess = hasRole(REVIEWER_ROLE_ALIASES);
+    const hasApproverAccess = hasRole(APPROVER_ROLE_ALIASES);
+    
+    const navigate = useNavigate();
     //URl image
 
 
     //toggle button for image
 
     const [ClassName, setClassName] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+    const [workflows, setPerformanceWorkflow] = useState([]);
 
     useEffect(() => {
         if (ProfileService.returnImage() != undefined) {
@@ -74,7 +96,39 @@ const ShowReview = () => {
     }, [id]);
     
     
-   
+    //workflow preview
+    useEffect(() => {
+        const fetchPerformanceReviewAndWorkflow = async () => {
+            const token = sessionStorage.getItem('token');
+            try {
+                const res = await axios.get(`${apiBaseUrl}/industrial_relationship/show_perfomance_review/${id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.data.status === 404) {
+                    Dangersweetalert();
+                    navigate('/industrials/perfomance_reviews/');
+                    return;
+                }
+                setEmployeeData(res.data.show_perfomance);
+
+                const workflowRes = await axios.get(`${apiBaseUrl}/industrial_relationship/retrieve_performance_workflow/${id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (workflowRes.data.status === 404) {
+                    Dangersweetalert();
+                    navigate('/industrials/perfomance_reviews/');
+                    return;
+                }
+                setPerformanceWorkflow(workflowRes.data.performance_workflow);
+
+            } catch (error) {
+                console.error('Error fetching performance review or workflow:', error);
+            } finally {
+                setIsLoading(false); // loading false after everything
+            }
+        };
+        fetchPerformanceReviewAndWorkflow();
+    }, [id, navigate]);
 
     
     function Dangersweetalert() {
@@ -247,10 +301,20 @@ const ShowReview = () => {
                                 </button>
                                 <button
                                     type="button"
-                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-1 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
                                     id="profile-item-3"
                                     data-hs-tab="#profile-3"
                                     aria-controls="profile-3"
+                                    role="tab"
+                                ><i className="ti ti-history font-semibold"></i>
+                                    Performance Workflow
+                                </button>
+                                <button
+                                    type="button"
+                                    className="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white py-2 px-3 inline-flex items-center w-full justify-center gap-2 text-sm font-lg text-center border text-black rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+                                    id="profile-item-4"
+                                    data-hs-tab="#profile-4"
+                                    aria-controls="profile-4"
                                     role="tab"
                                 ><i className="ti ti-folders font-semibold"></i>
                                     Documents Center
@@ -2781,10 +2845,41 @@ checked={formData.innovation_rating === 3 }
 								</table>
 							</div>
                              </div>  
-                                                 
+                             
+                             <div
+                                id="profile-3"
+                                className="hidden text-center"
+                                role="tabpanel"
+                                aria-labelledby="profile-item-3"
+                            >
+                                {isLoading ? (
+                                    <div className="flex justify-center items-center h-40">
+                                        <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-primary"></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {hasInitiatorAccess && (
+                                            <PerformanceWorkflowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                        )}
+                                        {hasReviewerAccess && (
+                                            <PerformanceReviewalWorkFlowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                        )}
+                                        {hasApproverAccess && (
+                                            <PerformanceApprovalWorkflowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                        )}
+                                        {(!hasInitiatorAccess && !hasReviewerAccess && !hasApproverAccess) && workflows && workflows.length > 0 && (
+                                            <PerformanceWorkflowModal workflows={workflows} formData={formData} onClose={() => {}} />
+                                        )}
+                                        {(!workflows || workflows.length === 0) && (
+                                            <div className="text-center p-4">No workflow history available.</div>
+                                        )}
+                                        <br />
+                                    </>
+                                )}
+                            </div>
 
                             <div
-                                id="profile-3"
+                                id="profile-4"
                                 className="hidden text-center"
                                 role="tabpanel"
                                 aria-labelledby="profile-item-4"
@@ -2887,4 +2982,8 @@ checked={formData.innovation_rating === 3 }
     );
 };
 
-export default ShowReview;
+const mapStateToProps = (state) => ({
+    local_varaiable: state,
+});
+
+export default connect(mapStateToProps, { ThemeChanger })(ShowReview);

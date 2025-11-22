@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Row, Col, Card, Descriptions, Tag, Button, Space, Timeline, Modal, Form, Input, DatePicker, Upload } from "antd";
-import { EditOutlined, EyeOutlined, FileTextOutlined, DownloadOutlined, SendOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { Row, Col, Card, Descriptions, Tag, Button, Space, Timeline, Modal, Form, Input, DatePicker, Upload, message } from "antd";
+import { EditOutlined, EyeOutlined, FileTextOutlined, DownloadOutlined, SendOutlined, ArrowLeftOutlined, CheckOutlined, CloseOutlined, RollbackOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
+import { getActiveRole, canPerformWorkflowAction, getAvailableActions } from "../../../utility/roleHelper";
+import Swal from "sweetalert2";
 
 const { TextArea } = Input;
 
@@ -18,10 +20,34 @@ const ViewResignation = () => {
   const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const [previewFile, setPreviewFile] = useState(null);
   const [form] = Form.useForm();
+  const activeRole = getActiveRole();
 
   useEffect(() => {
     fetchResignation();
   }, [id]);
+
+  useEffect(() => {
+    // Listen for role change events
+    const handleRoleChange = () => {
+      fetchResignation();
+    };
+
+    window.addEventListener('roleChanged', handleRoleChange);
+    return () => window.removeEventListener('roleChanged', handleRoleChange);
+  }, []);
+
+  // Check if current user has already acted on this resignation
+  const hasUserActed = () => {
+    if (!resignation?.workflows || !activeRole) return false;
+    
+    // Get current user ID from session or use a method to identify current user
+    const currentUserId = sessionStorage.getItem('userId') || '1';
+    
+    // Check if any workflow entry has been attended by current user
+    return resignation.workflows.some(workflow => 
+      workflow.attended_by?.id?.toString() === currentUserId.toString()
+    );
+  };
 
   const fetchResignation = async () => {
     setLoading(true);
@@ -98,8 +124,23 @@ const ViewResignation = () => {
       'Under Review': 'warning',
       'Approved': 'success',
       'Rejected': 'error',
+      'Initiated': 'primary',
+      'Reviewed': 'secondary',
     };
     return colors[status] || 'default';
+  };
+
+  const getStatusBgColor = (status) => {
+    const colors = {
+      'Initiated': '#1890ff',    // Primary blue
+      'Reviewed': '#6c757d',     // Secondary gray
+      'Approved': '#52c41a',     // Success green
+      'Submitted': '#1890ff',    // Primary blue
+      'Under Review': '#faad14', // Warning orange
+      'Rejected': '#ff4d4f',     // Error red
+      'Draft': '#d9d9d9',        // Default gray
+    };
+    return colors[status] || '#d9d9d9';
   };
 
   const getStageColor = (stage) => {
@@ -122,6 +163,96 @@ const ViewResignation = () => {
     }
   };
 
+  const handleWorkflowAction = async (action) => {
+    // Get comments from the textarea
+    const comments = document.getElementById('workflow-action-comments')?.value || '';
+
+    // Show confirmation dialog
+    const actionText = {
+      'review': 'Review',
+      'approve': 'Approve',
+      'reject': 'Reject',
+      'return': 'Return'
+    };
+
+    const result = await Swal.fire({
+      title: `${actionText[action]} Resignation`,
+      html: `
+        <p>Are you sure you want to ${action} the resignation for <strong>${resignation.employee_name}</strong>?</p>
+        ${comments ? `<p style="margin-top: 10px;"><strong>Your comments:</strong></p><p style="text-align: left; padding: 10px; background: #f0f2f5; border-radius: 4px;">${comments}</p>` : '<p style="color: #999; margin-top: 10px;">No comments provided</p>'}
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: actionText[action],
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#b2000a',
+    });
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const token = sessionStorage.getItem('token');
+        const endpoint = `${apiBaseUrl}/employees/exits/resignation/${action}_resignation`;
+        
+        // Prepare request data based on action
+        const requestData = {
+          resignation_id: resignation.id,
+          comments: comments,
+          action: action
+        };
+
+        // For review action, also send hr_recommendations
+        if (action === 'review') {
+          requestData.hr_recommendations = comments || 'No specific recommendations';
+        }
+
+        const response = await axios.post(
+          endpoint,
+          requestData,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status === 200) {
+          Swal.fire({
+            title: 'Success',
+            text: `Resignation ${action}ed successfully`,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#b2000a'
+          });
+          // Clear the comments textarea
+          const textarea = document.getElementById('workflow-action-comments');
+          if (textarea) textarea.value = '';
+          // Refresh the resignation data
+          fetchResignation();
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: response.data.message || `Failed to ${action} resignation`,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#b2000a'
+          });
+        }
+      } catch (error) {
+        console.error(`Error ${action}ing resignation:`, error);
+        Swal.fire({
+          title: 'Error',
+          text: error.response?.data?.message || `Failed to ${action} resignation`,
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   const handlePreviewFile = (fileName, fileType) => {
     if (fileName) {
       setPreviewFile({
@@ -130,6 +261,69 @@ const ViewResignation = () => {
         url: `${apiBaseUrl}/resignations/${resignation.id}/${fileName}`
       });
       setPreviewModalVisible(true);
+    }
+  };
+
+  const handleReInitiate = async () => {
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: 'Re-initiate Resignation',
+      html: `
+        <p>Are you sure you want to re-initiate the resignation for <strong>${resignation.employee_name}</strong>?</p>
+        <p style="color: #8c8c8c; font-size: 12px; margin-top: 10px;">This will change the status to "Submitted" and move it to the next stage for review.</p>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Re-initiate',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#52c41a',
+    });
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const token = sessionStorage.getItem('token');
+        const response = await axios.post(
+          `${apiBaseUrl}/employees/exits/resignation/submit_resignation/${resignation.id}`,
+          {},
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status === 200) {
+          Swal.fire({
+            title: 'Success',
+            text: 'Resignation re-initiated successfully',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#52c41a'
+          });
+          // Refresh the resignation data
+          fetchResignation();
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: response.data.message || 'Failed to re-initiate resignation',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#b2000a'
+          });
+        }
+      } catch (error) {
+        console.error('Error re-initiating resignation:', error);
+        Swal.fire({
+          title: 'Error',
+          text: error.response?.data?.message || 'Failed to re-initiate resignation',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -145,21 +339,50 @@ const ViewResignation = () => {
     <div>
       <PageHeader currentpage="View Resignation" activepage="Exit Management" mainpage="View Resignation" />
       
-      <Row gutter={[16, 16]}>
+      {/* Back Button and Edit/Re-initiate Actions */}
+      <Row style={{ marginBottom: 16 }}>
         <Col span={24}>
-          <Card
-            title="Resignation Details"
-            extra={
-              <Button 
-                type="primary" 
-                icon={<ArrowLeftOutlined />} 
-                onClick={() => navigate('/exits/resignations')}
-                style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
-              >
-                Back
-              </Button>
-            }
-          >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Button 
+              type="primary" 
+              icon={<ArrowLeftOutlined />} 
+              onClick={() => navigate('/exits/resignations')}
+              style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
+            >
+              Back to List
+            </Button>
+            
+            {/* Edit and Re-initiate buttons for Industrial Initiator when status is Draft */}
+            {resignation.status === 'Draft' && (activeRole?.includes('Initiator') || activeRole === 'DEV' || activeRole === 'ADMIN') && (
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <Button 
+                  type="default"
+                  icon={<EditOutlined />}
+                  onClick={() => navigate(`/exits/resignations/edit/${resignation.id}`)}
+                  style={{ borderColor: '#1890ff', color: '#1890ff' }}
+                >
+                  Edit Resignation
+                </Button>
+                <Button 
+                  type="primary"
+                  icon={<SendOutlined />}
+                  onClick={() => handleReInitiate()}
+                  loading={loading}
+                  style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+                >
+                  Re-initiate
+                </Button>
+              </div>
+            )}
+          </div>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        {/* Left Column - 8 cols */}
+        <Col span={16}>
+          {/* Resignation Details */}
+          <Card title="Resignation Details" style={{ marginBottom: 16 }}>
             <Descriptions bordered column={2}>
               <Descriptions.Item label="Employee Name" span={1}>
                 {resignation.employee_name}
@@ -197,12 +420,9 @@ const ViewResignation = () => {
               </Descriptions.Item>
             </Descriptions>
           </Card>
-        </Col>
-      </Row>
 
-      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-        <Col span={12}>
-          <Card title="Attached Documents">
+          {/* Attached Documents */}
+          <Card title="Attached Documents" style={{ marginBottom: 16 }}>
             <Space direction="vertical" style={{ width: '100%' }}>
               {resignation.resignation_notice_file && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
@@ -302,37 +522,9 @@ const ViewResignation = () => {
               )}
             </Space>
           </Card>
-        </Col>
-        <Col span={12}>
-          <Card title="Workflow History">
-            <Timeline>
-              {resignation.workflows?.map((workflow, index) => (
-                <Timeline.Item key={index} color={getStatusColor(workflow.status)}>
-                  <div>
-                    <strong>{workflow.function_name}</strong>
-                    <br />
-                    <small>{dayjs(workflow.created_at).format('DD MMM YYYY HH:mm')}</small>
-                    {workflow.comments && (
-                      <div style={{ marginTop: 8 }}>
-                        <strong>Comments:</strong> {workflow.comments}
-                      </div>
-                    )}
-                    {workflow.attended_by && (
-                      <div>
-                        <strong>Attended by:</strong> {workflow.attended_by?.name}
-                      </div>
-                    )}
-                  </div>
-                </Timeline.Item>
-              ))}
-            </Timeline>
-          </Card>
-        </Col>
-      </Row>
 
+          {/* Acceptance Details */}
       {resignation.acceptance && (
-        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-          <Col span={24}>
             <Card title="Resignation Acceptance Details">
               <Descriptions bordered column={2}>
                 <Descriptions.Item label="Acceptance Date" span={1}>
@@ -358,13 +550,10 @@ const ViewResignation = () => {
                 </Descriptions.Item>
               </Descriptions>
             </Card>
-          </Col>
-        </Row>
       )}
 
+          {/* Create Acceptance Button */}
       {!resignation.acceptance && resignation.status === 'Approved' && (
-        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-          <Col span={24}>
             <Card
               title="Create Resignation Acceptance"
               extra={
@@ -379,9 +568,259 @@ const ViewResignation = () => {
             >
               <p>No acceptance details found. Click the button above to create acceptance details.</p>
             </Card>
+          )}
           </Col>
-        </Row>
-      )}
+
+        {/* Right Column - 8 cols for Workflow Actions */}
+        <Col span={8}>
+          <Card 
+            title="Workflow Actions" 
+            style={{ position: 'sticky', top: 20 }}
+          >
+            {/* Timeline - Always shown first */}
+            <div>
+              <Timeline>
+                {resignation.workflows?.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((workflow, index) => (
+                  <Timeline.Item key={index} color={getStatusColor(workflow.status)}>
+                    <div style={{ 
+                      position: 'relative', 
+                      padding: '20px', 
+                      backgroundColor: '#fff', 
+                      borderRadius: '8px', 
+                      border: '1px solid #f0f0f0',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                      marginBottom: '16px',
+                      minHeight: '120px'
+                    }}>
+                      {/* Function Name and Date on same line */}
+                      <div style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        marginBottom: '20px' 
+                      }}>
+                        <strong style={{ 
+                          fontSize: '16px', 
+                          color: '#262626', 
+                          fontWeight: 600 
+                        }}>
+                          {workflow.function_name}
+                        </strong>
+                        <span style={{ 
+                          color: '#52c41a', 
+                          fontSize: '13px', 
+                          fontWeight: 500 
+                        }}>
+                          {dayjs(workflow.attended_date || workflow.created_at).format('DD MMM YYYY, hh:mm A')}
+                        </span>
+                      </div>
+
+                      {/* Attended By with Role */}
+                      {workflow.attended_by && (
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ 
+                            color: '#262626', 
+                            fontSize: '14px', 
+                            fontWeight: 500,
+                            marginBottom: '2px'
+                          }}>
+                            {workflow.attended_by?.name || 'Unknown User'}
+                          </div>
+                          <div style={{ 
+                            color: '#8c8c8c', 
+                            fontSize: '12px' 
+                          }}>
+                            ({workflow.previous_stage || 'System'})
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Resignation Reason/Remarks */}
+                      {workflow.function_name === 'Resignation Initiation' && resignation.remark && (
+                        <div style={{ 
+                          color: '#8c8c8c', 
+                          fontSize: '13px', 
+                          lineHeight: '1.5',
+                          marginBottom: '20px'
+                        }}>
+                          {resignation.remark}
+                        </div>
+                      )}
+
+                      {/* Workflow Comments for other actions */}
+                      {workflow.function_name !== 'Resignation Initiation' && workflow.comments && (
+                        <div style={{ 
+                          color: '#8c8c8c', 
+                          fontSize: '13px', 
+                          lineHeight: '1.5',
+                          marginBottom: '20px'
+                        }}>
+                          {workflow.comments}
+                        </div>
+                      )}
+
+                      {/* Recommendation */}
+                      {workflow.recommendation && (
+                        <div style={{ 
+                          color: '#8c8c8c', 
+                          fontSize: '13px', 
+                          lineHeight: '1.5',
+                          marginBottom: '20px'
+                        }}>
+                          <strong>Recommendation:</strong> {workflow.recommendation}
+                        </div>
+                      )}
+
+                      {/* Status Badge - Bottom Right */}
+                      <div style={{ 
+                        position: 'absolute', 
+                        bottom: '20px', 
+                        right: '20px'
+                      }}>
+                        <Tag 
+                          style={{ 
+                            margin: 0,
+                            fontSize: '11px',
+                            padding: '2px 8px',
+                            fontWeight: 500,
+                            borderRadius: '4px',
+                            backgroundColor: getStatusBgColor(workflow.status),
+                            color: '#fff',
+                            border: `1px solid ${getStatusBgColor(workflow.status)}`
+                          }}
+                        >
+                          {workflow.status}
+                        </Tag>
+                      </div>
+                    </div>
+                  </Timeline.Item>
+                ))}
+              </Timeline>
+            </div>
+
+            {/* Action Form - Show only if not completed, rejected, or user hasn't acted */}
+            {resignation.status !== 'Completed' && resignation.status !== 'Rejected' && !hasUserActed() && (
+              <>
+                <div style={{ marginTop: 24, paddingTop: 24, borderTop: '2px solid #f0f2f5' }}>
+                  <Form
+                    layout="vertical"
+                    onFinish={(values) => {
+                      // This will be handled by individual button clicks
+                    }}
+                  >
+                    <Form.Item
+                      label="Comments"
+                      name="comments"
+                      rules={[{ required: false }]}
+                    >
+                      <TextArea
+                        rows={4}
+                        placeholder="Enter your comments here..."
+                        id="workflow-action-comments"
+                      />
+                    </Form.Item>
+
+                    <div style={{ marginTop: 16 }}>
+                      <Space direction="vertical" style={{ width: '100%' }}>
+                        {/* Review and Return Buttons - Same Row */}
+                        {((activeRole?.endsWith('R') || activeRole?.startsWith('IR') || activeRole === 'DEV' || activeRole === 'ADMIN')) && (
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            {/* Review Button */}
+                            <Button
+                              type="primary"
+                              danger
+                              icon={<EyeOutlined />}
+                              onClick={() => handleWorkflowAction('review')}
+                              loading={loading}
+                              style={{ flex: 1, backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+                            >
+                              Review
+                            </Button>
+                            
+                            {/* Return Button */}
+                            <Button
+                              type="primary"
+                              icon={<RollbackOutlined />}
+                              onClick={() => handleWorkflowAction('return')}
+                              loading={loading}
+                              style={{ flex: 1, backgroundColor: '#faad14', borderColor: '#faad14', color: '#fff' }}
+                            >
+                              Return
+                            </Button>
+                          </div>
+                        )}
+                        
+                        {/* Approve Button */}
+                        {(activeRole?.endsWith('A') || activeRole?.startsWith('IR') || activeRole === 'DEV' || activeRole === 'ADMIN' || activeRole === 'MD') && (
+                          <Button
+                            type="primary"
+                            icon={<CheckOutlined />}
+                            onClick={() => handleWorkflowAction('approve')}
+                            loading={loading}
+                            block
+                            style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+                          >
+                            Approve
+                          </Button>
+                        )}
+                        
+                        {/* Reject Button */}
+                        {(activeRole?.endsWith('A') || activeRole?.startsWith('IR') || activeRole === 'DEV' || activeRole === 'ADMIN' || activeRole === 'MD') && (
+                          <Button
+                            type="primary"
+                            danger
+                            icon={<CloseOutlined />}
+                            onClick={() => handleWorkflowAction('reject')}
+                            loading={loading}
+                            block
+                          >
+                            Reject
+                          </Button>
+                        )}
+
+                        {/* Cancel Button */}
+                        <Button
+                          type="default"
+                          onClick={() => {
+                            // Clear the comments textarea
+                            const textarea = document.getElementById('workflow-action-comments');
+                            if (textarea) textarea.value = '';
+                          }}
+                          block
+                          style={{ marginTop: '8px', borderColor: '#d9d9d9', color: '#8c8c8c' }}
+                        >
+                          Cancel
+                        </Button>
+                      </Space>
+                    </div>
+                  </Form>
+                </div>
+              </>
+            )}
+
+            {/* Message when user has already acted */}
+            {resignation.status !== 'Completed' && resignation.status !== 'Rejected' && hasUserActed() && (
+              <div style={{ 
+                marginTop: 24, 
+                paddingTop: 24, 
+                borderTop: '2px solid #f0f2f5',
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: '#f6ffed',
+                border: '1px solid #b7eb8f',
+                borderRadius: '6px'
+              }}>
+                <div style={{ color: '#52c41a', fontSize: '14px', fontWeight: 500 }}>
+                  ✓ You have already taken action on this resignation
+                </div>
+                <div style={{ color: '#8c8c8c', fontSize: '12px', marginTop: '4px' }}>
+                  No further action is required from you at this stage
+                </div>
+              </div>
+            )}
+          </Card>
+        </Col>
+      </Row>
 
       <Modal
         title="Create Resignation Acceptance"

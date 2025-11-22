@@ -30,33 +30,12 @@ const Index = () => {
 	 
   /** ****************************************************************** */
  
-function Style2() {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#5e76a6',
-   
-
-		  }).then((result) => {
-			if (result.isConfirmed) {
-			  Swal.fire(
-				'Deleted!',
-				'Your employer has been deleted.',
-				'success'
-			  )
-			}
-		  })
-	 }
-	// ***************  Activation block for Employer ***************************
-	  
-	function ActivateClient(e, id) {
+	function Ajaxcalling(e, id) {
   e.preventDefault();
 //   console.log("ID new", id);
 
   Swal.fire({
-    title: 'Fill employer activation Reason',
+    title: 'Fill Initiation Reason',
     input: 'text',
     inputAttributes: {
       autocapitalize: 'off'
@@ -64,21 +43,30 @@ function Style2() {
     showCancelButton: true,
     confirmButtonText: 'Confirm',
     showLoaderOnConfirm: true,
-    preConfirm: (activate_reason) => {
-      return axios
-        .delete(`${apiBaseUrl}/employers/delete_employer/${id}`, {
-          data: { activate_reason: activate_reason }
-        })
+
+    preConfirm: (comments) => {
+    //   return axios
+    //     .post(`${apiBaseUrl}/industrial_relationship/initiate_perfomance_review/${id}`, {
+    //       data: { comments: comments }
+		//     })
+		const token = sessionStorage.getItem('token');
+		
+		return axios.post(`${apiBaseUrl}/industrial_relationship/initiate_perfomance_review/${id}`, { comments: comments }, {
+          headers: {
+             'Authorization': `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
         .then(response => {
           if (!response.ok) {
             throw new Error(response.statusText);
           } else {
-            Style1();
-            console.log('wazungu waitwe');
+            Style2();
+            // console.log('wazungu waitwe');
           }
         })
         .catch(error => {
-          Style1();
+          Style2();
           Swal.showValidationMessage(
             
           );
@@ -88,10 +76,12 @@ function Style2() {
   });
 }
 
-function Style1() {
+
+	
+function Style2() {
   Swal.fire({
     title: 'Are you sure?',
-    text: "You won't be able to revert this!",
+    text: "You want to initate Review Process!",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#5e76a6',
@@ -100,13 +90,18 @@ function Style1() {
 		  }).then((result) => {
 			if (result.isConfirmed) {
 			  Swal.fire(
-				'Activated!',
-				'Your employer has been Activated.',
+				'Initiated!',
+				'Your employee Review process successfully Initiated.',
 				'success'
 			  )
 			}
 		  })
 	 }
+	// ***************  Activation block for Employer ***************************
+	  
+	
+
+
 
     return (
         <div>

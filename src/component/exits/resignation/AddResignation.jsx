@@ -19,6 +19,7 @@ const AddResignation = () => {
   const [errorList, setErrorList] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     fetchEmployees();
@@ -78,6 +79,7 @@ const AddResignation = () => {
 
   // Function to fetch employee data based on the employee number (searchQuery)
   const getEmployeeDetail = async (employeeNumber) => {
+    setSearchLoading(true);
     try {
       const token = sessionStorage.getItem('token');
       const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_employee_detail/${employeeNumber}`, {
@@ -86,7 +88,10 @@ const AddResignation = () => {
         },
       });
       
-      if (res.data.employee) {
+      console.log('API Response:', res.data); // Debug log
+      console.log('Employee object:', res.data.employee); // Debug log
+      
+      if (res.data.status === 200 && res.data.employee) {
         const employee = res.data.employee;
         setSelectedEmployee(employee);
         
@@ -94,14 +99,15 @@ const AddResignation = () => {
         const fullName = `${employee.firstname || ''} ${employee.middlename || ''} ${employee.lastname || ''}`.trim();
         
         // Auto-fill form fields with correct mapping from API response
+        // Only fill read-only fields, leave editable fields empty for user input
         form.setFieldsValue({
           employee_id: employee.employee_id, // Display value for user (this is the employee number)
-          employee_name: fullName,
-          department_name: employee.departments || '',
-          job_title: employee.job_title || '',
-          phone_number: employee.phone_number || employee.phone || '',
-          employer: employee.employer || '',
-          employer_id: employee.employer_id || '',
+          employee_name: fullName, // Read-only
+          department_name: employee.departments || '', // Read-only
+          job_title: employee.job_title || '', // Read-only
+          employer: employee.employer || '', // Read-only
+          employer_id: employee.employer_id || '', // Read-only
+          // Don't auto-fill phone_number and postal_address - let user input these
         });
 
         console.log('Employee details loaded:', {
@@ -111,23 +117,62 @@ const AddResignation = () => {
           job_title: employee.job_title,
           employer: employee.employer
         });
+
+        // Clear any previous error messages
+        message.success(`Employee found: ${fullName}`);
+      } else {
+        // Handle case where employee is not found
+        setSelectedEmployee(null);
+        form.resetFields(['employee_id', 'employee_name', 'department_name', 'job_title', 'employer', 'employer_id']);
+        
+        Swal.fire({
+          title: 'Employee Not Found',
+          text: 'No employee found with this employee number. Please check and try again.',
+          icon: 'warning',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
       }
     } catch (error) {
-      console.error('Error fetching employee data:', error.message);
-      Swal.fire({
-        title: 'Error',
-        text: 'Employee not found. Please check the employee number.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#b2000a'
-      });
+      console.error('Error fetching employee data:', error);
+      setSelectedEmployee(null);
+      form.resetFields(['employee_id', 'employee_name', 'department_name', 'job_title', 'employer', 'employer_id']);
+      
+      if (error.response && error.response.status === 404) {
+        Swal.fire({
+          title: 'Employee Not Found',
+          text: 'No employee found with this employee number. Please check and try again.',
+          icon: 'warning',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to fetch employee data. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+      }
+    } finally {
+      setSearchLoading(false);
     }
   };
 
-  // Trigger the fetch when search query changes
+  // Trigger the fetch when search query changes with debounce
   useEffect(() => {
-    if (searchQuery !== '') {
-      getEmployeeDetail(searchQuery);
+    if (searchQuery !== '' && searchQuery.length >= 3) {
+      // Add a small delay to avoid too many API calls while typing
+      const timeoutId = setTimeout(() => {
+        getEmployeeDetail(searchQuery);
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    } else if (searchQuery === '') {
+      // Clear form when search is empty
+      setSelectedEmployee(null);
+      form.resetFields(['employee_id', 'employee_name', 'department_name', 'job_title', 'employer', 'employer_id']);
     }
   }, [searchQuery]);
 
@@ -485,7 +530,11 @@ const AddResignation = () => {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <i className="ti ti-search"></i>
+                        {searchLoading ? (
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                        ) : (
+                          <i className="ti ti-search"></i>
+                        )}
                       </div>
                       <input
                         type="text"
@@ -493,10 +542,34 @@ const AddResignation = () => {
                         id="employee-search"
                         autoComplete="off"
                         className="p-2 pr-10 ti-form-input w-full"
-                        placeholder="Search by Employee Number"
+                        placeholder="Search by Employee Number (min 3 characters)"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        disabled={searchLoading}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && searchQuery.length >= 3) {
+                            e.preventDefault();
+                            getEmployeeDetail(searchQuery);
+                          }
+                        }}
                       />
+                    </div>
+                    {/* Debug: Manual search button */}
+                    <div style={{ marginTop: '8px' }}>
+                      <Button 
+                        size="small" 
+                        onClick={() => {
+                          if (searchQuery.length >= 3) {
+                            getEmployeeDetail(searchQuery);
+                          } else {
+                            message.warning('Please enter at least 3 characters');
+                          }
+                        }}
+                        loading={searchLoading}
+                        disabled={searchQuery.length < 3}
+                      >
+                        Search Now
+                      </Button>
                     </div>
                   </div>
                 </Col>

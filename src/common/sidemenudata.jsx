@@ -130,10 +130,10 @@ export const MenuItems = [
 				,
 			]
 			},
-			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF', 'MD', 'IR' ], children: [
+			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF', 'MD', 'IR', 'ALL' ], children: [
 
-					{ id: 40, path: `${import.meta.env.BASE_URL}exits/resignations`, type: "link", active: false, selected: false, title: "Resignations", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 41, path: `${import.meta.env.BASE_URL}exits/endcontracts`, type: "link", active: false, selected: false, title: "End of Contract", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 40, path: `${import.meta.env.BASE_URL}exits/resignations`, type: "link", active: false, selected: false, title: "Resignations", roles: [ 'DEV', 'SA','AF', 'ALL' ]  },
+					{ id: 41, path: `${import.meta.env.BASE_URL}exits/endcontracts`, type: "link", active: false, selected: false, title: "End of Contract", roles: [ 'DEV', 'SA','AF', 'ALL' ]  },
 					{ id: 42, path: `${import.meta.env.BASE_URL}exits/endspecificcontracts`, type: "link", active: false, selected: false, title: "End of Specific Task", roles: [ 'DEV', 'SA','AF' ]  },
 					{ id: 43, path: `${import.meta.env.BASE_URL}exits/mutuals`, type: "link", active: false, selected: false, title: "Mutual Aggrement", roles: [ 'DEV', 'SA','AF' ]  },
 					{ id: 44, path: `${import.meta.env.BASE_URL}elements/retrenchments`, type: "link", active: false, selected: false, title: "Retrenchment", roles: [ 'DEV', 'SA','AF' ]  },

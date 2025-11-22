@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Tag, Button, Space, Modal, message } from "antd";
-import { PlusOutlined, EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, EyeOutlined, EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined, RollbackOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
+import { getActiveRole, canPerformWorkflowAction, filterItemsByActiveRole, getAvailableActions } from "../../../utility/roleHelper";
 
 const ResignationList = ({ local_varaiable }) => {
   const userRoles = local_varaiable?.roles || [];
+  const activeRole = getActiveRole();
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [resignations, setResignations] = useState([]);
+  const [filteredResignations, setFilteredResignations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedResignation, setSelectedResignation] = useState(null);
@@ -19,6 +22,22 @@ const ResignationList = ({ local_varaiable }) => {
   useEffect(() => {
     fetchResignations();
   }, []);
+
+  useEffect(() => {
+    // Filter resignations based on active role
+    if (activeRole) {
+      console.log('Active role:', activeRole);
+      console.log('All resignations:', resignations);
+      console.log('Resignation stages:', resignations.map(r => ({ id: r.id, status: r.status, stage: r.stage })));
+      
+      const filtered = filterItemsByActiveRole(resignations, activeRole, 'stage');
+      setFilteredResignations(filtered);
+      console.log('Filtered resignations:', filtered.length, 'out of', resignations.length);
+      console.log('Filtered data:', filtered);
+    } else {
+      setFilteredResignations(resignations);
+    }
+  }, [resignations, activeRole]);
 
   const fetchResignations = async () => {
     setLoading(true);
@@ -133,6 +152,90 @@ const ResignationList = ({ local_varaiable }) => {
     setDeleteModalVisible(true);
   };
 
+  const handleWorkflowAction = async (resignation, action) => {
+    // Show confirmation dialog
+    const actionText = {
+      'review': 'Review',
+      'approve': 'Approve',
+      'reject': 'Reject',
+      'return': 'Return'
+    };
+
+    const result = await Swal.fire({
+      title: `${actionText[action]} Resignation`,
+      html: `
+        <p>Are you sure you want to ${action} the resignation for <strong>${resignation.employee_name}</strong>?</p>
+        <textarea 
+          id="workflow-comments" 
+          class="swal2-textarea" 
+          placeholder="Enter comments (optional)"
+          style="width: 100%; min-height: 100px; margin-top: 10px;"
+        ></textarea>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: actionText[action],
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#b2000a',
+      preConfirm: () => {
+        const comments = document.getElementById('workflow-comments').value;
+        return { comments };
+      }
+    });
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const token = sessionStorage.getItem('token');
+        const endpoint = `${apiBaseUrl}/employees/exits/resignation/${action}_resignation`;
+        
+        const response = await axios.post(
+          endpoint,
+          {
+            resignation_id: resignation.id,
+            comments: result.value.comments,
+            action: action
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status === 200) {
+          Swal.fire({
+            title: 'Success',
+            text: `Resignation ${action}ed successfully`,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#b2000a'
+          });
+          fetchResignations();
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: response.data.message || `Failed to ${action} resignation`,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#b2000a'
+          });
+        }
+      } catch (error) {
+        console.error(`Error ${action}ing resignation:`, error);
+        Swal.fire({
+          title: 'Error',
+          text: error.response?.data?.message || `Failed to ${action} resignation`,
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#b2000a'
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   const getStatusColor = (status) => {
     if (status === 'Draft') {
       return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
@@ -226,7 +329,7 @@ const ResignationList = ({ local_varaiable }) => {
                         </td>
                       </tr>
                     ) : (
-                      resignations?.map((resignation, index) => (
+                      filteredResignations?.map((resignation, index) => (
                         <tr key={index} className="">
                           <td>{index + 1}</td>
                           <td>
@@ -277,21 +380,78 @@ const ResignationList = ({ local_varaiable }) => {
                               </Link>
                             </div>
                             &nbsp;&nbsp;
-                            <Link 
-                              aria-label="anchor"
-                              className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
-                              to={`${import.meta.env.BASE_URL}exits/resignations/edit/${resignation.id}`}
-                            >
-                              <i className="ti ti-pencil"></i>
-                            </Link>
-                            &nbsp;&nbsp;
-                            <button
-                              type="button"
-                              className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
-                              onClick={() => handleDeleteClick(resignation)}
-                            >
-                              <i className="ti ti-trash"></i>
-                            </button>
+                            
+                            {/* Show Edit button only for Draft status */}
+                            {resignation.status === 'Draft' && (
+                              <>
+                                <Link 
+                                  aria-label="anchor"
+                                  className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+                                  to={`${import.meta.env.BASE_URL}exits/resignations/edit/${resignation.id}`}
+                                >
+                                  <i className="ti ti-pencil"></i>
+                                </Link>
+                                &nbsp;&nbsp;
+                              </>
+                            )}
+                            
+                            {/* Show Delete button only for Draft status and authorized roles */}
+                            {resignation.status === 'Draft' && (userRoles.includes('IR') || userRoles.includes('DEV')) && (
+                              <>
+                                <button
+                                  type="button"
+                                  className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
+                                  onClick={() => handleDeleteClick(resignation)}
+                                >
+                                  <i className="ti ti-trash"></i>
+                                </button>
+                                &nbsp;&nbsp;
+                              </>
+                            )}
+                            
+                            {/* Show workflow action buttons based on active role */}
+                            {activeRole && getAvailableActions(activeRole, resignation, 'stage').map(action => {
+                              if (action === 'review' || action === 'approve') {
+                                return (
+                                  <button
+                                    key={action}
+                                    type="button"
+                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
+                                    onClick={() => handleWorkflowAction(resignation, action)}
+                                    title={action === 'review' ? 'Review' : 'Approve'}
+                                  >
+                                    <i className={action === 'review' ? 'ti ti-check' : 'ti ti-check-double'}></i>
+                                  </button>
+                                );
+                              }
+                              if (action === 'reject') {
+                                return (
+                                  <button
+                                    key={action}
+                                    type="button"
+                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
+                                    onClick={() => handleWorkflowAction(resignation, 'reject')}
+                                    title="Reject"
+                                  >
+                                    <i className="ti ti-x"></i>
+                                  </button>
+                                );
+                              }
+                              if (action === 'return') {
+                                return (
+                                  <button
+                                    key={action}
+                                    type="button"
+                                    className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-warning"
+                                    onClick={() => handleWorkflowAction(resignation, 'return')}
+                                    title="Return"
+                                  >
+                                    <i className="ti ti-arrow-back"></i>
+                                  </button>
+                                );
+                              }
+                              return null;
+                            })}
                           </td>
                         </tr>
                       ))
