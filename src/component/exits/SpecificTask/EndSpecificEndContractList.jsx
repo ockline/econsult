@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Tag, Button, Space, Modal, message } from "antd";
 import { PlusOutlined, EyeOutlined, EditOutlined, DeleteOutlined, CheckOutlined, CloseOutlined, SendOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
-import { getActiveRole, canPerformWorkflowAction, filterItemsByActiveRole, getAvailableActions } from "../../../utility/roleHelper";
-import BulkInitiateEndContract from "./BulkInitiateEndContract";
+import { getActiveRole, canPerformWorkflowAction, filterItemsByActiveRole, getAvailableActions } from "/src/utility/roleHelper";
+import BulkInitiateEndContract from "../EndContract/BulkInitiateEndContract";
 
-const EndContractList = ({ local_varaiable }) => {
+const EndSpecificEndContractList = ({ local_varaiable }) => {
   const userRoles = local_varaiable?.roles || [];
   const activeRole = getActiveRole();
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const location = useLocation();
+  const navigate = useNavigate();
   const [endContracts, setEndContracts] = useState([]);
   const [filteredEndContracts, setFilteredEndContracts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,8 +27,12 @@ const EndContractList = ({ local_varaiable }) => {
     fetchEndContracts();
   }, []);
 
+  // Refetch when location changes (e.g., when navigating back from create/edit)
   useEffect(() => {
-    // Listen for role change events
+    fetchEndContracts();
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleRoleChange = () => {
       fetchEndContracts();
     };
@@ -36,13 +42,10 @@ const EndContractList = ({ local_varaiable }) => {
   }, []);
 
   useEffect(() => {
-    // Filter end contracts based on active role
-    if (activeRole) {
-      const filtered = filterItemsByActiveRole(endContracts, activeRole, 'stage');
-      setFilteredEndContracts(filtered);
-    } else {
-      setFilteredEndContracts(endContracts);
-    }
+    // For end specific contracts, show all items regardless of role
+    // The role filtering is handled at the action button level (Edit, Delete, etc.)
+    console.log('Setting filtered contracts:', endContracts.length, 'Active role:', activeRole);
+    setFilteredEndContracts(endContracts);
   }, [endContracts, activeRole]);
 
   const fetchEndContracts = async () => {
@@ -50,7 +53,7 @@ const EndContractList = ({ local_varaiable }) => {
     try {
       const token = sessionStorage.getItem('token');
       const response = await axios.get(
-        `${apiBaseUrl}/employees/exits/endcontract/show_all_endcontracts`,
+        `${apiBaseUrl}/employees/exits/end_specific_contract/show_all_end_specific_contracts`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -59,7 +62,9 @@ const EndContractList = ({ local_varaiable }) => {
       );
 
       if (response.data.status === 200) {
-        setEndContracts(response.data.data || []);
+        const specificOnly = response.data.data || [];
+        console.log('Fetched end specific contracts:', specificOnly);
+        setEndContracts(specificOnly);
       } else {
         console.error('Failed to fetch end contracts:', response.data.message);
         setEndContracts([]);
@@ -70,6 +75,36 @@ const EndContractList = ({ local_varaiable }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getStatusColor = (status) => {
+    if (status === 'Draft') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
+    } else if (status === 'Submitted') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+    } else if (status === 'Under Review') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80';
+    } else if (status === 'Approved') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+    } else if (status === 'Rejected') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-danger/80';
+    }
+    return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-gray/10 text-gray/80';
+  };
+
+  const getStageColor = (stage) => {
+    if (stage === 'Initiated') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-primary/10 text-primary/80';
+    } else if (stage === 'HR Review') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80';
+    } else if (stage === 'Manager Review') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
+    } else if (stage === 'Final Approval') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+    } else if (stage === 'Completed') {
+      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+    }
+    return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-gray/10 text-gray/80';
   };
 
   const handleDeleteClick = (endContract) => {
@@ -95,7 +130,7 @@ const EndContractList = ({ local_varaiable }) => {
         const token = sessionStorage.getItem('token');
         
         const response = await axios.post(
-          `${apiBaseUrl}/exits/endcontract/submit_endcontract/${endContract.id}`,
+          `${apiBaseUrl}/employees/exits/end_specific_contract/submit_end_specific_contract/${endContract.id}`,
           { action: 'submit' },
           {
             headers: {
@@ -136,8 +171,8 @@ const EndContractList = ({ local_varaiable }) => {
     setDeleting(true);
     try {
       const token = sessionStorage.getItem('token');
-      const response = await axios.delete(
-        `${apiBaseUrl}/employees/exits/endcontract/delete_endcontract/${selectedEndContract.id}`,
+        const response = await axios.delete(
+          `${apiBaseUrl}/employees/exits/end_specific_contract/delete_end_specific_contract/${selectedEndContract.id}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -162,7 +197,6 @@ const EndContractList = ({ local_varaiable }) => {
   };
 
   const handleWorkflowAction = async (endContract, action) => {
-    // Show confirmation dialog
     const actionText = {
       'approve': 'Approve',
       'reject': 'Reject'
@@ -232,53 +266,22 @@ const EndContractList = ({ local_varaiable }) => {
     }
   };
 
-  const getStatusColor = (status) => {
-    if (status === 'Draft') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
-    } else if (status === 'Submitted') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
-    } else if (status === 'Under Review') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80';
-    } else if (status === 'Approved') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
-    } else if (status === 'Rejected') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-danger/80';
-    }
-    return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-gray/10 text-gray/80';
-  };
-
-  const getStageColor = (stage) => {
-    if (stage === 'Initiated') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-primary/10 text-primary/80';
-    } else if (stage === 'HR Review') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80';
-    } else if (stage === 'Manager Review') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
-    } else if (stage === 'Final Approval') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
-    } else if (stage === 'Completed') {
-      return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
-    }
-    return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-gray/10 text-gray/80';
-  };
-
   return (
     <div>
-      {/* Breadcrumb and Header */}
       <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>End Contract Management</h1>
+        <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>End Specific Task Exit</h1>
 
         <ol className="flex items-center whitespace-nowrap min-w-0 text-end">
           <li className="text-sm">
-            <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}dashboards/normal`}>
+            <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}dashboards/normal`}>
               Home
               <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
-            </a>
+            </Link>
           </li>
           <li className="text-sm">
-            <a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}exits/endcontracts`}>
-              End Contract Management
-            </a>
+            <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}exits/end_specific_contracts`}>
+              End Specific Task Exit
+            </Link>
           </li>
         </ol>
       </div>
@@ -288,11 +291,11 @@ const EndContractList = ({ local_varaiable }) => {
           <div className="box">
             <div className="box-header">
               <div className="flex">
-                <h5 className="box-title my-auto">End of Contract Management</h5>
+                <h5 className="box-title my-auto">End of Specific Task Exit List</h5>
                 <div className="space-y-2" style={{ display: 'flex', gap: '10px' }}>
-                  <Link to={`${import.meta.env.BASE_URL}exits/endcontracts/add`}>
+                  <Link to={`${import.meta.env.BASE_URL}exits/end_specific_contracts/add`}>
                     <button type="button" className="ti-btn ti-btn-primary" style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}>
-                      <i className="ti ti-user-plus w-3.5 h-3.5"></i> Create End Contract
+                      <i className="ti ti-user-plus w-3.5 h-3.5"></i> Create End of Specific Task
                     </button>
                   </Link>
                   <button 
@@ -335,12 +338,23 @@ const EndContractList = ({ local_varaiable }) => {
                     ) : filteredEndContracts.length === 0 ? (
                       <tr>
                         <td colSpan="9" className="text-center py-4 text-gray-500" style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>
-                          No end contracts found
+                          No end specific task exits found
                         </td>
                       </tr>
                     ) : (
                       filteredEndContracts.map((endContract, index) => (
-                        <tr key={endContract.id}>
+                        <tr 
+                          key={endContract.id}
+                          onClick={(e) => {
+                            // Only navigate if clicking on the row itself, not on action buttons
+                            if (e.target.closest('td:last-child') || e.target.closest('button') || e.target.closest('a')) {
+                              return;
+                            }
+                            navigate(`${import.meta.env.BASE_URL}exits/end_specific_contracts/${endContract.id}`);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className="hover:bg-gray-50"
+                        >
                           <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>{index + 1}</td>
                           <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>
                             <div className="font-medium text-gray-900">
@@ -349,7 +363,9 @@ const EndContractList = ({ local_varaiable }) => {
                           </td>
                           <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>{endContract.department_name}</td>
                           <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>{endContract.job_title}</td>
-                          <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>{dayjs(endContract.end_date).format('DD MMM YYYY')}</td>
+                          <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>
+                            {endContract.end_date ? dayjs(endContract.end_date).format('DD MMM YYYY') : '-'}
+                          </td>
                           <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>
                             <span className={getStatusColor(endContract.status)}>
                               {endContract.status}
@@ -360,26 +376,34 @@ const EndContractList = ({ local_varaiable }) => {
                               {endContract.stage}
                             </span>
                           </td>
-                          <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>{dayjs(endContract.created_at).format('DD MMM YYYY')}</td>
                           <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>
-                            <Link to={`/exits/endcontracts/view/${endContract.id}`}>
-                              <button
-                                type="button"
-                                className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-info"
-                                title="View"
-                              >
-                                <i className="ti ti-eye"></i>
-                              </button>
-                            </Link>
+                            {dayjs(endContract.created_at).format('DD MMM YYYY')}
+                          </td>
+                          <td style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }} onClick={(e) => e.stopPropagation()}>
+                            {/* View button - always visible */}
+                            <button
+                              type="button"
+                              className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-info"
+                              title="View"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                navigate(`${import.meta.env.BASE_URL}exits/end_specific_contracts/${endContract.id}`);
+                              }}
+                            >
+                              <i className="ti ti-eye"></i>
+                            </button>
                             &nbsp;&nbsp;
                             
-                            {(endContract.status === 'Draft' && (activeRole?.includes('IR') || activeRole === 'DEV' || activeRole === 'ADMIN')) && (
+                            {/* Show Edit, Delete, and Submit buttons only when status is Draft */}
+                            {endContract.status === 'Draft' && (
                               <>
-                                <Link to={`/exits/endcontracts/edit/${endContract.id}`}>
+                                <Link to={`${import.meta.env.BASE_URL}exits/end_specific_contracts/edit/${endContract.id}`} onClick={(e) => e.stopPropagation()}>
                                   <button
                                     type="button"
                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary"
                                     title="Edit"
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     <i className="ti ti-pencil"></i>
                                   </button>
@@ -388,7 +412,7 @@ const EndContractList = ({ local_varaiable }) => {
                                 <button
                                   type="button"
                                   className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
-                                  onClick={() => handleDeleteClick(endContract)}
+                                  onClick={(e) => { e.stopPropagation(); handleDeleteClick(endContract); }}
                                   title="Delete"
                                 >
                                   <i className="ti ti-trash"></i>
@@ -397,7 +421,7 @@ const EndContractList = ({ local_varaiable }) => {
                                 <button
                                   type="button"
                                   className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
-                                  onClick={() => handleSubmitForReview(endContract)}
+                                  onClick={(e) => { e.stopPropagation(); handleSubmitForReview(endContract); }}
                                   title="Submit for Review"
                                 >
                                   <i className="ti ti-send"></i>
@@ -415,7 +439,7 @@ const EndContractList = ({ local_varaiable }) => {
                                     key={action}
                                     type="button"
                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
-                                    onClick={() => handleWorkflowAction(endContract, action)}
+                                    onClick={(e) => { e.stopPropagation(); handleWorkflowAction(endContract, action); }}
                                     title="Approve"
                                   >
                                     <i className="ti ti-check-double"></i>
@@ -428,7 +452,7 @@ const EndContractList = ({ local_varaiable }) => {
                                     key={action}
                                     type="button"
                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
-                                    onClick={() => handleWorkflowAction(endContract, 'reject')}
+                                    onClick={(e) => { e.stopPropagation(); handleWorkflowAction(endContract, 'reject'); }}
                                     title="Reject"
                                   >
                                     <i className="ti ti-x"></i>
@@ -488,4 +512,6 @@ const mapStateToProps = (state) => ({
   local_varaiable: state
 });
 
-export default connect(mapStateToProps)(EndContractList);
+export default connect(mapStateToProps)(EndSpecificEndContractList);
+
+

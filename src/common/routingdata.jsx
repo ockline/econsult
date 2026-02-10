@@ -65,6 +65,21 @@ import AddEndContract from "../component/exits/EndContract/AddEndContract";
 import EditEndContract from "../component/exits/EndContract/EditEndContract";
 import ViewEndContract from "../component/exits/EndContract/ViewEndContract";
 
+// End Specific Task Contract Management
+import AddEndSpecificTask from "../component/exits/SpecificTask/AddEndSpecificTask";
+import EditEndSpecificTask from "../component/exits/SpecificTask/EditEndSpecificTask";
+import ViewEndSpecificTask from "../component/exits/SpecificTask/ViewEndSpecificTask";
+
+// Mutual Agreement Management
+import AddMutualAgreement from "../component/exits/MutualAgrement/AddMutualAgreement";
+import EditMutualAgreement from "../component/exits/MutualAgrement/EditMutualAgreement";
+import ViewMutualAgreement from "../component/exits/MutualAgrement/ViewMutualAgreement";
+
+// Retrenchment Management
+import AddRetrenchment from "../component/exits/Retrenchement/AddRetrenchment";
+import EditRetrenchment from "../component/exits/Retrenchement/EditRetrenchment";
+import ViewRetrenchment from "../component/exits/Retrenchement/ViewRetrenchment";
+
 //Reduired Documentation step 2
 import DocumentDetails from "../component/employees/documentRequired/uploaded/uploaded";
 import UploadDocument from "../component/employees/documentRequired/uploadDocument/uploaddocument";
@@ -122,6 +137,9 @@ import DownloadFixedContract from "../component/contractManagement/templateContr
     
 //Specific Task //SpecificTaskContract
 import SpecificTaskContract from "../component/contractManagement/specific/specificTask/specific";
+import EndSpecificEndContractList from "../component/exits/SpecificTask/EndSpecificEndContractList";
+import MutualAgreementList from "../component/exits/MutualAgrement/MutualAgreementList";
+import RetrenchmentList from "../component/exits/Retrenchement/RetrenchmentList";
 import AddSpecificTask from "../component/contractManagement/specific/addSpecific/addspecifictask";
 import EditSpecificTask from "../component/contractManagement/specific/editSpecifictask/editspecific";
 import ShowSpecificTask from "../component/contractManagement/specific/showSpecifictask/showspecific";
@@ -387,6 +405,33 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}exits/endcontracts/add`, element: <AddEndContract />, roles: ['ALL'] },
     { path: `${import.meta.env.BASE_URL}exits/endcontracts/edit/:id`, element: <EditEndContract />, roles: ['ALL'] },
     { path: `${import.meta.env.BASE_URL}exits/endcontracts/view/:id`, element: <ViewEndContract />, roles: ['ALL'] },
+
+    // End Specific Task Exit Management (under exits)
+    { path: `${import.meta.env.BASE_URL}exits/end_specific_contracts`, element: <EndSpecificEndContractList />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/end_specific_contracts/add`, element: <AddEndSpecificTask />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/end_specific_contracts/add/:id`, element: <AddEndSpecificTask />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/end_specific_contracts/edit/:id`, element: <EditEndSpecificTask />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/end_specific_contracts/:id`, element: <ViewEndSpecificTask />, roles: ['ALL'] },
+    
+    // Mutual Agreement Management (under exits)
+    // Support both /mutuals and /mutual_agreements for backward compatibility
+    { path: `${import.meta.env.BASE_URL}exits/mutuals`, element: <MutualAgreementList />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutuals/add`, element: <AddMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutuals/add/:id`, element: <AddMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutuals/edit/:id`, element: <EditMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutuals/:id`, element: <ViewMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutual_agreements`, element: <MutualAgreementList />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutual_agreements/add`, element: <AddMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutual_agreements/add/:id`, element: <AddMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutual_agreements/edit/:id`, element: <EditMutualAgreement />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/mutual_agreements/:id`, element: <ViewMutualAgreement />, roles: ['ALL'] },
+    
+    // Retrenchment Management (under exits)
+    { path: `${import.meta.env.BASE_URL}exits/retrenchments`, element: <RetrenchmentList />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/retrenchments/add`, element: <AddRetrenchment />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/retrenchments/add/:id`, element: <AddRetrenchment />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/retrenchments/edit/:id`, element: <EditRetrenchment />, roles: ['ALL'] },
+    { path: `${import.meta.env.BASE_URL}exits/retrenchments/:id`, element: <ViewRetrenchment />, roles: ['ALL'] },
 
     //Social Record 
     { path: `${import.meta.env.BASE_URL}employees/socialrecords/details`, element: <SocialRecords /> },

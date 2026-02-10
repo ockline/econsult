@@ -134,9 +134,9 @@ export const MenuItems = [
 
 					{ id: 40, path: `${import.meta.env.BASE_URL}exits/resignations`, type: "link", active: false, selected: false, title: "Resignations", roles: [ 'DEV', 'SA','AF', 'ALL' ]  },
 					{ id: 41, path: `${import.meta.env.BASE_URL}exits/endcontracts`, type: "link", active: false, selected: false, title: "End of Contract", roles: [ 'DEV', 'SA','AF', 'ALL' ]  },
-					{ id: 42, path: `${import.meta.env.BASE_URL}exits/endspecificcontracts`, type: "link", active: false, selected: false, title: "End of Specific Task", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 42, path: `${import.meta.env.BASE_URL}exits/end_specific_contracts`, type: "link", active: false, selected: false, title: "End of Specific Task", roles: [ 'DEV', 'SA','AF' ]  },
 					{ id: 43, path: `${import.meta.env.BASE_URL}exits/mutuals`, type: "link", active: false, selected: false, title: "Mutual Aggrement", roles: [ 'DEV', 'SA','AF' ]  },
-					{ id: 44, path: `${import.meta.env.BASE_URL}elements/retrenchments`, type: "link", active: false, selected: false, title: "Retrenchment", roles: [ 'DEV', 'SA','AF' ]  },
+					{ id: 44, path: `${import.meta.env.BASE_URL}exits/retrenchments`, type: "link", active: false, selected: false, title: "Retrenchment", roles: [ 'DEV', 'SA','AF' ]  },
 				]
 			},
 			{ id: 45, icon: IndustrialRelationshipSvg, title: "Industrial Relationship", type: "sub", active: false, selected: false, children: [

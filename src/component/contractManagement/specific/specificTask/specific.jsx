@@ -6,53 +6,75 @@ import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { getActiveRole, filterItemsByActiveRole, getAvailableActions } from "/src/utility/roleHelper";
+import { connect } from "react-redux";
 
-const SpecificContract = () => {
-
-
+const SpecificContract = ({ local_varaiable }) => {
+    const userRoles = local_varaiable?.roles || [];
+    const activeRole = getActiveRole();
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
     let navigate = useNavigate();
     const [allData, setAllData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(false);
     const entriesPerPage = 10;
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const SpecificTaskContracts = await fetchSpecificTaskContract();
-                setAllData(SpecificTaskContracts);
-                console.log(SpecificTaskContracts);
-            } catch (error) {
-                console.error('Error fetching data:', error.message);
-            }
-        };
-
         fetchData();
     }, []);
 
-    function handleRemove(id) {
-        const newList = allData.filter((employee) => employee.id !== id);
-        setAllData(newList);
-    }
+    useEffect(() => {
+        // Listen for role change events
+        const handleRoleChange = () => {
+            fetchData();
+        };
+
+        window.addEventListener('roleChanged', handleRoleChange);
+        return () => window.removeEventListener('roleChanged', handleRoleChange);
+    }, []);
+
+    useEffect(() => {
+        // Filter data based on active role
+        if (activeRole) {
+            const filtered = filterItemsByActiveRole(allData, activeRole, 'stage');
+            setFilteredData(filtered);
+        } else {
+            setFilteredData(allData);
+        }
+    }, [allData, activeRole]);
+
+        const fetchData = async () => {
+        setLoading(true);
+            try {
+                const SpecificTaskContracts = await fetchSpecificTaskContract();
+            setAllData(SpecificTaskContracts || []);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            setAllData([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Filter data based on search query
-    const filteredData = allData.filter((employee) =>
-        employee.employee_name.toLowerCase().includes(searchQuery.toLowerCase())
+    const searchFilteredData = filteredData.filter((employee) =>
+        employee.employee_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        employee.employer?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     //*********************Pagination */
     const indexOfLastEntry = currentPage * entriesPerPage;
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
+    const currentEntries = searchFilteredData.slice(indexOfFirstEntry, indexOfLastEntry);
 
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    // console.log('apiBaseUrl:', apiBaseUrl);
-    function Style2(employee_id) {
-        Swal.fire({
+    const handleComplete = async (employee_id) => {
+        const result = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to edit this file again!",
             icon: 'warning',
@@ -60,47 +82,136 @@ const SpecificContract = () => {
             confirmButtonColor: '#5e76a6',
             cancelButtonColor: '#edcb63',
             confirmButtonText: 'Yes, Complete it!'
-        }).then((result) => {
+        });
+
             if (result.isConfirmed) {
-          const res = axios.post(
+            setLoading(true);
+            try {
+                const token = sessionStorage.getItem('token');
+                const response = await axios.post(
                     `${apiBaseUrl}/contracts/specific/complete_specific_task/${employee_id}`,
                     {},
                     {
                         headers: {
+                            'Authorization': `Bearer ${token}`,
                             'X-CSRF-TOKEN': 'form/multi-part',
                         },
                     }
-          )
-                // console.log('wazungu', res.data)
-                    .then(response => {
-                if (response.data.status === 404) {
-                    // Handle 404 status code
-                    Swal.fire(
-                        'Error',
-                        response.data.message,
-                        'error'
-                    );
-                } else {
-                    // Handle other responses
-                    Swal.fire(
-                        'Completed',
-                        'Your file has been Completed.',
-                        'success'
-                    );
-                }
-            })
-            .catch(error => {
-                // Handle errors if necessary
-                console.error('Error completing file:', error);
-                Swal.fire(
-                    'Error',
-                    'An error occurred while completing the file.',
-                    'error'
                 );
-               });
+
+                if (response.data.status === 404) {
+                    Swal.fire('Error', response.data.message, 'error');
+                } else {
+                    Swal.fire('Completed', 'Your file has been Completed.', 'success');
+                    fetchData();
+                }
+            } catch (error) {
+                console.error('Error completing file:', error);
+                Swal.fire('Error', 'An error occurred while completing the file.', 'error');
+            } finally {
+                setLoading(false);
             }
+        }
+    };
+
+    const handleWorkflowAction = async (contract, action) => {
+        const actionText = {
+            'approve': 'Approve',
+            'reject': 'Reject'
+        };
+
+        const result = await Swal.fire({
+            title: `${actionText[action]} Specific Task Contract`,
+            html: `<p>Are you sure you want to ${action} the contract for <strong>${contract.employee_name}</strong>?</p>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: actionText[action],
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: action === 'approve' ? '#52c41a' : '#ff4d4f',
         });
-    }
+
+        if (result.isConfirmed) {
+            setLoading(true);
+            try {
+                const token = sessionStorage.getItem('token');
+                // Note: Update this endpoint based on your backend API
+                const endpoint = `${apiBaseUrl}/contracts/specific/${action}_specific_task`;
+                
+                const response = await axios.post(
+                    endpoint,
+                    {
+                        contract_id: contract.id || contract.employee_id,
+                        action: action
+                    },
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (response.data.status === 200) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: `Contract ${action}ed successfully`,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#b2000a'
+                    });
+                    fetchData();
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: response.data.message || `Failed to ${action} contract`,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#b2000a'
+                    });
+                }
+            } catch (error) {
+                console.error(`Error ${action}ing contract:`, error);
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response?.data?.message || `Failed to ${action} contract`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#b2000a'
+                });
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+    const getStatusColor = (status) => {
+        if (status === 'Draft' || status === 'Not Attended') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
+        } else if (status === 'Submitted' || status === 'Attended') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+        } else if (status === 'Under Review') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80';
+        } else if (status === 'Approved') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+        } else if (status === 'Rejected') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-danger/15 text-danger/80';
+        }
+        return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-gray/10 text-gray/80';
+    };
+
+    const getStageColor = (stage) => {
+        if (stage === 'Initiated' || stage === 'Employee Details') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-primary/10 text-primary/80';
+        } else if (stage === 'HR Review' || stage === 'Supportive Document') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-info/10 text-info/80';
+        } else if (stage === 'Manager Review' || stage === 'Social Record') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-warning/10 text-warning/80';
+        } else if (stage === 'Final Approval' || stage === 'Contract') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+        } else if (stage === 'Completed' || stage === 'Person ID') {
+            return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-success/10 text-success/80';
+        }
+        return 'truncate whitespace-nowrap inline-block py-1 px-3 rounded-full text-xs font-medium bg-gray/10 text-gray/80';
+    };
 
 
     const [showToast, setShowToast] = useState(false);
@@ -136,9 +247,21 @@ const SpecificContract = () => {
                 </ol>
             </div>
             <div className="box">
-                <div className="box-header lg:flex lg:justify-between">
-                    <h5 className="box-title my-auto text-lg">Specifi Task Contract List </h5>
-                    {/* <Link to={`${import.meta.env.BASE_URL}employees/personal/add_employee`} className="ti-btn ti-btn-primary m-0 py-2"><i className="ti ti-address-book"></i>Add Social Records</Link> */}
+                <div className="box-header">
+                    <div className="flex">
+                        <h5 className="box-title my-auto">Specific Task Contract List</h5>
+                        <div className="space-y-2">
+                            <Link to={`${import.meta.env.BASE_URL}exits/end_specific_contracts/add`}>
+                                <button 
+                                    type="button" 
+                                    className="ti-btn ti-btn-primary" 
+                                    style={{ backgroundColor: '#b2000a', borderColor: '#b2000a' }}
+                                >
+                                    <i className="ti ti-user-plus w-3.5 h-3.5"></i> Initiate End of Specific Task
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
                 <div className="box-body">
 
@@ -235,64 +358,124 @@ const SpecificContract = () => {
                                             <td className="font-semibold">{employee.stages === 1 ? (<>{employee.contract_employee}</>) : employee.employee_name}
                                             </td>
                                             <td>{employee.stages === 1 ? (<>{employee.contract_created}</>) : employee.created_at} </td>
-                                            {employee.stages === 1 ? (<td> <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span> </td>) : (
+                                            {employee.stages === 1 ? (
+                                                <td>
+                                                    <span className={getStageColor('Person ID')}>Person ID</span>
+                                                </td>
+                                            ) : (
                                                 <td className="text-center font-bold">
                                                     {employee.progressive_stage === 1 ? (
-                                                        <span className="badge bg-warning text-white">Employee Details</span>
+                                                        <span className={getStageColor('Employee Details')}>Employee Details</span>
                                                     ) : employee.progressive_stage === 2 ? (
-                                                        <span className="badge bg-info text-white">Supportive Document</span>
+                                                        <span className={getStageColor('Supportive Document')}>Supportive Document</span>
                                                     ) : employee.progressive_stage === 3 ? (
-                                                        <span className="badge bg-secondary text-white">Social Record</span>
+                                                        <span className={getStageColor('Social Record')}>Social Record</span>
                                                     ) : employee.progressive_stage === 4 ? (
-                                                        <span className="badge bg-primary text-white">Induction Training</span>
+                                                        <span className={getStageColor('Induction Training')}>Induction Training</span>
                                                     ) : employee.progressive_stage === 5 ? (
-                                                        <span className="badge bg-purple-500 text-white">Contract</span>
+                                                        <span className={getStageColor('Contract')}>Contract</span>
                                                     ) : employee.progressive_stage === 6 ? (
-                                                        <span className="badge  text-white" style={{ backgroundColor: '#437243' }}>Person ID</span>
-                                                    ) : (<span className="badge bg-success text-white">Registration Completed</span>)
-
-                                                    }
+                                                        <span className={getStageColor('Person ID')}>Person ID</span>
+                                                    ) : (
+                                                        <span className={getStageColor('Completed')}>Registration Completed</span>
+                                                    )}
                                                 </td>
                                             )}
 
                                             <td>
                                                 {
                                                     employee.stages === 1 ? (
-                                                        <span className="badge bg-green-500 text-white" style={{ backgroundColor: '#08adf8' }}>Attended</span>
-                                                    ) : employee.stages === 0 ? (<span className="badge bg-secondary text-white">Partial attended</span>) : (<span className="badge bg-warning text-white">Not Attended</span>)
+                                                        <span className={getStatusColor('Attended')}>Attended</span>
+                                                    ) : employee.stages === 0 ? (
+                                                        <span className={getStatusColor('Partial attended')}>Partial attended</span>
+                                                    ) : (
+                                                        <span className={getStatusColor('Not Attended')}>Not Attended</span>
+                                                    )
                                                 }
                                             </td>
                                             <td className="text-center font-bold">
                                                 {
                                                     employee.stages === 1 ? (<></>) :
-                                                        employee.stages === 0 ? (<Link to="#" className="ti-btn ti-btn-success m-0 py-2 btn-sm" id="confirm-btn" onClick={() => Style2(employee.employee_id)}><i className="ti ti-corner-up-right-double"  ></i>Complete </Link>) : (<Link to={`${import.meta.env.BASE_URL}contracts/specific/add_specific_task/${employee.employee_id}`} className="ti-btn ti-btn-primary m-0 py-2 btn-sm"><i className="ti ti-layout-grid-add"></i>Add Specific</Link>
-                                                        )}</td>
+                                                        employee.stages === 0 ? (
+                                                            <Link 
+                                                                to="#" 
+                                                                className="ti-btn ti-btn-success m-0 py-2 btn-sm" 
+                                                                id="confirm-btn" 
+                                                                onClick={() => handleComplete(employee.employee_id)}
+                                                            >
+                                                                <i className="ti ti-corner-up-right-double"></i>Complete
+                                                            </Link>
+                                                        ) : (
+                                                            <Link 
+                                                                to={`${import.meta.env.BASE_URL}contracts/specific/add_specific_task/${employee.employee_id}`} 
+                                                                className="ti-btn ti-btn-primary m-0 py-2 btn-sm"
+                                                            >
+                                                                <i className="ti ti-layout-grid-add"></i>Add Specific
+                                                            </Link>
+                                                        )
+                                                }
+                                            </td>
                                             <td className="text-end font-medium">
-                                                {/* Adjust the links according to your routes and logic */}
                                                 <Link
                                                     aria-label="anchor"
                                                     to={`${import.meta.env.BASE_URL}contracts/specific/show_specific_task/` + employee.employee_id}
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
-                                                > <i className="ti ti-eye"></i>
+                                                    title="View"
+                                                >
+                                                    <i className="ti ti-eye"></i>
                                                 </Link>
+                                                &nbsp;&nbsp;
                                               
+                                                {(employee.stages !== 1 && (activeRole?.includes('IR') || activeRole === 'DEV' || activeRole === 'ADMIN')) && (
+                                                    <>
                                                 <button
                                                     aria-label="anchor"
                                                     className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
                                                     onClick={() => {
                                                         if (employee.stages === 1) {
-                                                            // Show custom toast if employee.stage is 1
                                                             handleCustomToast();
                                                         } else {
-                                                            // Navigate to the edit link
                                                             navigate(`${import.meta.env.BASE_URL}contracts/specific/edit_specific_task/` + employee.employee_id);
                                                         }
                                                     }}
+                                                            title="Edit"
                                                 >
                                                     <i className="ti ti-pencil"></i>
                                                 </button>
+                                                        &nbsp;&nbsp;
+                                                    </>
+                                                )}
 
-
+                                                {/* Show workflow action buttons based on active role */}
+                                                {activeRole && getAvailableActions(activeRole, employee, 'stage').map(action => {
+                                                    if (action === 'approve') {
+                                                        return (
+                                                            <button
+                                                                key={action}
+                                                                type="button"
+                                                                className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-success"
+                                                                onClick={() => handleWorkflowAction(employee, action)}
+                                                                title="Approve"
+                                                            >
+                                                                <i className="ti ti-check-double"></i>
+                                                            </button>
+                                                        );
+                                                    }
+                                                    if (action === 'reject') {
+                                                        return (
+                                                            <button
+                                                                key={action}
+                                                                type="button"
+                                                                className="w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
+                                                                onClick={() => handleWorkflowAction(employee, 'reject')}
+                                                                title="Reject"
+                                                            >
+                                                                <i className="ti ti-x"></i>
+                                                            </button>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })}
                                             </td>
                                         </tr>
                                     ))}
@@ -305,7 +488,7 @@ const SpecificContract = () => {
                             <li><Link className="page-link" to="#" onClick={() => paginate(currentPage - 1)}>
                                 Prev
                             </Link></li>
-                            {[...Array(Math.ceil(filteredData.length / entriesPerPage)).keys()].map(number => (
+                            {[...Array(Math.ceil(searchFilteredData.length / entriesPerPage)).keys()].map(number => (
                                 <li key={number + 1}>
                                     <Link className={`page-link ${currentPage === number + 1 ? 'active' : ''}`} to="#" onClick={() => paginate(number + 1)}>
                                         {number + 1}
@@ -322,4 +505,8 @@ const SpecificContract = () => {
         </div>
     );
 };
-export default SpecificContract;
+const mapStateToProps = (state) => ({
+    local_varaiable: state
+});
+
+export default connect(mapStateToProps)(SpecificContract);
