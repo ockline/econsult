@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Link, useParams } from 'react-router-dom';
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Filemanagerlistdata } from "/src/component/advancedUi/filemanager/filemanagermain/reactfiledata";
@@ -60,13 +60,57 @@ useEffect(() => {
         });
 }, [id]);
 
-    const handlePreviewClick = (description) => {
-        // Assuming the documents are stored in a specific folder on the server      
-        const absoluteUrl = `${docBaseUrl}/employees/documentation/${id}/${description}`;
-        //   console.log('absoluteUrl', absoluteUrl);
-        // Update the state with the document URL
-        setDocumentUrl(absoluteUrl);
+    const [previewModalOpen, setPreviewModalOpen] = useState(false);
+    const [previewLoading, setPreviewLoading] = useState(false);
+    const [previewError, setPreviewError] = useState('');
+    const [previewDocName, setPreviewDocName] = useState('');
+    const blobUrlRef = useRef(null);
 
+    const handlePreviewClick = (e, fileId, docName) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (blobUrlRef.current) {
+            URL.revokeObjectURL(blobUrlRef.current);
+            blobUrlRef.current = null;
+        }
+        setPreviewDocName(docName ? String(docName).toUpperCase() : 'DOCUMENT');
+        setPreviewModalOpen(true);
+        setDocumentUrl('');
+        setPreviewError('');
+        setPreviewLoading(true);
+        const previewUrl = `${apiBaseUrl}/employees/document/preview_file/${id}/${fileId}`;
+        axios.get(previewUrl)
+            .then((res) => {
+                const { content: base64, mime } = res.data || {};
+                if (!base64) {
+                    setPreviewError('Invalid preview response.');
+                    return;
+                }
+                const binary = atob(base64);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                const blob = new Blob([bytes], { type: mime || 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                blobUrlRef.current = url;
+                setDocumentUrl(url);
+                setPreviewError('');
+            })
+            .catch((err) => {
+                setPreviewError(err.response?.status === 404 ? 'Document not found.' : 'Failed to load preview.');
+                setDocumentUrl('');
+            })
+            .finally(() => setPreviewLoading(false));
+    };
+
+    const closePreviewModal = () => {
+        setPreviewModalOpen(false);
+        if (blobUrlRef.current) {
+            URL.revokeObjectURL(blobUrlRef.current);
+            blobUrlRef.current = null;
+        }
+        setDocumentUrl('');
+        setPreviewError('');
+        setPreviewDocName('');
     };
 	
 	
@@ -154,10 +198,15 @@ useEffect(() => {
 						<div className="box">
 							<div className={`box-body ${items.class}`}>
 								<div className="relative mx-auto">
-									<Link to={`${import.meta.env.BASE_URL}employees/document/file_details/${id}/${items.id}`}  onClick={() => handlePreviewClick(items.description)} >
-										<img className={`mx-auto ${items.class3}`} src={ALLImages('jpg64')} alt="img" />
-										
-									</Link>
+									<div
+										role="button"
+										tabIndex={0}
+										onClick={(e) => handlePreviewClick(e, items.id, items.doc_name)}
+										onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePreviewClick(e, items.id, items.doc_name); }}
+										className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary rounded"
+									>
+										<img className={`mx-auto ${items.class3}`} src={ALLImages('jpg64')} alt={items.doc_name || 'Document'} />
+									</div>
 							
 									{/* <div className={items.class2}>
 										<button aria-label="button" id="hs-dropdown-custom-icon-trigger1" type="button"
@@ -189,6 +238,40 @@ useEffect(() => {
 					</div>
 				))}
 			</div>
+
+			{/* Preview modal with iframe */}
+			{previewModalOpen && (
+				<div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-black/60" onClick={closePreviewModal}>
+					<div className="relative w-full max-w-7xl h-[92vh] bg-white dark:bg-white/10 rounded-lg shadow-xl flex flex-col" onClick={(e) => e.stopPropagation()}>
+						<div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-white/10">
+							<span className="text-base font-semibold text-gray-800 dark:text-white/90 uppercase tracking-wide">{previewDocName || 'DOCUMENT'}</span>
+							<button
+								type="button"
+								onClick={closePreviewModal}
+								className="p-2 rounded hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-white/80 focus:outline-none focus:ring-2 focus:ring-primary"
+								aria-label="Close preview"
+							>
+								<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+							</button>
+						</div>
+						<div className="flex-1 min-h-0 p-2 flex items-center justify-center bg-gray-100 dark:bg-black/20 rounded">
+							{previewLoading && (
+								<p className="text-gray-500 dark:text-white/70">Loading preview...</p>
+							)}
+							{previewError && (
+								<p className="text-danger">{previewError}</p>
+							)}
+							{!previewLoading && !previewError && documentUrl && (
+								<iframe
+									title="Uploaded document preview"
+									src={documentUrl}
+									className="w-full h-full rounded border-0"
+								/>
+							)}
+						</div>
+					</div>
+				</div>
+			)}
 		</Fragment>
 	);
 };

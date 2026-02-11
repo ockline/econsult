@@ -99,6 +99,11 @@ const ViewMutualAgreement = () => {
     }
   };
 
+  const getExitTypePath = (exitType) => {
+    const map = { end_specific_contract: 'end_specific_contract', mutual_agreement: 'mutual_agreement', retrenchment: 'retrenchment' };
+    return map[exitType] || 'mutual_agreement';
+  };
+
   const hasUserActed = () => {
     if (!endContract?.workflows || !activeRole) return false;
     const currentUserId = sessionStorage.getItem('userId') || '1';
@@ -280,7 +285,9 @@ const ViewMutualAgreement = () => {
     
     try {
       const token = sessionStorage.getItem('token');
-      const attachmentUrl = `${apiBaseUrl}/employees/exits/mutual_agreement/get_attachment_file/${endContract.id}/${attachment.id}`;
+      const endContractId = attachment.end_contract_id ?? endContract?.id;
+      const exitPath = getExitTypePath(attachment.exit_type);
+      const attachmentUrl = `${apiBaseUrl}/employees/exits/${exitPath}/get_attachment_file/${endContractId}/${attachment.id}`;
       
       // Fetch the file as base64 encoded data
       const response = await axios.get(attachmentUrl, {
@@ -781,6 +788,12 @@ const ViewMutualAgreement = () => {
                           <tr>
                             <th>S/No</th>
                             <th scope="col" className="!min-w-[13rem]">Document Name</th>
+                            {employeeDocuments?.[0]?.employee_name != null && (
+                              <>
+                                <th scope="col">Employee</th>
+                                <th scope="col">Exit Type</th>
+                              </>
+                            )}
                             <th scope="col">Modified Date</th>
                             <th scope="col" className="!text-end">Action</th>
                           </tr>
@@ -791,6 +804,12 @@ const ViewMutualAgreement = () => {
                               <tr key={document.id || index}>
                                 <td>{index + 1}</td>
                                 <td className="font-medium">{document.document_name || document.doc_name || 'Untitled Document'}</td>
+                                {employeeDocuments[0]?.employee_name != null && (
+                                  <>
+                                    <td>{document.employee_name || '—'}</td>
+                                    <td>{document.exit_type ? document.exit_type.replace(/_/g, ' ') : '—'}</td>
+                                  </>
+                                )}
                                 <td>{document.created_at ? dayjs(document.created_at).format('DD MMM YYYY') : (document.doc_modified || 'N/A')}</td>
                                 <td>
                                   <button
@@ -805,7 +824,7 @@ const ViewMutualAgreement = () => {
                             ))
                           ) : (
                             <tr>
-                              <td colSpan="4" className="text-center py-4">
+                              <td colSpan={employeeDocuments?.length > 0 && employeeDocuments[0]?.employee_name != null ? 6 : 4} className="text-center py-4">
                                 No documents available
                               </td>
                             </tr>

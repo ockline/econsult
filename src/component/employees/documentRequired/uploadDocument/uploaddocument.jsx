@@ -27,6 +27,9 @@ const UploadDocument = () => {
         osha_checkup: null,
         combined_certificate: null,
         bank_detail_doc: null,
+        fitness_to_work_declaration: null,
+        tax_identification_number: null,
+        consent_letter: null,
         error_list: [],
 
     });
@@ -144,6 +147,9 @@ const UploadDocument = () => {
             osha_checkup: formData?.osha_checkup,
             combined_certificate: formData?.combined_certificate,
             bank_detail_doc: formData?.bank_detail_doc,
+            fitness_to_work_declaration: formData?.fitness_to_work_declaration,
+            tax_identification_number: formData?.tax_identification_number,
+            consent_letter: formData?.consent_letter,
         };
         try {
             const resp = await axios.post(`${apiBaseUrl}/employees/document/upload_document/${id}`, DataToSend, {
@@ -183,11 +189,12 @@ const UploadDocument = () => {
                 // Additional logic or state updates after successful update
             } else if (resp.data.status === 200) {
                 swal({
-                    title: 'New Employee Required Document uploaded successfully',
+                    title: 'Success',
                     text: resp.data.message,
                     icon: 'success',
                     button: 'ok',
                     closeOnClickOutside: false, // Ensure that the modal doesn't close when clicking outside
+                    customClass: 'swal-upload-msg-nowrap',
                 }).then(() => {
                     navigate('/employees/document/uploaded');
                 });
@@ -205,7 +212,7 @@ const UploadDocument = () => {
 
     return (
         <div>
-
+            <style>{`.swal-upload-msg-nowrap .sa-modal, .swal-upload-msg-nowrap .swal2-html-container, .swal-upload-msg-nowrap .sa-text, .swal-upload-msg-nowrap [class*="content"] { white-space: nowrap !important; }`}</style>
             <div className="box-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1 style={{ fontWeight: 'bold', fontSize: '2em', margin: 0 }}>New Employee Required Documentation</h1>
 
@@ -318,6 +325,27 @@ const UploadDocument = () => {
                                 <input type="file" accept=".pdf" name="osha_checkup" id="small-file-input-12"
                                     onChange={(e) => handleFileInputChange('osha_checkup', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
                                 <span className="text-danger">{formData.error_list.osha_checkup}</span>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">Fitness to Work Declaration (max 2MB)</label>
+                                <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Declaration of fitness to work</span>
+                                <input type="file" accept=".pdf" name="fitness_to_work_declaration" id="small-file-input-fitness"
+                                    onChange={(e) => handleFileInputChange('fitness_to_work_declaration', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                <span className="text-danger">{formData.error_list?.fitness_to_work_declaration}</span>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">Tax Identification Number (max 2MB)</label>
+                                <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">TIN certificate or proof of TIN registration</span>
+                                <input type="file" accept=".pdf" name="tax_identification_number" id="small-file-input-tin"
+                                    onChange={(e) => handleFileInputChange('tax_identification_number', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                <span className="text-danger">{formData.error_list?.tax_identification_number}</span>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="ti-form-label mb-0 font-bold text-lg">Consent Letter (max 2MB)</label>
+                                <span className="block text-xs text-gray-700 dark:text-white/80 !font-normal my-auto">Signed consent letter for data/employment</span>
+                                <input type="file" accept=".pdf" name="consent_letter" id="small-file-input-consent"
+                                    onChange={(e) => handleFileInputChange('consent_letter', e.target.files)} className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-2 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" />
+                                <span className="text-danger">{formData.error_list?.consent_letter}</span>
                             </div>
                         </div>
 

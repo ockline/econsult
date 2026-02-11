@@ -7911,4 +7911,57 @@ textarea, select {
 }
 
 /* End Background Image Styles */
+
+/* Active menu item - only the current page link gets background (not parent submenu) */
+.app-sidebar .side-menu__item.active,
+.app-sidebar .side-menu__item:active,
+.app-sidebar .slide-menu.child1 .side-menu__item.active,
+.app-sidebar .slide-menu.child2 .side-menu__item.active,
+.app-sidebar .slide-menu.child3 .side-menu__item.active {
+  background-color: #FAC3B9 !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+.app-sidebar .side-menu__item.active .side-menu__icon,
+.app-sidebar .side-menu__item.active .side-menu__label,
+.app-sidebar .slide-menu.child1 .side-menu__item.active .side-menu__icon,
+.app-sidebar .slide-menu.child1 .side-menu__item.active .side-menu__label,
+.app-sidebar .slide-menu.child2 .side-menu__item.active .side-menu__icon,
+.app-sidebar .slide-menu.child2 .side-menu__item.active .side-menu__label,
+.app-sidebar .slide-menu.child3 .side-menu__item.active .side-menu__icon,
+.app-sidebar .slide-menu.child3 .side-menu__item.active .side-menu__label {
+  color: #000 !important;
+  fill: #000 !important;
+  font-weight: 700 !important;
+}
+.app-sidebar .slide.has-sub > .side-menu__item.active,
+.app-sidebar .slide.has-sub > .side-menu__item:active {
+  background-color: transparent !important;
+}
+.dark .app-sidebar .side-menu__item.active,
+.dark .app-sidebar .side-menu__item:active,
+.dark .app-sidebar .slide-menu.child1 .side-menu__item.active,
+.dark .app-sidebar .slide-menu.child2 .side-menu__item.active,
+.dark .app-sidebar .slide-menu.child3 .side-menu__item.active {
+  background-color: #FAC3B9 !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+.dark .app-sidebar .side-menu__item.active .side-menu__icon,
+.dark .app-sidebar .side-menu__item.active .side-menu__label,
+.dark .app-sidebar .slide-menu.child1 .side-menu__item.active .side-menu__icon,
+.dark .app-sidebar .slide-menu.child1 .side-menu__item.active .side-menu__label,
+.dark .app-sidebar .slide-menu.child2 .side-menu__item.active .side-menu__icon,
+.dark .app-sidebar .slide-menu.child2 .side-menu__item.active .side-menu__label,
+.dark .app-sidebar .slide-menu.child3 .side-menu__item.active .side-menu__icon,
+.dark .app-sidebar .slide-menu.child3 .side-menu__item.active .side-menu__label {
+  color: #000 !important;
+  fill: #000 !important;
+  font-weight: 700 !important;
+}
+.dark .app-sidebar .slide.has-sub > .side-menu__item.active,
+.dark .app-sidebar .slide.has-sub > .side-menu__item:active {
+  background-color: transparent !important;
+}
+
 /*# sourceMappingURL=style.css.map */
