@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Link  } from "react-router-dom";
+import TableLoader from "/src/common/TableLoader";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -11,14 +12,18 @@ const Index = () => {
 	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
 	 const [sickLeave, setSickLeave] = useState([]);
+	 const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSickLeave = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_sick_leave`);
         setSickLeave(res.data.sick_leave);
       } catch (error) {
         throw new Error('Failed to fetch sick leave: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -210,7 +215,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={10} />
+										) : (
 											sickLeave?.map((sick, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
@@ -291,7 +298,7 @@ function Style1() {
 										</tr>
 										)
 										)
-										}
+										)}
 										
 									</tbody>
 								</table>

@@ -5,20 +5,25 @@ import { Link } from "react-router-dom";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import axios from "axios";
  import Swal from "sweetalert2";
+import TableLoader from "../../../common/TableLoader";
 
 const Registrations = () => {
 	
 	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
 	 const [employers, setEmployers] = useState([]);
+	 const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchEmployers = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${apiBaseUrl}/employers/show_all_employer`);
         setEmployers(res.data.employers);
       } catch (error) {
         throw new Error('Failed to fetch employers: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -207,7 +212,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={7} />
+										) : (
 											employers?.map((employer, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
@@ -291,7 +298,7 @@ function Style1() {
 										</tr>
 										)
 										)
-										}
+										)}
 										
 									</tbody>
 								</table>

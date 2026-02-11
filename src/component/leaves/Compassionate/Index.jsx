@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import TableLoader from "/src/common/TableLoader";
 import axios from "axios";
  import Swal from "sweetalert2";
 
@@ -8,15 +9,19 @@ const Index = () => {
 	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
 	const [compassionateLeave, setCompassionateLeave] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	let navigate = useNavigate();
 
   useEffect(() => {
     const fetchCompassionateLeave = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_compassionate_leave`);
         setCompassionateLeave(res.data.compassionate);
       } catch (error) {
         throw new Error('Failed to fetch compassionate leave: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -208,7 +213,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={10} />
+										) : (
 											compassionateLeave?.map((compassionate, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
@@ -288,7 +295,7 @@ function Style1() {
 										</tr>
 										)
 										)
-										}
+										)}
 										
 									</tbody>
 								</table>

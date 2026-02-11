@@ -322,9 +322,12 @@ const ResignationList = ({ local_varaiable }) => {
                   <tbody className="">
                     {loading ? (
                       <tr>
-                        <td colSpan="10" className="text-center py-8">
-                          <div className="flex justify-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                        <td colSpan="10" className="text-center align-middle py-12" style={{ minHeight: '200px', verticalAlign: 'middle' }}>
+                          <div className="relative flex items-center justify-center w-full">
+                            <div className="ti-spinner text-danger" role="status" aria-label="loading" style={{ fontSize: '48px' }}>
+                              <span className="sr-only">Loading...</span>
+                            </div>
+                            <span className="absolute inset-0 flex items-center justify-center text-danger font-semibold text-xs uppercase tracking-wider">SOCRATE</span>
                           </div>
                         </td>
                       </tr>

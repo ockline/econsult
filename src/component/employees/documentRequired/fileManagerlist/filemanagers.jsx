@@ -4,6 +4,7 @@ import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Filemanagerlistdata } from "/src/component/advancedUi/filemanager/filemanagermain/reactfiledata";
 import axios from "axios";
 import ALLImages from "../../../../common/imagesdata";
+import DataLoader from "../../../../common/DataLoader";
 
 
 
@@ -34,16 +35,15 @@ const FileManagers = () => {
 	
 	const { id, file_id } = useParams();
 	
+	const [isLoading, setIsLoading] = useState(true);
+
 	useEffect(() => {
-	
-		 axios.get(`${apiBaseUrl}/employees/document/get_uploaded_list/${id}/`).then((res) =>{
-			 setEmployeeUploadedFiles(res.data.employee_document)
-			//  console.log('fileee',res.data.employee_document)
-	     })
-            .catch((error) => {
-                console.error('Error fetching candidate documents:', error);
-            });
-    }, [id]);
+		setIsLoading(true);
+		axios.get(`${apiBaseUrl}/employees/document/get_uploaded_list/${id}/`)
+			.then((res) => setEmployeeUploadedFiles(res.data.employee_document))
+			.catch((error) => console.error('Error fetching candidate documents:', error))
+			.finally(() => setIsLoading(false));
+	}, [id]);
 
 	  const [employeeFile, setEmployeeFiles] = useState([]);
     const [documentUrl, setDocumentUrl] = useState('');
@@ -51,19 +51,15 @@ const FileManagers = () => {
 
 useEffect(() => {
     axios.get(`${apiBaseUrl}/employees/document/get_employee_files/${id}/${file_id}`)
-        .then((res) => {
-            setEmployeeFiles(res.data.employee_file);
-            // console.log(res.data.employee_file);
-        })
-        .catch((error) => {
-            console.error('Error fetching employee documents:', error);
-        });
-}, [id]);
+        .then((res) => setEmployeeFiles(res.data.employee_file))
+        .catch((error) => console.error('Error fetching employee documents:', error));
+}, [id, file_id]);
 
     const [previewModalOpen, setPreviewModalOpen] = useState(false);
     const [previewLoading, setPreviewLoading] = useState(false);
     const [previewError, setPreviewError] = useState('');
     const [previewDocName, setPreviewDocName] = useState('');
+    const [previewMime, setPreviewMime] = useState('');
     const blobUrlRef = useRef(null);
 
     const handlePreviewClick = (e, fileId, docName) => {
@@ -76,6 +72,7 @@ useEffect(() => {
         setPreviewDocName(docName ? String(docName).toUpperCase() : 'DOCUMENT');
         setPreviewModalOpen(true);
         setDocumentUrl('');
+        setPreviewMime('');
         setPreviewError('');
         setPreviewLoading(true);
         const previewUrl = `${apiBaseUrl}/employees/document/preview_file/${id}/${fileId}`;
@@ -90,9 +87,12 @@ useEffect(() => {
                 const bytes = new Uint8Array(binary.length);
                 for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
                 const blob = new Blob([bytes], { type: mime || 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                blobUrlRef.current = url;
-                setDocumentUrl(url);
+                const baseUrl = URL.createObjectURL(blob);
+                setPreviewMime(mime || '');
+                blobUrlRef.current = baseUrl;
+                // For PDFs: add zoom=100 so it opens centered at 100% instead of zoomed out
+                const displayUrl = (mime || '').toLowerCase().includes('pdf') ? `${baseUrl}#zoom=100` : baseUrl;
+                setDocumentUrl(displayUrl);
                 setPreviewError('');
             })
             .catch((err) => {
@@ -111,6 +111,11 @@ useEffect(() => {
         setDocumentUrl('');
         setPreviewError('');
         setPreviewDocName('');
+        setPreviewMime('');
+    };
+
+    const isImagePreview = (mime) => {
+        return mime && /^image\//.test(mime);
     };
 	
 	
@@ -192,8 +197,12 @@ useEffect(() => {
 			</div>
 
 			<div className="grid grid-cols-12 gap-x-6">
-
-				{employeeFiles.map((items) => (
+				{isLoading ? (
+					<div className="col-span-12 flex justify-center items-center min-h-[300px]">
+						<DataLoader />
+					</div>
+				) : (
+				employeeFiles.map((items) => (
 					<div className="col-span-12 sm:col-span-6 md:!col-span-4 xxl:!col-span-2" key={items.id}>
 						<div className="box">
 							<div className={`box-body ${items.class}`}>
@@ -234,9 +243,10 @@ useEffect(() => {
 									{/* <div className="my-auto">{items.viewer}</div> */}
 								</div>
 							</div>
-						</div>
 					</div>
-				))}
+				</div>
+				))
+				)}
 			</div>
 
 			{/* Preview modal with iframe */}
@@ -254,7 +264,7 @@ useEffect(() => {
 								<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
 							</button>
 						</div>
-						<div className="flex-1 min-h-0 p-2 flex items-center justify-center bg-gray-100 dark:bg-black/20 rounded">
+						<div className="flex-1 min-h-0 p-2 flex items-center justify-center bg-gray-100 dark:bg-black/20 rounded overflow-auto">
 							{previewLoading && (
 								<p className="text-gray-500 dark:text-white/70">Loading preview...</p>
 							)}
@@ -262,11 +272,21 @@ useEffect(() => {
 								<p className="text-danger">{previewError}</p>
 							)}
 							{!previewLoading && !previewError && documentUrl && (
-								<iframe
-									title="Uploaded document preview"
-									src={documentUrl}
-									className="w-full h-full rounded border-0"
-								/>
+								isImagePreview(previewMime) ? (
+									<img
+										src={documentUrl}
+										alt={previewDocName}
+										className="max-w-full max-h-full object-contain mx-auto"
+										style={{ display: 'block' }}
+									/>
+								) : (
+									<iframe
+										title="Uploaded document preview"
+										src={documentUrl}
+										className="w-full h-full rounded border-0 min-w-0 flex-1"
+										style={{ margin: '0 auto' }}
+									/>
+								)
 							)}
 						</div>
 					</div>

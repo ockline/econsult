@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import TableLoader from "/src/common/TableLoader";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -11,15 +12,19 @@ const Index = () => {
 	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
 	const [misconductData, setMisconductData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	let navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllMisconducts = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${apiBaseUrl}/industrial_relationship/retrieve_all_misconduct`);
         setMisconductData(res.data.misconduct);
       } catch (error) {
         throw new Error('Failed to fetch annual leave: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -211,7 +216,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={8} />
+										) : (
 											misconductData?.map((misconduct, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
@@ -292,7 +299,7 @@ function Style1() {
 										</tr>
 										)
 										)
-										}
+										)}
 										
 									</tbody>
 								</table>

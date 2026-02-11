@@ -322,9 +322,12 @@ const RetrenchmentList = ({ local_varaiable }) => {
                   <tbody>
                     {loading ? (
                       <tr>
-                        <td colSpan="9" className="text-center py-4" style={{ border: '1px solid #e5e7eb', padding: '12px 8px' }}>
-                          <div className="ti-spinner text-primary" role="status" aria-label="loading">
-                            <span className="sr-only">Loading...</span>
+                        <td colSpan="9" className="text-center align-middle" style={{ border: '1px solid #e5e7eb', padding: '12px 8px', minHeight: '200px', verticalAlign: 'middle' }}>
+                          <div className="relative flex items-center justify-center w-full py-12">
+                            <div className="ti-spinner text-danger" role="status" aria-label="loading" style={{ fontSize: '48px' }}>
+                              <span className="sr-only">Loading...</span>
+                            </div>
+                            <span className="absolute inset-0 flex items-center justify-center text-danger font-semibold text-xs uppercase tracking-wider">SOCRATE</span>
                           </div>
                         </td>
                       </tr>

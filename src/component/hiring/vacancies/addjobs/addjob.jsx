@@ -303,16 +303,13 @@ const AddJob = () => {
 
 				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
 					<li className="text-sm">
-					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`}>
-						Home
-						<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
-					</a>
+						<Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`}>
+							Home
+							<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+						</Link>
 					</li>
 					<li className="text-sm">
-					<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/add_job/`}>
-						Add Job Application
-						{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
-					</a>
+						<span className="flex items-center text-gray-500 dark:text-white/70" aria-current="page">Add Job</span>
 					</li>
 				</ol>
 				</div>

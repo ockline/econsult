@@ -5,6 +5,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import axios from "axios";
 import Swal from "sweetalert2";
+import TableLoader from "../../../common/TableLoader";
 
 
 const NormalAttendance = () => {
@@ -16,15 +17,19 @@ const NormalAttendance = () => {
 	const [allData, setAllData] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [filteredData, setFilteredData] = useState([]);
+	const [isLoadingData, setIsLoadingData] = useState(true);
 
 
 	useEffect(() => {
 		const fetchAttendance = async () => {
+			setIsLoadingData(true);
 			try {
 				const res = await axios.get(`${apiBaseUrl}/attendances/retrieve_monthly_attendance`);
 				setAllData(res.data.attendance);
 			} catch (error) {
 				throw new Error('Failed to fetch annual leave: ' + error.message);
+			} finally {
+				setIsLoadingData(false);
 			}
 		};
 
@@ -440,7 +445,10 @@ const NormalAttendance = () => {
 										</tr>
 									</thead>
 									<tbody>
-										{allData.map((attend, index) => (
+										{isLoadingData ? (
+											<TableLoader colSpan={8} />
+										) : (
+										allData.map((attend, index) => (
 											<tr className="invoice-list" key={Math.random()}>
 												<td className="">
 													<div className="flex items-center h-5 invoice-checkbox justify-center">
@@ -493,7 +501,8 @@ const NormalAttendance = () => {
 												</div> */}
 												</td>
 											</tr>
-										))}
+										))
+										)}
 									</tbody>
 								</table>
 							</div>

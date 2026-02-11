@@ -8,6 +8,7 @@ import { HomeGallery } from "/src/component/advancedUi/filemanager/filedetails/f
 import { TagsInput } from "react-tag-input-component";
 import { Helmet } from "react-helmet";
 import axios from "axios";
+import TableLoader from "../../../../common/TableLoader";
 
 
 const UploadedDocument = () => {
@@ -35,6 +36,7 @@ const UploadedDocument = () => {
 
 
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 10;
@@ -43,12 +45,14 @@ const UploadedDocument = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const employeeDetails = await fetchEmployeeUploadedDocument();
                 setAllData(employeeDetails);
-                console.log('welimba', employeeDetails);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -164,7 +168,9 @@ const UploadedDocument = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {
+                                        {isLoading ? (
+                                            <TableLoader colSpan={5} />
+                                        ) : (
                                             currentEntries.map((document, index) => (
                                                 <tr key={index + 1}>
                                                     <td className="text-center text-black font-semibold">{index + 1}</td>
@@ -185,7 +191,8 @@ const UploadedDocument = () => {
                                                     </td>
                                                 </tr>
 
-                                            ))}
+                                            ))
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

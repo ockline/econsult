@@ -5,6 +5,7 @@ import { ThemeChanger } from "../../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import axios from "axios";
  import Swal from "sweetalert2";
+import TableLoader from "../../../common/TableLoader";
 import AppealRegister from "./Modals/Appeal/AppealRegister";
 import AppealInvitationModal from "./Modals/Appeal/AppealInvitationModal";
 import AppealHearingModal from "./Modals/Appeal/AppealHearingModal";
@@ -16,6 +17,7 @@ const Index = () => {
 	let navigate = useNavigate();
 	const token = sessionStorage.getItem('token');
 	const [disciplinaries, setDisciplinaryDetails] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [showAppealModal, setShowAppealModal] = useState(false);
 	const [showDisciplinaryInvitationModal, setShowDisciplinaryInvitationModal] = useState(false);
 	const [showAppealInvitationModal, setShowAppealInviatationModal] = useState(false);
@@ -23,6 +25,7 @@ const Index = () => {
 
  useEffect(() => {
     const fetchDisciplinaryDetails = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(
           `${apiBaseUrl}/industrial_relationship/disciplinary/retrieve_all_disciplinary`,
@@ -36,6 +39,8 @@ const Index = () => {
         setDisciplinaryDetails(res.data.disciplinary);
       } catch (error) {
         console.error('Failed to fetch disciplinary data:', error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -170,7 +175,9 @@ function Style1() {
 															</tr>
 														</thead>
 														<tbody className="">
-															{
+															{isLoading ? (
+																<TableLoader colSpan={9} />
+															) : (
 																disciplinaries?.map((disciplinary, index) => (
 														// <div key={index}></div>
 															<tr key={index} className="">
@@ -259,7 +266,7 @@ function Style1() {
 															</tr>
 															)
 															)
-															}
+															)}
 															
 														</tbody>
 													</table>
@@ -388,7 +395,7 @@ function Style1() {
 														</tr>
 														)
 														)
-														}
+														)}
 														
 													</tbody>
 												</table>
@@ -435,7 +442,9 @@ function Style1() {
 														</tr>
 													</thead>
 													<tbody className="">
-														{
+														{isLoading ? (
+															<TableLoader colSpan={8} />
+														) : (
 															disciplinaries?.map((capacity, index) => (
 													// <div key={index}></div>
 														<tr key={index} className="">
@@ -516,7 +525,7 @@ function Style1() {
 														</tr>
 														)
 														)
-														}
+														)}
 														
 													</tbody>
 												</table>
@@ -563,7 +572,9 @@ function Style1() {
 														</tr>
 													</thead>
 													<tbody className="">
-														{
+														{isLoading ? (
+															<TableLoader colSpan={8} />
+														) : (
 															disciplinaries?.map((capacity, index) => (
 													// <div key={index}></div>
 														<tr key={index} className="">
@@ -644,7 +655,7 @@ function Style1() {
 														</tr>
 														)
 														)
-														}
+														)}
 														
 													</tbody>
 												</table>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import TableLoader from "/src/common/TableLoader";
 import axios from "axios";
  import Swal from "sweetalert2";
 
@@ -8,15 +9,19 @@ const Index = () => {
 	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 	
 	const [maternityLeave, setMaternityLeave] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	let navigate = useNavigate();
 
   useEffect(() => {
     const fetchMaternityLeave = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_maternity_leave`);
         setMaternityLeave(res.data.maternity_leave);
       } catch (error) {
         throw new Error('Failed to fetch maternity leave: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -208,7 +213,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={10} />
+										) : (
 											maternityLeave?.map((maternity, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
@@ -290,7 +297,7 @@ function Style1() {
 										</tr>
 										)
 										)
-										}
+										)}
 										
 									</tbody>
 								</table>

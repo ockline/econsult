@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import TableLoader from "/src/common/TableLoader";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
 // import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
@@ -14,13 +15,17 @@ const Index = () => {
 	let navigate = useNavigate();
 
 	const [performanceCapacity, setPerformanceCapacity] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchPerformanceCapacity = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${apiBaseUrl}/industrial_relationship/retrieve_performance_capacity`);
         setPerformanceCapacity(res.data.performance_capacity);
       } catch (error) {
         throw new Error('Failed to fetch performance capacity: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -132,7 +137,9 @@ function Style1() {
 															</tr>
 														</thead>
 														<tbody className="">
-															{
+															{isLoading ? (
+																<TableLoader colSpan={8} />
+															) : (
 																performanceCapacity?.map((capacity, index) => (
 														// <div key={index}></div>
 															<tr key={index} className="">
@@ -215,7 +222,7 @@ function Style1() {
 															</tr>
 															)
 															)
-															}
+															)}
 															
 														</tbody>
 													</table>
@@ -257,7 +264,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={8} />
+										) : (
 											performanceCapacity?.map((capacity, index) => (
 									// <div key={index}></div>
 										<tr key={index} className="">
@@ -338,7 +347,7 @@ function Style1() {
 										</tr>
 										)
 										)
-										}
+										)}
 										
 									</tbody>
 								</table>

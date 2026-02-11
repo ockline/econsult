@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
 import axios from "axios";
+import TableLoader from "../../../../common/TableLoader";
 
 const Application = () => {
 
@@ -14,18 +15,21 @@ const Application = () => {
 
     let navigate = useNavigate();
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 10;
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const personnelApplicationDetails = await fetchPersonnelApplicationDetails();
                 setAllData(personnelApplicationDetails);
-                console.log(personnelApplicationDetails);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -107,14 +111,17 @@ const Application = () => {
     //block to return all application request
     
     const [allIdRequest, setAllIdRequestData] = useState();
+    const [isLoadingIdRequest, setIsLoadingIdRequest] = useState(true);
       useEffect(() => {
         const fetchIdRequestData = async () => {
+            setIsLoadingIdRequest(true);
             try {
                 const allIdApplicationDetails = await fetchAllIdApplicationDetails();
                 setAllIdRequestData(allIdApplicationDetails);
-                
             } catch (error) {
                 console.error('Error fetching data:', error.message);
+            } finally {
+                setIsLoadingIdRequest(false);
             }
         };
 
@@ -286,7 +293,9 @@ const Application = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isLoading ? (
+                                    <TableLoader colSpan={8} />
+                                ) : (
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
@@ -358,7 +367,8 @@ const Application = () => {
 
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))
+                                )}
                             </tbody>
                         </table>
                             </div>
@@ -399,7 +409,9 @@ const Application = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                               {allIdRequest && allIdRequest.length > 0 ? (
+                               {isLoadingIdRequest ? (
+    <TableLoader colSpan={7} />
+) : allIdRequest && allIdRequest.length > 0 ? (
     allIdRequest.map((requester, index) => (
         <tr className="product-list" key={requester.id}>
             <td>{index + 1 + indexOfFirstEntry}</td>

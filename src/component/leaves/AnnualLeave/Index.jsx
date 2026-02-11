@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Select from 'react-select';
+import TableLoader from "/src/common/TableLoader";
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 // import { connect } from "react-redux";
 // import { ThemeChanger } from "../../redux/Action";
@@ -14,6 +15,7 @@ const Index = () => {
 	
 	const [annualLeave, setAnnualLeave] = useState([]);
 	const [emergencyLeave, setEmergencyLeave] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	
 	let navigate = useNavigate();
 	//  const [allData, setAllData] = useState([]);
@@ -24,26 +26,23 @@ const Index = () => {
 
 
   useEffect(() => {
-    const fetchAnnualLeave = async () => {
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_annual_leave`);
-        setAnnualLeave(res.data.annual_leave);
+        const [annualRes, emergencyRes] = await Promise.all([
+          axios.get(`${apiBaseUrl}/leaves/retrieve_annual_leave`),
+          axios.get(`${apiBaseUrl}/leaves/retrieve_emergency_leave`)
+        ]);
+        setAnnualLeave(annualRes.data.annual_leave);
+        setEmergencyLeave(emergencyRes.data.emergency_leave);
       } catch (error) {
-        console.error('Failed to fetch annual leave:', error);
+        console.error('Failed to fetch leave data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    const fetchEmergencyLeave = async () => {
-      try {
-        const res = await axios.get(`${apiBaseUrl}/leaves/retrieve_emergency_leave`);
-        setEmergencyLeave(res.data.emergency_leave);
-      } catch (error) {
-        console.error('Failed to fetch emergency leave:', error);
-      }
-    };
-
-    fetchAnnualLeave();
-    fetchEmergencyLeave();
+    fetchData();
   }, [apiBaseUrl]); // Fetch data on component mount
 	
 	
@@ -343,7 +342,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={10} />
+										) : (
 											filteredData.map((annual, index) => (
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -426,7 +427,7 @@ function Style1() {
 											</td>
 										</tr>
 										))
-										}
+										)}
 										
 									</tbody>
 								</table>
@@ -456,7 +457,9 @@ function Style1() {
 										</tr>
 									</thead>
 									<tbody className="">
-										{
+										{isLoading ? (
+											<TableLoader colSpan={10} />
+										) : (
 											emergencyLeave.map((emergency, index) => (
 										<tr key={index} className="">
 													<td>{ index + 1}</td>
@@ -539,7 +542,7 @@ function Style1() {
 											</td>
 										</tr>
 										))
-										}
+										)}
 										
 									</tbody>
 								</table>

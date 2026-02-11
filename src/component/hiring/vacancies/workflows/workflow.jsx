@@ -246,16 +246,19 @@ const Workflow = ({ local_varaiable, ThemeChanger }) => {
 
 				<ol className="flex items-center whitespace-nowrap min-w-0 text-end">
 					<li className="text-sm">
-						<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`}>
+						<Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}hiring/vacancies/jobs/`}>
 							Home
 							<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
-						</a>
+						</Link>
 					</li>
 					<li className="text-sm">
-						<a className="flex items-center text-primary hover:text-primary dark:text-primary" href={`${import.meta.env.BASE_URL}hiring/vacancies/show_job/`}>
-							Show Job Application
-							{/* <i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i> */}
-						</a>
+						<Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}hiring/vacancies/show_job/${id}`}>
+							Show Job Details
+							<i className="ti ti-chevrons-right flex-shrink-0 mx-3 overflow-visible text-gray-300 dark:text-white/10 rtl:rotate-180"></i>
+						</Link>
+					</li>
+					<li className="text-sm">
+						<span className="flex items-center text-gray-500 dark:text-white/70" aria-current="page">Workflow</span>
 					</li>
 				</ol>
 			</div>

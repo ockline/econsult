@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { getActiveRole, filterItemsByActiveRole, getAvailableActions } from "/src/utility/roleHelper";
 import { connect } from "react-redux";
+import TableLoader from "/src/common/TableLoader";
 
 const SpecificContract = ({ local_varaiable }) => {
     const userRoles = local_varaiable?.roles || [];
@@ -350,7 +351,9 @@ const SpecificContract = ({ local_varaiable }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {loading ? (
+                                    <TableLoader colSpan={8} />
+                                ) : (
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
@@ -478,7 +481,8 @@ const SpecificContract = ({ local_varaiable }) => {
                                                 })}
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

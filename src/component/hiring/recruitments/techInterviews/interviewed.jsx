@@ -5,22 +5,27 @@ import { Link } from 'react-router-dom';
 import { fetchAssessedCandidate, fetchTechnicalCandidate } from "../../../../common/recruitmentdata";
 import Select from 'react-select';
 import { Assigned,  SortBy, StatusTask } from "/src/common/select2data";
+import TableLoader from "../../../../common/TableLoader";
 
 const Interviewed = () => {
 	
 
 	 const [allData, setAllData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [searchQuery, setSearchQuery] = useState(''); // for Searching
 	const [currentPage, setCurrentPage] = useState(1);
 	const entriesPerPage = 10;
 	
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const candidateData = await fetchTechnicalCandidate();
         setAllData(candidateData);
       } catch (error) {
         console.error('Error fetching data:', error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -134,7 +139,9 @@ const Interviewed = () => {
 												</tr>
 												</thead>
 												<tbody>
-								      {
+								      {isLoading ? (
+										<TableLoader colSpan={8} />
+									) : (
 									     currentEntries.map((candidate, index) => (
 															<tr className="product-list" key={candidate.id}>
 															<td>{index + 1 + indexOfFirstEntry}</td>
@@ -186,7 +193,8 @@ const Interviewed = () => {
 														</button>
 													</td>
 													</tr>
-												))}
+												))
+									)}
 												</tbody>
 												</table>
 											</div>

@@ -4,23 +4,27 @@ import { Link } from 'react-router-dom';
 import { fetchSocialRecordDetails } from "../../../../common/employeesdata";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
+import TableLoader from "../../../../common/TableLoader";
 
 const SocialDetails = () => {
 
 
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 10;
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const socialRecordDetails = await fetchSocialRecordDetails();
                 setAllData(socialRecordDetails);
-                // console.log(employeeDetails);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -137,7 +141,9 @@ const SocialDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isLoading ? (
+                                    <TableLoader colSpan={9} />
+                                ) : (
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
@@ -199,7 +205,8 @@ const SocialDetails = () => {
                                                 </button> */}
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

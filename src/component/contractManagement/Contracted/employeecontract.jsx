@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchemployeeContract } from "/src/common/contractsdata";
+import TableLoader from "/src/common/TableLoader";
 import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
@@ -14,18 +15,22 @@ const EmployeeContracts = () => {
 
     let navigate = useNavigate();
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 10;
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const EmployeeContracts = await fetchemployeeContract();
                 setAllData(EmployeeContracts);
                 console.log(EmployeeContracts);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -175,7 +180,9 @@ const EmployeeContracts = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isLoading ? (
+                                    <TableLoader colSpan={7} />
+                                ) : (
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
@@ -204,7 +211,8 @@ const EmployeeContracts = () => {
                                                 </Link>
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

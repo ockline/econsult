@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { Assigned, SortBy, StatusTask } from "/src/common/select2data";
 import Swal from "sweetalert2";
 import axios from "axios";
+import TableLoader from "../../../common/TableLoader";
 
 const RequiredDetail = () => {
 
@@ -14,18 +15,21 @@ const RequiredDetail = () => {
 
     let navigate = useNavigate();
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState(''); // for Searching
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 10;
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const ContractDetails = await fetchRequiredContractDetails();
                 setAllData(ContractDetails);
-                console.log(ContractDetails);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -214,7 +218,9 @@ const RequiredDetail = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isLoading ? (
+                                    <TableLoader colSpan={9} />
+                                ) : (
                                     currentEntries.map((employee, index) => (
                                         <tr className="product-list" key={employee.id}>
                                             <td>{index + 1 + indexOfFirstEntry}</td>
@@ -281,7 +287,8 @@ const RequiredDetail = () => {
 
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>
