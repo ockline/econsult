@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ReactTabulator } from "react-tabulator";
-import { data, columns } from '../../../../common/TableData';
+import { data, columns } from '../../../../common/tabledata';
 
 class Home extends Component {
 

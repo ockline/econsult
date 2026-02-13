@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ReactTabulator } from 'react-tabulator';
-import { columns, data } from "../../../../common/TableData";
+import { columns, data } from "../../../../common/tabledata";
 import Home from "./responsivetable";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 
