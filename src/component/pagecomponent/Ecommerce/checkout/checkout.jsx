@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PageHeader from '../../../../layout/layoutsection/pageHeader/pageHeader';
 import { Link } from 'react-router-dom';
 import ALLImages from "../../../../common/imagesdata";
-import { OrderSummery } from "../../../../common/EcommerceData";
+import { OrderSummery } from "../../../../common/ecommercedata";
 import Select from 'react-select';
 import { AddressType, AvailabileTime } from "../../../../common/select2data";
 

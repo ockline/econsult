@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Link } from 'react-router-dom';
-import { ProductList } from "../../../../common/EcommerceData";
+import { ProductList } from "../../../../common/ecommercedata";
 
 const Productlist = () => {
 	const [allData, setAllData] = useState(ProductList)

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Link } from 'react-router-dom';
 import { TagsInput } from "react-tag-input-component";
-import { MasterData } from "../../../../common/EcommerceData";
+import { MasterData } from "../../../../common/ecommercedata";
 
 
 const Product = () => {

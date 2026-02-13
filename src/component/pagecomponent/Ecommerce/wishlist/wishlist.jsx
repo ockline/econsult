@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Link } from 'react-router-dom';
-import { MasterData } from "../../../../common/EcommerceData";
+import { MasterData } from "../../../../common/ecommercedata";
 
 const Wishlist = () => {
 

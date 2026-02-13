@@ -6,7 +6,7 @@ import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Color, productSize } from "../../../../common/select2data";
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import { MostSearchProduct } from "../../../../common/EcommerceData";
+import { MostSearchProduct } from "../../../../common/ecommercedata";
 
 const Productdetails = () => {
 	const [thumbsSwiper, setThumbsSwiper] = useState(null);

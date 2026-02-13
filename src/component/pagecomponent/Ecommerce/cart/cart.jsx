@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
-import { CartData } from '../../../../common/EcommerceData';
+import { CartData } from '../../../../common/ecommercedata';
 import { Link } from 'react-router-dom';
 
 const Cart = () => {
