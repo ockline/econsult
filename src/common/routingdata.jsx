@@ -158,7 +158,7 @@ import AnnualLeave from "../component/leaves/annualleave/index";
 import AddAnnualLeave from "../component/leaves/annualleave/addannual";
 import EditAnnualLeave from "../component/leaves/annualleave/aditannual";
 import ShowAnnualLeave from "../component/leaves/annualleave/showleave";
-// import DownloadAnnualLeave  from "../component/leaves/AnnualLeave/annualLeave";
+// import DownloadAnnualLeave  from "../component/leaves/annualleave/annualleave";
 //Emergency 
 
 import AddEmergencyLeave from "../component/leaves/emergencyleave/addemergencyleave";
