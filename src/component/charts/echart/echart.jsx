@@ -1,6 +1,6 @@
 import React from "react";
 import { AreaEChart, BarEChart, BarWithBackgroundEChart, BarWithLabelsEChart, BarWithNegativeValuesEChart, BasicGaugeEChart, BasicScatterEChart, BubbleEChart, CandlestickEChart, DoughnutEChart, FunnelEChart, HeatmapEChart, HorizontalBarEChart, HorizontalStackedBarEChart, 
-	     LineEChart, PieEChart, RadarEChart, SimpleGraphEChart, SmoothLineEChart, StackedAreaEChart, StackedLineEChart, StepLineEChart, StyleForASingleBarEChart, TreemapEChart, WaterFallEChart } from "../../../common/chartData";
+	     LineEChart, PieEChart, RadarEChart, SimpleGraphEChart, SmoothLineEChart, StackedAreaEChart, StackedLineEChart, StepLineEChart, StyleForASingleBarEChart, TreemapEChart, WaterFallEChart } from "../../../common/chartdata;
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 const Echart = () => {

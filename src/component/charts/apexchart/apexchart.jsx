@@ -1,5 +1,5 @@
 import React from "react";
-import { AreaChart, BarChart, BasicHeatMap, Boxplot, Bubble3D, CandleStick, ColumnChart, DonutChart, LineAndColumnChart, LineChart, PieChart, PolarAreaChart, RaderChart, RadialChart, ScatterChart, StrokedCircularGauge, TimelineBasic, TreeMap } from "../../../common/chartData";
+import { AreaChart, BarChart, BasicHeatMap, Boxplot, Bubble3D, CandleStick, ColumnChart, DonutChart, LineAndColumnChart, LineChart, PieChart, PolarAreaChart, RaderChart, RadialChart, ScatterChart, StrokedCircularGauge, TimelineBasic, TreeMap } from "../../../common/chartdata;
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 const Apexchart = () => {

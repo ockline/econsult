@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AudienceOverview, Deviceview, SessionOverview, SessionsByGender } from "../../../common/chartData";
+import { AudienceOverview, Deviceview, SessionOverview, SessionsByGender } from "../../../common/chartdata;
 import ALLImages from "../../../common/imagesdata";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 

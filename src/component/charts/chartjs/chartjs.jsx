@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChartJS, BubbleChart, ChartPie, ChartPolar, DoughnutChart, LineChartJS, MixedChartJS, RadarChartJS, ScatterChartJS } from "../../../common/chartData";
+import { BarChartJS, BubbleChart, ChartPie, ChartPolar, DoughnutChart, LineChartJS, MixedChartJS, RadarChartJS, ScatterChartJS } from "../../../common/chartdata;
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 const Chartjs = () => {

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 //     SessionsDevice,
 //     TargetReport,
 //     SettingsRevenue,
-// } from "../../common/chartData";
+// } from "../../common/chartdata;
 // import PageHeader from "../../layout/layoutsection/pageHeader/pageHeader";
 // import WorldMap from "react-svg-worldmap";
 // import ALLImages from "../../common/imagesdata";

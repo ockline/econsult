@@ -2,7 +2,7 @@ import React, {useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import ALLImages from "../../../common/imagesdata";
-import { NormalsOverviewHRM } from "../../../common/chartData";
+import { NormalsOverviewHRM } from "../../../common/chartdata;
 import axios from 'axios';
 
 const Hrm = () => {

@@ -6,7 +6,7 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import { RecentfileData } from "./reactfiledata";
-import { FileChart } from "../../../../common/chartdata";
+import { FileChart } from "../../../../common/chartdata;
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginImageExifOrientation);
 const Filemanagermain = () => {
