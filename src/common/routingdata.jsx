@@ -119,7 +119,7 @@ import DownloadGeneralApplication from "../component/employees/application/gener
 
 
 /**  Start of contract Block  step  5*/  
-import EmployeeContracts from "../component/contractManagement/Contracted/employeeContract";
+import EmployeeContracts from "../component/contractManagement/Contracted/employeecontract";
 
        //Required Details || Taarifa za MWajiriwa kwaajili ya mikataba - kitambulisho
 import RequiredDetails from "../component/contractManagement/requiredDetails/details";
