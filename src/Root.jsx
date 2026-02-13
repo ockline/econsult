@@ -2,7 +2,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux"
 import { Route, Routes } from "react-router-dom";
-import { RouteData } from "./common/routingData";
+import { RouteData } from "./common/routingdata";
 import Normals from "./component/dashboards/normal/normal";
 import Pagelayout from "./layout/pagelayout";
 import TermsConditions from "./component/pagecomponent/terms&conditions/terms&conditions";
