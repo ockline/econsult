@@ -154,16 +154,16 @@ import DownloadTermConditions from "../component/contractManagement/templateCont
 
 //Leave Management
 //Annual
-import AnnualLeave from "../component/leaves/annualleave/index";
-import AddAnnualLeave from "../component/leaves/annualleave/addannual";
-import EditAnnualLeave from "../component/leaves/annualleave/aditannual";
-import ShowAnnualLeave from "../component/leaves/annualleave/showleave";
+import AnnualLeave from "../component/leave/annualleave/index";
+import AddAnnualLeave from "../component/leave/annualleave/addannual";
+import EditAnnualLeave from "../component/leave/annualleave/aditannual";
+import ShowAnnualLeave from "../component/leave/annualleave/showleave";
 // import DownloadAnnualLeave  from "../component/leaves/AnnualLeave/annualLeave";
 //Emergency 
 
-import AddEmergencyLeave from "../component/leaves/emergencyleave/addemergencyleave";
-import EditEmergencyLeave from "../component/leaves/emergencyleave/editemergencyleave";
-import ShowEmergencyLeave from "../component/leaves/emergencyleave/showemergencyleave";
+import AddEmergencyLeave from "../component/leave/emergencyleave/addemergencyleave";
+import EditEmergencyLeave from "../component/leave/emergencyleave/editemergencyleave";
+import ShowEmergencyLeave from "../component/leave/emergencyleave/showemergencyleave";
 
  //Sick
 import SickLeave from "../component/leaves/SickLeave/Index";
