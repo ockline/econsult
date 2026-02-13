@@ -7,7 +7,7 @@ import Normals from "./component/dashboards/normal/normal";
 import Pagelayout from "./layout/pagelayout";
 import TermsConditions from "./component/pagecomponent/terms&conditions/terms&conditions";
 import Home from "./component/pagecomponent/profile/home/home";
-import Authenticationlayout from "./layout/Authenticationlayout";
+import Authenticationlayout from "./layout/authenticationlayout";
 import App from "./layout/App";
 
 import Commingsoon from "./component/Authentication/commingsoon/commingsoon";
