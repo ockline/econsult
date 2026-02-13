@@ -1,5 +1,5 @@
 import React from "react";
-import { OrderVsNormals } from "../../../common/chartdata;
+import { OrderVsNormals } from "../../../common/chartdata";
 import ALLImages from "../../../common/imagesdata";
 import { Link } from 'react-router-dom';
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";

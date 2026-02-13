@@ -5942,7 +5942,7 @@ export function ScatterChartJS() {
   return <Scatter width={741} height={300} options={ScatterOptions} data={ScatterData} />;
 }
 
-const MixedChartData = {
+const MixedchartData = {
   type: 'scatter',
   labels: ['January', 'February', 'March', 'April'],
   datasets: [{
@@ -5971,7 +5971,7 @@ const MixedChartOptions = {
 };
 
 export function MixedChartJS() {
-  return <Scatter width={741} height={300} options={MixedChartOptions} data={MixedChartData} />;
+  return <Scatter width={741} height={300} options={MixedChartOptions} data={MixedchartData} />;
 }
 
 const BubbleData = {

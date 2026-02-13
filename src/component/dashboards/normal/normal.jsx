@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from "react";
-import { NormalsOverView, NormalsValue, SocialVisitor } from "../../../common/chartdata;
+import { NormalsOverView, NormalsValue, SocialVisitor } from "../../../common/chartdata";
 import ALLImages from "../../../common/imagesdata";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import { connect } from "react-redux"

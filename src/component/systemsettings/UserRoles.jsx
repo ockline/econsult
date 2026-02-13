@@ -9,7 +9,7 @@ import {
     SessionsDevice,
     TargetReport,
     SettingsRevenue,
-} from "../../common/chartdata;
+} from "../../common/chartdata";
 import PageHeader from "../../layout/layoutsection/pageHeader/pageHeader";
 import { UsersData, DepartmentData } from '/src/common/select2data';
 import { fetchUserRolesData } from "../../common/employeesdata";
