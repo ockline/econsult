@@ -314,7 +314,9 @@ function Style1() {
 														</tr>
 													</thead>
 													<tbody className="">
-														{
+														{isLoading ? (
+															<TableLoader colSpan={8} />
+														) : (
 															disciplinaries?.map((capacity, index) => (
 													// <div key={index}></div>
 														<tr key={index} className="">
@@ -393,8 +395,7 @@ function Style1() {
 														)}
 															</td>
 														</tr>
-														)
-														)
+														))
 														)}
 														
 													</tbody>
