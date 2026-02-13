@@ -1,5 +1,5 @@
 import React from "react";
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import { Link } from "react-router-dom";
 
 const Faqs = () => {

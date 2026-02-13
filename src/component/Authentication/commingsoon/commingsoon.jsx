@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react'
-import ALLImages from '../../../common/imagesData';
+import ALLImages from '../../../common/imagesdata';
 import { Helmet } from 'react-helmet';
 
 const Commingsoon = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from 'react-router-dom';
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import { SpacebetweenSwiper } from "./landingpagecarousel";
 import CountUp from "react-countup";
 import Navbar1 from "./navbar";

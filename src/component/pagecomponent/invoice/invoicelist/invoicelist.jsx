@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import { modeofPayment, PaymentStatus } from "../../../../common/select2data";
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';

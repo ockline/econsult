@@ -1,7 +1,7 @@
 import React from "react";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { Link } from 'react-router-dom'
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 
 const Orders = () => {
 	return (

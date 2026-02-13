@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 const Offcanvas = () => {

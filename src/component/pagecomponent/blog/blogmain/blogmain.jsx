@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { TagsInput } from "react-tag-input-component";
 import { Swiper, SwiperSlide } from "swiper/react";

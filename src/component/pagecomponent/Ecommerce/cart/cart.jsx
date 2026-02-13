@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { CartData } from '../../../../common/EcommerceData';
 import { Link } from 'react-router-dom';

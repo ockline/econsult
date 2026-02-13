@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import ALLImages from '../../../../common/imagesData';
+import ALLImages from '../../../../common/imagesdata';
 import { Helmet } from 'react-helmet';
 // import { UserChanger, RolesChanger } from '../redux/Action';
 import { connect } from "react-redux"

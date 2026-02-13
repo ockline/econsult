@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from 'react-router-dom';
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import DatePicker from 'react-datepicker';
 import Select from 'react-select';

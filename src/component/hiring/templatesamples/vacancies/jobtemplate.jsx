@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import "../../../../../src/assets/css/print-style.css";
 import { Link, useParams} from "react-router-dom";

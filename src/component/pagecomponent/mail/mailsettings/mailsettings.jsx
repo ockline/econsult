@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import { DateFormat, LanguageData, MarkAsRead, Refresh, ReturnReceipt, RowPage, TimeFormat, TimeZoneData } from "../../../../common/select2data";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import Select from 'react-select';

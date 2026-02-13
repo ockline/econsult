@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import { BlogCatagories, PlubishStatus } from "../../../../common/select2data";
 import Select from 'react-dropdown-select';
 import SunEditor from "suneditor-react";

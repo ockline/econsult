@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import { NormalsOverView, NormalsValue, SocialVisitor } from "../../../common/chartData";
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import { connect } from "react-redux"
 import { Link } from 'react-router-dom';

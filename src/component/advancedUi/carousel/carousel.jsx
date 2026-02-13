@@ -1,6 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 import { Autoplay, Pagination, Navigation, Scrollbar, EffectCards, Zoom, EffectFade, FreeMode, EffectCoverflow, EffectFlip, EffectCube } from "swiper/modules";

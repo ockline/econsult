@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import Modalsearch from "../modalsearch/modalsearch";
 import { connect } from "react-redux"
 import {ThemeChanger} from "../../../redux/Action"

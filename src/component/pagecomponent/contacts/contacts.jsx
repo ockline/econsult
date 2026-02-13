@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ContactData } from '../../../common/commondata';
-import ALLImages from '../../../common/imagesData';
+import ALLImages from '../../../common/imagesdata';
 import ProfileService from '../../../common/profileservices';
 import PageHeader from '../../../layout/layoutsection/pageHeader/pageHeader';
 import { Helmet } from 'react-helmet';

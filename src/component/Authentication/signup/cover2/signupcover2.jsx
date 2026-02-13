@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ALLImages from '../../../../common/imagesData';
+import ALLImages from '../../../../common/imagesdata';
 import { Helmet } from 'react-helmet';
 
 const SignUpCover2 = () => {

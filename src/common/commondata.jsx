@@ -1,4 +1,4 @@
-import ALLImages from "./imagesData";
+import ALLImages from "./imagesdata";
 
 export const ContactData = [
     {

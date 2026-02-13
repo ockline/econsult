@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Link } from 'react-router-dom';
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';

@@ -5,7 +5,7 @@ import { DepartmentData, EmployerData, VacancyTypeData, JobTitleData } from '/sr
 import { fetchInitiatedJobDetails } from '/src/common/workflowdata';
 
 import Creatable from "react-select/creatable";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import Select from 'react-dropdown-select';
 import { Link, useParams } from "react-router-dom";
 import 'react-form-wizard-component/dist/style.css';

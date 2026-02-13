@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import Select from 'react-select';
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 import { Link } from "react-router-dom";

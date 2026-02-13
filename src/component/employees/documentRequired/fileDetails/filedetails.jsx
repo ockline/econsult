@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ALLImages from "../../../../common/imagesData";
+import ALLImages from "../../../../common/imagesdata";
 import axios from "axios";
 import { Link, useParams } from 'react-router-dom';
 // import { LightboxGallery, SpacebetweenSwiper } from "./filedetailscarcousel";

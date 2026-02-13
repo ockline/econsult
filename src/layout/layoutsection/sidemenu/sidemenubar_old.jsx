@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Link } from 'react-router-dom';
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import MenuItems from "../../../common/sidemenudata";
 import { connect } from "react-redux";
 import { ThemeChanger } from "../../../redux/Action";

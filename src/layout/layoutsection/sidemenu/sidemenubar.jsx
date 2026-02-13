@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Link } from 'react-router-dom'
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import { connect } from "react-redux"
 import { ThemeChanger } from "../../../redux/Action"
 import store from "../../../redux/store";

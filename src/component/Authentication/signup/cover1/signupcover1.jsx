@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
-import ALLImages from '../../../../common/imagesData';
+import ALLImages from '../../../../common/imagesdata';
 import { Helmet } from 'react-helmet';
 import { DepartmentData,GroupSectionData, GroupDesignation, RegionData, EmployerData} from '/src/common/select2data';
 import Creatable from "react-select/creatable";

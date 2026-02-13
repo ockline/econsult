@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ALLImages from "../../../common/imagesData";
+import ALLImages from "../../../common/imagesdata";
 import PageHeader from "../../../layout/layoutsection/pageHeader/pageHeader";
 
 const Avatars = () => {
