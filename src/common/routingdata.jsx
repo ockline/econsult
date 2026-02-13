@@ -154,7 +154,7 @@ import DownloadTermConditions from "../component/contractManagement/templateCont
 
 //Leave Management
 //Annual
-import AnnualLeave from "../component/leaves/annualleave/index";
+import AnnualLeave from "../component/leaves/annualLeave/index";
 import AddAnnualLeave from "../component/leaves/annualleave/addannual";
 import EditAnnualLeave from "../component/leaves/annualleave/aditannual";
 import ShowAnnualLeave from "../component/leaves/annualleave/showleave";
