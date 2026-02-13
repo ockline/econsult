@@ -8,11 +8,9 @@ import Pagelayout from "./layout/pagelayout";
 import TermsConditions from "./component/pagecomponent/terms&conditions/terms&conditions";
 import Home from "./component/pagecomponent/profile/home/home";
 import Authenticationlayout from "./layout/Authenticationlayout";
-
 import App from "./layout/App";
 
 import Commingsoon from "./component/Authentication/commingsoon/commingsoon";
-
 
 import Error404 from "./component/Authentication/errorpage/error404/error404";
 import Error500 from "./component/Authentication/errorpage/error500/error500";
