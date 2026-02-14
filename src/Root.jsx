@@ -6,7 +6,6 @@ import { RouteData } from "./common/routingdata";
 import Normals from "./component/dashboards/normal/normal";
 import Pagelayout from "./layout/pagelayout";
 import TermsConditions from "./component/pagecomponent/terms&conditions/terms&conditions";
-import Home from "./component/pagecomponent/profile/home/home";
 import Authenticationlayout from "./layout/authenticationlayout";
 import App from "./layout/App";
 
@@ -63,7 +62,7 @@ function Root({ local_varaiable }) {
                 <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>
                     <Route  index element={<Normals />} />
                     {routes.map((idx) => (
-                        <Route key={Math.random()} exact path={idx.path} element={idx.element} />
+                        <Route key={idx.path} path={idx.path} element={idx.element} />
                     ))}
                 </Route>
                 <Route path={`${import.meta.env.BASE_URL}`} element={<Pagelayout />}>
@@ -71,9 +70,6 @@ function Root({ local_varaiable }) {
                     <Route path={`${import.meta.env.BASE_URL}pagecomponent/faqs`} element={<Faqs />} />
                     <Route path={`${import.meta.env.BASE_URL}pagecomponent/Contactus`} element={<Contactus />} /> */}
                     <Route path={`${import.meta.env.BASE_URL}pagecomponent/terms&conditions`} element={<TermsConditions />} />
-
-                    {/* Profile */}
-                    <Route path={`${import.meta.env.BASE_URL}pagecomponent/profile/home`} element={<Home />} />
                 </Route>
 
                 {/* Authentication */}

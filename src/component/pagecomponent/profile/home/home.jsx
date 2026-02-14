@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 import ALLImages from "../../../../common/imagesdata";
 import Select from "react-select";
 import { ProfileHomeData } from "../../../../common/select2data";
@@ -52,6 +53,24 @@ const Home = () => {
         }
     };
     const [ClassName, setClassName] = useState();
+
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const [performance, setPerformance] = useState(null);
+    const [performanceLoading, setPerformanceLoading] = useState(true);
+
+    useEffect(() => {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+            axios.get(`${apiBaseUrl}/user_activities/performance?days=30`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+                .then((res) => setPerformance(res.data))
+                .catch(() => setPerformance(null))
+                .finally(() => setPerformanceLoading(false));
+        } else {
+            setPerformanceLoading(false);
+        }
+    }, [apiBaseUrl]);
 
     useEffect(() => {
         if (ProfileService.returnImage() != undefined) {
@@ -261,6 +280,38 @@ const Home = () => {
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div className="box">
+                            <div className="box-header">
+                                <h5 className="box-title">My Performance</h5>
+                                <Link to={`${import.meta.env.BASE_URL}user/profile/setting`} className="text-xs text-primary hover:underline">Log activities</Link>
+                            </div>
+                            <div className="box-body py-3">
+                                {performanceLoading ? (
+                                    <p className="text-sm text-gray-500">Loading...</p>
+                                ) : performance ? (
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm text-gray-500 dark:text-white/70">Score (last 30 days)</span>
+                                            <span className={`text-lg font-bold ${performance.performance_score >= 70 ? "text-success" : performance.performance_score >= 40 ? "text-warning" : "text-danger"}`}>
+                                                {performance.performance_score}/100
+                                            </span>
+                                        </div>
+                                        <div className="xl:overflow-hidden overflow-x-auto">
+                                            <table className="ti-custom-table border-0">
+                                                <tbody>
+                                                    <tr><td className="font-medium !p-2">Activities</td><td className="!p-2">:</td><td className="!p-2">{performance.total_activities}</td></tr>
+                                                    <tr className="!border-0"><td className="font-medium !p-2">Active days</td><td className="!p-2">:</td><td className="!p-2">{performance.days_with_activities}</td></tr>
+                                                    <tr className="!border-0"><td className="font-medium !p-2">Avg rating</td><td className="!p-2">:</td><td className="!p-2">{performance.average_rating}/5</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-gray-500">Log daily activities in profile settings to see your performance.</p>
+                                )}
                             </div>
                         </div>
 

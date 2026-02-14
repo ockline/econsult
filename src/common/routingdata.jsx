@@ -328,6 +328,7 @@ import Mailsettings from "../component/pagecomponent/mail/mailsettings/mailsetti
 import MainMail from "../component/pagecomponent/mail/mainMail/mainMail";
 import Pricingtables from "../component/pagecomponent/pricingtables/pricingtables";
 import Profilesetting from "../component/pagecomponent/profile/profilesetting/profilesetting";
+import Home from "../component/pagecomponent/profile/home/home";
 import Reviews from "../component/pagecomponent/reviews/reviews";
 import Tasks from "../component/pagecomponent/tasks/tasks";
 import Team from "../component/pagecomponent/team/team";
@@ -762,7 +763,8 @@ export const RouteData = [
 
     // {/* Profile content */ }
 
-    { path: `${import.meta.env.BASE_URL}user/profile_setting`, element: <Profilesetting /> },
+    { path: `${import.meta.env.BASE_URL}user/profile/home`, element: <Home /> },
+    { path: `${import.meta.env.BASE_URL}user/profile/setting`, element: <Profilesetting /> },
 
     // {/* Invoice content */ }
 
@@ -910,7 +912,7 @@ export const SearchData = [
 
     // {/* Profile content */ }
 
-    { path: `${import.meta.env.BASE_URL}user/profile_setting`, element: <Profilesetting />, title: 'profilesetting' },
+    { path: `${import.meta.env.BASE_URL}user/profile/setting`, element: <Profilesetting />, title: 'profilesetting' },
 
     // {/* Invoice content */ }
 

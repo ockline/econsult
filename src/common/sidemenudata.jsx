@@ -172,8 +172,8 @@ export const MenuItems = [
 			{ id: 86, icon: PagesSvg, title: "Profiles", type: "sub", active: false, selected: false, children: [
 					{ id: 87, title: "Profile", type: "sub", active: false, selected: false, children: [
 
-							{ id: 88, path: `${import.meta.env.BASE_URL}pagecomponent/profile/home`, type: "link", active: false, selected: false, title: "Home" },
-							{ id: 89, path: `${import.meta.env.BASE_URL}pagecomponent/profile/profilesetting`, type: "link", active: false, selected: false, title: "Profile Settings" },
+							{ id: 88, path: `${import.meta.env.BASE_URL}user/profile/home`, type: "link", active: false, selected: false, title: "Home" },
+							{ id: 89, path: `${import.meta.env.BASE_URL}user/profile/setting`, type: "link", active: false, selected: false, title: "Profile Settings" },
 
 						]
 					},

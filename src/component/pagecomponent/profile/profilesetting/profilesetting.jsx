@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { connect } from "react-redux";
+import axios from "axios";
 import ALLImages from "../../../../common/imagesdata";
 import PageHeader from "../../../../layout/layoutsection/pageHeader/pageHeader";
 import DatePicker from 'react-datepicker';
@@ -9,9 +11,11 @@ import { LanguageData, TimeZoneData } from "../../../../common/select2data";
 import ProfileService from "../../../../common/profileservices";
 import { Helmet } from "react-helmet";
 import store from "../../../../redux/store";
-import { ThemeChanger } from "../../../../redux/Action"
+import { ThemeChanger } from "../../../../redux/Action";
+import Swal from "sweetalert2";
 
-const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
+const Profilesetting = ({ local_varaiable = {}, ThemeChanger }) => {
+	const [searchParams] = useSearchParams();
 	const [startDate, setStartDate] = useState(new Date());
 	const [selected, setSelected] = useState(['Laravel', 'Angular', 'Html', 'VueJs', 'React' ]);  // react-tag-input-component
 
@@ -60,7 +64,57 @@ const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
 					});
 				}))
 		
-			}, [location])
+			}, [location]);
+
+			// Open Daily Activities tab when redirected from notification (?tab=daily_activities)
+			useEffect(() => {
+				if (searchParams.get("tab") === "daily_activities") {
+					const activateTab = () => {
+						const tabBtn = document.getElementById("profile-settings-item-6");
+						if (tabBtn) tabBtn.click();
+					};
+					const t = setTimeout(activateTab, 100);
+					return () => clearTimeout(t);
+				}
+			}, [searchParams]);
+
+	const handleLogoutAllDevices = async () => {
+		const result = await Swal.fire({
+			title: "Are you sure?",
+			text: "You will be logged out from all devices. This action cannot be undone.",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#b91c1c",
+			cancelButtonColor: "#6b7280",
+			confirmButtonText: "Yes, log out",
+		});
+		if (!result.isConfirmed) return;
+
+		const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+		const token = sessionStorage.getItem("token");
+		if (!token || !apiBaseUrl) {
+			sessionStorage.removeItem("token");
+			sessionStorage.removeItem("profile");
+			sessionStorage.removeItem("roles");
+			sessionStorage.removeItem("currentRole");
+			sessionStorage.removeItem("accessToken");
+			window.location.href = `${(import.meta.env.BASE_URL || "").replace(/\/?$/, "")}/login`;
+			return;
+		}
+		try {
+			await axios.post(`${apiBaseUrl}/logout-all`, {}, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+		} catch (e) {
+			// Ignore API errors; we still clear session
+		}
+		sessionStorage.removeItem("token");
+		sessionStorage.removeItem("profile");
+		sessionStorage.removeItem("roles");
+		sessionStorage.removeItem("currentRole");
+		sessionStorage.removeItem("accessToken");
+		window.location.href = `${(import.meta.env.BASE_URL || "").replace(/\/?$/, "")}/login`;
+	};
 	
 	// <p className="ti-dropdown-header-title !text-white">{local_varaiable.user.firstname} {local_varaiable.user.middlename} {local_varaiable.user.lastname}</p>
 	
@@ -126,6 +180,9 @@ const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
 								</button>
 								<button type="button" className= "hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white -mr-px py-3 px-3 inline-flex items-center gap-2 bg-gray-50 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300" id="profile-settings-item-5" data-hs-tab="#profile-settings-5" aria-controls="profile-settings-5" role="tab">
 									<i className= "ri ri-notification-4-line"></i> Notifications Settings
+								</button>
+								<button type="button" className= "hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white -mr-px py-3 px-3 inline-flex items-center gap-2 bg-gray-50 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300" id="profile-settings-item-6" data-hs-tab="#profile-settings-6" aria-controls="profile-settings-6" role="tab">
+									<i className= "ri ri-todo-line"></i> Daily Activities
 								</button>
 							</nav>
 						</div>
@@ -372,7 +429,7 @@ const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
 													<div className= "box-header">
 														<div className= "sm:flex space-y-4">
 															<h5 className= "box-title my-auto">Web Linked Devices</h5>
-															<button type="button" className= "py-1 px-3 ti-btn ti-btn-primary text-sm m-0">Log out From All Devices </button>
+															<button type="button" className= "py-1 px-3 ti-btn ti-btn-primary text-sm m-0" onClick={handleLogoutAllDevices}>Log out From All Devices </button>
 														</div>
 													</div>
 													<div className= "box-body">
@@ -563,146 +620,13 @@ const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
 									</div>
 									<div className= "box-body">
 										<div className= "space-y-4">
-											<div className= "p-4 border border-gray-200 dark:border-white/10 rounded-sm">
-												<div className= "md:grid grid-cols-12 gap-6 space-y-4">
-													<div className= "col-span-12 md:col-span-6 my-auto">
-														<p className= "text-base mb-1 font-semibold">Comments</p>
-														<p className= "text-xs mb-0 text-gray-500 dark:text-white/70">The Comment Notifications are the notifications you get for your posts and replies for your comments.</p>
-													</div>
-													<div className= "col-span-12 md:col-span-6">
-														<div className= "space-y-2">
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify Me</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left " defaultChecked/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify Me If Mentioned</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left"/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify For My Posts</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left" defaultChecked/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">All Comments</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left"/>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div className= "p-4 border border-gray-200 dark:border-white/10 rounded-sm">
-												<div className= "md:grid grid-cols-12 gap-6 space-y-4">
-													<div className= "col-span-12 md:col-span-6 my-auto">
-														<p className= "text-base mb-1 font-semibold">Tags</p>
-														<p className= "text-xs mb-0 text-gray-500 dark:text-white/70">The Tag Notifications are the notifications you get when you are tagged for others posts.</p>
-													</div>
-													<div className= "col-span-12 md:col-span-6">
-
-														<div className= "space-y-2">
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify Me</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left" defaultChecked/>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div className= "p-4 border border-gray-200 dark:border-white/10 rounded-sm">
-												<div className= "md:grid grid-cols-12 gap-6 space-y-4">
-													<div className= "col-span-12 md:col-span-6 my-auto">
-														<p className= "text-base mb-1 font-semibold">Reminders</p>
-														<p className= "text-xs mb-0 text-gray-500 dark:text-white/70">The Reminder Notifications are the notifications you get when you missed any update .</p>
-													</div>
-													<div className= "col-span-12 md:col-span-6">
-														<div className= "space-y-2">
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Remind Me</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left" defaultChecked/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Remind Me only Important Updates</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left" defaultChecked/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Remind Me All updates</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left"/>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div className= "p-4 border border-gray-200 dark:border-white/10 rounded-sm">
-												<div className= "md:grid grid-cols-12 gap-6 space-y-4">
-													<div className= "col-span-12 md:col-span-6 my-auto">
-														<p className= "text-base mb-1 font-semibold">More Activity</p>
-														<p className= "text-xs mb-0 text-gray-500 dark:text-white/70">The Notifications is for likes ,comments,reactions for your profile  .</p>
-													</div>
-													<div className= "col-span-12 md:col-span-6">
-														<div className= "space-y-2">
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify Me</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left"/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify Me only Important</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left"/>
-																</div>
-															</div>
-															<div className= "sm:grid grid-cols-12 gap-6 space-y-4 md:text-end">
-																<div className= "col-span-9 my-auto">
-																	<label className= "text-sm text-gray-500 ltr:ml-3 rtl:mr-3 dark:text-white/70">Notify Me All</label>
-																</div>
-																<div className= "col-span-3 my-auto">
-																	<input type="checkbox" className= "ti-switch shrink-0 w-11 h-6 before:w-5 before:h-5 ltr:float-right rtl:float-left" defaultChecked/>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+											<NotificationEmailSection />
 										</div>
 									</div>
 								</div>
+							</div>
+							<div id="profile-settings-6" className= "hidden" role="tabpanel" aria-labelledby="profile-settings-item-6">
+								<DailyActivitiesTab />
 							</div>
 						</div>
 						<div className= "box-footer text-end space-x-3 rtl:space-x-reverse">
@@ -715,4 +639,408 @@ const Profilesetting = ({ local_varaiable, ThemeChanger }) => {
 		</div>
 	);
 };
-export default Profilesetting;
+
+const NotificationEmailSection = () => {
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+	const [users, setUsers] = useState([]);
+	const [recipients, setRecipients] = useState([]);
+	const [recipientEmails, setRecipientEmails] = useState([]);
+	const [ccEmails, setCcEmails] = useState([]);
+	const [bccEmails, setBccEmails] = useState([]);
+	const [subject, setSubject] = useState("");
+	const [body, setBody] = useState("");
+	const [emails, setEmails] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [sending, setSending] = useState(false);
+	const [emailsLoading, setEmailsLoading] = useState(false);
+
+	const isValidEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(str || "").trim());
+
+	const getAuthHeaders = () => ({
+		Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+	});
+
+	const fetchEmails = async () => {
+		setEmailsLoading(true);
+		try {
+			const res = await axios.get(`${apiBaseUrl}/notifications`, { headers: getAuthHeaders() });
+			setEmails(res.data.emails || []);
+		} catch (e) {
+			console.error(e);
+		} finally {
+			setEmailsLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		const fetchUsers = async () => {
+			setLoading(true);
+			try {
+				const res = await axios.get(`${apiBaseUrl}/notifications/users`, { headers: getAuthHeaders() });
+				setUsers(res.data.users || []);
+			} catch (e) {
+				console.error(e);
+				Swal.fire("Error", "Failed to load users.", "error");
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchUsers();
+		fetchEmails();
+	}, [apiBaseUrl]);
+
+	const handleSend = async (e) => {
+		e.preventDefault();
+		const ids = recipients.map((r) => r.value ?? r.id).filter(Boolean);
+		const manualEmails = (recipientEmails || []).filter((em) => isValidEmail(em));
+		if (!ids.length && !manualEmails.length) {
+			Swal.fire("Warning", "Please select at least one recipient or enter an email address.", "warning");
+			return;
+		}
+		if (!subject.trim()) {
+			Swal.fire("Warning", "Please enter a subject.", "warning");
+			return;
+		}
+		if (!body.trim()) {
+			Swal.fire("Warning", "Please enter a message.", "warning");
+			return;
+		}
+		setSending(true);
+		try {
+			await axios.post(`${apiBaseUrl}/notifications/send`, {
+				recipient_ids: ids.length ? ids : undefined,
+				recipient_emails: manualEmails.length ? manualEmails : undefined,
+				cc_emails: (ccEmails || []).filter((em) => isValidEmail(em)),
+				bcc_emails: (bccEmails || []).filter((em) => isValidEmail(em)),
+				subject: subject.trim(),
+				body: body.trim(),
+			}, { headers: getAuthHeaders() });
+			Swal.fire("Success", "Email(s) sent successfully.", "success");
+			setRecipients([]);
+			setRecipientEmails([]);
+			setCcEmails([]);
+			setBccEmails([]);
+			setSubject("");
+			setBody("");
+			fetchEmails();
+		} catch (e) {
+			Swal.fire("Error", e.response?.data?.message || "Failed to send email.", "error");
+		} finally {
+			setSending(false);
+		}
+	};
+
+	return (
+		<>
+			<div className="p-4 border border-gray-200 dark:border-white/10 rounded-sm">
+				<p className="text-base mb-1 font-semibold">Send Notification Email</p>
+				<p className="text-xs mb-4 text-gray-500 dark:text-white/70">Send an email to one or multiple users.</p>
+				<form onSubmit={handleSend} className="space-y-4">
+					<div className="space-y-2">
+						<label className="ti-form-label mb-0">To (recipients) <sup className="text-danger">*</sup></label>
+						<p className="text-xs text-gray-500 dark:text-white/70 mb-1">Select users and/or type email addresses — you can type only, select only, or both.</p>
+						<div className="space-y-2">
+							<Select
+								isMulti
+								options={users}
+								value={recipients}
+								onChange={setRecipients}
+								placeholder={loading ? "Loading users..." : "Select users (optional)..."}
+								isDisabled={loading}
+								classNamePrefix="react-select"
+							/>
+							<TagsInput
+								value={recipientEmails}
+								onChange={setRecipientEmails}
+								placeHolder="Type email addresses (e.g. user@example.com)"
+								className="ti-form-input badge bg-gray-100 dark:bg-black/20 dark:text-white text-gray-800"
+							/>
+						</div>
+					</div>
+					<div className="space-y-2">
+						<label className="ti-form-label mb-0">CC (optional)</label>
+						<TagsInput
+							value={ccEmails}
+							onChange={setCcEmails}
+							placeHolder="Carbon copy emails..."
+							className="ti-form-input badge bg-gray-100 dark:bg-black/20 dark:text-white text-gray-800"
+						/>
+					</div>
+					<div className="space-y-2">
+						<label className="ti-form-label mb-0">BCC (optional)</label>
+						<TagsInput
+							value={bccEmails}
+							onChange={setBccEmails}
+							placeHolder="Blind carbon copy emails..."
+							className="ti-form-input badge bg-gray-100 dark:bg-black/20 dark:text-white text-gray-800"
+						/>
+					</div>
+					<div className="space-y-2">
+						<label className="ti-form-label mb-0">Subject <sup className="text-danger">*</sup></label>
+						<input type="text" className="ti-form-input w-full" placeholder="Email subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
+					</div>
+					<div className="space-y-2">
+						<label className="ti-form-label mb-0">Message <sup className="text-danger">*</sup></label>
+						<textarea className="ti-form-input w-full" rows="5" placeholder="Enter your message..." value={body} onChange={(e) => setBody(e.target.value)} />
+					</div>
+					<button type="submit" className="ti-btn ti-btn-primary" disabled={sending}>
+						{sending ? "Sending..." : "Send Email"}
+					</button>
+				</form>
+			</div>
+			<div className="p-4 border border-gray-200 dark:border-white/10 rounded-sm">
+				<h6 className="font-semibold mb-3">Sent Emails</h6>
+				{emailsLoading ? (
+					<p className="text-gray-500 text-sm">Loading...</p>
+				) : emails.length === 0 ? (
+					<p className="text-gray-500 text-sm">No emails sent yet.</p>
+				) : (
+					<div className="table-bordered rounded-sm overflow-auto max-h-[350px]">
+						<table className="ti-custom-table ti-custom-table-head whitespace-nowrap">
+							<thead className="bg-gray-50 dark:bg-black/20 sticky top-0">
+								<tr>
+									<th className="!py-2 !px-3">S/No</th>
+									<th className="!py-2 !px-3">Recipient</th>
+									<th className="!py-2 !px-3">Subject</th>
+									<th className="!py-2 !px-3">Status</th>
+									<th className="!py-2 !px-3">Sent At</th>
+								</tr>
+							</thead>
+							<tbody>
+								{emails.map((em, idx) => (
+									<tr key={em.id} className="border-b border-gray-200 dark:border-white/10">
+										<td className="!py-2 !px-3">{idx + 1}</td>
+										<td className="!py-2 !px-3" title={em.recipient_email}>{em.recipient}</td>
+										<td className="!py-2 !px-3 max-w-[200px] truncate" title={em.subject}>{em.subject}</td>
+										<td className="!py-2 !px-3">
+											<span className={`badge text-xs capitalize ${em.status === "delivered" ? "bg-success/10 text-success" : em.status === "sent" ? "bg-primary/10 text-primary" : "bg-danger/10 text-danger"}`}>
+												{em.status}
+											</span>
+										</td>
+										<td className="!py-2 !px-3">{em.sent_at || "—"}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
+			</div>
+		</>
+	);
+};
+
+const DailyActivitiesTab = () => {
+	const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+	const [activityDate, setActivityDate] = useState(new Date());
+	const [startTime, setStartTime] = useState("");
+	const [endTime, setEndTime] = useState("");
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const [rating, setRating] = useState("");
+	const [status, setStatus] = useState("completed");
+	const [activities, setActivities] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [saving, setSaving] = useState(false);
+	const [selectedToConfirm, setSelectedToConfirm] = useState([]);
+	const [confirming, setConfirming] = useState(false);
+
+	const getAuthHeaders = () => ({
+		Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+	});
+
+	const fetchActivities = async () => {
+		setLoading(true);
+		try {
+			const res = await axios.get(`${apiBaseUrl}/user_activities`, { headers: getAuthHeaders() });
+			setActivities(res.data.activities || []);
+		} catch (e) {
+			console.error(e);
+			Swal.fire("Error", "Failed to load activities.", "error");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		fetchActivities();
+	}, []);
+
+	const toYMD = (d) => {
+		if (!d) return "";
+		const dt = d instanceof Date ? d : new Date(d);
+		return dt.toISOString().slice(0, 10);
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		if (!description.trim()) {
+			Swal.fire("Warning", "Please enter a description.", "warning");
+			return;
+		}
+		setSaving(true);
+		try {
+			await axios.post(`${apiBaseUrl}/user_activities`, {
+				activity_date: toYMD(activityDate),
+				start_time: startTime || null,
+				end_time: endTime || null,
+				title: title.trim() || null,
+				description: description.trim(),
+				rating: rating ? parseInt(rating, 10) : null,
+				status: status || "completed",
+			}, { headers: getAuthHeaders() });
+			Swal.fire("Success", "Activity saved successfully.", "success");
+			setTitle("");
+			setDescription("");
+			setRating("");
+			setStatus("completed");
+			setStartTime("");
+			setEndTime("");
+			fetchActivities();
+		} catch (e) {
+			Swal.fire("Error", e.response?.data?.message || "Failed to save activity.", "error");
+		} finally {
+			setSaving(false);
+		}
+	};
+
+	const handleConfirmActivities = async () => {
+		if (selectedToConfirm.length === 0) {
+			Swal.fire("Warning", "Please select activities to confirm.", "warning");
+			return;
+		}
+		setConfirming(true);
+		try {
+			await axios.post(`${apiBaseUrl}/user_activities/confirm`, { ids: selectedToConfirm }, { headers: getAuthHeaders() });
+			Swal.fire("Success", "Activities confirmed successfully.", "success");
+			setSelectedToConfirm([]);
+			fetchActivities();
+		} catch (e) {
+			Swal.fire("Error", e.response?.data?.message || "Failed to confirm activities.", "error");
+		} finally {
+			setConfirming(false);
+		}
+	};
+
+	const toggleSelectConfirm = (id) => {
+		setSelectedToConfirm((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+	};
+	const unconfirmedCount = activities.filter((a) => !a.confirmed_at).length;
+
+	return (
+		<div className="box border-0 shadow-none mb-0">
+			<div className="box-header">
+				<h5 className="box-title leading-none flex"><i className="ri ri-todo-line ltr:mr-2 rtl:ml-2"></i> Daily Activities</h5>
+			</div>
+			<div className="box-body space-y-6">
+				<form onSubmit={handleSubmit} className="p-4 border border-gray-200 dark:border-white/10 rounded-sm space-y-4">
+					<h6 className="font-semibold">Log Today&apos;s Activities</h6>
+					<div className="grid lg:grid-cols-2 gap-6">
+						<div className="space-y-2">
+							<label className="ti-form-label mb-0">Date</label>
+							<DatePicker className="ti-form-input w-full" dateFormat="dd/MM/yyyy" selected={activityDate} onChange={(d) => setActivityDate(d)} />
+						</div>
+						<div className="space-y-2">
+							<label className="ti-form-label mb-0">Title (optional)</label>
+							<input type="text" className="ti-form-input w-full" placeholder="Brief title" value={title} onChange={(e) => setTitle(e.target.value.toUpperCase())} style={{ textTransform: "uppercase" }} />
+						</div>
+						<div className="space-y-2">
+							<label className="ti-form-label mb-0">Start Time (optional)</label>
+							<input type="time" className="ti-form-input w-full" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+						</div>
+						<div className="space-y-2">
+							<label className="ti-form-label mb-0">End Time (optional)</label>
+							<input type="time" className="ti-form-input w-full" value={endTime} onChange={(e) => setEndTime(e.target.value)} min={startTime || undefined} />
+						</div>
+					</div>
+					<div className="space-y-2">
+						<label className="ti-form-label mb-0">Description <sup className="text-danger">*</sup></label>
+						<textarea className="ti-form-input w-full" rows="4" placeholder="What did you accomplish today?" value={description} onChange={(e) => setDescription(e.target.value)} required />
+					</div>
+					<div className="grid lg:grid-cols-2 gap-6">
+						<div className="space-y-2 lg:max-w-[200px]">
+							<label className="ti-form-label mb-0">Self Rating (1-5, optional)</label>
+							<select className="ti-form-input w-full" value={rating} onChange={(e) => setRating(e.target.value)}>
+								<option value="">--</option>
+								{[1, 2, 3, 4, 5].map((n) => (
+									<option key={n} value={n}>{n} - {n <= 2 ? "Low" : n === 3 ? "Medium" : "High"}</option>
+								))}
+							</select>
+						</div>
+						<div className="space-y-2 lg:max-w-[200px]">
+							<label className="ti-form-label mb-0">Status</label>
+							<select className="ti-form-input w-full" value={status} onChange={(e) => setStatus(e.target.value)}>
+								<option value="completed">Completed</option>
+								<option value="in_progress">In Progress</option>
+								<option value="pending">Pending</option>
+							</select>
+						</div>
+					</div>
+					<button type="submit" className="ti-btn ti-btn-primary" disabled={saving}>
+						{saving ? "Saving..." : "Save Activity"}
+					</button>
+				</form>
+				<div>
+					<div className="flex justify-between items-center flex-wrap gap-2 mb-3">
+						<h6 className="font-semibold mb-0">Recent Activities</h6>
+						{unconfirmedCount > 0 && (
+							<div className="flex items-center gap-2">
+								<button type="button" className="ti-btn ti-btn-primary ti-btn-sm" onClick={handleConfirmActivities} disabled={confirming || selectedToConfirm.length === 0}>
+									{confirming ? "Confirming..." : `Confirm Selected (${selectedToConfirm.length})`}
+								</button>
+							</div>
+						)}
+					</div>
+					{loading ? (
+						<p className="text-gray-500">Loading...</p>
+					) : activities.length === 0 ? (
+						<p className="text-gray-500">No activities yet. Log your first activity above.</p>
+					) : (
+						<div className="table-bordered rounded-sm overflow-auto max-h-[400px]">
+							<table className="ti-custom-table ti-custom-table-head whitespace-nowrap">
+								<thead className="bg-gray-50 dark:bg-black/20 sticky top-0">
+									<tr>
+										{unconfirmedCount > 0 && <th className="!py-2 !px-3 w-10">Confirm</th>}
+										<th className="!py-2 !px-3">S/No</th>
+										<th className="!py-2 !px-3">Title</th>
+										<th className="!py-2 !px-3">Description</th>
+										<th className="!py-2 !px-3">Rate</th>
+										<th className="!py-2 !px-3">Time</th>
+										<th className="!py-2 !px-3">Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									{activities.map((a, idx) => (
+										<tr key={a.id} className={`border-b border-gray-200 dark:border-white/10 ${!a.confirmed_at ? "bg-warning/5" : ""}`}>
+											{unconfirmedCount > 0 && (
+												<td className="!py-2 !px-3">
+													{!a.confirmed_at ? (
+														<input type="checkbox" className="ti-form-checkbox" checked={selectedToConfirm.includes(a.id)} onChange={() => toggleSelectConfirm(a.id)} />
+													) : (
+														<span className="text-success" title="Confirmed"><i className="ri-checkbox-circle-fill"></i></span>
+													)}
+												</td>
+											)}
+											<td className="!py-2 !px-3">{idx + 1}</td>
+											<td className="!py-2 !px-3">{a.title || "—"}</td>
+											<td className="!py-2 !px-3 max-w-[200px] truncate" title={a.description}>{a.description}</td>
+											<td className="!py-2 !px-3">{a.rating ? `${a.rating}/5` : "—"}</td>
+											<td className="!py-2 !px-3">{(a.start_time || a.end_time) ? [a.start_time, a.end_time].filter(Boolean).map((t) => (t || "").slice(0, 5)).join(" – ") : "—"}</td>
+											<td className="!py-2 !px-3">
+												<span className={`badge text-xs capitalize ${a.status === "completed" ? "bg-success/10 text-success" : a.status === "in_progress" ? "bg-warning/10 text-warning" : "bg-gray-100 dark:bg-black/20 text-gray-600 dark:text-white/70"}`}>
+													{(a.status || "completed").replace(/_/g, " ")}
+												</span>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+};
+
+const mapStateToProps = (state) => ({ local_varaiable: state });
+export default connect(mapStateToProps)(Profilesetting);

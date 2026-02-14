@@ -236,6 +236,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
 
     const [pendingWorkflows, setPendingWorkflows] = useState([]);
     const [pendingLoading, setPendingLoading] = useState(false);
+    const [activityConfirmation, setActivityConfirmation] = useState({ unconfirmed_count: 0, show_reminder: false });
 
     function handleRemove(id) {
         setPendingWorkflows((prev) => prev.filter((item) => item.id !== id));
@@ -305,6 +306,24 @@ const Header = ({local_varaiable,ThemeChanger})=>{
         };
 
         fetchPendingWorkflows();
+
+        const fetchActivityConfirmation = async () => {
+            try {
+                const token = sessionStorage.getItem('token');
+                if (!token || !apiBaseUrl) return;
+                const baseUrl = import.meta.env.BASE_URL || '/';
+                const res = await axios.get(`${apiBaseUrl}/user_activities/unconfirmed_summary?base_url=${encodeURIComponent(baseUrl)}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setActivityConfirmation({
+                    unconfirmed_count: res.data.unconfirmed_count || 0,
+                    show_reminder: res.data.show_reminder || false,
+                });
+            } catch {
+                setActivityConfirmation({ unconfirmed_count: 0, show_reminder: false });
+            }
+        };
+        fetchActivityConfirmation();
     }, [apiBaseUrl]);
 
     useEffect(() => {
@@ -512,7 +531,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                 <span
                                                     className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success/80 opacity-75"></span>
                                                 <span
-                                                    className="relative inline-flex rounded-full h-5 w-5 bg-success text-white justify-center items-center" id="notify-data">{pendingWorkflows.length}</span>
+                                                    className="relative inline-flex rounded-full h-5 w-5 bg-success text-white justify-center items-center" id="notify-data">{pendingWorkflows.length + (activityConfirmation.show_reminder && activityConfirmation.unconfirmed_count > 0 ? activityConfirmation.unconfirmed_count : 0)}</span>
                                             </span>
                                         </button>
                                         <div className="hs-dropdown-menu ti-dropdown-menu w-[20rem] border-0" aria-labelledby="dropdown-notification">
@@ -521,6 +540,25 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                 <Link to="#" className="badge bg-black/20 text-white rounded-sm">Mark All Read</Link>
                                             </div>
                                             <div className="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
+                                                {activityConfirmation.show_reminder && activityConfirmation.unconfirmed_count > 0 && (
+                                                    <div className="py-2 first:pt-0 last:pb-0 px-4">
+                                                        <Link
+                                                            to={`${import.meta.env.BASE_URL}user/profile/setting?tab=daily_activities`}
+                                                            className="ti-dropdown-item relative header-box cursor-pointer block !rounded-sm !bg-warning/10 dark:!bg-warning/20 border border-warning/30"
+                                                        >
+                                                            <div className="flex space-x-3 rtl:space-x-reverse">
+                                                                <div className="ltr:mr-2 rtl:ml-2 avatar rounded-full ring-0 shrink-0">
+                                                                    <i className="ri-todo-line text-xl text-warning"></i>
+                                                                </div>
+                                                                <div className="relative w-full">
+                                                                    <h5 className="text-sm text-gray-800 dark:text-white font-semibold mb-1">Confirm Daily Activities</h5>
+                                                                    <p className="text-xs text-gray-600 dark:text-white/70">You have {activityConfirmation.unconfirmed_count} unconfirmed {activityConfirmation.unconfirmed_count === 1 ? 'activity' : 'activities'} for today. Click to confirm.</p>
+                                                                </div>
+                                                                <i className="ri-arrow-right-s-line text-lg text-gray-400"></i>
+                                                            </div>
+                                                        </Link>
+                                                    </div>
+                                                )}
                                                 <div className="py-2 first:pt-0 last:pb-0" id="allNotifyContainer">
                                                     {pendingLoading ? (
                                                         <div className="text-center text-xs text-gray-500 dark:text-white/60 py-4">Loading pending workflows...</div>
@@ -615,7 +653,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                 </div>
                                             </div>
                                             <div className="mt-2 ti-dropdown-divider">
-                                                <Link to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`} className="ti-dropdown-item">
+                                                <Link to={`${import.meta.env.BASE_URL}user/profile/home`} className="ti-dropdown-item">
                                                     <i className="ti ti-user-circle text-lg"></i>
                                                     Profile
                                                 </Link>
@@ -623,7 +661,7 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                                     <i className="ti ti-inbox text-lg"></i>
                                                     Inbox
                                                 </Link>  */}
-                                                <Link to={`${import.meta.env.BASE_URL}user/profile_setting/`} className="ti-dropdown-item">
+                                                <Link to={`${import.meta.env.BASE_URL}user/profile/setting`} className="ti-dropdown-item">
                                                     <i className="ti ti-adjustments-horizontal text-lg"></i>
                                                     Settings
                                                 </Link>

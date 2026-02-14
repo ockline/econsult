@@ -111,7 +111,7 @@ const Team = () => {
 										</div>
 										<div className= "box-body">
 											<div className= "justify-center text-center relative ">
-												<Link className= "relative inline-block mt-8" to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`}>
+												<Link className= "relative inline-block mt-8" to={`${import.meta.env.BASE_URL}user/profile/home`}>
 													<img src= {idx.pic} className="w-24 h-24 rounded-full ring-4 ring-gray-100 mx-auto dark:ring-white/10" alt="user-img"/>
 													<span className="absolute bottom-0 ltr:right-0 rtl:left-0 block p-1 rounded-full ring-2 ring-white dark:ring-white/10 text-gray-500 dark:text-white/70 bg-gray-100 dark:bg-bgdark leading-none"><i className="ri ri-pencil-line"></i></span>
 												</Link>
@@ -156,7 +156,7 @@ const Team = () => {
 														<i className= "ri-more-2-line leading-none text-base text-gray-100"></i>
 													</button>
 													<div className= "hs-dropdown-menu ti-dropdown-menu">
-														<Link className= "ti-dropdown-item" to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`}><i className="ri ri-edit-2-line text-lg"></i>Edit</Link>
+														<Link className= "ti-dropdown-item" to={`${import.meta.env.BASE_URL}user/profile/home`}><i className="ri ri-edit-2-line text-lg"></i>Edit</Link>
 														<Link className= "team-remove ti-dropdown-item" to="#" onClick={() => handleRemove(idx.id)}><i className="ri ri-delete-bin-6-line text-lg"></i>Delete</Link>
 													</div>
 												</div>
@@ -165,7 +165,7 @@ const Team = () => {
 										<div className= "box-footer bg-gray-100 dark:bg-bgdark p-0 text-center">
 											<div className= "grid grid-cols-12 gap-6">
 												<div className= "col-span-6 ltr:border-r rtl:border-l p-3 border-gray-200 dark:border-white/10">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`} className= "space-x-3"><i className= "ri-user-line"></i><span>Profile</span></Link>
+													<Link to={`${import.meta.env.BASE_URL}user/profile/home`} className= "space-x-3"><i className= "ri-user-line"></i><span>Profile</span></Link>
 												</div>
 												<div className= "col-span-6 p-3">
 													<Link to={`${import.meta.env.BASE_URL}pagecomponent/contacts/`} className= "space-x-3"><i
@@ -198,7 +198,7 @@ const Team = () => {
 										</div>
 										<div className= "box-body">
 											<div className= "justify-center text-center relative ">
-												<Link className= "relative inline-block mt-8" to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`}>
+												<Link className= "relative inline-block mt-8" to={`${import.meta.env.BASE_URL}user/profile/home`}>
 													<img src= {idx.pic} className="w-24 h-24 rounded-full ring-4 ring-gray-100 mx-auto dark:ring-white/10" alt="user-img"/>
 													<span className="absolute bottom-0 ltr:right-0 rtl:left-0 block p-1 rounded-full ring-2 ring-white dark:ring-white/10 text-gray-500 dark:text-white/70 bg-gray-100 dark:bg-bgdark leading-none"><i className="ri ri-pencil-line"></i></span>
 												</Link>
@@ -243,7 +243,7 @@ const Team = () => {
 														<i className= "ri-more-2-line leading-none text-base text-gray-100"></i>
 													</button>
 													<div className= "hs-dropdown-menu ti-dropdown-menu">
-														<Link className= "ti-dropdown-item" to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`}><i
+														<Link className= "ti-dropdown-item" to={`${import.meta.env.BASE_URL}user/profile/home`}><i
 															className="ri ri-edit-2-line text-lg"></i>Edit</Link>
 														<Link className= "team-remove ti-dropdown-item" to="#"><i
 															className="ri ri-delete-bin-6-line text-lg"></i>Delete</Link>
@@ -254,7 +254,7 @@ const Team = () => {
 										<div className= "box-footer bg-gray-100 dark:bg-bgdark p-0 text-center">
 											<div className= "grid grid-cols-12 gap-6">
 												<div className= "col-span-6 ltr:border-r rtl:border-l p-3 border-gray-200 dark:border-white/10">
-													<Link to={`${import.meta.env.BASE_URL}pagecomponent/profile/home/`} className= "space-x-3"><i className= "ri-user-line"></i><span>Profile</span></Link>
+													<Link to={`${import.meta.env.BASE_URL}user/profile/home`} className= "space-x-3"><i className= "ri-user-line"></i><span>Profile</span></Link>
 												</div>
 												<div className= "col-span-6 p-3">
 													<Link to={`${import.meta.env.BASE_URL}pagecomponent/contacts/`} className= "space-x-3"><i
