@@ -39,7 +39,7 @@ const showIdlePrompt = () => {
 		confirmButtonText: "Logout",
 		cancelButtonText: "Continue",
 		confirmButtonColor: "#b91c1c",
-		cancelButtonColor: "#2563eb",
+		cancelButtonColor: "#b91c1c",
 		allowOutsideClick: false,
 		allowEscapeKey: false,
 		reverseButtons: true,

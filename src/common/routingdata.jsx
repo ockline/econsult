@@ -242,10 +242,10 @@ import TemplateGeneration from "../component/compliances/TemplateGeneration/Inde
 import OccupationalReconciliation from "../component/compliances/OccupationalReconciliation/Index";
 
 // Reports
-import HiringReport from "../component/reports/Hiring/Index";
-import EmployeesReport from "../component/reports/Employees/Index";
+import HiringReport from "../component/reports/hiring/Index";
+import EmployeesReport from "../component/reports/employees/Index";
 import ClientsReport from "../component/reports/Clients/Index";
-import ContractsReport from "../component/reports/Contracts/Index";
+import ContractsReport from "../component/reports/contracts/Index";
 import IndustrialsReport from "../component/reports/Industrials/Index";
 import AttendancesReport from "../component/reports/Attendances/Index";
 import AddOccupational from "../component/compliances/OccupationalReconciliation/Add";
