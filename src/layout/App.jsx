@@ -11,7 +11,7 @@ import * as switcherdata from "../common/switcherdata";
 import { UserChanger, RolesChanger } from "../redux/Action.jsx"
 import axios from 'axios';
 import { connect } from "react-redux"
-import setupIdleListener from "../utility/idleTimeout";
+import setupIdleListener from "../utility/idleTimeout.jsx";
 
  
 const App = ({local_varaiable, UserChanger, RolesChanger}) => {
