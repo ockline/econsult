@@ -11,7 +11,7 @@ import * as switcherdata from "../common/switcherdata";
 import { UserChanger, RolesChanger } from "../redux/Action.jsx"
 import axios from 'axios';
 import { connect } from "react-redux"
-import setupIdleListener from "../utility/IdleTimeout.jsx";
+import IdleTimeout from "../utility/IdleTimeout.jsx";
 
  
 const App = ({local_varaiable, UserChanger, RolesChanger}) => {
@@ -57,7 +57,7 @@ const App = ({local_varaiable, UserChanger, RolesChanger}) => {
 		});
 
 		// Idle timeout: after 10 min inactivity, prompt "Are you still active?" with 2 min countdown
-		const cleanupIdle = setupIdleListener();
+		const cleanupIdle = IdleTimeout();
 
 		// Cleanup
 		return () => {
