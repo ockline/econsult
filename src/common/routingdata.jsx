@@ -237,8 +237,19 @@ import AddGrievances from "../component/industrialRelationship/Grievances/Add";
 import EditGrievances from "../component/industrialRelationship/Grievances/Edit";
 import ShowGrievances from "../component/industrialRelationship/Grievances/Show";
 
+// Compliance Management
+import TemplateGeneration from "../component/compliances/TemplateGeneration/Index";
+import OccupationalReconciliation from "../component/compliances/OccupationalReconciliation/Index";
 
-
+// Reports
+import HiringReport from "../component/reports/Hiring/Index";
+import EmployeesReport from "../component/reports/Employees/Index";
+import ClientsReport from "../component/reports/Clients/Index";
+import ContractsReport from "../component/reports/Contracts/Index";
+import IndustrialsReport from "../component/reports/Industrials/Index";
+import AttendancesReport from "../component/reports/Attendances/Index";
+import AddOccupational from "../component/compliances/OccupationalReconciliation/Add";
+import EditOccupational from "../component/compliances/OccupationalReconciliation/Edit";
 
 import Carousel from "../component/advancedUi/carousel/carousel";
 import Filedetails from "../component/advancedUi/filemanager/filedetails/filedetails";
@@ -590,6 +601,19 @@ export const RouteData = [
     { path: `${import.meta.env.BASE_URL}industrials/disciplinaries/show_disciplinary/:id`, element: <ShowDisciplinary /> },
 
    { path: `${import.meta.env.BASE_URL}industrials/grievances`, element: <Grievances /> },
+
+    // Compliance Management
+    { path: `${import.meta.env.BASE_URL}compliances/templategeneration`, element: <TemplateGeneration /> },
+    // Reports
+    { path: `${import.meta.env.BASE_URL}reports/hirings`, element: <HiringReport /> },
+    { path: `${import.meta.env.BASE_URL}reports/employees`, element: <EmployeesReport /> },
+    { path: `${import.meta.env.BASE_URL}reports/clients`, element: <ClientsReport /> },
+    { path: `${import.meta.env.BASE_URL}reports/contracts`, element: <ContractsReport /> },
+    { path: `${import.meta.env.BASE_URL}reports/industrials`, element: <IndustrialsReport /> },
+    { path: `${import.meta.env.BASE_URL}reports/attendances`, element: <AttendancesReport /> },
+    { path: `${import.meta.env.BASE_URL}compliances/occupational`, element: <OccupationalReconciliation /> },
+    { path: `${import.meta.env.BASE_URL}compliances/occupational/add`, element: <AddOccupational /> },
+    { path: `${import.meta.env.BASE_URL}compliances/occupational/edit/:id`, element: <EditOccupational /> },
     { path: `${import.meta.env.BASE_URL}industrials/grievances/initiate-grievance`, element: <AddGrievances /> },
     { path: `${import.meta.env.BASE_URL}industrials/grievances/edit_grievance/:id`, element: <EditGrievances /> },
     { path: `${import.meta.env.BASE_URL}industrials/grievances/show_grievances/:id`, element: <ShowGrievances /> },

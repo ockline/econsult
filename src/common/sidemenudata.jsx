@@ -15,7 +15,6 @@ const LeavesSvg = <i className="ri-community-line side-menu__icon"></i>
 const IndustrialRelationshipSvg = <i className="ri-links-fill side-menu__icon"></i>
 const CompliancesSvg = <i className="ri-service-line side-menu__icon"></i>
 const ExitsSvg = <i className="ri-send-plane-2-line side-menu__icon"></i>
-const PayrollsSvg = <i className="ri-creative-commons-nc-line side-menu__icon"></i>
 const ReportsSvg = <i className="ri-bar-chart-grouped-line side-menu__icon"></i>
 const PagesSvg = <i className="ri-book-open-line side-menu__icon"></i>
 const AuthenticationSvg = <i className="ri-error-warning-line side-menu__icon"></i>
@@ -126,8 +125,7 @@ export const MenuItems = [
 			{ id: 37, icon: CompliancesSvg, title: "Compliance", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF' ],  children: [
 
 				{ id: 38, path: `${import.meta.env.BASE_URL}compliances/templategeneration`, type: "link", active: false, selected: false, title: "Template Generation", roles: [ 'DEV', 'SA','AF' ]  },
-				{ id: 38, path: `${import.meta.env.BASE_URL}compliances/occupational`, type: "link", active: false, selected: false, title: "Occupational Reconciliation", roles: [ 'DEV', 'SA','AF' ]  },
-				,
+				{ id: 39, path: `${import.meta.env.BASE_URL}compliances/occupational`, type: "link", active: false, selected: false, title: "Occupational Reconciliation", roles: [ 'DEV', 'SA','AF' ]  },
 			]
 			},
 			{ id: 39, icon: ExitsSvg, title: "Exits", type: "sub", active: false, selected: false, roles: [ 'DEV', 'SA','AF', 'MD', 'IR', 'ALL' ], children: [
@@ -148,35 +146,14 @@ export const MenuItems = [
 					{ id: 50, path: `${import.meta.env.BASE_URL}industrials/grievances`, type: "link", active: false, selected: false, title: "Grievances" },
 				]
 			},
-			{ id: 51, icon: PayrollsSvg, title: "Payrolls", type: "sub", active: false, selected: false, children: [
-
-					// { id: 52, path: `${import.meta.env.BASE_URL}elements/navbar`, type: "link", active: false, selected: false, title: "Navbar" },
-					// { id: 53, path: `${import.meta.env.BASE_URL}elements/megaMenu`, type: "link", active: false, selected: false, title: "MegaMenu" },
-					// { id: 54, path: `${import.meta.env.BASE_URL}elements/nav&tabs`, type: "link", active: false, selected: false, title: "Nav & Tabs" },
-					// { id: 55, path: `${import.meta.env.BASE_URL}elements/breadcrumbs`, type: "link", active: false, selected: false, title: "BreadCrumb" },
-					// { id: 56, path: `${import.meta.env.BASE_URL}elements/paginations`, type: "link", active: false, selected: false, title: "Pagination" },
-					// { id: 57, path: `${import.meta.env.BASE_URL}elements/grids`, type: "link", active: false, selected: false, title: "Grids" },
-				// { id: 58, path: `${import.meta.env.BASE_URL}elements/columns`, type: "link", active: false, selected: false, title: "Columns" }
-				
-					{ id: 60, path: `${import.meta.env.BASE_URL}systemreports/hirings`, type: "link", active: false, selected: false, title: "Hiring" },
-					{ id: 61, path: `${import.meta.env.BASE_URL}systemreports/employees`, type: "link", active: false, selected: false, title: "Employee Registration" },
-					{ id: 62, path: `${import.meta.env.BASE_URL}systemreports/clients`, type: "link", active: false, selected: false, title: "Employer or Clients" },
-					{ id: 63, path: `${import.meta.env.BASE_URL}systemreports/contracts`, type: "link", active: false, selected: false, title: "Contracts" },
-					{ id: 64, path: `${import.meta.env.BASE_URL}systemreports/industrials`, type: "link", active: false, selected: false, title: "Industrial Relation" },
-					{ id: 65, path: `${import.meta.env.BASE_URL}systemreports/payrolls`, type: "link", active: false, selected: false, title: "Payrolls" },
-					{ id: 66, path: `${import.meta.env.BASE_URL}systemreports/attendances`, type: "link", active: false, selected: false, title: "Attendances" }
-				]
-			},
-			
 			{ id: 59, icon: ReportsSvg, title: "Reports", type: "sub", active: false, selected: false, children: [
 
-					{ id: 60, path: `${import.meta.env.BASE_URL}systemreports/hirings`, type: "link", active: false, selected: false, title: "Hiring" },
-					{ id: 61, path: `${import.meta.env.BASE_URL}systemreports/employees`, type: "link", active: false, selected: false, title: "Employee Registration" },
-					{ id: 62, path: `${import.meta.env.BASE_URL}systemreports/clients`, type: "link", active: false, selected: false, title: "Employer or Clients" },
-					{ id: 63, path: `${import.meta.env.BASE_URL}systemreports/contracts`, type: "link", active: false, selected: false, title: "Contracts" },
-					{ id: 64, path: `${import.meta.env.BASE_URL}systemreports/industrials`, type: "link", active: false, selected: false, title: "Industrial Relation" },
-					{ id: 65, path: `${import.meta.env.BASE_URL}systemreports/payrolls`, type: "link", active: false, selected: false, title: "Payrolls" },
-					{ id: 66, path: `${import.meta.env.BASE_URL}systemreports/attendances`, type: "link", active: false, selected: false, title: "Attendances" }
+					{ id: 60, path: `${import.meta.env.BASE_URL}reports/hirings`, type: "link", active: false, selected: false, title: "Hiring" },
+					{ id: 61, path: `${import.meta.env.BASE_URL}reports/employees`, type: "link", active: false, selected: false, title: "Employee Registration" },
+					{ id: 62, path: `${import.meta.env.BASE_URL}reports/clients`, type: "link", active: false, selected: false, title: "Employer or Clients" },
+					{ id: 63, path: `${import.meta.env.BASE_URL}reports/contracts`, type: "link", active: false, selected: false, title: "Contracts" },
+					{ id: 64, path: `${import.meta.env.BASE_URL}reports/industrials`, type: "link", active: false, selected: false, title: "Industrial Relation" },
+					{ id: 66, path: `${import.meta.env.BASE_URL}reports/attendances`, type: "link", active: false, selected: false, title: "Attendances" }
 				]
 			},
 
