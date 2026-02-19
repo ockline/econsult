@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import axios from "axios";
 
+
 const IDLE_TIMEOUT = 8 * 60 * 1000; // 10 minutes
 const COUNTDOWN_SECONDS = 120; // 2 minutes
 let idleTimer = null;
