@@ -57,6 +57,7 @@ const App = ({local_varaiable, UserChanger, RolesChanger}) => {
 			subtree: true
 		});
 
+		
 		// Idle timeout: after 10 min inactivity, prompt "Are you still active?" with 2 min countdown
 		const cleanupIdle = IdleTimeout();
 
