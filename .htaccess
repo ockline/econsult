@@ -1,8 +1,0 @@
-# Ensure Apache sends correct MIME type for JavaScript modules.
-# Without this, .jsx (and sometimes .js) can be served with no Content-Type,
-# causing: "Expected a JavaScript module script but the server responded with a MIME type of """
-<IfModule mod_mime.c>
-  AddType application/javascript .js
-  AddType application/javascript .jsx
-  AddType application/javascript .mjs
-</IfModule>
