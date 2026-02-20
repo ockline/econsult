@@ -1,8 +1,11 @@
-# Analysis: "Failed to load module script... MIME type text/html"
+# Analysis: "Failed to load module script... MIME type text/html" or MIME type ""
 
 ## What the error means
 
-The browser requested a **JavaScript module** (a `.js` or module URL) but the server responded with **HTML** (e.g. a 404 page or `index.html`). Browsers require module scripts to be served with a JavaScript MIME type, so you see this error.
+The browser requested a **JavaScript module** (a `.js` or module URL) but the response was not valid JavaScript:
+
+- **MIME type "text/html"** — The server returned HTML (e.g. a 404 page or `index.html`).
+- **MIME type ""** (empty) — The server sent **no `Content-Type` header**, or the request failed (e.g. `file://`, wrong server, or Apache not configured for `.jsx`). Browsers then treat the response as non-JavaScript and block the module.
 
 ---
 
@@ -27,7 +30,16 @@ So the failing "module script" is often **not** `main.jsx` but a **dependency** 
 
 Previously the script was `src="/src/main.jsx"`. That made the browser request `http://localhost/src/main.jsx` (server root), which doesn’t exist → 404 HTML → same MIME error. It’s now `./src/main.jsx` so the path is correct when the page is under a subpath.
 
-### 3. **Deployed build with wrong base path**
+### 3. **Empty MIME type ("") — Apache or file://**
+
+- **Apache:** By default Apache often does **not** send a `Content-Type` for `.jsx` (and sometimes for certain `.js` requests). The response body may be correct but with no or wrong MIME type → browser reports MIME type `""` and blocks the script.  
+  **Fix:** An `.htaccess` in the project root has been added to set `Content-Type: application/javascript` for `.js` and `.jsx`. Use it when serving this folder via XAMPP.
+- **file://:** Opening `index.html` directly (double-click or `file:///...`) means there is no HTTP server. The browser may show empty MIME type or other module errors.  
+  **Fix:** Always use a real server: run `npm run dev` and open the URL Vite gives you (e.g. http://localhost:5173).
+
+Even with correct MIME type, **bare imports** (`import React from "react"`) still require Vite or a build; Apache cannot resolve `node_modules`. So for development, **npm run dev** is required.
+
+### 4. **Deployed build with wrong base path**
 
 If you run `npm run build` and copy the **dist** folder to e.g. `http://localhost/core_system/econsult/`:
 
