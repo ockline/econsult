@@ -12,7 +12,6 @@ const Normal = (props) => {
 	const docBaseUrl = import.meta.env.VITE_REACT_APP_DOC_BASE_URL;
 	
 	
-	
 	const [employeeData, setEmployeeDetails] = useState([])
     useEffect(() => {
         axios.get(`${apiBaseUrl}/home/normal/show_employees`)
