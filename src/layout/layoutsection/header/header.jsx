@@ -636,20 +636,19 @@ const Header = ({local_varaiable,ThemeChanger})=>{
                                     </div>
                                     <div className="header-profile hs-dropdown ti-dropdown" data-hs-dropdown-placement="bottom-right">
                                         <button id="dropdown-profile" type="button" className="hs-dropdown-toggle ti-dropdown-toggle gap-2 p-0 flex-shrink-0 h-8 w-8 rounded-full shadow-none focus:ring-gray-400 text-xs dark:focus:ring-white/10">
-                                            <img className="inline-block rounded-full ring-2 ring-white dark:ring-white/10"
-                                                src={ALLImages('jpg57')} alt="Image Description" />
+                                            <img className="inline-block rounded-full ring-2 ring-white dark:ring-white/10 object-cover"
+                                                src={local_varaiable?.user?.profile_picture || local_varaiable?.user?.avatar || local_varaiable?.user?.image || ALLImages('jpg57')} alt="Profile" />
                                         </button>
 
                                         <div className="hs-dropdown-menu ti-dropdown-menu border-0 w-[20rem]" aria-labelledby="dropdown-profile">
                                             <div className="ti-dropdown-header !bg-primary flex">
                                                 <div className="ltr:mr-3 rtl:ml-3">
-                                                    <img className="avatar shadow-none rounded-full !ring-transparent"
-                                                        src={ALLImages('jpg57')} alt="profile-img" />
+                                                    <img className="avatar shadow-none rounded-full !ring-transparent object-cover"
+                                                        src={local_varaiable?.user?.profile_picture || local_varaiable?.user?.avatar || local_varaiable?.user?.image || ALLImages('jpg57')} alt="profile-img" />
                                                 </div>
                                                 <div>
-                                                    {/* {JSON.stringify(local_varaiable, null, 2)} */}
-                                                    <p className="ti-dropdown-header-title !text-white">{local_varaiable.user.firstname} {local_varaiable.user.middlename} {local_varaiable.user.lastname}</p>
-                                                    <p className="ti-dropdown-header-content !text-white/50">Web Designer</p>
+                                                    <p className="ti-dropdown-header-title !text-white">{[local_varaiable?.user?.firstname, local_varaiable?.user?.middlename, local_varaiable?.user?.lastname].filter(Boolean).join(" ") || "User"}</p>
+                                                    <p className="ti-dropdown-header-content !text-white/50">{local_varaiable?.user?.email || local_varaiable?.user?.email_address || ""}</p>
                                                 </div>
                                             </div>
                                             <div className="mt-2 ti-dropdown-divider">

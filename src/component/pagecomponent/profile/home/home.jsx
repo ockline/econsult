@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { connect } from "react-redux";
 import axios from "axios";
 import ALLImages from "../../../../common/imagesdata";
 import Select from "react-select";
@@ -8,7 +9,34 @@ import ProfileService from "../../../../common/profileservices";
 import { HomeGallery } from "../../../advancedUi/filemanager/filedetails/filedetailscarcousel";
 import { TagsInput } from "react-tag-input-component";
 import { Helmet } from "react-helmet";
-const Home = () => {
+
+// Format date string for display; accept ISO or common formats
+const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? String(dateStr) : d.toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+};
+const getAgeFromDob = (dateStr) => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "";
+    const today = new Date();
+    let age = today.getFullYear() - d.getFullYear();
+    if (today.getMonth() < d.getMonth() || (today.getMonth() === d.getMonth() && today.getDate() < d.getDate())) age--;
+    return age;
+};
+
+const Home = ({ local_varaiable = {} }) => {
+    const user = local_varaiable.user || {};
+    // Merged profile: Redux user + fetched profile/employee (so we can show users + employees table data)
+    const [profileData, setProfileData] = useState(null);
+    const profile = profileData || user;
+    const displayName = [profile.firstname, profile.middlename, profile.lastname].filter(Boolean).join(" ") || "";
+    const displayEmail = profile.email || profile.email_address || user.email || user.email_address || "";
+    // Initials for placeholder when no profile image (e.g. "John Doe" -> "JD")
+    const initials = displayName
+        ? displayName.trim().split(/\s+/).map((part) => part[0]).join("").toUpperCase().slice(0, 2)
+        : (displayEmail || "?").charAt(0).toUpperCase();
     const [selected, setSelected] = useState([
         "Laravel",
         "Angular",
@@ -27,8 +55,9 @@ const Home = () => {
     const [UrlDisabled, setUrlDisabled] = useState(true);
 
     const [fileDisabled, setfileDisabled] = useState(false);
-    //Default image
-    const [Image, setImage] = useState(ALLImages("png106"));
+    // User's profile image from API (users/employees table); no hardcoded default
+    const userProfileImg = profile.profile_picture || profile.avatar || profile.image || profile.profile_pic;
+    const [Image, setImage] = useState(userProfileImg || "");
 
     let location = useLocation();
 
@@ -57,6 +86,8 @@ const Home = () => {
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const [performance, setPerformance] = useState(null);
     const [performanceLoading, setPerformanceLoading] = useState(true);
+    const [dailyActivities, setDailyActivities] = useState([]);
+    const [activitiesLoading, setActivitiesLoading] = useState(true);
 
     useEffect(() => {
         const token = sessionStorage.getItem("token");
@@ -73,8 +104,47 @@ const Home = () => {
     }, [apiBaseUrl]);
 
     useEffect(() => {
-        if (ProfileService.returnImage() != undefined) {
-            setImage(ProfileService.returnImage());
+        const token = sessionStorage.getItem("token");
+        if (!token || !apiBaseUrl) {
+            setActivitiesLoading(false);
+            return;
+        }
+        axios.get(`${apiBaseUrl}/user_activities`, { headers: { Authorization: `Bearer ${token}` } })
+            .then((res) => setDailyActivities(res.data.activities || []))
+            .catch(() => setDailyActivities([]))
+            .finally(() => setActivitiesLoading(false));
+    }, [apiBaseUrl]);
+
+    // Fetch full profile (users/employees table) when backend provides user_profile or profile endpoint
+    useEffect(() => {
+        const token = sessionStorage.getItem("token");
+        if (!token || !apiBaseUrl) return;
+        const auth = { headers: { Authorization: `Bearer ${token}` } };
+        axios.get(`${apiBaseUrl}/user_profile`, auth)
+            .then((r) => {
+                const data = r.data?.user || r.data;
+                if (data && typeof data === "object") setProfileData({ ...user, ...data });
+            })
+            .catch(() => {
+                axios.get(`${apiBaseUrl}/profile`, auth)
+                    .then((r) => {
+                        const data = r.data?.user || r.data;
+                        if (data && typeof data === "object") setProfileData({ ...user, ...data });
+                    })
+                    .catch(() => {});
+            });
+    }, [apiBaseUrl, user.id]);
+
+    const defaultPlaceholder = ALLImages("png106");
+    useEffect(() => {
+        const serviceImage = ProfileService.returnImage();
+        // Use user-changed image only if it's not the app's default placeholder
+        if (serviceImage && serviceImage !== defaultPlaceholder) {
+            setImage(serviceImage);
+        } else if (userProfileImg) {
+            setImage(userProfileImg);
+        } else {
+            setImage("");
         }
         let contactItem = document.querySelectorAll(".main-contact-item");
         contactItem.forEach((ele) => {
@@ -82,7 +152,7 @@ const Home = () => {
                 setClassName("main-content-body-show");
             });
         });
-    }, [location]);
+    }, [location, userProfileImg]);
 
     return (
         <div>
@@ -90,12 +160,16 @@ const Home = () => {
                 <body class={ClassName}></body>
             </Helmet>
             <div className="flex relative before:bg-black/50 before:absolute before:w-full before:h-full">
-                <img
-                    src={Image}
-                    alt=""
-                    className="h-[500px] w-full rounded-sm"
-                    id="profile-img2"
-                />
+                {Image ? (
+                    <img
+                        src={Image}
+                        alt=""
+                        className="h-[500px] w-full object-cover rounded-sm"
+                        id="profile-img2"
+                    />
+                ) : (
+                    <div className="h-[500px] w-full rounded-sm bg-gradient-to-br from-gray-600 to-gray-800" id="profile-img2" />
+                )}
 
                 <button
                     type="button"
@@ -164,32 +238,39 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className="absolute top-28 inset-x-0 text-center space-y-3">
+            <div className="absolute top-28 inset-x-0 flex flex-col items-center justify-center text-center space-y-3">
                 <div className="flex justify-center w-full">
                     <div className="relative cursor-pointer">
-                        <img
-                            src={ALLImages("jpg57")}
-                            className="w-24 h-24 rounded-full ring-4 ring-white/10 mx-auto"
-                            id="profile-img"
-                            alt="profile-img"
-                        />
-
+                        {Image ? (
+                            <img
+                                src={Image}
+                                className="w-24 h-24 rounded-full ring-4 ring-white/10 mx-auto object-cover"
+                                id="profile-img"
+                                alt={displayName || "Profile"}
+                            />
+                        ) : (
+                            <div
+                                id="profile-img"
+                                className="w-24 h-24 rounded-full ring-4 ring-white/10 mx-auto flex items-center justify-center bg-primary/80 text-white text-2xl font-semibold shrink-0"
+                                aria-hidden
+                            >
+                                {initials}
+                            </div>
+                        )}
                         <span className="absolute bottom-0 ltr:right-0 rtl:left-0 block p-1 rounded-full ring-2 ring-white/10 text-white bg-white/10 dark:bg-bgdark leading-none cursor-pointer">
                             <i className="ri ri-pencil-line cursor-pointer"></i>
                             <input
                                 type="file"
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 id="profile-change"
-                            ></input>
+                            />
                         </span>
                     </div>
                 </div>
                 <div className="text-white">
-                    <h2 className="text-base font-semibold">Ockline Msungu</h2>
-                    <p className="text-xs text-white/50">
-                        ocklinemwanzelu@gmail.com
-                    </p>
-                </div>               
+                    {displayName && <h2 className="text-base font-semibold">{displayName}</h2>}
+                    {displayEmail && <p className="text-xs text-white/50">{displayEmail}</p>}
+                </div>
             </div>
 
             <div className="main-content -mt-28">
@@ -203,16 +284,8 @@ const Home = () => {
                             </div>
                             <div className="box-body space-y-4">
                                 <div className="space-y-3">
-                                    <p>
-                                        Lorem, ipsum dolor sit amet consectetur
-                                        adipisicing elit.{" "}
-                                    </p>
-                                    <p>
-                                        A odit dignissimos minima atque
-                                        sapiente, eos mollitia amet officiis
-                                        tempora voluptate laboriosam id
-                                        perferendis nobis est vitae facere
-                                        tenetur? Ut, nam?
+                                    <p className="text-gray-500 dark:text-white/70">
+                                        {(profile.about || profile.about_me || profile.bio) || "—"}
                                     </p>
                                 </div>
                             </div>
@@ -233,7 +306,7 @@ const Home = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2">
-                                                    Sr.Ui Developer
+                                                    {(profile.designation || profile.job_title || profile.position) || "—"}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -242,7 +315,7 @@ const Home = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2">
-                                                    01 November 2019
+                                                    {formatDate(profile.join_date || profile.date_joined || profile.joined_at || profile.created_at) || "—"}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -250,7 +323,9 @@ const Home = () => {
                                                     Age
                                                 </td>
                                                 <td className="!p-2">:</td>
-                                                <td className="!p-2">26</td>
+                                                <td className="!p-2">
+                                                    {(profile.age != null && profile.age !== "") ? profile.age : (getAgeFromDob(profile.dob || profile.date_of_birth || profile.birthday) || "—")}
+                                                </td>
                                             </tr>
                                             <tr className="!border-0">
                                                 <td className="font-medium !p-2">
@@ -258,7 +333,7 @@ const Home = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2">
-                                                    Lake Park
+                                                    {profile.city || "—"}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -267,7 +342,7 @@ const Home = () => {
                                                 </td>
                                                 <td className="!p-2">:</td>
                                                 <td className="!p-2">
-                                                    Newyork
+                                                    {profile.country || "—"}
                                                 </td>
                                             </tr>
                                             <tr className="!border-0">
@@ -275,7 +350,7 @@ const Home = () => {
                                                     State
                                                 </td>
                                                 <td className="!p-2">:</td>
-                                                <td className="!p-2">U.S.A</td>
+                                                <td className="!p-2">{(profile.state || profile.region) || "—"}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -401,7 +476,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        Anderson
+                                                        {profile.firstname ?? "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -410,7 +485,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        Itumay
+                                                        {profile.lastname ?? "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -419,7 +494,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        03 September 1990
+                                                        {formatDate(profile.dob || profile.date_of_birth || profile.birthday) || "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -428,7 +503,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        Female
+                                                        {profile.gender ?? "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -437,7 +512,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        Telugu ,Hindi , English
+                                                        {Array.isArray(profile.languages) ? profile.languages.join(", ") : (profile.languages || profile.language || "—")}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -455,7 +530,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        +123(45)-158-90.
+                                                        {(profile.phone || profile.phone_number || profile.telephone || profile.mobile) || "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -464,7 +539,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        ocklinemwanzelu@gmail.com
+                                                        {displayEmail || "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -473,7 +548,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        ocklinemwanzelu@gmail.com
+                                                        {(profile.address || profile.physical_address) || "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -482,7 +557,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        www.ocklinemwanzelu.com
+                                                        {(profile.website || profile.system_link) || "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -491,7 +566,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        https://in.linkedin.com/andersonitumay
+                                                        {(profile.linkedin || profile.linkedin_link) || "—"}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -509,8 +584,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        Studied at Makit Hight
-                                                        school ,1-12th
+                                                        {(profile.school || profile.secondary_school) || "—"}
                                                     </td>
                                                 </tr>
                                                 <tr className="!border-0">
@@ -519,8 +593,7 @@ const Home = () => {
                                                     </td>
                                                     <td className="!p-2">:</td>
                                                     <td className="!p-2 !text-gray-500 dark:!text-white/70">
-                                                        Studied at Abc
-                                                        University , Btech(cse)
+                                                        {(profile.graduation || profile.university || profile.tertiary_education) || "—"}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -562,315 +635,48 @@ const Home = () => {
                                     role="tabpanel"
                                     aria-labelledby="profile-item-2"
                                 >
-                                    <div className="">
-                                        <div className="flex flex-row">
-                                            <div className="mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                                </div>
-                                                <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 shadow text-center ltr:-left-[4px] rtl:-right-[4px]">
-                                                    <img
-                                                        src={ALLImages("jpg57")}
-                                                        className="rounded-full"
-                                                        alt="profile-img"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex w-full pb-8">
-                                                <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                    <div className="sm:flex">
-                                                        <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                            <span className="text-dark dark:text-white">
-                                                                Elida Distefa
-                                                            </span>{" "}
-                                                            added a comment to{" "}
-                                                            <span className="text-dark dark:text-white">
-                                                                Ockline Msungu
-                                                            </span>{" "}
-                                                            post
-                                                        </h3>
-                                                        <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                            Today, 04:30 PM
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex -space-x-2 rtl:space-x-reverse">
-                                                        <img
-                                                            className="avatar avatar-xs rounded-full"
-                                                            src={ALLImages(
-                                                                "jpg57"
-                                                            )}
-                                                            alt="Image Description"
-                                                        />
-                                                        <img
-                                                            className="avatar avatar-xs rounded-full"
-                                                            src={ALLImages(
-                                                                "jpg60"
-                                                            )}
-                                                            alt="Image Description"
-                                                        />
-                                                        <img
-                                                            className="avatar avatar-xs rounded-full"
-                                                            src={ALLImages(
-                                                                "jpg58"
-                                                            )}
-                                                            alt="Image Description"
-                                                        />
-                                                        <img
-                                                            className="avatar avatar-xs rounded-full"
-                                                            src={ALLImages(
-                                                                "jpg59"
-                                                            )}
-                                                            alt="Image Description"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <h5 className="box-title mb-3">Daily Activities</h5>
+                                    <p className="text-xs text-gray-500 dark:text-white/70 mb-3">
+                                        Activities logged in <Link to={`${import.meta.env.BASE_URL}user/profile/setting?tab=daily_activities`} className="text-primary hover:underline">Profile Settings → Daily Activities</Link>.
+                                    </p>
+                                    {activitiesLoading ? (
+                                        <p className="text-sm text-gray-500 dark:text-white/70">Loading activities...</p>
+                                    ) : dailyActivities.length === 0 ? (
+                                        <p className="text-sm text-gray-500 dark:text-white/70">No daily activities yet. Log activities in Profile Settings.</p>
+                                    ) : (
+                                        <div className="table-bordered rounded-sm overflow-auto max-h-[400px]">
+                                            <table className="ti-custom-table ti-custom-table-head whitespace-nowrap border-0">
+                                                <thead className="bg-gray-50 dark:bg-black/20">
+                                                    <tr>
+                                                        <th className="!py-2 !px-3">#</th>
+                                                        <th className="!py-2 !px-3">Date</th>
+                                                        <th className="!py-2 !px-3">Title</th>
+                                                        <th className="!py-2 !px-3">Description</th>
+                                                        <th className="!py-2 !px-3">Time</th>
+                                                        <th className="!py-2 !px-3">Rate</th>
+                                                        <th className="!py-2 !px-3">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {dailyActivities.map((a, idx) => (
+                                                        <tr key={a.id} className="border-b border-gray-200 dark:border-white/10">
+                                                            <td className="!py-2 !px-3">{idx + 1}</td>
+                                                            <td className="!py-2 !px-3">{a.activity_date ? formatDate(a.activity_date) : "—"}</td>
+                                                            <td className="!py-2 !px-3">{a.title || "—"}</td>
+                                                            <td className="!py-2 !px-3 max-w-[200px] truncate" title={a.description}>{a.description || "—"}</td>
+                                                            <td className="!py-2 !px-3">{(a.start_time || a.end_time) ? [a.start_time, a.end_time].filter(Boolean).map((t) => (t || "").slice(0, 5)).join(" – ") : "—"}</td>
+                                                            <td className="!py-2 !px-3">{a.rating ? `${a.rating}/5` : "—"}</td>
+                                                            <td className="!py-2 !px-3">
+                                                                <span className={`badge text-xs capitalize ${a.status === "completed" ? "bg-success/10 text-success" : a.status === "in_progress" ? "bg-warning/10 text-warning" : "bg-gray-100 dark:bg-black/20 text-gray-600 dark:text-white/70"}`}>
+                                                                    {(a.status || "completed").replace(/_/g, " ")}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div className="flex flex-row">
-                                            <div className="mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                                </div>
-                                                <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 shadow text-center ltr:-left-[4px] rtl:-right-[4px]">
-                                                    <img
-                                                        src={ALLImages("jpg59")}
-                                                        className="rounded-full"
-                                                        alt="profile-img"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex w-full pb-8">
-                                                <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                    <div className="sm:flex">
-                                                        <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                            <span className="text-dark dark:text-white">
-                                                                Samantha Melon
-                                                            </span>{" "}
-                                                            added a 😎 reaction
-                                                            to{" "}
-                                                            <span className="text-dark dark:text-white">
-                                                                Ockline Msungu
-                                                            </span>{" "}
-                                                            post
-                                                        </h3>
-                                                        <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                            Today, 04:30 PM
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-row">
-                                            <div className="mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                                </div>
-                                                <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 shadow text-center ltr:-left-[4px] rtl:-right-[4px]">
-                                                    <img
-                                                        src={ALLImages("jpg58")}
-                                                        className="rounded-full"
-                                                        alt="profile-img"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex w-full pb-8">
-                                                <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                    <div className="sm:flex">
-                                                        <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                            <span className="text-dark dark:text-white">
-                                                                Samantha Melon
-                                                            </span>{" "}
-                                                            like an Image
-                                                        </h3>
-                                                        <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                            Today, 05:45 PM
-                                                        </p>
-                                                    </div>
-                                                    <div>
-                                                        <img
-                                                            src={ALLImages(
-                                                                "jpg11"
-                                                            )}
-                                                            className="avatar avatar-lg rounded-sm"
-                                                            alt="profile-img"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-row">
-                                            <div className="mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                                </div>
-                                                <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 shadow text-center ltr:-left-[4px] rtl:-right-[4px]">
-                                                    <img
-                                                        src={ALLImages("jpg71")}
-                                                        className="rounded-full"
-                                                        alt="profile-img"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex w-full pb-8">
-                                                <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                    <div className="sm:flex">
-                                                        <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                            <span className="text-dark dark:text-white">
-                                                                Dennis Trexy
-                                                            </span>{" "}
-                                                            Shared an image
-                                                        </h3>
-                                                        <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                            yesterday, 10:20 am
-                                                        </p>
-                                                    </div>
-                                                    <div className="space-y-3">
-                                                        <p className="text-xs textbg-gray-500">
-                                                            Lorem ipsum dolor
-                                                            sit amet consectetur
-                                                            adipisicing elit.
-                                                            Nostrum sit
-                                                            consequuntur quia
-                                                            aperiam quibusdam
-                                                            rerum ut! Id ducimus
-                                                            nobis rerum modi
-                                                            veniam odit totam
-                                                            rem asperiores
-                                                            adipisci, sed quia
-                                                            voluptas?
-                                                        </p>
-                                                        <img
-                                                            src={ALLImages(
-                                                                "jpg14"
-                                                            )}
-                                                            className="avatar avatar-lg rounded-sm"
-                                                            alt="profile-img"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <div className="mx-auto relative">
-                                            <div className="h-full w-6 flex items-center justify-center">
-                                                <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                            </div>
-                                            <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 shadow text-center ltr:-left-[4px] rtl:-right-[4px]">
-                                                <img
-                                                    src={ALLImages("jpg77")}
-                                                    className="rounded-full"
-                                                    alt="profile-img"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="flex w-full pb-8">
-                                            <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                <div className="sm:flex">
-                                                    <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                        <span className="text-dark dark:text-white">
-                                                            Anesthesia
-                                                        </span>
-                                                        commented on today's
-                                                        meeting
-                                                    </h3>
-                                                    <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                        yesterday, 05:06 pm
-                                                    </p>
-                                                </div>
-                                                <div className="border border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10 p-4 rounded-sm">
-                                                    <p className="text-xs textbg-gray-500">
-                                                        Lorem ipsum dolor sit
-                                                        amet consectetur
-                                                        adipisicing elit.
-                                                        Nostrum sit consequuntur
-                                                        quia aperiam quibusdam
-                                                        rerum ut! Id ducimus
-                                                        nobis rerum modi veniam
-                                                        odit totam rem
-                                                        asperiores adipisci, sed
-                                                        quia voluptas?
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <div className="mx-auto relative">
-                                            <div className="h-full w-6 flex items-center justify-center">
-                                                <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                            </div>
-                                            <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 dark:bg-bgdark2 shadow text-center ltr:-left-[4px] rtl:-right-[4px] leading-[2.3]">
-                                                H
-                                            </div>
-                                        </div>
-                                        <div className="flex w-full pb-8">
-                                            <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                <div className="sm:flex">
-                                                    <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                        <span className="text-dark dark:text-white">
-                                                            Harvey Mattos
-                                                        </span>{" "}
-                                                        Followed You
-                                                    </h3>
-                                                    <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                        03-12-20222, 12:06 pm
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <div className="mx-auto relative">
-                                            <div className="h-full w-6 flex items-center justify-center">
-                                                <div className="h-full w-[3px] bg-gray-100 dark:bg-black/20 pointer-events-none"></div>
-                                            </div>
-                                            <div className="avatar avatar-xs absolute top-0 rounded-full bg-gray-200 shadow text-center ltr:-left-[4px] rtl:-right-[4px]">
-                                                <img
-                                                    src={ALLImages("jpg71")}
-                                                    className="rounded-full"
-                                                    alt="profile-img"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="flex w-full">
-                                            <div className="ltr:ml-5 rtl:mr-5 rounded-sm ltr:mr-auto rtl:ml-auto my-auto w-full space-y-3">
-                                                <div className="sm:flex">
-                                                    <h3 className="my-auto text-gray-500 dark:text-white/70">
-                                                        <span className="text-dark dark:text-white">
-                                                            Anesthesia
-                                                        </span>
-                                                        5 Days left for Montly
-                                                        submission of progress
-                                                        report{" "}
-                                                    </h3>
-                                                    <p className="my-auto ltr:ml-auto rtl:mr-auto text-gray-500 dark:text-white/70 text-xs">
-                                                        02-12-2022, 6:20 pm
-                                                    </p>
-                                                </div>
-                                                <div className="border border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10 p-4 rounded-sm">
-                                                    <p className="text-xs textbg-gray-500 mb-3">
-                                                        Lorem ipsum dolor sit
-                                                        amet consectetur
-                                                        adipisicing elit.
-                                                        Nostrum sit consequuntur
-                                                        quia aperiam quibusdam
-                                                        rerum ut! Id ducimus
-                                                        nobis rerum modi veniam
-                                                        odit totam rem
-                                                        asperiores adipisci, sed
-                                                        quia voluptas?
-                                                    </p>
-                                                    <p className="text-xs textbg-gray-500">
-                                                        Lorem ipsum dolor sit
-                                                        amet consectetur
-                                                        adipisicing elit.
-                                                        
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                                 <div
                                     id="profile-3"
@@ -2007,4 +1813,5 @@ const Home = () => {
     );
 };
 
-export default Home;
+const mapStateToProps = (state) => ({ local_varaiable: state });
+export default connect(mapStateToProps)(Home);

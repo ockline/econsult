@@ -17,9 +17,6 @@ const CompliancesSvg = <i className="ri-service-line side-menu__icon"></i>
 const ExitsSvg = <i className="ri-send-plane-2-line side-menu__icon"></i>
 const ReportsSvg = <i className="ri-bar-chart-grouped-line side-menu__icon"></i>
 const PagesSvg = <i className="ri-book-open-line side-menu__icon"></i>
-const AuthenticationSvg = <i className="ri-error-warning-line side-menu__icon"></i>
-
-
 
 export const MenuItems = [
 	{ id: 1, menutitle: "MAIN", roles: ['MD', 'DEV','SA', 'ALL','OM', 'RI','RR','RA'], Items: [
@@ -187,70 +184,6 @@ export const MenuItems = [
 					// 	]
 					// },
 					
-				]
-			},
-			
-			{ id: 128, icon: AuthenticationSvg, title: "Authentication", type: "sub", active: false, selected: false, children: [
-
-					{ id: 129, type: "sub", active: false, selected: false, title: "Sign In", children: [
-
-							// { id: 130, path: `${import.meta.env.BASE_URL}Authentication/signin/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 131, path: `${import.meta.env.BASE_URL}Authentication/signin/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 132, path: `${import.meta.env.BASE_URL}Authentication/signin/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 133, type: "sub", active: false, selected: false, title: "Sign Up", children: [
-
-							// { id: 134, path: `${import.meta.env.BASE_URL}Authentication/signup/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 135, path: `${import.meta.env.BASE_URL}Authentication/signup/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 136, path: `${import.meta.env.BASE_URL}Authentication/signup/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 137, type: "sub", active: false, selected: false, title: "Create Password", children: [
-
-							// { id: 138, path: `${import.meta.env.BASE_URL}Authentication/createpassword/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 139, path: `${import.meta.env.BASE_URL}Authentication/createpassword/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 140, path: `${import.meta.env.BASE_URL}Authentication/createpassword/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 141, type: "sub", active: false, selected: false, title: "Forget Password", children: [
-
-							// { id: 142, path: `${import.meta.env.BASE_URL}Authentication/forgetpassword/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 143, path: `${import.meta.env.BASE_URL}Authentication/forgetpassword/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 144, path: `${import.meta.env.BASE_URL}Authentication/forgetpassword/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 145, type: "sub", active: false, selected: false, title: "Reset Password", children: [
-
-							// { id: 146, path: `${import.meta.env.BASE_URL}Authentication/resetpassword/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 147, path: `${import.meta.env.BASE_URL}Authentication/resetpassword`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 148, path: `${import.meta.env.BASE_URL}Authentication/resetpassword/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 149, type: "sub", active: false, selected: false, title: "Lock Screen", children: [
-
-							// { id: 150, path: `${import.meta.env.BASE_URL}Authentication/lockscreen/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 151, path: `${import.meta.env.BASE_URL}Authentication/lockscreen/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 152, path: `${import.meta.env.BASE_URL}Authentication/lockscreen/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 153, type: "sub", active: false, selected: false, title: "Two-step-verification", children: [
-
-							// { id: 154, path: `${import.meta.env.BASE_URL}Authentication/twostepverification/basic`, type: "link", active: false, selected: false, title: "Basic" },
-							{ id: 155, path: `${import.meta.env.BASE_URL}Authentication/twostepverification/cover1`, type: "link", active: false, selected: false, title: "Cover-1" },
-							// { id: 156, path: `${import.meta.env.BASE_URL}Authentication/twostepverification/cover2`, type: "link", active: false, selected: false, title: "Cover-2" },
-						]
-					},
-					{ id: 157, path: `${import.meta.env.BASE_URL}Authentication/undermaintenance`, type: "link", active: false, selected: false, title: "Under Maintainance" },
-					{ id: 158, path: `${import.meta.env.BASE_URL}Authentication/underconstruction`, type: "link", active: false, selected: false, title: "Under Construction" },
-					{ id: 159, path: `${import.meta.env.BASE_URL}Authentication/commingsoon`, type: "link", active: false, selected: false, title: "Coming Soon" },
-
-					{ id: 160, type: "sub", active: false, selected: false, title: "Error Pages", children: [
-
-							{ id: 161, path: `${import.meta.env.BASE_URL}Authentication/errorpage/error404`, type: "link", active: false, selected: false, title: "404 Error" },
-							{ id: 162, path: `${import.meta.env.BASE_URL}Authentication/errorpage/error500`, type: "link", active: false, selected: false, title: "500 Error" },
-						]
-					},
 				]
 			},
 		]
